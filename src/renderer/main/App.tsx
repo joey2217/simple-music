@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import React from 'react'
+import { RouterProvider } from 'react-router-dom'
+import router from './router'
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <div>chrome:{window.versions.chrome}</div>
-      <div>node:{window.versions.node}</div>
-      <div>electron:{window.versions.electron}</div>
+    <div>
+      <RouterProvider router={router} />
     </div>
   )
 }

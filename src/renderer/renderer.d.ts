@@ -22,5 +22,3 @@ declare global {
     versions: IVersions
   }
 }
-
-export {}
