@@ -1,0 +1,41 @@
+name: Build/release
+
+on:
+  push:
+    # branches: [ main ]
+    # Sequence of patterns matched against refs/tags
+    tags:
+     - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+jobs:
+  release:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest]
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: "yarn"
+
+      - name: install dependencies
+        run: yarn install
+
+      - name: publish windows app
+        if: matrix.os == 'windows-latest'
+        run: pack:win
+        env: 
+          GH_TOKEN: ${{secrets.GH_TOKEN}}
+
+      - name: publish mac app
+        if: matrix.os == 'macos-latest'
+        run: pack:mac
+        env: 
+          GH_TOKEN: ${{secrets.GH_TOKEN}}

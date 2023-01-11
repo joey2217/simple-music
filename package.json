@@ -1,0 +1,36 @@
+{
+  "name": "simple-music",
+  "private": true,
+  "version": "0.0.1",
+  "main": "dist/main.js",
+  "author": "joey",
+  "scripts": {
+    "pack:win": "npm run pack --win",
+    "pack:mac": "npm run pack --mac",
+    "pack": "electron-builder build -c electron-builder.config.js  --publish always",
+    "prepack": "npm run build",
+    "dev": "node scripts/dev.js",
+    "build": "node scripts/build.js",
+    "prebuild": "npm run check",
+    "check": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.json",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "dependencies": {
+    "electron-log": "^4.4.8",
+    "electron-updater": "^5.3.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "@types/react": "^18.0.26",
+    "@types/react-dom": "^18.0.9",
+    "@vitejs/plugin-react-swc": "^3.0.0",
+    "electron": "^22.0.1",
+    "electron-builder": "^23.6.0",
+    "eslint": "^8.31.0",
+    "eslint-config-react-app": "^7.0.1",
+    "typescript": "^4.9.3",
+    "vite": "^4.0.0"
+  }
+}
