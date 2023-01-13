@@ -34,4 +34,18 @@ export default defineConfig({
       external: ['electron', ...builtinModules],
     },
   },
+  server:{
+    proxy:{
+      '/netcase': {
+        target: 'https://music.163.com/weapi',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/netcase/, ''),
+      },
+      '/api163': {
+        target: 'https://music.163.com/api',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api163/, ''),
+      },
+    }
+  }
 })

@@ -22,6 +22,7 @@ export interface SongListItem {
   name: string
   coverImgUrl: string
   description: string
+  sourceUrl: string
 }
 
 export interface SongListDetail{
@@ -33,4 +34,17 @@ export interface SongListDetail{
 export interface Song {
   id: number | string
   name: string
+}
+
+export type FilterType = 'topList'
+
+export interface SongListParams{
+  offset:number
+  filter: FilterType
+}
+
+export interface SearchParams{
+  keyword: string,
+  page: number,
+  type: string | number
 }

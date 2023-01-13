@@ -1,22 +1,17 @@
 import React, { memo, useEffect, useState } from 'react'
 import { AutoComplete, Input } from 'antd'
-import netcase from '../../musicResource/netcase'
+import netease from '../../musicResource/netease'
 
 const Search: React.FC = () => {
-  const [options, setOptions] = useState<{ value: string; label: string }[]>([
-    { label: '1', value: '1' },
-  ])
+  const [options, setOptions] = useState<{ value: string }[]>([])
   const onSearch = (searchText: string) => {
     console.log(searchText)
   }
 
-  const onSelect = (data: string) => {
-    console.log('onSelect', data)
-  }
-
   useEffect(() => {
-    netcase.fetchHotSearch().then((data) => {
+    netease.fetchHotSearch().then((data) => {
       console.log(data)
+      setOptions(data.map((w) => ({ value: w })))
     })
   }, [])
 
@@ -24,7 +19,7 @@ const Search: React.FC = () => {
     <AutoComplete
       className="w-1/2 max-w-lg min-w-[200px]"
       options={options}
-      onSelect={onSelect}
+      onSelect={onSearch}
     >
       <Input.Search
         placeholder="input here"
