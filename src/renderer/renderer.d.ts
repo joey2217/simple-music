@@ -1,3 +1,5 @@
+import Electron from 'electron'
+
 interface IElectronAPI {
   openAboutWindow: () => Promise<void>
   onMessage: (

@@ -1,17 +1,10 @@
 import React, { memo, useState } from 'react'
-import { Layout, Menu, theme } from 'antd'
-import type { MenuProps } from 'antd'
-import { MailOutlined } from '@ant-design/icons'
+import { Layout, theme } from 'antd'
+import AppMenu from './AppMenu'
+import { Outlet } from 'react-router-dom'
+import Search from '../components/Search'
 
-const { Content, Sider } = Layout
-
-const items: MenuProps['items'] = [
-  {
-    label: 'Navigation One',
-    key: 'mail',
-    icon: <MailOutlined />,
-  },
-]
+const { Content, Sider, Header } = Layout
 
 const AppLayout: React.FC = () => {
   const {
@@ -33,15 +26,18 @@ const AppLayout: React.FC = () => {
             margin: 16,
             background: 'rgba(255, 255, 255, 0.2)',
           }}
-        />
-        <Menu
-          theme="dark"
-          defaultSelectedKeys={['1']}
-          mode="inline"
-          items={items}
-        />
+        >
+          12312
+        </div>
+        <AppMenu />
       </Sider>
-      <Layout style={{ padding: '24px' }}>
+      <Layout>
+        <Header
+          style={{ padding: 0, background: colorBgContainer }}
+          className="flex justify-center items-center"
+        >
+          <Search />
+        </Header>
         <Content
           style={{
             padding: 24,
@@ -49,7 +45,7 @@ const AppLayout: React.FC = () => {
             background: colorBgContainer,
           }}
         >
-          Content
+          <Outlet />
         </Content>
       </Layout>
     </Layout>
