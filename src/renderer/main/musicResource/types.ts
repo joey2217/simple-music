@@ -25,10 +25,31 @@ export interface SongListItem {
   sourceUrl: string
 }
 
-export interface SongListDetail{
+export interface Artist {
+  id: string | number
+  name: string
+}
+
+export interface Album {
+  id: string | number
+  name: string
+  picUrl: string
+}
+
+export interface Track {
+  id: string | number
+  name: string
+  artist: Artist[] // 歌手
+  album: Album // 专辑
+}
+
+export interface SongListDetail {
   id: number | string
-  coverImgUrl:string
-  description:string
+  name: string
+  coverImgUrl: string
+  description: string
+  tracks: Track[]
+  trackIds: (string | number)[]
 }
 
 export interface Song {
@@ -38,13 +59,13 @@ export interface Song {
 
 export type FilterType = 'topList'
 
-export interface SongListParams{
-  offset:number
+export interface SongListParams {
+  offset: number
   filter: FilterType
 }
 
-export interface SearchParams{
-  keyword: string,
-  page: number,
+export interface SearchParams {
+  keyword: string
+  page: number
   type: string | number
 }

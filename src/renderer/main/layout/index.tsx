@@ -40,7 +40,7 @@ const AppLayout: React.FC = () => {
         </Header>
         <Content
           style={{
-            padding: 24,
+            padding: 16,
             margin: 0,
             background: colorBgContainer,
           }}

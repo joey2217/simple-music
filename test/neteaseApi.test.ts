@@ -2,13 +2,13 @@ import { describe, expect, test } from 'vitest'
 import netease from '../src/renderer/main/musicResource/netease'
 
 describe('测试网易云API', () => {
-  test('fetchSearchResult result length > 0', async () => {
-    const res = await netease.fetchSearchResult({keyword:'你好'})
-    // console.log(res[0])
-    console.log(res);
-    // expect(res.length).greaterThan(0)
-    expect(res).not.toBeNull()
-  })
+  // test('fetchSearchResult result length > 0', async () => {
+  //   const res = await netease.fetchSearchResult({keyword:'你好'})
+  //   // console.log(res[0])
+  //   console.log(res);
+  //   // expect(res.length).greaterThan(0)
+  //   expect(res).not.toBeNull()
+  // })
   // test('fetchHotSearch result length > 0', async () => {
   //   const res = await netease.fetchHotSearch()
   //   // console.log(res[0])

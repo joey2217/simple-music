@@ -14,7 +14,7 @@ const HEADERS = {
 }
 
 const neteaseRequest = axios.create({
-  baseURL: import.meta.env.DEV ? '/netcase' : 'https://music.163.com/weapi',
+  baseURL: import.meta.env.DEV ? '/netease' : 'https://music.163.com/weapi',
   headers: HEADERS,
 })
 
@@ -28,7 +28,7 @@ function createSecretKey(size: number) {
   return result.join('')
 }
 
-function aesEncrypt(text: string, sec_key: string, algo: string) {
+function aesEncrypt(text: string, sec_key: string, algo: any) {
   const cipher = forge.cipher.createCipher(algo, sec_key)
   cipher.start({ iv: '0102030405060708' })
   cipher.update(forge.util.createBuffer(text))
@@ -96,21 +96,44 @@ namespace netease {
       url: '/toplist',
       method: 'POST',
       data: weapi({}),
-    }).then((res) => res.data.list)
+    }).then((res) =>
+      res.data.list.map((item: any) => ({
+        id: item.id,
+        name: item.name,
+        coverImgUrl: item.coverImgUrl,
+        description: item.description,
+        sourceUrl: item.id,
+      }))
+    )
   }
 
-  export function fetchTopListDetail(
+  export function fetchSongListDetail(
     id: string | number
   ): Promise<SongListDetail> {
     return neteaseRequest({
-      url: '/detail',
+      url: '/v3/playlist/detail',
       method: 'POST',
       data: weapi({
         id,
         n: 100000,
         p: 1,
       }),
-    }).then((res) => res.data.playlist)
+    }).then((res) => {
+      const { playlist } = res.data
+      return {
+        id: playlist.id,
+        name: playlist.name,
+        coverImgUrl: playlist.coverImgUrl,
+        description: playlist.description,
+        tracks: playlist.tracks.map((t: any) => ({
+          id: t.id,
+          name: t.name,
+          artist: t.ar,
+          album: t.al,
+        })),
+        trackIds: playlist.trackIds.map((t: any) => t.id),
+      }
+    })
   }
 
   // 歌单
@@ -203,7 +226,7 @@ namespace netease {
     }
   ) {
     const page = params.page || 1
-    return axios({
+    return neteaseRequest({
       baseURL: import.meta.env.DEV ? '/api163' : 'https://music.163.com/api',
       url: '/search/pc',
       method: 'POST',

@@ -1,6 +1,21 @@
 import { atom } from 'recoil'
+import {
+  getTheme,
+  simpleLocalStorageEffect,
+  LOCAL_THEME,
+  setTheme,
+} from './utils'
+import type { Theme } from './utils'
 
-export const textState = atom({
-  key: 'textState', // unique ID (with respect to other atoms/selectors)
-  default: '', // default value (aka initial value)
+export const themeState = atom<Theme>({
+  key: 'themeState',
+  default: getTheme(),
+  effects: [
+    simpleLocalStorageEffect<Theme>(LOCAL_THEME),
+    ({ onSet }) => {
+      onSet((theme) => {
+        setTheme(theme)
+      })
+    },
+  ],
 })

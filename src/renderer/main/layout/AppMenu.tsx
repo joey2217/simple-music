@@ -1,13 +1,28 @@
 import React, { memo } from 'react'
 import { Menu } from 'antd'
 import { useLocation, Link } from 'react-router-dom'
-import { SearchOutlined, SettingOutlined } from '@ant-design/icons'
+import {
+  OrderedListOutlined,
+  SearchOutlined,
+  SettingOutlined,
+  UnorderedListOutlined,
+} from '@ant-design/icons'
 import type { MenuProps } from 'antd'
 
 const items: MenuProps['items'] = [
   {
-    label: <Link to="/">搜索</Link>,
+    label: <Link to="/">排行</Link>,
     key: '/',
+    icon: <OrderedListOutlined />,
+  },
+  {
+    label: <Link to="/song-list">歌单</Link>,
+    key: '/song-list',
+    icon: <UnorderedListOutlined />,
+  },
+  {
+    label: <Link to="/search">搜索</Link>,
+    key: '/search',
     icon: <SearchOutlined />,
   },
   {
