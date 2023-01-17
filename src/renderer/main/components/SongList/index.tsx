@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import { Space, Table } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
-import type { Artist, SongListDetail, Track } from '../../musicResource/types'
+import type { Artist, SongListDetail, Track } from '../../api/types'
 import { usePlayList } from '../../store/hooks'
 import SongListIntro from './SongListIntro'
 import {

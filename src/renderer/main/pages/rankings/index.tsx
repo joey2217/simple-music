@@ -1,8 +1,8 @@
 import React, { memo, useEffect, useState } from 'react'
 import { Skeleton, List } from 'antd'
 import { RightOutlined } from '@ant-design/icons'
-import resource from '../../musicResource'
-import type { SongListDetail, SongListItem } from '../../musicResource/types'
+import resource from '../../api'
+import type { SongListDetail, SongListItem } from '../../api/types'
 import SongList from '../../components/SongList'
 
 const Rankings: React.FC = () => {

@@ -2,12 +2,12 @@ import { app, session } from 'electron'
 
 // Modify the user agent for all requests to the following urls.
 const filter = {
-  urls: ['*://localhost/*'],
+  urls: ['https://music.163.com/*'],
 }
 
 app.whenReady().then(() => {
-    console.log('proxy@@@@@@@@');
-    
+  console.log('proxy@@@@@@@@')
+
   session.defaultSession.webRequest.onBeforeSendHeaders(
     filter,
     (details, callback) => {

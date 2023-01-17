@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from 'react'
 import { AutoComplete, Input } from 'antd'
-import netease from '../../musicResource/netease'
+import netease from '../../api/netease'
 
 const Search: React.FC = () => {
   const [options, setOptions] = useState<{ value: string }[]>([])

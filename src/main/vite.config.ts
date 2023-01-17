@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => {
     root: __dirname,
     envDir: process.cwd(),
     build: {
-      sourcemap: mode === 'development' ? false : 'inline',
+      sourcemap: mode === 'development' ? 'inline' : false,
       target: `node${NODE_VERSION}`,
       outDir: path.join(ROOT, 'dist'),
       emptyOutDir: true,

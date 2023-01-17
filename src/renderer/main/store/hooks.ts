@@ -1,8 +1,8 @@
 import { useCallback } from 'react'
 import { useRecoilState } from 'recoil'
 import { playListState, currentPlayState } from './atom'
-import type { PlayListItem } from '../musicResource/types'
-import resource from '../musicResource'
+import type { PlayListItem } from '../api/types'
+import resource from '../api'
 
 export function usePlayList() {
   const [playList, setPlayList] = useRecoilState(playListState)
@@ -16,14 +16,14 @@ export function usePlayList() {
           setPlayList((list) => list.concat(items))
           if (currentPlay == null) {
             const item = items[0]
-            resource.fetchSongsDetail(item.id).then((data) => {
+            resource.fetchSongsDetail2([item.id]).then((data) => {
               console.log(data)
             })
             setCurrentPlay(items[0])
           }
         } else if (play) {
           const item = items[0]
-          resource.fetchSongsDetail(item.id).then((data) => {
+          resource.fetchSongsDetail2([item.id]).then((data) => {
             console.log(data)
           })
           setCurrentPlay(items[0])

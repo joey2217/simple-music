@@ -6,7 +6,7 @@ import {
   setTheme,
 } from './utils'
 import type { Theme } from './utils'
-import type { PlayListItem } from '../musicResource/types'
+import type { PlayListItem } from '../api/types'
 
 export const themeState = atom<Theme>({
   key: 'themeState',
