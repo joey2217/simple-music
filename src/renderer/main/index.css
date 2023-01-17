@@ -20,3 +20,7 @@ html.dark {
   color: var(--dark-text-color);
   background: var(--dark-background);
 }
+
+#sider .ant-layout-sider-trigger {
+  @apply bottom-16;
+}

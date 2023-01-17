@@ -3,8 +3,9 @@ import { Layout, theme } from 'antd'
 import AppMenu from './AppMenu'
 import { Outlet } from 'react-router-dom'
 import Search from '../components/Search'
+import Player from '../components/Player'
 
-const { Content, Sider, Header } = Layout
+const { Content, Sider, Header, Footer } = Layout
 
 const AppLayout: React.FC = () => {
   const {
@@ -14,40 +15,46 @@ const AppLayout: React.FC = () => {
 
   return (
     <Layout className="h-screen overflow-hidden">
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        onCollapse={(value) => setCollapsed(value)}
-        style={{ background: colorBgContainer }}
-      >
-        <div
-          style={{
-            height: 32,
-            margin: 16,
-            background: 'rgba(255, 255, 255, 0.2)',
-          }}
-        >
-          12312
-        </div>
-        <AppMenu />
-      </Sider>
       <Layout>
-        <Header
-          style={{ padding: 0, background: colorBgContainer }}
-          className="flex justify-center items-center"
+        <Sider
+          id="sider"
+          collapsible
+          collapsed={collapsed}
+          onCollapse={(value) => setCollapsed(value)}
+          style={{ background: colorBgContainer }}
         >
-          <Search />
-        </Header>
-        <Content
-          style={{
-            padding: 16,
-            margin: 0,
-            background: colorBgContainer,
-          }}
-        >
-          <Outlet />
-        </Content>
+          <div
+            style={{
+              height: 32,
+              margin: 16,
+              background: 'rgba(255, 255, 255, 0.2)',
+            }}
+          >
+            12312
+          </div>
+          <AppMenu />
+        </Sider>
+        <Layout>
+          <Header
+            style={{ padding: 0, background: colorBgContainer }}
+            className="flex justify-center items-center"
+          >
+            <Search />
+          </Header>
+          <Content
+            style={{
+              padding: 16,
+              margin: 0,
+              background: colorBgContainer,
+            }}
+          >
+            <Outlet />
+          </Content>
+        </Layout>
       </Layout>
+      <Footer style={{ padding: 0 }}>
+        <Player />
+      </Footer>
     </Layout>
   )
 }

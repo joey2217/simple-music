@@ -14,6 +14,7 @@ export function create() {
   })
   win.on('ready-to-show', () => {
     win.show()
+    win.webContents.openDevTools()
   })
   if (import.meta.env.DEV) {
     win.loadURL('http://localhost:5174')

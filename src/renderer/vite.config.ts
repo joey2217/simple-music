@@ -46,6 +46,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api163/, ''),
       },
+      '/neteaseInterface3': {
+        target: 'https://interface3.music.163.com/eapi',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/neteaseInterface3/, ''),
+      },
     },
   },
 })

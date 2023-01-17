@@ -6,6 +6,7 @@ import {
 } from './windows/main'
 import handleIPC from './ipc'
 import { checkUpdate } from './updater'
+import './proxy'
 
 const gotTheLock = app.requestSingleInstanceLock()
 

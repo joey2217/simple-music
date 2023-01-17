@@ -69,3 +69,7 @@ export interface SearchParams {
   page: number
   type: string | number
 }
+
+export interface PlayListItem extends Track {
+  utl?: string
+}

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Cookies from 'js-cookie'
 import type {
   SearchParams,
   Song,
@@ -14,7 +15,7 @@ const HEADERS = {
 }
 
 const neteaseRequest = axios.create({
-  baseURL: import.meta.env.DEV ? '/netease' : 'https://music.163.com/weapi',
+  baseURL: import.meta.env.DEV ? '/netease' : 'https://localhost/netease',
   headers: HEADERS,
 })
 
@@ -86,6 +87,18 @@ function eapi(url: string, object: string | object) {
 
   return {
     params: aesEncrypt(data, eapiKey, 'AES-ECB').toHex().toUpperCase(),
+  }
+}
+
+const domain = 'https://music.163.com'
+const nuidName = '_ntes_nuid'
+const nnidName = '_ntes_nnid'
+
+function setCookies() {
+  const value = Cookies.get(nuidName)
+  if (!value) {
+    const nuidValue = createSecretKey(32)
+    const nnidValue = `${nuidValue},${new Date().getTime()}`
   }
 }
 
@@ -183,9 +196,9 @@ namespace netease {
     })
   }
 
-  export function fetchSongListData(ids: (string | number)[]): Promise<Song[]> {
+  export function fetchSongsDetail2(ids: (string | number)[]): Promise<Song[]> {
     return neteaseRequest({
-      url: 'https://music.163.com/weapi/v3/song/detail',
+      url: '/v3/song/detail',
       method: 'POST',
       headers: {
         // 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36',
@@ -195,6 +208,35 @@ namespace netease {
         c: '[' + ids.map((id) => '{"id":' + id + '}').join(',') + ']',
         ids: '[' + ids.join(',') + ']',
       }),
+    }).then((res) => {
+      console.log(res.data)
+      return res.data.songs
+    })
+  }
+
+  export function fetchSongsDetail(id: string | number): Promise<Song[]> {
+    Cookies.set('os', 'pc', {
+      expires: 365,
+      path: 'interface3.music.163.com',
+    })
+    const eapiUrl = '/api/song/enhance/player/url'
+    const d = {
+      ids: `[${id}]`,
+      br: 999000,
+    }
+    const data = eapi(eapiUrl, d)
+    return neteaseRequest({
+      baseURL: import.meta.env.DEV
+        ? '/neteaseInterface3'
+        : 'https://interface3.music.163.com/eapi',
+      url: '/song/enhance/player/url',
+      method: 'POST',
+      headers: {
+        // 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36',
+        origin: 'https://music.163.com',
+        referer: 'https://music.163.com',
+      },
+      data,
     }).then((res) => {
       console.log(res.data)
       return res.data.songs

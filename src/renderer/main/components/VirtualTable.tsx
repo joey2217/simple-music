@@ -124,7 +124,7 @@ const VirtualTable = <RecordType extends object>(
         columns={mergedColumns}
         pagination={false}
         components={{
-          body: renderVirtualList,
+          body: renderVirtualList as any,
         }}
       />
     </ResizeObserver>

@@ -1,12 +1,8 @@
 import React, { memo, useEffect, useState } from 'react'
-import { Card, List } from 'antd'
+import { Skeleton, List } from 'antd'
 import { RightOutlined } from '@ant-design/icons'
 import resource from '../../musicResource'
-import type {
-  SongListDetail,
-  SongListItem,
-  Track,
-} from '../../musicResource/types'
+import type { SongListDetail, SongListItem } from '../../musicResource/types'
 import SongList from '../../components/SongList'
 
 const Rankings: React.FC = () => {
@@ -33,7 +29,7 @@ const Rankings: React.FC = () => {
 
   return (
     <div className="flex h-full ">
-      <div className="w-56 overflow-auto mr-4">
+      <div className="w-56 overflow-auto mr-4 flex-shrink-0">
         <List
           size="small"
           dataSource={list}
@@ -44,7 +40,9 @@ const Rankings: React.FC = () => {
           )}
         />
       </div>
-      <div className="flex-1">{songList && <SongList {...songList} />}</div>
+      <div className="flex-auto min-w-0">
+        {songList ? <SongList {...songList} /> : <Skeleton active />}
+      </div>
     </div>
   )
 }
