@@ -10,6 +10,7 @@ export function create() {
     show: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      webSecurity: import.meta.env.PROD,
     },
   })
   win.on('ready-to-show', () => {

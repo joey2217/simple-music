@@ -1,27 +1,27 @@
-import React, { memo } from 'react'
-import { Space, Table } from 'antd'
+import React, { memo, useEffect, useState } from 'react'
+import { Skeleton, Space, Table } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
-import type { Artist, SongListDetail, Track } from '../../api/types'
-import { usePlayList } from '../../store/hooks'
-import SongListIntro from './SongListIntro'
 import {
   DownloadOutlined,
   HeartFilled,
-  HeartOutlined,
   PlayCircleOutlined,
   PlusOutlined,
 } from '@ant-design/icons'
+import { fetchSongList } from '../../api/songList'
+import type { SongListData, SongListItem } from '../../types'
+import { usePlayList } from '../../store/hooks'
 
-interface Props {}
+interface Props {
+  songListId: string | number
+}
 
-const SongList: React.FC<SongListDetail> = ({
-  name,
-  coverImgUrl,
-  description,
-  tracks,
-}) => {
+const SongList: React.FC<Props> = ({ songListId }) => {
+  const [songListData, setSongListData] = useState<SongListData | null>(null)
+  const [songList, setSongList] = useState<SongListItem[]>([])
+  const [page, setPage] = useState(1)
+
   const { addToPlayerList } = usePlayList()
-  const columns: ColumnsType<Track> = [
+  const columns: ColumnsType<SongListItem> = [
     {
       title: '#',
       key: 'id',
@@ -49,7 +49,7 @@ const SongList: React.FC<SongListDetail> = ({
             <PlayCircleOutlined
               className="cursor-pointer text-base"
               title="播放"
-              onClick={() => addToPlayerList([value], true)}
+              onClick={() => addToPlayerList([record], true)}
             />
             <DownloadOutlined
               className="cursor-pointer text-base"
@@ -64,49 +64,47 @@ const SongList: React.FC<SongListDetail> = ({
       },
     },
     {
-      title: '歌曲名',
+      title: '歌曲',
       dataIndex: 'name',
       key: 'name',
     },
     {
-      title: '歌曲名',
+      title: '歌手',
       dataIndex: 'artist',
       key: 'id',
-      render(artist: Artist[], record, index) {
-        return (
-          <div>
-            {artist.map((a) => (
-              <span>{a.name}</span>
-            ))}
-          </div>
-        )
-      },
     },
     {
       title: '专辑',
       dataIndex: 'album',
       key: 'id',
-      render(album, record, index) {
-        return <span>{album.name}</span>
-      },
     },
   ]
 
+  useEffect(() => {
+    fetchSongList(songListId, page).then((data) => {
+      setSongList(data.musicList)
+      setSongListData({ ...data, musicList: [] })
+    })
+  }, [page, songListId])
+
+  if (songListData == null) {
+    return <Skeleton active />
+  }
+
   return (
-    <div>
-      <SongListIntro
-        name={name}
-        coverImgUrl={coverImgUrl}
-        description={description}
-      />
-      <Table
-        size="middle"
-        scroll={{ y: 'calc(100vh - 380px)' }}
-        columns={columns}
-        dataSource={tracks}
-        pagination={false}
-      />
-    </div>
+    <Table
+      size="middle"
+      scroll={{ y: 'calc(100vh - 380px)' }}
+      columns={columns}
+      dataSource={songList}
+      pagination={{
+        position: ['bottomCenter'],
+        total: Number(songListData.num) || 0,
+        defaultPageSize: 30,
+        showSizeChanger: false,
+        onChange: setPage,
+      }}
+    />
   )
 }
 

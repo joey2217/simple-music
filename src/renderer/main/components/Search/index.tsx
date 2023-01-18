@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from 'react'
 import { AutoComplete, Input } from 'antd'
-import netease from '../../api/netease'
+import { fetchSearchKey } from '../../api/top'
 
 const Search: React.FC = () => {
   const [options, setOptions] = useState<{ value: string }[]>([])
@@ -9,9 +9,8 @@ const Search: React.FC = () => {
   }
 
   useEffect(() => {
-    netease.fetchHotSearch().then((data) => {
-      console.log(data)
-      setOptions(data.map((w) => ({ value: w })))
+    fetchSearchKey().then((data) => {
+      setOptions(data.map((s) => ({ value: s })))
     })
   }, [])
 

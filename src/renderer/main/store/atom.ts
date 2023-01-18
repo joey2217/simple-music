@@ -6,7 +6,7 @@ import {
   setTheme,
 } from './utils'
 import type { Theme } from './utils'
-import type { PlayListItem } from '../api/types'
+import type { SongListItem, MusicInfo } from '../types'
 
 export const themeState = atom<Theme>({
   key: 'themeState',
@@ -22,12 +22,12 @@ export const themeState = atom<Theme>({
 })
 
 // TODO 持久化
-export const playListState = atom<PlayListItem[]>({
+export const playListState = atom<SongListItem[]>({
   key: 'playListState',
   default: [],
 })
 
-export const currentPlayState = atom<PlayListItem | null>({
+export const currentPlayState = atom<MusicInfo | null>({
   key: 'currentPlayState',
   default: null,
 })

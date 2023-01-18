@@ -1,6 +1,7 @@
 import React from 'react'
 import { RouterProvider } from 'react-router-dom'
 import { ConfigProvider, theme } from 'antd'
+import { StyleProvider } from '@ant-design/cssinjs'
 import { useRecoilValue } from 'recoil'
 import router from './router'
 import { themeState } from './store/atom'
@@ -15,7 +16,9 @@ const App: React.FC = () => {
         algorithm: theme === 'dark' ? darkAlgorithm : defaultAlgorithm,
       }}
     >
-      <RouterProvider router={router} />
+      <StyleProvider hashPriority="high">
+        <RouterProvider router={router} />
+      </StyleProvider>
     </ConfigProvider>
   )
 }

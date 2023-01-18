@@ -13,7 +13,11 @@ interface Props {
 const SongListIntro: React.FC<Props> = ({ name, coverImgUrl, description }) => {
   return (
     <div className="flex p-4">
-      <img className="w-40 rounded mr-4" src={coverImgUrl} alt="歌单封面" />
+      <img
+        className="w-32 h-32 rounded mr-4"
+        src={coverImgUrl}
+        alt="歌单封面"
+      />
       <div>
         <div className="flex items-center mb-2">
           <Tag color="red">歌单</Tag>
@@ -26,7 +30,9 @@ const SongListIntro: React.FC<Props> = ({ name, coverImgUrl, description }) => {
         </div>
         <div>
           <Space>
-            <Button type='primary' shape="round">播放</Button>
+            <Button type="primary" shape="round">
+              播放
+            </Button>
             <Button shape="round">播放</Button>
             <Button shape="round">播放</Button>
           </Space>

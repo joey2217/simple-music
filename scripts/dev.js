@@ -42,11 +42,11 @@ function startElectron() {
     // process.exit()
   }
   electronProcess = spawn(electron, [path.join(ROOT, "dist/main.js")]);
-  // electronProcess.stdout.on('data', (data) => {
-  //   logger.info(data.toString(), defaultLogOptions)
-  // })
+  electronProcess.stdout.on('data', (data) => {
+    logger.info(data.toString(), defaultLogOptions)
+  })
   electronProcess.stderr.on("data", (data) => {
-    logger.error(data.toString(), defaultLogOptions);
+    logger.error(data.toString().substring(0,1000), defaultLogOptions);
   });
   electronProcess.on("close", (code) => {
     logger.info(`child process exited with code ${code}`, defaultLogOptions);

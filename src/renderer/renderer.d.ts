@@ -17,10 +17,17 @@ interface IVersions {
   electron: string
 }
 
+interface IKuwoAPI {
+  onFetchToken: (
+    callback: (event: Electron.IpcRendererEvent, csrf: string) => void
+  ) => Electron.IpcRenderer
+}
+
 declare global {
   interface Window {
     electronAPI: IElectronAPI
     devAPI: IDevAPI
     versions: IVersions
+    kuwoAPI: IKuwoAPI
   }
 }
