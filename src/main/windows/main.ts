@@ -5,7 +5,7 @@ let win: BrowserWindow = null!
 
 export function create() {
   win = new BrowserWindow({
-    width: 1000,
+    width: 1200,
     height: 800,
     show: false,
     webPreferences: {
@@ -15,7 +15,7 @@ export function create() {
   })
   win.on('ready-to-show', () => {
     win.show()
-    win.webContents.openDevTools()
+    // win.webContents.openDevTools()
   })
   if (import.meta.env.DEV) {
     win.loadURL('http://localhost:5174')

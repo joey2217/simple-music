@@ -3,7 +3,7 @@ import { MusicInfo } from '../types'
 import request from './request'
 
 // https://www.kuwo.cn/api/v1/www/music/playUrl?mid=258397557&type=music&httpsStatus=1&reqId=uuid
-export function fetchMusicUrl(mid: string | number): Promise<string> {
+export function fetchMusicUrl2(mid: string | number): Promise<string> {
   return request({
     url: '/api/v1/www/music/playUrl',
     method: 'GET',
@@ -14,6 +14,19 @@ export function fetchMusicUrl(mid: string | number): Promise<string> {
       reqId: uuidv4(),
     },
   }).then((res) => res.data.data.url)
+}
+// https://antiserver.kuwo.cn/anti.s?type=convert_url&format=mp3&response=url&rid=228491562
+export function fetchMusicUrl(rid: string | number): Promise<string> {
+  return request({
+    url: 'https://antiserver.kuwo.cn/anti.s',
+    method: 'GET',
+    params: {
+      rid,
+      type: 'convert_url',
+      format: 'mp3',
+      response: 'url',
+    },
+  }).then((res) => res.data)
 }
 
 // https://www.kuwo.cn/api/www/music/musicInfo?mid=215529453&httpsStatus=1&reqId=uuid

@@ -1,19 +1,20 @@
-const { app, session } = require("electron");
-const path = require("path");
-const os = require("os");
+const { app, session } = require('electron')
+const path = require('path')
+const os = require('os')
 
 /** @link https://www.electronjs.org/zh/docs/latest/tutorial/devtools-extension */
 export function loadDevTools() {
+  return
   // on windows
-  const vueDevToolsPath = path.join(
+  const reactDevToolsPath = path.join(
     os.homedir(),
-    "/AppData/Local/Google/Chrome/User Data/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.27.1_1"
-  );
+    '/AppData/Local/Google/Chrome/User Data/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.27.1_1'
+  )
   app.whenReady().then(async () => {
     try {
-      await session.defaultSession.loadExtension(vueDevToolsPath);
+      await session.defaultSession.loadExtension(reactDevToolsPath)
     } catch (error) {
-      console.error("loadDevTools Error", error);
+      console.error('loadDevTools Error', error)
     }
-  });
+  })
 }

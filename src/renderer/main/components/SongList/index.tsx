@@ -24,7 +24,7 @@ const SongList: React.FC<Props> = ({ songListId }) => {
   const columns: ColumnsType<SongListItem> = [
     {
       title: '#',
-      key: 'id',
+      key: 'rid',
       width: 40,
       align: 'center',
       render(value, record, index) {
@@ -33,7 +33,7 @@ const SongList: React.FC<Props> = ({ songListId }) => {
     },
     {
       title: '操作',
-      key: 'id',
+      key: 'rid',
       width: 100,
       align: 'center',
       dataIndex: 'id',
@@ -66,17 +66,17 @@ const SongList: React.FC<Props> = ({ songListId }) => {
     {
       title: '歌曲',
       dataIndex: 'name',
-      key: 'name',
+      key: 'rid',
     },
     {
       title: '歌手',
       dataIndex: 'artist',
-      key: 'id',
+      key: 'rid',
     },
     {
       title: '专辑',
       dataIndex: 'album',
-      key: 'id',
+      key: 'rid',
     },
   ]
 
@@ -94,7 +94,7 @@ const SongList: React.FC<Props> = ({ songListId }) => {
   return (
     <Table
       size="middle"
-      scroll={{ y: 'calc(100vh - 380px)' }}
+      scroll={{ y: 'calc(100vh - 416px)' }}
       columns={columns}
       dataSource={songList}
       pagination={{

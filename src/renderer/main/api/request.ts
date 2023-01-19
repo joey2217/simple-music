@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { message } from 'antd'
 
 const request = axios.create({
   baseURL: 'https://www.kuwo.cn/',
@@ -21,8 +22,10 @@ request.interceptors.response.use(
   function (response) {
     // 2xx 范围内的状态码都会触发该函数。
     // 对响应数据做点什么
-    const { code } = response.data
+    const { code, msg } = response.data
     if (code && code !== 200) {
+      message.error(msg || '请求失败:' + code)
+      console.error(response.data)
       throw new Error('请求失败:' + code)
     }
     return response

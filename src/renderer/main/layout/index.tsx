@@ -52,7 +52,7 @@ const AppLayout: React.FC = () => {
           </Content>
         </Layout>
       </Layout>
-      <Footer style={{ padding: 0 }}>
+      <Footer style={{ padding: 0, position: 'relative', zIndex: 2000 }}>
         <Player />
       </Footer>
     </Layout>

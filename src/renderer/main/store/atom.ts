@@ -5,6 +5,7 @@ import {
   LOCAL_THEME,
   setTheme,
 } from './utils'
+import { Howl } from 'howler'
 import type { Theme } from './utils'
 import type { SongListItem, MusicInfo } from '../types'
 
@@ -30,4 +31,9 @@ export const playListState = atom<SongListItem[]>({
 export const currentPlayState = atom<MusicInfo | null>({
   key: 'currentPlayState',
   default: null,
+})
+
+export const playingState = atom<boolean>({
+  key: 'playingState',
+  default: false,
 })
