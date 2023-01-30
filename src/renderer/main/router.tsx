@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createHashRouter } from 'react-router-dom'
 import Layout from './layout'
 import ErrorPage from './pages/error'
 import Rankings from './pages/rankings'
@@ -6,7 +6,7 @@ import Search from './pages/search'
 import Setting from './pages/setting'
 import SongList from './pages/song-list'
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: '/',
     element: <Layout />,

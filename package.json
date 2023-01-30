@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "main": "dist/main.js",
   "author": "joey",
+  "description": "simple music app",
   "scripts": {
     "pack:win": "npm run pack --win",
     "pack:mac": "npm run pack --mac",
