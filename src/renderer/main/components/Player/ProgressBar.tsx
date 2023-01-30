@@ -1,65 +1,72 @@
-import React, { memo, useEffect, useState } from 'react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 import { Slider } from 'antd'
 import { useRecoilValue } from 'recoil'
-import dayjs from 'dayjs'
-import duration from 'dayjs/plugin/duration'
 import { currentPlayState } from '../../store/atom'
-
-dayjs.extend(duration)
+import emitter from '../../utils/events'
 
 let timer: string | number | NodeJS.Timeout | undefined
 
-const FORMAT = 'mm:ss'
+const format = (s: number) => {
+  const minutes = Math.floor(s / 60)
+  const seconds = s - minutes * 60
+  return `${minutes.toString().padStart(2, '0')}︰${seconds
+    .toString()
+    .padStart(2, '0')}`
+}
 
 const ProgressBar: React.FC = () => {
-  const [current, setCurrent] = useState<duration.Duration>(
-    dayjs.duration({ minutes: 0, seconds: 0 })
-  )
-  const [total, setTotal] = useState<duration.Duration>(
-    dayjs.duration({ minutes: 0, seconds: 0 })
-  )
-  const [totalSeconds, setTotalSeconds] = useState(1)
-  const [progress, setProgress] = useState(0)
+  const [current, setCurrent] = useState(0)
+  const [total, setTotal] = useState(100)
 
   const currentPlay = useRecoilValue(currentPlayState)
+
+  const start = useCallback(() => {
+    clearInterval(timer)
+    timer = setInterval(() => {
+      setCurrent((d) => d + 1)
+    }, 1000)
+  }, [])
+
+  const onPause = useCallback(() => {
+    clearInterval(timer)
+  }, [])
+
+  const onChange = useCallback((val: number) => {
+    setCurrent(val)
+    emitter.emit('seek', val)
+  }, [])
+
+  useEffect(() => {
+    emitter.on('pause', onPause)
+    emitter.on('play', start)
+    return () => {
+      emitter.off('pause', onPause)
+      emitter.off('play', start)
+    }
+  }, [onPause, start])
+
   useEffect(() => {
     if (currentPlay) {
       const { songTimeMinutes } = currentPlay
       const [m, s] = songTimeMinutes.split(':')
       const minutes = Number(m) || 0
       const seconds = Number(s) || 0
-      let duration = dayjs.duration({
-        minutes,
-        seconds,
-      })
-      setTotalSeconds(duration.asSeconds())
-      setCurrent(duration)
-      setTotal(duration)
-      if (timer) {
-        clearInterval(timer)
-      }
-      timer = setInterval(() => {
-        setCurrent((d) => d.subtract(1, 'second'))
-        const currentSeconds = duration.asSeconds()
-        if (currentSeconds <= 0) {
-          clearInterval(timer)
-        }
-        const per = Math.round(
-          (totalSeconds - currentSeconds / totalSeconds) * 100
-        )
-        setProgress(per)
-      }, 1000)
-    } else {
-      setCurrent(dayjs.duration({ minutes: 0, seconds: 0 }))
-      setTotal(dayjs.duration({ minutes: 0, seconds: 0 }))
-      setTotalSeconds(1)
+      const t = minutes * 60 + seconds
+      setCurrent(0)
+      setTotal(t)
     }
-  }, [currentPlay, totalSeconds])
+    return () => {
+      clearInterval(timer)
+    }
+  }, [currentPlay])
+
   return (
     <div className="flex items-center">
-      <span>{current.format(FORMAT)}</span>
-      <Slider value={progress} className="flex-1 px-1" />
-      <span>{total.format(FORMAT)}</span>
+      <span>{format(current)}</span>
+      <div className="flex-1 mx-2">
+        <Slider max={total} value={current} onChange={onChange} />
+      </div>
+      <span>{format(total)}</span>
     </div>
   )
 }

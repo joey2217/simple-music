@@ -12,7 +12,9 @@ export function usePlayList() {
     (items: SongListItem[], play: boolean | 'auto' = 'auto') => {
       console.log(items, play)
       if (items.length > 0) {
-        setPlayList((list) => list.concat(items))
+        const existedIds = playList.map((s) => s.rid)
+        const adds = items.filter((s) => !existedIds.includes(s.rid))
+        setPlayList((list) => list.concat(adds))
         if ((play === 'auto' && currentPlay == null) || play) {
           const item = items[0]
           fetchMusicInfo(item.rid).then((data) => {
@@ -21,7 +23,7 @@ export function usePlayList() {
         }
       }
     },
-    [currentPlay, setCurrentPlay, setPlayList]
+    [currentPlay, playList, setCurrentPlay, setPlayList]
   )
 
   const nextSong = useCallback(

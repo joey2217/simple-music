@@ -11,6 +11,7 @@ import {
 import { usePlayList } from '../../store/hooks'
 import { actionDisabledState } from '../../store/selector'
 import { currentPlayState, playingState } from '../../store/atom'
+import emitter from '../../utils/events'
 import ProgressBar from './ProgressBar'
 
 let audio: Howl | null = null
@@ -25,10 +26,12 @@ const Control: React.FC = () => {
   const onEnd = useCallback((id?: number) => {
     console.log('onPause', onEnd)
   }, [])
+
   const onPause = useCallback(
     (id?: number) => {
       console.log('onPause', id)
       setPlaying(false)
+      emitter.emit('pause')
     },
     [setPlaying]
   )
@@ -36,6 +39,7 @@ const Control: React.FC = () => {
     (id?: number) => {
       console.log('onPlay', id)
       setPlaying(true)
+      emitter.emit('play')
     },
     [setPlaying]
   )
@@ -71,6 +75,17 @@ const Control: React.FC = () => {
       }
     }
   }, [currentPlay, onEnd, onPause, onPlay])
+
+  const onSeek = useCallback((val: number) => {
+    audio?.seek(val)
+  }, [])
+
+  useEffect(() => {
+    emitter.on('seek', onSeek)
+    return () => {
+      emitter.off('seek', onSeek)
+    }
+  }, [onSeek])
 
   return (
     <div className="text-center">
