@@ -2,6 +2,7 @@ import React, { memo } from 'react'
 import { Menu } from 'antd'
 import { useLocation, Link } from 'react-router-dom'
 import {
+  DownloadOutlined,
   OrderedListOutlined,
   SearchOutlined,
   SettingOutlined,
@@ -24,6 +25,11 @@ const items: MenuProps['items'] = [
     label: <Link to="/search">搜索</Link>,
     key: '/search',
     icon: <SearchOutlined />,
+  },
+  {
+    label: <Link to="/download">下载</Link>,
+    key: '/download',
+    icon: <DownloadOutlined />,
   },
   {
     label: <Link to="/setting">设置</Link>,

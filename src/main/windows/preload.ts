@@ -1,4 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron'
+import type { DownloadInfo } from '../types'
 
 /**
  * 不能加载常量,sandbox无法加载
@@ -19,6 +20,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   ) => ipcRenderer.on('MESSAGE', callback),
   sendMessageToMain: (message: string) =>
     ipcRenderer.invoke('SEND_TO_MAIN', 'MESSAGE', message),
+  download: (files: DownloadInfo[]) =>
+    ipcRenderer.invoke('DOWNLOAD_FILES', files),
 })
 
 contextBridge.exposeInMainWorld('versions', {

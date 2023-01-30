@@ -3,7 +3,7 @@ import { Skeleton, List } from 'antd'
 import { RightOutlined } from '@ant-design/icons'
 import SongList from '../../components/SongList'
 import SongListIntro from '../../components/SongList/SongListIntro'
-import { BoardItem, SongListData } from '../../types'
+import { BoardItem } from '../../types'
 import { fetchBoards } from '../../api/top'
 
 const Rankings: React.FC = () => {

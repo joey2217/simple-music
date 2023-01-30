@@ -10,6 +10,7 @@ import {
 import { fetchSongList } from '../../api/songList'
 import type { SongListData, SongListItem } from '../../types'
 import { usePlayList } from '../../store/hooks'
+import { download } from '../../utils/download'
 
 interface Props {
   songListId: string | number
@@ -21,6 +22,7 @@ const SongList: React.FC<Props> = ({ songListId }) => {
   const [page, setPage] = useState(1)
 
   const { addToPlayerList } = usePlayList()
+  
   const columns: ColumnsType<SongListItem> = [
     {
       title: '#',
@@ -54,6 +56,7 @@ const SongList: React.FC<Props> = ({ songListId }) => {
             <DownloadOutlined
               className="cursor-pointer text-base"
               title="下载"
+              onClick={() => download([record])}
             />
             <PlusOutlined
               className="cursor-pointer text-base"
