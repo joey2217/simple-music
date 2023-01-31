@@ -1,8 +1,14 @@
 import { useCallback } from 'react'
-import { useRecoilState } from 'recoil'
-import { playListState, currentPlayState } from './atom'
-import type { SongListItem } from '../types'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import {
+  playListState,
+  currentPlayState,
+  downloadItemsState,
+  downloadPathState,
+} from './atom'
+import type { DownloadItem, SongListItem } from '../types'
 import { fetchMusicInfo } from '../api/musicInfo'
+import { download } from '../utils/download'
 
 export function usePlayList() {
   const [playList, setPlayList] = useRecoilState(playListState)
@@ -63,4 +69,45 @@ export function usePlayList() {
   }
 
   return { playList, currentPlay, addToPlayerList, nextSong, playListSong }
+}
+
+export function useDownloadList() {
+  const [downloadList, setDownloadList] = useRecoilState(downloadItemsState)
+  const downloadPath = useRecoilValue(downloadPathState)
+
+  const addDownloadItems = useCallback(
+    (songs: SongListItem[]) => {
+      const res = songs.map((song) => {
+        return fetchMusicInfo(song.rid)
+      })
+      return Promise.all(res).then((list) => {
+        const addIds = songs.map((s) => s.rid)
+        const addList: DownloadItem[] = list.map((s) => {
+          const fileName = `${s.name}-${s.artist}.mp3`
+          return {
+            ...s,
+            fileName,
+            path: `${downloadPath}/${fileName}`,
+          }
+        })
+        setDownloadList((d) =>
+          addList.concat(d.filter((c) => !addIds.includes(c.rid)))
+        )
+        console.log(addList,'addList')
+        const downloadItems = addList.map((item) => ({
+          rid: item.rid,
+          url: item.url,
+          fileName: item.fileName,
+        }))
+        download(downloadItems)
+      })
+    },
+    [downloadPath, setDownloadList]
+  )
+
+  return {
+    addDownloadItems,
+    downloadList,
+    downloadPath,
+  }
 }

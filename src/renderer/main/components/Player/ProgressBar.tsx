@@ -16,7 +16,7 @@ const format = (s: number) => {
 
 const ProgressBar: React.FC = () => {
   const [current, setCurrent] = useState(0)
-  const [total, setTotal] = useState(100)
+  const [total, setTotal] = useState(0)
 
   const currentPlay = useRecoilValue(currentPlayState)
 
@@ -64,7 +64,12 @@ const ProgressBar: React.FC = () => {
     <div className="flex items-center">
       <span>{format(current)}</span>
       <div className="flex-1 mx-2">
-        <Slider max={total} value={current} onChange={onChange} />
+        <Slider
+          disabled={total === 0}
+          max={total}
+          value={current}
+          onChange={onChange}
+        />
       </div>
       <span>{format(total)}</span>
     </div>

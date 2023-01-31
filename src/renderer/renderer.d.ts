@@ -7,12 +7,11 @@ interface DownloadInfo {
 }
 
 interface IElectronAPI {
-  openAboutWindow: () => Promise<void>
-  onMessage: (
-    callback: (event: Electron.IpcRendererEvent, message: string) => void
-  ) => Electron.IpcRenderer
-  sendMessageToMain: (message: string) => Promise<void>
   download: (files: DownloadInfo[]) => Promise<void>
+  setDownloadPath: (downloadPath: string) => Promise<void>
+  getDownloadsPath: () => Promise<string>
+  showItemInFolder: (fullPath: string) => Promise<void>
+  openPath: (fullPath: string) => Promise<void>
 }
 
 interface IDevAPI {

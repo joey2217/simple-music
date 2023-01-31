@@ -7,13 +7,13 @@ let retry = 0
 const MAX_RETRY_COUNT = 3
 
 // https://www.kuwo.cn/api/www/search/searchKey?key=&httpsStatus=1&reqId=1e3d79e0-96f6-11ed-a3b3-cde83c86f5a8
-export function fetchSearchKey(): Promise<string[]> {
+export function fetchSearchKey(key:string = ''): Promise<string[]> {
   return new Promise((resolve, reject) => {
     request({
       url: '/api/www/search/searchKey',
       method: 'GET',
       params: {
-        key: '',
+        key,
         httpsStatus: 1,
         reqId: uuidv4(),
       },

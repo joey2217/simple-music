@@ -4,10 +4,12 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
     "types": ["vite/client"],
   },
   "include": [
     "src/renderer/vite.config.ts",
-    "src/main"
+    "src/main",
+    "package.json"
   ]
 }

@@ -4,7 +4,7 @@ import ErrorPage from './pages/error'
 import Rankings from './pages/rankings'
 import Search from './pages/search'
 import Setting from './pages/setting'
-import Download from './pages/setting/Download'
+import Download from './pages/download'
 import SongList from './pages/song-list'
 
 const router = createHashRouter([

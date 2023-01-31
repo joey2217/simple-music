@@ -1,4 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron'
+import { version } from '../../../package.json'
 import type { DownloadInfo } from '../types'
 
 /**
@@ -14,18 +15,20 @@ contextBridge.exposeInMainWorld('devAPI', {
 })
 
 contextBridge.exposeInMainWorld('electronAPI', {
-  openAboutWindow: () => ipcRenderer.invoke('OPEN_ABOUT_WINDOW'),
-  onMessage: (
-    callback: (event: Electron.IpcRendererEvent, message: string) => void
-  ) => ipcRenderer.on('MESSAGE', callback),
-  sendMessageToMain: (message: string) =>
-    ipcRenderer.invoke('SEND_TO_MAIN', 'MESSAGE', message),
   download: (files: DownloadInfo[]) =>
     ipcRenderer.invoke('DOWNLOAD_FILES', files),
+  setDownloadPath: (downloadPath: string) =>
+    ipcRenderer.invoke('SET_DOWNLOAD_PATH', downloadPath),
+  getDownloadsPath: () => ipcRenderer.invoke('GET_DOWNLOADS_PATH'),
+  showItemInFolder: (fullPath: string) =>
+    ipcRenderer.invoke('SHOW_ITEM_IN_FOLDER',fullPath),
+  openPath: (fullPath: string) =>
+    ipcRenderer.invoke('OPEN_PATH',fullPath),
 })
 
 contextBridge.exposeInMainWorld('versions', {
   node: process.versions.node,
   chrome: process.versions.chrome,
   electron: process.versions.electron,
+  version,
 })

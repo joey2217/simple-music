@@ -1,5 +1,6 @@
-import { ipcMain } from 'electron'
-import { download } from './download'
+import { ipcMain, app, shell } from 'electron'
+import * as path from 'path'
+import { download, setDownloadPath } from './download'
 import { send as sendToMain } from './windows/main'
 import type { DownloadInfo } from './types'
 
@@ -14,5 +15,22 @@ export default function handleIPC() {
 
   ipcMain.handle('DOWNLOAD_FILES', (e, files: DownloadInfo[]) => {
     download(files)
+  })
+
+  ipcMain.handle('SET_DOWNLOAD_PATH', (e, downloadPath: string) => {
+    setDownloadPath(downloadPath)
+  })
+
+  ipcMain.handle('GET_DOWNLOADS_PATH', (e) => {
+    return app.getPath('downloads')
+  })
+
+  ipcMain.handle('SHOW_ITEM_IN_FOLDER', (e, fullPath: string) => {
+    // console.log('SHOW_ITEM_IN_FOLDER',path.normalize(fullPath));
+    shell.showItemInFolder(path.normalize(fullPath))
+  })
+  
+  ipcMain.handle('OPEN_PATH', (e, fullPath: string) => {
+    shell.openPath(path.normalize(fullPath))
   })
 }

@@ -156,3 +156,9 @@ export interface FeeType {
   song: string
   vip: string
 }
+
+
+export interface DownloadItem extends MusicInfo {
+  path: string
+  fileName: string
+}

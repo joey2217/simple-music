@@ -9,8 +9,7 @@ import {
 } from '@ant-design/icons'
 import { fetchSongList } from '../../api/songList'
 import type { SongListData, SongListItem } from '../../types'
-import { usePlayList } from '../../store/hooks'
-import { download } from '../../utils/download'
+import { usePlayList, useDownloadList } from '../../store/hooks'
 
 interface Props {
   songListId: string | number
@@ -22,6 +21,7 @@ const SongList: React.FC<Props> = ({ songListId }) => {
   const [page, setPage] = useState(1)
 
   const { addToPlayerList } = usePlayList()
+  const { addDownloadItems } = useDownloadList()
   
   const columns: ColumnsType<SongListItem> = [
     {
@@ -56,7 +56,7 @@ const SongList: React.FC<Props> = ({ songListId }) => {
             <DownloadOutlined
               className="cursor-pointer text-base"
               title="下载"
-              onClick={() => download([record])}
+              onClick={() => addDownloadItems([record])}
             />
             <PlusOutlined
               className="cursor-pointer text-base"
