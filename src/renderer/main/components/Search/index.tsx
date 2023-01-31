@@ -3,9 +3,15 @@ import { AutoComplete, Input } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { fetchSearchKey } from '../../api/top'
 
+interface StringOption {
+  value: string
+}
+
+type OptionType = { label: string; options: StringOption[] } | StringOption
+
 const Search: React.FC = () => {
   const navigate = useNavigate()
-  const [options, setOptions] = useState<{ value: string }[]>([])
+  const [options, setOptions] = useState<OptionType[]>([])
   const [keyword, setKeyword] = useState('')
   const onSearch = (searchText: string) => {
     navigate(`/search?q=${searchText}`)
@@ -13,7 +19,20 @@ const Search: React.FC = () => {
 
   useEffect(() => {
     fetchSearchKey(keyword).then((data) => {
-      setOptions(data.map((s) => ({ value: s })))
+      if (keyword) {
+        setOptions(data.map((s) => ({ value: s })))
+      } else {
+        setOptions([
+          {
+            label: '历史',
+            options: [], //TODO
+          },
+          {
+            label: '热搜',
+            options: data.map((s) => ({ value: s })),
+          },
+        ])
+      }
     })
   }, [keyword])
 
@@ -24,7 +43,7 @@ const Search: React.FC = () => {
       onSelect={onSearch}
     >
       <Input.Search
-        placeholder="input here"
+        placeholder="输入关键字搜索"
         enterButton
         allowClear
         value={keyword}

@@ -23,9 +23,9 @@ const ProgressBar: React.FC = () => {
   const start = useCallback(() => {
     clearInterval(timer)
     timer = setInterval(() => {
-      setCurrent((d) => d + 1)
+      setCurrent((d) => (d + 1 <= total ? d + 1 : d))
     }, 1000)
-  }, [])
+  }, [total])
 
   const onPause = useCallback(() => {
     clearInterval(timer)
@@ -36,14 +36,20 @@ const ProgressBar: React.FC = () => {
     emitter.emit('seek', val)
   }, [])
 
+  const onEnd = useCallback(() => {
+    clearInterval(timer)
+  }, [])
+
   useEffect(() => {
     emitter.on('pause', onPause)
     emitter.on('play', start)
+    emitter.on('end', onEnd)
     return () => {
       emitter.off('pause', onPause)
       emitter.off('play', start)
+      emitter.off('end', onEnd)
     }
-  }, [onPause, start])
+  }, [onEnd, onPause, start])
 
   useEffect(() => {
     if (currentPlay) {

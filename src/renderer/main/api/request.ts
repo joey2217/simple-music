@@ -1,5 +1,8 @@
 import axios from 'axios'
 import { message } from 'antd'
+import { v4 as uuidv4 } from 'uuid'
+
+export const reqId = uuidv4()
 
 const request = axios.create({
   baseURL: 'https://www.kuwo.cn/',

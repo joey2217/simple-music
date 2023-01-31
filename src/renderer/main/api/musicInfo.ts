@@ -1,6 +1,5 @@
-import { v4 as uuidv4 } from 'uuid'
 import { MusicInfo } from '../types'
-import request from './request'
+import request, { reqId } from './request'
 
 // https://www.kuwo.cn/api/v1/www/music/playUrl?mid=258397557&type=music&httpsStatus=1&reqId=uuid
 export function fetchMusicUrl2(mid: string | number): Promise<string> {
@@ -11,7 +10,7 @@ export function fetchMusicUrl2(mid: string | number): Promise<string> {
       mid,
       type: 'music',
       httpsStatus: 1,
-      reqId: uuidv4(),
+      reqId,
     },
   }).then((res) => res.data.data.url)
 }
@@ -37,7 +36,7 @@ export function fetchMusicInfoData(mid: string | number): Promise<MusicInfo> {
     params: {
       mid,
       httpsStatus: 1,
-      reqId: uuidv4(),
+      reqId,
     },
   }).then((res) => res.data.data)
 }

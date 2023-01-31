@@ -13,6 +13,9 @@ const App: React.FC = () => {
   return (
     <ConfigProvider
       theme={{
+        token: {
+          colorPrimary: '#8bbb11',
+        },
         algorithm: theme === 'dark' ? darkAlgorithm : defaultAlgorithm,
       }}
     >

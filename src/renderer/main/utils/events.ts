@@ -4,6 +4,7 @@ type Events = {
   play: void
   pause: void
   seek: number
+  end: void
 };
 
 const emitter = mitt<Events>(); // inferred as Emitter<Events>

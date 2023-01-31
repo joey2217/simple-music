@@ -24,7 +24,8 @@ const Control: React.FC = () => {
   const [playing, setPlaying] = useRecoilState(playingState)
 
   const onEnd = useCallback((id?: number) => {
-    console.log('onPause', onEnd)
+    console.log('onEnd')
+    emitter.emit('end')
   }, [])
 
   const onPause = useCallback(
