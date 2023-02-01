@@ -9,19 +9,21 @@ const { Content, Sider, Header, Footer } = Layout
 
 const AppLayout: React.FC = () => {
   const {
-    token: { colorBgContainer },
+    token: { colorBgContainer, colorText },
   } = theme.useToken()
   const [collapsed, setCollapsed] = useState(false)
 
   return (
-    <Layout className="h-screen overflow-hidden">
+    <Layout
+      className="h-screen overflow-hidden"
+      style={{ background: colorBgContainer, color: colorText }}
+    >
       <Layout>
         <Sider
           id="sider"
           collapsible
           collapsed={collapsed}
           onCollapse={(value) => setCollapsed(value)}
-          style={{ background: colorBgContainer }}
         >
           <div
             style={{
@@ -36,7 +38,7 @@ const AppLayout: React.FC = () => {
         </Sider>
         <Layout>
           <Header
-            style={{ padding: 0, background: colorBgContainer }}
+            style={{ padding: 0 }}
             className="flex justify-center items-center"
           >
             <Search />

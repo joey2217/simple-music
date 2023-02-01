@@ -2,24 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
+/* html {
   --text-color: rgba(0, 0, 0, 0.88);
   --background: rgb(255, 255, 255);
   --dark-text-color: rgba(255, 255, 255, 0.85);
   --dark-background: rgb(20, 20, 20);
   --header-background: #001529;
-}
+} */
 
 html {
-  color: var(--text-color);
-  background: var(--background);
+  /* color: var(--text-color);
+  background: var(--background); */
   transition: background 1s cubic-bezier(0.075, 0.82, 0.165, 1) 0s;
 }
 
-html.dark {
+/* html.dark {
   color: var(--dark-text-color);
   background: var(--dark-background);
-}
+} */
 
 #sider .ant-layout-sider-trigger {
   @apply bottom-20;
