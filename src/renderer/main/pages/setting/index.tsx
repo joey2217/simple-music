@@ -2,7 +2,6 @@ import React, { memo } from 'react'
 import { Button, Tabs } from 'antd'
 import { toggleDevtools } from '../../utils/ipc'
 import { fetchToken } from '../../api/request'
-import { fetchSearchKey } from '../../api/top'
 import type { TabsProps } from 'antd'
 import Download from './Download'
 
@@ -25,7 +24,6 @@ const Setting: React.FC = () => {
       <Tabs defaultActiveKey="1" tabPosition="left" items={items} />
       <Button onClick={toggleDevtools}>ToggleDevtools</Button>
       <Button onClick={fetchToken}>api</Button>
-      <Button onClick={fetchSearchKey}>fetchSearchKey</Button>
     </div>
   )
 }
