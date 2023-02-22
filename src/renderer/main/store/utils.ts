@@ -25,23 +25,6 @@ export function setTheme(theme: Theme) {
   }
 }
 
-export const simpleLocalStorageEffect: <T>(key: string) => AtomEffect<T> =
-  (key) =>
-  ({ setSelf, onSet }) => {
-    const savedValue = localStorage.getItem(key)
-    console.log('simpleLocalStorageEffect', savedValue, key)
-    if (savedValue != null) {
-      setSelf(savedValue as any)
-    }
-
-    onSet((newValue, _, isReset) => {
-      console.log(newValue, isReset)
-      isReset
-        ? localStorage.removeItem(key)
-        : localStorage.setItem(key, newValue as string)
-    })
-  }
-
 export const localStorageEffect: <T>(key: string) => AtomEffect<T> =
   (key) =>
   ({ setSelf, onSet }) => {

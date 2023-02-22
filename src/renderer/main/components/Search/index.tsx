@@ -1,40 +1,57 @@
-import React, { memo, useEffect, useState } from 'react'
-import { AutoComplete, Input } from 'antd'
+import React, { memo, useEffect, useMemo, useState } from 'react'
+import type { ReactNode } from 'react'
+import { AutoComplete, Input, Button } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { fetchSearchKey } from '../../api/top'
+import useLocalStorage from '../../hooks/useLocalStorage'
 
-interface StringOption {
-  value: string
+interface Option {
+  value: ReactNode
 }
 
-type OptionType = { label: string; options: StringOption[] } | StringOption
+type OptionType = { label: string; options: Option[] } | Option
+
+const LOCAL_SEARCH_KEYS = 'local_search_keys'
 
 const Search: React.FC = () => {
   const navigate = useNavigate()
-  const [options, setOptions] = useState<OptionType[]>([])
+  const { value, setValue } = useLocalStorage<string[]>(LOCAL_SEARCH_KEYS, [])
+
+  const [searchKeys, setSearchKeys] = useState<string[]>([])
   const [keyword, setKeyword] = useState('')
+
   const onSearch = (searchText: string) => {
+    if (searchText !== '') {
+      setValue((list: string[]) => [
+        searchText,
+        ...list.filter((s) => s !== searchText),
+      ])
+    }
     navigate(`/search?q=${searchText}`)
   }
 
   useEffect(() => {
     fetchSearchKey(keyword).then((data) => {
-      if (keyword) {
-        setOptions(data.map((s) => ({ value: s })))
-      } else {
-        setOptions([
-          {
-            label: '历史',
-            options: [], //TODO
-          },
-          {
-            label: '热搜',
-            options: data.map((s) => ({ value: s })),
-          },
-        ])
-      }
+      setSearchKeys(data)
     })
   }, [keyword])
+
+  const options = useMemo<OptionType[]>(() => {
+    if (keyword) {
+      return searchKeys.map((v) => ({ value: v }))
+    } else {
+      return [
+        {
+          label: '历史',
+          options: value.map((v) => ({ value: v })),
+        },
+        {
+          label: '热搜',
+          options: searchKeys.map((v) => ({ value: v })),
+        },
+      ]
+    }
+  }, [keyword, searchKeys, value])
 
   return (
     <AutoComplete
