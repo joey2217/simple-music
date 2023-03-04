@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from 'react'
-import { Skeleton, Space, Table } from 'antd'
+import { Skeleton, Space, Table, Image } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import {
   DownloadOutlined,
@@ -22,7 +22,7 @@ const SongList: React.FC<Props> = ({ songListId }) => {
 
   const { addToPlayerList } = usePlayList()
   const { addDownloadItems } = useDownloadList()
-  
+
   const columns: ColumnsType<SongListItem> = [
     {
       title: '#',
@@ -64,6 +64,17 @@ const SongList: React.FC<Props> = ({ songListId }) => {
             />
           </Space>
         )
+      },
+    },
+    {
+      title: '-',
+      dataIndex: 'pic120',
+      key: 'rid',
+      width: 60,
+      align: 'center',
+      render(value, record, index) {
+        // TODO
+        return <img className="w-12 h-12" src={value || 'https://img2.kuwo.cn/star/albumcover/120/12/96/3430967159.jpg'} alt={record.name} />
       },
     },
     {

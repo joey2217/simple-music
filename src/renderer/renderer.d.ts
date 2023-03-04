@@ -1,5 +1,4 @@
 import Electron from 'electron'
-
 interface DownloadInfo {
   rid: number
   url: string
@@ -12,6 +11,7 @@ interface IElectronAPI {
   getDownloadsPath: () => Promise<string>
   showItemInFolder: (fullPath: string) => Promise<void>
   openPath: (fullPath: string) => Promise<void>
+  showOpenDialog: (options: Electron.OpenDialogOptions) =>  Promise<Electron.OpenDialogReturnValue>
 }
 
 interface IDevAPI {

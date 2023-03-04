@@ -1,13 +1,25 @@
-import React, { memo } from 'react'
+import React, { memo, useCallback } from 'react'
 import { Button, Space, Table } from 'antd'
-import { FolderOpenOutlined } from '@ant-design/icons'
+import { FolderOpenOutlined, SettingOutlined } from '@ant-design/icons'
 import type { ColumnsType } from 'antd/es/table'
 import type { DownloadItem } from '../../types'
 import { useDownloadList } from '../../store/hooks'
-import { showItemInFolder, openPath } from '../../utils/ipc'
+import { showItemInFolder, openPath, showOpenDialog } from '../../utils/ipc'
 
 const Download: React.FC = () => {
-  const { downloadList, downloadPath } = useDownloadList()
+  const { downloadList, downloadPath, setDownloadPath } = useDownloadList()
+
+  const showSetDownloadPath = useCallback(() => {
+    showOpenDialog({
+      title: '设置下载目录',
+      defaultPath: downloadPath,
+      properties: ['openDirectory'],
+    }).then(({ filePaths }) => {
+      if (filePaths[0]) {
+        setDownloadPath(filePaths[0])
+      }
+    })
+  }, [downloadPath, setDownloadPath])
 
   const columns: ColumnsType<DownloadItem> = [
     {
@@ -56,14 +68,23 @@ const Download: React.FC = () => {
   return (
     <div>
       <div>
-        存储目录 : {downloadPath}
-        <Button
-          type="link"
-          icon={<FolderOpenOutlined />}
-          onClick={() => openPath(downloadPath)}
-        >
-          打开下载目录
-        </Button>
+        <Space>
+          <span>存储目录 : {downloadPath}</span>
+          <Button
+            type="link"
+            icon={<FolderOpenOutlined />}
+            onClick={() => openPath(downloadPath)}
+          >
+            打开下载目录
+          </Button>
+          <Button
+            type="link"
+            icon={<SettingOutlined />}
+            onClick={showSetDownloadPath}
+          >
+            设置下载目录
+          </Button>
+        </Space>
       </div>
       <Table
         size="middle"

@@ -73,7 +73,7 @@ export function usePlayList() {
 
 export function useDownloadList() {
   const [downloadList, setDownloadList] = useRecoilState(downloadItemsState)
-  const downloadPath = useRecoilValue(downloadPathState)
+  const [downloadPath,setDownloadPath] = useRecoilState(downloadPathState)
 
   const addDownloadItems = useCallback(
     (songs: SongListItem[]) => {
@@ -109,5 +109,6 @@ export function useDownloadList() {
     addDownloadItems,
     downloadList,
     downloadPath,
+    setDownloadPath,
   }
 }

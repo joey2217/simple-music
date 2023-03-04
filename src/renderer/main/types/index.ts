@@ -157,8 +157,54 @@ export interface FeeType {
   vip: string
 }
 
-
 export interface DownloadItem extends MusicInfo {
   path: string
   fileName: string
+}
+
+export interface Singer {
+  artistFans: number
+  albumNum: number
+  mvNum: number
+  pic: string
+  musicNum: number
+  pic120: string
+  isStar: number
+  content_type: string
+  aartist: string
+  name: string
+  pic70: string
+  id: number
+  pic300: string
+}
+
+export interface PageData<T> {
+  total: number
+  list: T[]
+}
+
+export interface SingerDetail {
+  birthday: string
+  country: string
+  artistFans: number
+  albumNum: number
+  gener: string
+  weight: string
+  language: string
+  mvNum: number
+  pic: string
+  upPcUrl: string
+  musicNum: number
+  pic120: string
+  isStar: number
+  birthplace: string
+  constellation: string
+  content_type: string
+  aartist: string
+  name: string
+  pic70: string
+  id: number
+  tall: string
+  pic300: string
+  info: string
 }

@@ -6,6 +6,8 @@ import Search from './pages/search'
 import Setting from './pages/setting'
 import Download from './pages/download'
 import SongList from './pages/song-list'
+import Singers from './pages/singers'
+import Singer from './pages/singers/singer'
 
 const router = createHashRouter([
   {
@@ -41,6 +43,16 @@ const router = createHashRouter([
       {
         path: 'download',
         element: <Download />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: 'singers',
+        element: <Singers />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: 'singer/:singerId',
+        element: <Singer />,
         errorElement: <ErrorPage />,
       },
     ],

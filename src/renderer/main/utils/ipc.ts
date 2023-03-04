@@ -13,6 +13,11 @@ export function getDownloadsPath() {
 export function showItemInFolder(fullPath: string) {
   return window.electronAPI.showItemInFolder(fullPath)
 }
+
 export function openPath(fullPath: string) {
   return window.electronAPI.openPath(fullPath)
+}
+
+export function showOpenDialog(options: Electron.OpenDialogOptions) {
+  return window.electronAPI.showOpenDialog(options)
 }

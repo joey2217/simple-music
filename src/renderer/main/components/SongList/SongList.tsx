@@ -69,6 +69,17 @@ const SongList: React.FC<Props> = ({
       },
     },
     {
+      title: '-',
+      dataIndex: 'pic120',
+      key: 'rid',
+      width: 60,
+      align: 'center',
+      render(value, record, index) {
+        // TODO
+        return <img className="w-12 h-12" src={value || 'https://img2.kuwo.cn/star/albumcover/120/12/96/3430967159.jpg'} alt={record.name} />
+      },
+    },
+    {
       title: '歌曲',
       dataIndex: 'name',
       key: 'rid',

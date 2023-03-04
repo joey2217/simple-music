@@ -7,6 +7,7 @@ import {
   SearchOutlined,
   SettingOutlined,
   UnorderedListOutlined,
+  UserOutlined,
 } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
 
@@ -20,6 +21,11 @@ const items: MenuProps['items'] = [
     label: <Link to="/song-list">歌单</Link>,
     key: '/song-list',
     icon: <UnorderedListOutlined />,
+  },
+  {
+    label: <Link to="/singers">歌手</Link>,
+    key: '/singers',
+    icon: <UserOutlined />,
   },
   {
     label: <Link to="/search">搜索</Link>,
