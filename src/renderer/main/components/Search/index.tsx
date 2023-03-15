@@ -18,7 +18,7 @@ const MAX_SEARCH_KEY_COUNT = 10
 
 const Search: React.FC = () => {
   const navigate = useNavigate()
-  const { value, setValue } = useLocalStorage<string[]>(LOCAL_SEARCH_KEYS, [])
+  const [value, setValue] = useLocalStorage<string[]>(LOCAL_SEARCH_KEYS, [])
 
   const [searchKeys, setSearchKeys] = useState<string[]>([])
   const [keyword, setKeyword] = useState('')
