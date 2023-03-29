@@ -25,7 +25,7 @@ export function fetchMusicUrl(mid: string | number): Promise<string> {
       type: 'convert_url3',
       br: 'br=128kmp3'
     },
-  }).then((res) => res.data)
+  }).then((res) => res.data.data.url)
 }
 
 // https://www.kuwo.cn/api/www/music/musicInfo?mid=215529453&httpsStatus=1&reqId=uuid
