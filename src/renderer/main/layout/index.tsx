@@ -1,23 +1,19 @@
 import React, { memo, useState } from 'react'
-import { Layout, theme } from 'antd'
+import { Layout } from 'antd'
 import AppMenu from './AppMenu'
 import { Outlet } from 'react-router-dom'
 import Search from '../components/Search'
 import Player from '../components/Player'
+import TitleBar from './TitleBar'
 
 const { Content, Sider, Header, Footer } = Layout
 
 const AppLayout: React.FC = () => {
-  const {
-    token: { colorBgContainer, colorText },
-  } = theme.useToken()
   const [collapsed, setCollapsed] = useState(false)
 
   return (
-    <Layout
-      className="h-screen overflow-hidden"
-      style={{ background: colorBgContainer, color: colorText }}
-    >
+    <Layout className="h-screen overflow-hidden relative" id='layout'>
+      <TitleBar />
       <Layout>
         <Sider
           id="sider"
@@ -47,7 +43,6 @@ const AppLayout: React.FC = () => {
             style={{
               padding: 16,
               margin: 0,
-              background: colorBgContainer,
             }}
           >
             <Outlet />

@@ -3,6 +3,7 @@ module.exports = {
   corePlugins: {
     preflight: false
   },
+  darkMode:['class'],
   content: [
     "./src/renderer/**/*.{jsx,tsx,html}",
   ],

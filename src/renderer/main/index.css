@@ -2,26 +2,65 @@
 @tailwind components;
 @tailwind utilities;
 
-/* html {
-  --text-color: rgba(0, 0, 0, 0.88);
-  --background: rgb(255, 255, 255);
-  --dark-text-color: rgba(255, 255, 255, 0.85);
-  --dark-background: rgb(20, 20, 20);
-  --header-background: #001529;
-} */
+:root {
+  --fallback-title-bar-height: 40px;
+  --text-color:#000;
+  --background-color:#fff;
+}
 
 html {
-  /* color: var(--text-color);
-  background: var(--background); */
-  transition: background 1s cubic-bezier(0.075, 0.82, 0.165, 1) 0s;
+  color: var(--text-color);
+  background: var(--background-color);
+  color-scheme: light;
   user-select: none;
 }
 
-/* html.dark {
-  color: var(--dark-text-color);
-  background: var(--dark-background);
-} */
+html.dark {
+  color: var(--background-color);
+  background: var(--text-color);
+  color-scheme: dark;
+}
 
 #sider .ant-layout-sider-trigger {
   @apply bottom-20;
+}
+
+#layout {
+  padding-top: env(titlebar-area-height, var(--fallback-title-bar-height));
+}
+
+#titleBarContainer {
+  position: absolute;
+  top: env(titlebar-area-y, 0);
+  height: env(titlebar-area-height, var(--fallback-title-bar-height));
+  width: 100%;
+  cursor: pointer;
+}
+
+#titleBar {
+  position: absolute;
+  top: 0;
+  display: flex;
+  user-select: none;
+  height: 100%;
+  left: env(titlebar-area-x, 0);
+  width: env(titlebar-area-width, 100%);
+  color: #ffffff;
+  font-weight: bold;
+  text-align: center;
+}
+
+#titleBar > span {
+  margin: auto;
+  padding: 0px 16px 0px 16px;
+}
+
+.draggable {
+  app-region: drag;
+  -webkit-app-region: drag;
+}
+
+.nonDraggable {
+  app-region: no-drag;
+  -webkit-app-region: no-drag;
 }

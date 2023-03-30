@@ -1,20 +1,26 @@
-import type { AtomEffect } from "recoil"
+import type { AtomEffect } from 'recoil'
 
-export type Theme = 'dark' | 'light'
+export type Theme = 'dark' | 'light' | 'system'
 
 export const LOCAL_THEME = 'theme'
 
 export function getTheme(): Theme {
-  if (
-    localStorage[LOCAL_THEME] === 'dark' ||
-    (!(LOCAL_THEME in localStorage) &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches)
-  ) {
-    document.documentElement.classList.add('dark')
-    return 'dark'
+  const localTheme = localStorage[LOCAL_THEME]
+  if (localTheme) {
+    if (localTheme === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+    return localTheme
+  } else {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+    return 'system'
   }
-  document.documentElement.classList.remove('dark')
-  return 'light'
 }
 
 export function setTheme(theme: Theme) {

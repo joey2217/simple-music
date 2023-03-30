@@ -9,6 +9,12 @@ export function create() {
     width: 1200,
     height: 800,
     show: false,
+    titleBarStyle: 'hidden',
+    titleBarOverlay: true,
+    // titleBarOverlay: {
+    //   color: '#2f3241',
+    //   symbolColor: '#74b1be',
+    // },
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       webSecurity: import.meta.env.PROD,

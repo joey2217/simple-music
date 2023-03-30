@@ -1,4 +1,4 @@
-import { ipcMain, app, shell } from 'electron'
+import { ipcMain, app, shell, nativeTheme } from 'electron'
 import * as path from 'path'
 import { download, setDownloadPath } from './download'
 import { send as sendToMain, showOpenDialog } from './windows/main'
@@ -6,6 +6,9 @@ import type { DownloadInfo } from './types'
 import type { OpenDialogOptions } from 'electron'
 
 export default function handleIPC() {
+
+  nativeTheme.themeSource = 'dark'
+
   ipcMain.handle('TOGGLE_DEVTOOLS', (event) => {
     event.sender.toggleDevTools()
   })
