@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Outlet, useParams } from 'react-router-dom'
 import { Avatar, Skeleton } from 'antd'
 import { fetchSingerDetail } from '../../api/singer'
 import { SingerDetail } from '../../types'
@@ -21,51 +21,55 @@ const Singer: React.FC = () => {
 
   return (
     <div>
-      <div className="flex">
-        <Avatar size={240} shape="square" src={singerDetail.pic300} />
-        <div className="ml-2">
+      <div className="flex gap-4">
+        <Avatar size={160} shape="square" src={singerDetail.pic300} />
+        <div>
           <h2 className="font-semibold  text-2xl">{singerDetail.name}</h2>
-          <div className="flex flex-wrap text-xl mb-2">
-            <div className="mr-2">
+          <div className="flex flex-wrap text-xl mb-2 gap-2">
+            <div>
               <span>单曲：</span>
               <span>{singerDetail.musicNum}</span>
             </div>
-            <div className="mr-2">
+            <div>
               <span>专辑：</span>
               <span>{singerDetail.albumNum}</span>
             </div>
-            <div className="mr-2">
+            <div>
               <span>MV：</span>
               <span>{singerDetail.mvNum}</span>
             </div>
-            <div className="mr-2">
+            <div>
               <span>粉丝：</span>
               <span>{singerDetail.artistFans}</span>
             </div>
           </div>
-          <div className="flex flex-wrap text-base">
-            <div className="mr-2">
+          <div className="flex flex-wrap text-base gap-2">
+            <div>
               <span>英文名：</span>
               <span
-                dangerouslySetInnerHTML={{ __html: singerDetail.aartist }}
+                dangerouslySetInnerHTML={{
+                  __html: singerDetail.aartist || '-',
+                }}
               ></span>
             </div>
-            <div className="mr-2">
+            <div>
               <span>国籍：</span>
               <span>{singerDetail.country}</span>
             </div>
-            <div className="mr-2">
+            <div>
               <span>语言：</span>
-              <span>{singerDetail.language}</span>
+              <span>{singerDetail.language || '-'}</span>
             </div>
-            <div className="mr-2">
+            <div>
               <span>出生地：</span>
-              <span>{singerDetail.birthplace}</span>
+              <span>{singerDetail.birthplace || '-'}</span>
             </div>
           </div>
         </div>
       </div>
-      <div></div>
+      <div>
+        <Outlet />
+      </div>
     </div>
   )
 }

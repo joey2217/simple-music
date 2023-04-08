@@ -108,7 +108,7 @@ const SongList: React.FC<Props> = ({ songListId }) => {
   return (
     <Table
       size="middle"
-      scroll={{ y: 'calc(100vh - 416px)' }}
+      scroll={{ y: 'calc(100vh - 456px)' }}
       columns={columns}
       dataSource={songList}
       pagination={{

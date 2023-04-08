@@ -4,7 +4,7 @@ const TitleBar: React.FC = () => {
   return (
     <div id="titleBarContainer">
       <div id="titleBar" className="draggable">
-        <span className="draggable">Example PWA</span>
+        <span className="draggable">Simple Music</span>
       </div>
     </div>
   )

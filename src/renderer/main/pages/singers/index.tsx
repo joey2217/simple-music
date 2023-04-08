@@ -1,9 +1,11 @@
-import { Col, Pagination, Row, Skeleton } from 'antd'
+import { Pagination, Skeleton } from 'antd'
 import React, { memo, useEffect, useState } from 'react'
 import { fetchSingerList } from '../../api/singer'
 import SingerCard from '../../components/SingerCard'
 import Tags from '../../components/Tags'
 import type { Singer } from '../../types'
+import { useRecoilState } from 'recoil'
+import { paramsState, useSingerList } from './store'
 
 const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 const LETTER_TAGS = [
@@ -33,43 +35,39 @@ const KIND_TAGS = [
 ].map((s, index) => ({ label: s, value: index }))
 
 const Singers: React.FC = () => {
-  const [total, setTotal] = useState(0)
-  const [page, setPage] = useState(1)
-  const [category, setCategory] = useState<string | number>(0)
-  const [prefix, setPrefix] = useState<string | number>('')
-  const [singerList, setSingerList] = useState<Singer[]>([])
-
-  useEffect(() => {
-    fetchSingerList(category, prefix, page).then(({ total, list }) => {
-      setSingerList(list)
-      setTotal(total)
-    })
-  }, [category, page, prefix])
-
-  if (singerList.length === 0) {
-    return <Skeleton active />
-  }
+  const { params, setParams, singerList, total } = useSingerList()
 
   return (
-    <div className="p-2">
-      <Tags options={LETTER_TAGS} onChange={setPrefix} />
-      <Tags options={KIND_TAGS} onChange={setCategory} />
-      <Row gutter={[10, 10]}>
-        {singerList.map((s, index) => (
-          <Col key={s.id} xs={24} sm={12} md={8} lg={6} xl={4}>
-            <SingerCard singer={s} />
-          </Col>
-        ))}
-      </Row>
-      <div className="p-2 text-center">
-        <Pagination
-          current={page}
-          defaultPageSize={60}
-          onChange={setPage}
-          showSizeChanger={false}
-          total={total}
-        />
-      </div>
+    <div
+      className="flex flex-col overflow-hidden"
+      style={{ height: 'calc(100vh - 200px)' }}
+    >
+      <Tags
+        options={LETTER_TAGS}
+        onChange={(prefix) => setParams((p) => ({ ...p, prefix, page: 1 }))}
+      />
+      <Tags
+        options={KIND_TAGS}
+        onChange={(category) =>
+          setParams((p) => ({ ...p, category: category as number, page: 1 }))
+        }
+      />
+      <React.Suspense fallback={<Skeleton active />}>
+        <div className="flex-1 overflow-auto grid gap-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-4 xl:grid-cols-6">
+          {singerList.map((s, index) => (
+            <SingerCard key={s.id} singer={s} />
+          ))}
+        </div>
+        <div className="p-2 text-center">
+          <Pagination
+            current={params.page}
+            defaultPageSize={60}
+            onChange={(page) => setParams((p) => ({ ...p, page }))}
+            showSizeChanger={false}
+            total={total}
+          />
+        </div>
+      </React.Suspense>
     </div>
   )
 }

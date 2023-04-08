@@ -7,10 +7,9 @@ import {
 import handleIPC from './ipc'
 import { checkUpdate } from './updater'
 import './proxy'
+import './menu'
 
 const gotTheLock = app.requestSingleInstanceLock()
-
-app.applicationMenu = null
 
 if (!gotTheLock) {
   app.quit()

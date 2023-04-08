@@ -21,7 +21,7 @@ const Tags: React.FC<Props> = ({ options, onChange }) => {
     <ul className="flex flex-wrap pl-0">
       {options.map((option) => (
         <li
-          className={`list-none py-1 px-2 m-1 h-6 min-w-[24px] text-center cursor-pointer ${
+          className={`list-none py-1 px-2 m-1 h-6 leading-4 min-w-[24px] text-center cursor-pointer ${
             active === option.value ? 'rounded-full' : ''
           }`}
           style={{
