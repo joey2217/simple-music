@@ -1,38 +1,44 @@
-import React, { memo, useEffect } from 'react'
-import { useSearchParams } from 'react-router-dom'
-import { useRecoilState } from 'recoil'
-import { fetchSearchData } from '../../api/top'
-import SongList from '../../components/SongList/SongList'
-import { searchSongListState, pageState, totalState } from './store'
+import React, { memo } from 'react'
+import SearchInput from '../../components/SearchInput'
+import { NavLink, Outlet } from 'react-router-dom'
+import { useRecoilValue } from 'recoil'
+import { searchKeywordState } from '../../store/atom'
 
 const Search: React.FC = () => {
-  const [searchParams] = useSearchParams()
-
-  const [songList, setSongList] = useRecoilState(searchSongListState)
-  const [page, setPage] = useRecoilState(pageState)
-  const [total, setTotal] = useRecoilState(totalState)
-
-  useEffect(() => {
-    const keyword = searchParams.get('q')
-    if (keyword) {
-      fetchSearchData(keyword, page).then((data) => {
-        setSongList(data.list)
-        setTotal(data.total)
-      })
-    } else {
-      setSongList([])
-      setTotal(0)
-      setPage(1)
-    }
-  }, [page, searchParams, setPage, setSongList, setTotal])
-
+  const keyword = useRecoilValue(searchKeywordState)
   return (
-    <SongList
-      dataSource={songList}
-      total={total}
-      onPageChange={setPage}
-      y="calc(100vh - 298px)"
-    />
+    <div>
+      <div>
+        <SearchInput />
+      </div>
+      <div className="my-4 flex gap-8 items-baseline">
+        <div className="text-2xl font-semibold">搜索结果</div>
+        {keyword ? (
+          <nav className="flex my-4 gap-2">
+            <NavLink className="link" to="" end>
+              单曲
+            </NavLink>
+            <NavLink className="link" to="artist">
+              歌手
+            </NavLink>
+            <NavLink className="artist" to="song-list">
+              歌单
+            </NavLink>
+            <NavLink className="link" to="album">
+              专辑
+            </NavLink>
+            <NavLink className="link" to="mv">
+              MV
+            </NavLink>
+          </nav>
+        ) : (
+          <div>暂无数据</div>
+        )}
+      </div>
+      <div>
+        <Outlet />
+      </div>
+    </div>
   )
 }
 

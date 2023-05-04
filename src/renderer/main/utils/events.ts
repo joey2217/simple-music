@@ -1,12 +1,13 @@
-import mitt from 'mitt';
+import mitt from 'mitt'
 
 type Events = {
   play: void
   pause: void
   seek: number
-  end: void
-};
+  end?: boolean
+  timeUpdate: number
+}
 
-const emitter = mitt<Events>(); // inferred as Emitter<Events>
+const emitter = mitt<Events>() // inferred as Emitter<Events>
 
 export default emitter

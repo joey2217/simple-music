@@ -35,23 +35,4 @@ export default defineConfig({
       external: ['electron', ...builtinModules],
     },
   },
-  server: {
-    proxy: {
-      '/netease': {
-        target: 'https://music.163.com/weapi',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/netease/, ''),
-      },
-      '/api163': {
-        target: 'https://music.163.com/api',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api163/, ''),
-      },
-      '/neteaseInterface3': {
-        target: 'https://interface3.music.163.com/eapi',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/neteaseInterface3/, ''),
-      },
-    },
-  },
 })

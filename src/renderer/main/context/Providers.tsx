@@ -1,12 +1,12 @@
 import React, { memo } from 'react'
-import type { PropsWithChildren } from 'react'
-import AntdProvider from './AntdProvider'
 import { RecoilRoot } from 'recoil'
+import type { PropsWithChildren } from 'react'
+import { ThemeProvider } from './ThemeContext'
 
 const Providers: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <RecoilRoot>
-      <AntdProvider>{children}</AntdProvider>
+      <ThemeProvider>{children}</ThemeProvider>
     </RecoilRoot>
   )
 }

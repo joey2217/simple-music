@@ -1,5 +1,4 @@
 import React, { memo, useState } from 'react'
-import { theme } from 'antd'
 
 interface Props {
   options: { label: string; value: string | number }[]
@@ -7,9 +6,6 @@ interface Props {
 }
 
 const Tags: React.FC<Props> = ({ options, onChange }) => {
-  const {
-    token: { colorBgSpotlight },
-  } = theme.useToken()
   const [active, setActive] = useState(options[0]?.value)
 
   const onClick = (value: string | number) => {
@@ -18,15 +14,14 @@ const Tags: React.FC<Props> = ({ options, onChange }) => {
   }
 
   return (
-    <ul className="flex flex-wrap pl-0">
+    <ul className="flex flex-wrap my-1 gap-1">
       {options.map((option) => (
         <li
-          className={`list-none py-1 px-2 m-1 h-6 leading-4 min-w-[24px] text-center cursor-pointer ${
-            active === option.value ? 'rounded-full' : ''
+          className={`list-none py-1 px-2 h-6 leading-4 min-w-[24px] text-center cursor-pointer rounded-full ${
+            active === option.value
+              ? 'bg-indigo-600 hover:bg-indigo-600/80'
+              : 'hover:bg-gray-500/50'
           }`}
-          style={{
-            backgroundColor: active === option.value ? colorBgSpotlight : '',
-          }}
           key={option.value}
           onClick={() => onClick(option.value)}
         >

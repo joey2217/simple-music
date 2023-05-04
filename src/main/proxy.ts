@@ -1,4 +1,5 @@
 import { app, session } from 'electron'
+import https from 'https'
 
 const filter = {
   urls: ['https://www.kuwo.cn/*'],
@@ -14,7 +15,6 @@ const KUWO_URL = 'https://www.kuwo.cn/'
 
 // kw_token=2GTRO51Y2VM; path=/; expires=Fri, 17 Feb 2023 07:31:18 GMT
 function setToken(cookies: string[]) {
-  console.log(cookies, 'setToken')
   if (cookies.length > 0) {
     cookies.forEach((cookieStr) => {
       const arr = cookieStr.split(';')
@@ -45,6 +45,17 @@ function setToken(cookies: string[]) {
     })
   }
 }
+
+// 初始化cookies
+https
+  .get(KUWO_URL + '/down', (res) => {
+    if (res.headers && res.headers['set-cookie']) {
+      setToken(res.headers['set-cookie'])
+    }
+  })
+  .on('error', (e) => {
+    console.error(e)
+  })
 
 app.whenReady().then(() => {
   session.defaultSession.webRequest.onBeforeSendHeaders(

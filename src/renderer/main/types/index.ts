@@ -1,98 +1,32 @@
-export interface BoardItem {
+export interface PageData<T> {
+  list: T[]
+  total: number
+}
+
+export interface PageParams {
+  pn: number
+  rn: number
+}
+
+export interface Tag {
+  name: string
+  digest?: string
   id: string
-  name: string
-  disname: string
-  info: string
-  source: string
-  sourceid: string
-  pic: string
-  like: string
-  listen: string
-  tips: string
-  isnew: string
-  newcnt: string
-  attribute: string
-  child: any[]
 }
 
-export interface SongListData {
-  img: string
+// 首页排行榜
+export interface Ranking {
+  leader: string
   num: string
-  pub: string
-  musicList: SongListItem[]
-}
-
-export interface SongListItem {
-  musicrid: string
-  barrage: string
-  ad_type: string
-  artist: string
-  mvpayinfo: Mvpayinfo
-  trend: Trend
-  pic: string
-  isstar: number
-  rid: number
-  duration: number
-  score100: string
-  ad_subtype: string
-  content_type: string
-  rank_change: string
-  track: number
-  hasLossless: boolean
-  hasmv: number
-  releaseDate: Date
-  album: string
-  albumid: number
-  pay: string
-  artistid: number
-  albumpic: string
-  originalsongtype: number
-  songTimeMinutes: string
-  isListenFee: boolean
-  pic120: string
   name: string
-  online: number
-  payInfo: PayInfo
-  tme_musician_adtype: string
-  nationid?: string
+  pic: string
+  id: string
+  pub: Date
+  musicList: Music[]
 }
 
-export interface Mvpayinfo {
-  play: number
-  vid: number
-  down: number
-}
-
-export interface PayInfo {
-  play: string
-  nplay: string
-  overseas_nplay: string
-  local_encrypt: string
-  limitfree: number
-  refrain_start: number
-  feeType: FeeType
-  down: string
-  ndown: string
-  download: string
-  cannotDownload: number
-  overseas_ndown: string
-  refrain_end: number
-  cannotOnlinePlay: number
-  listen_fragment?: string
-}
-
-export interface FeeType {
-  song: string
-  vip: string
-}
-
-export enum Trend {
-  D0 = 'd0',
-  E0 = 'e0',
-  U0 = 'u0',
-}
-
-export interface MusicInfo {
+// 音乐数据
+export interface Music {
   musicrid: string
   barrage: string
   ad_type: string
@@ -101,31 +35,29 @@ export interface MusicInfo {
   pic: string
   isstar: number
   rid: number
-  upPcStr: string
   duration: number
   score100: string
   ad_subtype: string
   content_type: string
-  mvPlayCnt: number
   track: number
-  hasLossless: boolean
   hasmv: number
-  releaseDate: Date
+  releaseDate: string
   album: string
   albumid: number
   pay: string
   artistid: number
   albumpic: string
-  originalsongtype: number
-  songTimeMinutes: string
-  isListenFee: boolean
-  mvUpPcStr: string
-  pic120: string
   albuminfo: string
+  originalsongtype: number
+  isListenFee: boolean
+  pic120: string
   name: string
   online: number
   payInfo: PayInfo
   tme_musician_adtype: string
+  songTimeMinutes: string
+  timestamp: number
+  mvPlayCnt: number
   url: string
 }
 
@@ -150,61 +82,56 @@ export interface PayInfo {
   overseas_ndown: string
   refrain_end: number
   cannotOnlinePlay: number
+  paytagindex: { [key: string]: number }
+  listen_fragment?: string
 }
 
 export interface FeeType {
-  song: string
+  song?: string
   vip: string
 }
 
-export interface DownloadItem extends MusicInfo {
-  path: string
-  fileName: string
-}
-
-export interface Singer {
-  artistFans: number
-  albumNum: number
-  mvNum: number
-  pic: string
-  musicNum: number
-  pic120: string
-  isStar: number
-  content_type: string
-  aartist: string
+// MV
+export interface Mv {
+  duration: number
+  artist: string
+  mvPlayCnt: number
   name: string
-  pic70: string
-  id: number
-  pic300: string
+  online: string
+  artistid: number
+  songTimeMinutes: string
+  id: string
+  pic: string
 }
 
-export interface PageData<T> {
+// 专辑
+export interface Album {
+  content_type: string
+  albuminfo: string
+  artist: string
+  releaseDate: string
+  album: string
+  albumid: number
+  pay: number
+  artistid: number
+  pic: string
+  isstar: number
+  lang: string
+  playCnt: number
   total: number
-  list: T[]
+  musicList: Music[]
 }
 
-export interface SingerDetail {
-  birthday: string
-  country: string
-  artistFans: number
-  albumNum: number
-  gener: string
-  weight: string
-  language: string
-  mvNum: number
-  pic: string
-  upPcUrl: string
-  musicNum: number
-  pic120: string
-  isStar: number
-  birthplace: string
-  constellation: string
-  content_type: string
-  aartist: string
-  name: string
-  pic70: string
-  id: number
-  tall: string
-  pic300: string
-  info: string
+export interface PlaylistParams {
+  id: number | string
+  pn: number
+  rn: number
+}
+
+// 播放模式
+export type PlayMode = 'single' | 'loop' | 'sequence' | 'shuffle'
+
+export interface Lyric {
+  lineLyric: string
+  time: number
 }

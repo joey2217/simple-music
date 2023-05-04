@@ -1,83 +1,154 @@
 import { createHashRouter } from 'react-router-dom'
 import Layout from './layout'
-import ErrorPage from './pages/error'
-import Rankings from './pages/rankings'
-import Search from './pages/search'
-import Setting from './pages/setting'
-import Download from './pages/download'
+import Error from './pages/error'
+import Home from './pages/home'
+import RankingList from './pages/ranking'
+import Artists from './pages/artists'
+import Artist from './pages/artist'
+import Song from './pages/artist/song'
+import Album from './pages/artist/album'
+import Mv from './pages/artist/mv'
+import Info from './pages/artist/info'
 import SongList from './pages/song-list'
-import Singers from './pages/singers'
-import Singer from './pages/singer'
-import Song from './pages/singer/song'
-import Album from './pages/singer/album'
-import Mv from './pages/singer/mv'
-import Info from './pages/singer/info'
+import SongListDetail from './pages/song-list/detail'
+import MvPage from './pages/mv'
+import MvDetail from './pages/mv/detail'
+import Like from './pages/like'
+import LikeMusic from './pages/like/music'
+import LikeArtist from './pages/like/artist'
+import Music from './pages/music'
+import AlbumPage from './pages/album'
+import Search from './pages/search'
+import SearchSong from './pages/search/song'
+import SearchAlbum from './pages/search/album'
+import SearchArtist from './pages/search/artist'
+import SearchMv from './pages/search/mv'
+import SearchSongList from './pages/search/song-list'
 
 const router = createHashRouter([
   {
     path: '/',
     element: <Layout />,
-    errorElement: <ErrorPage />,
+    errorElement: <Error />,
     children: [
       {
         index: true,
-        element: <Rankings />,
-        errorElement: <ErrorPage />,
+        element: <Home />,
+        errorElement: <Error />,
       },
       {
-        path: 'search',
-        element: <Search />,
-        errorElement: <ErrorPage />,
+        path: 'ranking',
+        element: <RankingList />,
+        errorElement: <Error />,
       },
       {
-        path: 'setting',
-        element: <Setting />,
-        errorElement: <ErrorPage />,
+        path: 'artists',
+        element: <Artists />,
+        errorElement: <Error />,
       },
       {
         path: 'song-list',
         element: <SongList />,
-        errorElement: <ErrorPage />,
+        errorElement: <Error />,
       },
       {
-        path: 'rankings',
-        element: <Rankings />,
-        errorElement: <ErrorPage />,
+        path: 'song-list/detail/:id',
+        element: <SongListDetail />,
+        errorElement: <Error />,
       },
       {
-        path: 'download',
-        element: <Download />,
-        errorElement: <ErrorPage />,
+        path: 'mv',
+        element: <MvPage />,
+        errorElement: <Error />,
       },
       {
-        path: 'singers',
-        element: <Singers />,
-        errorElement: <ErrorPage />,
+        path: 'mv/detail/:id',
+        element: <MvDetail />,
+        errorElement: <Error />,
       },
       {
-        path: 'singer/:singerId',
-        element: <Singer />,
-        errorElement: <ErrorPage />,
+        path: 'artist/:id',
+        element: <Artist />,
+        errorElement: <Error />,
         children: [
           {
             index: true,
             element: <Song />,
-            errorElement: <ErrorPage />,
+            errorElement: <Error />,
           },
           {
             path: 'album',
             element: <Album />,
-            errorElement: <ErrorPage />,
+            errorElement: <Error />,
           },
           {
             path: 'mv',
             element: <Mv />,
-            errorElement: <ErrorPage />,
+            errorElement: <Error />,
           },
           {
             path: 'info',
             element: <Info />,
-            errorElement: <ErrorPage />,
+            errorElement: <Error />,
+          },
+        ],
+      },
+      {
+        path: 'music/:id',
+        element: <Music />,
+        errorElement: <Error />,
+      },
+      {
+        path: 'album/:id',
+        element: <AlbumPage />,
+        errorElement: <Error />,
+      },
+      {
+        path: 'search',
+        element: <Search />,
+        errorElement: <Error />,
+        children: [
+          {
+            index: true,
+            element: <SearchSong />,
+            errorElement: <Error />,
+          },
+          {
+            path: 'album',
+            element: <SearchAlbum />,
+            errorElement: <Error />,
+          },
+          {
+            path: 'artist',
+            element: <SearchArtist />,
+            errorElement: <Error />,
+          },
+          {
+            path: 'mv',
+            element: <SearchMv />,
+            errorElement: <Error />,
+          },
+          {
+            path: 'song-list',
+            element: <SearchSongList />,
+            errorElement: <Error />,
+          },
+        ],
+      },
+      {
+        path: 'like',
+        element: <Like />,
+        errorElement: <Error />,
+        children: [
+          {
+            index: true,
+            element: <LikeMusic />,
+            errorElement: <Error />,
+          },
+          {
+            path: 'artist',
+            element: <LikeArtist />,
+            errorElement: <Error />,
           },
         ],
       },
