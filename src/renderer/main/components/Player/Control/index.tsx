@@ -2,6 +2,7 @@ import React, { memo, useCallback, useEffect, useMemo } from 'react'
 import { Howl } from 'howler'
 import { useMusicLikes, usePlaylist } from '../../../store/hooks'
 import emitter from '../../../utils/events'
+import { init, setInit } from '../../../db/playlist'
 import ControlButton from './ControlButton'
 import { FluentHeart, Next, Pause, Play, Previous } from '../../icons'
 import ProgressBar from './ProgressBar'
@@ -90,7 +91,11 @@ const Control: React.FC = () => {
       audio.on('pause', onPause)
       audio.on('play', onPlay)
       audio.once('load', () => {
-        audio?.play()
+        if (init) {
+          setInit()
+        } else {
+          audio?.play()
+        }
       })
     } else {
       if (audio != null) {

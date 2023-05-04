@@ -50,12 +50,12 @@ jobs:
 
       - name: publish windows app
         if: matrix.os == 'windows-latest'
-        run: pack:win
+        run: pnpm run publish --win
         env:
           GH_TOKEN: ${{secrets.GH_TOKEN}}
 
       - name: publish mac app
         if: matrix.os == 'macos-latest'
-        run: pack:mac
+        run: pnpm run publish --mac
         env:
           GH_TOKEN: ${{secrets.GH_TOKEN}}

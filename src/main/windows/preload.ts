@@ -35,5 +35,5 @@ contextBridge.exposeInMainWorld('versions', {
   chrome: process.versions.chrome,
   electron: process.versions.electron,
   version,
-  process: process.platform,
+  platform: process.platform,
 })

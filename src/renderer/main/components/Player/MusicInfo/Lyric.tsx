@@ -38,7 +38,7 @@ const Lyric: React.FC<Props> = ({ open, onClose }) => {
     if (currentPlayLyricLoadable.state === 'hasValue') {
       return currentPlayLyricLoadable.contents.map((item, index) => (
         <div
-          key={item.time}
+          key={item.time + index}
           className={`${index === lyricIndex ? 'text-indigo-600 current' : ''}`}
         >
           {item.lineLyric}
@@ -109,21 +109,23 @@ const Lyric: React.FC<Props> = ({ open, onClose }) => {
   }, [onTimeUpdate])
 
   useEffect(() => {
-    if (open) {
-      document.body.classList.add('overflow-hidden')
-      if (theme === 'dark') {
-        window.electronAPI.setMainTitleBarOverlay({
-          color: '#525252',
-          symbolColor: '#fff',
-        })
-      }
-    } else {
-      document.body.classList.remove('overflow-hidden')
-      if (theme === 'dark') {
-        window.electronAPI.setMainTitleBarOverlay({
-          color: '#141414',
-          symbolColor: '#4f46e5',
-        })
+    if (window.versions.platform === 'win32') {
+      if (open) {
+        // document.body.classList.add('overflow-hidden')
+        if (theme === 'dark') {
+          window.electronAPI.setMainTitleBarOverlay({
+            color: '#525252',
+            symbolColor: '#fff',
+          })
+        }
+      } else {
+        // document.body.classList.remove('overflow-hidden')
+        if (theme === 'dark') {
+          window.electronAPI.setMainTitleBarOverlay({
+            color: '#141414',
+            symbolColor: '#4f46e5',
+          })
+        }
       }
     }
   }, [open, theme])
@@ -134,20 +136,20 @@ const Lyric: React.FC<Props> = ({ open, onClose }) => {
         open ? 'translate-y-0' : 'translate-y-full'
       }	`}
     >
-      <div className="flex items-start justify-center p-4">
+      <div className="flex items-start justify-center py-1">
         <button
           title="收起"
           onClick={onClose}
-          className="text-4xl hover:text-indigo-600"
+          className="text-4xl hover:text-indigo-600 titleBar-ml"
         >
           <ChevronDown />
         </button>
         <div className="flex-1 text-center draggable">
           {currentPlay && (
-            <>
+            <div>
               <Link
                 to={'/music/' + currentPlay.rid}
-                className="text-2xl link nonDraggable"
+                className="text-2xl pt-2 block link nonDraggable"
                 onClick={onClose}
               >
                 {currentPlay.name}
@@ -169,7 +171,7 @@ const Lyric: React.FC<Props> = ({ open, onClose }) => {
                   {currentPlay.album}
                 </Link>
               </p>
-            </>
+            </div>
           )}
         </div>
         <div className="w-9"></div>

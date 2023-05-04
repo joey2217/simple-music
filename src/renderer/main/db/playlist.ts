@@ -1,8 +1,19 @@
 import db from '.'
 import type { Music } from '../types'
 
+export let init = false
+
+export function setInit(bool:boolean = false) {
+  init = bool
+}
+
 export function getPlaylist() {
-  return db.playlist.toArray()
+  return db.playlist.toArray().then((list) => {
+    if (list.length > 0) {
+      init = true
+    }
+    return list
+  })
 }
 
 export function bulkAddPlaylist(items: Music[]) {

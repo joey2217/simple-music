@@ -11,7 +11,9 @@ interface IElectronAPI {
   getDownloadsPath: () => Promise<string>
   showItemInFolder: (fullPath: string) => Promise<void>
   openPath: (fullPath: string) => Promise<void>
-  showOpenDialog: (options: Electron.OpenDialogOptions) =>  Promise<Electron.OpenDialogReturnValue>
+  showOpenDialog: (
+    options: Electron.OpenDialogOptions
+  ) => Promise<Electron.OpenDialogReturnValue>
   setMainTitleBarOverlay: (options: Electron.TitleBarOverlayOptions) => void
 }
 
@@ -22,6 +24,15 @@ interface IVersions {
   node: string
   chrome: string
   electron: string
+  version: string
+  platform:
+    | 'aix'
+    | 'darwin'
+    | 'freebsd'
+    | 'linux'
+    | 'openbsd'
+    | 'sunos'
+    | 'win32'
 }
 
 interface IKuwoAPI {

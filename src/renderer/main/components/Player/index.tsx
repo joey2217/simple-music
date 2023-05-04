@@ -6,7 +6,7 @@ import Volume from './Volume'
 
 const Player: React.FC = () => {
   return (
-    <div className="px-2 grid grid-cols-12 gap-2 bg-gray-100 dark:bg-gray-800 h-20 items-center">
+    <div className="px-2 grid grid-cols-12 gap-2 bg-gray-100 dark:bg-neutral-800 h-20 items-center">
       <div className="col-span-3">
         <MusicInfo />
       </div>

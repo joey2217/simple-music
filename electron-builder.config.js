@@ -1,7 +1,6 @@
-const { version, author } = require('./package.json')
+const { version, author, productName } = require('./package.json')
 
 const year = new Date().getFullYear()
-const productName = 'SimpleMusic'
 
 /**
  * @type {import('electron-builder').Configuration}

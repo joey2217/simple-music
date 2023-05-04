@@ -48,7 +48,9 @@ export default function handleIPC() {
   ipcMain.handle(
     'SET_MAIN_TITLE_BAR_OVERLAY',
     (e, options: Electron.TitleBarOverlayOptions) => {
-      setMainTitleBarOverlay(options)
+      if (process.platform === 'win32') {
+        setMainTitleBarOverlay(options)
+      }
     }
   )
 }
