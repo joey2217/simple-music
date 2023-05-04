@@ -10,11 +10,11 @@ export function create() {
     height: 800,
     show: false,
     titleBarStyle: 'hidden',
-    titleBarOverlay: true,
-    // titleBarOverlay: {
-    //   color: '#2f3241',
-    //   symbolColor: '#74b1be',
-    // },
+    titleBarOverlay: {
+      color: '#fff',
+      symbolColor: '#4f46e5',
+      height: 40,
+    },
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       webSecurity: import.meta.env.PROD,
@@ -44,4 +44,12 @@ export function send(channel: string, ...args: any[]) {
 
 export function showOpenDialog(options: OpenDialogOptions) {
   return dialog.showOpenDialog(win, options)
+}
+
+export function setMainTitleBarOverlay(
+  options: Electron.TitleBarOverlayOptions
+) {
+  if (win) {
+    win.setTitleBarOverlay(options)
+  }
 }

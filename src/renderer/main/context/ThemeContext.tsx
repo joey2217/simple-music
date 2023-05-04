@@ -45,8 +45,10 @@ function getTheme(): Theme {
       window.matchMedia('(prefers-color-scheme: dark)').matches)
   ) {
     document.documentElement.classList.add('dark')
+    window.electronAPI.setMainTitleBarOverlay({ color: '#141414' })
     return 'dark'
   }
+  window.electronAPI.setMainTitleBarOverlay({ color: '#fff' })
   document.documentElement.classList.remove('dark')
   return 'light'
 }
@@ -55,7 +57,9 @@ function setLocalTheme(theme: Theme) {
   localStorage.setItem(LOCAL_THEME, theme)
   if (theme === 'dark') {
     document.documentElement.classList.add('dark')
+    window.electronAPI.setMainTitleBarOverlay({ color: '#141414' })
   } else {
+    window.electronAPI.setMainTitleBarOverlay({ color: '#fff' })
     document.documentElement.classList.remove('dark')
   }
 }

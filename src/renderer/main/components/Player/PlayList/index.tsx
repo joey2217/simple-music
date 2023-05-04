@@ -26,7 +26,7 @@ const PlayList: React.FC = () => {
     <div>
       {createPortal(
         <div
-          className={`fixed top-0 right-0 z-30 text-sm p-4 rounded h-screen max-w-full w-[475px] bg-neutral-100 dark:bg-neutral-700 transition-transform ease-in-out duration-300 ${
+          className={`fixed titleBar-top right-0 z-30 text-sm p-4 rounded h-screen max-w-full w-[475px] bg-neutral-100 dark:bg-neutral-700 transition-transform ease-in-out duration-300 ${
             open ? 'translate-y-0' : 'translate-y-full'
           }	`}
         >

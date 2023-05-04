@@ -4,17 +4,23 @@
 
 :root {
   --main-color: #4f46e5;
+  --fallback-title-bar-height: 40px;
 }
 
 html {
   color-scheme: light;
   color: #000000e0;
+  user-select: none;
   /* background-color: #fff; */
 }
 html.dark {
   color-scheme: dark;
   color: #ffffffd9;
   background-color: #141414;
+}
+
+body {
+  @apply overflow-hidden;
 }
 
 a.link {
@@ -120,4 +126,50 @@ button:disabled {
 
 .card-grid {
   @apply grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4;
+}
+
+.draggable {
+  app-region: drag;
+  -webkit-app-region: drag;
+}
+
+.nonDraggable {
+  app-region: no-drag;
+  -webkit-app-region: no-drag;
+}
+
+#titleBarContainer {
+  position: fixed;
+  top: env(titlebar-area-y, 0);
+  height: env(titlebar-area-height, var(--fallback-title-bar-height));
+  width: 100%;
+  cursor: pointer;
+  z-index: 9;
+  background-color: #fff;
+  box-sizing: content-box;
+}
+
+.dark #titleBarContainer {
+  background-color: #141414;
+}
+
+#titleBar {
+  position: absolute;
+  top: 0;
+  display: flex;
+  height: 100%;
+  left: env(titlebar-area-x, 0);
+  width: env(titlebar-area-width, 100%);
+  text-align: center;
+}
+
+.titleBar-top {
+  top: env(titlebar-area-height, var(--fallback-title-bar-height));
+}
+.titleBar-width {
+  width: env(titlebar-area-width, 100%);
+}
+
+#main {
+  height: calc(100vh - 120px);
 }

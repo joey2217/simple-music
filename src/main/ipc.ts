@@ -1,12 +1,15 @@
 import { ipcMain, app, shell, nativeTheme } from 'electron'
 import * as path from 'path'
 import { download, setDownloadPath } from './download'
-import { send as sendToMain, showOpenDialog } from './windows/main'
+import {
+  send as sendToMain,
+  showOpenDialog,
+  setMainTitleBarOverlay,
+} from './windows/main'
 import type { DownloadInfo } from './types'
 import type { OpenDialogOptions } from 'electron'
 
 export default function handleIPC() {
-
   nativeTheme.themeSource = 'dark'
 
   ipcMain.handle('TOGGLE_DEVTOOLS', (event) => {
@@ -41,4 +44,11 @@ export default function handleIPC() {
   ipcMain.handle('OPEN_DIALOG', (e, options: OpenDialogOptions) => {
     return showOpenDialog(options)
   })
+
+  ipcMain.handle(
+    'SET_MAIN_TITLE_BAR_OVERLAY',
+    (e, options: Electron.TitleBarOverlayOptions) => {
+      setMainTitleBarOverlay(options)
+    }
+  )
 }

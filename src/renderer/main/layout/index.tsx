@@ -7,7 +7,7 @@ const AppLayout: React.FC = () => {
   return (
     <>
       <Header />
-      <main className="container mx-auto py-4 mb-20">
+      <main className="overflow-auto px-4 py-4 mt-10" id="main">
         <Outlet />
       </main>
       <section className="fixed bottom-0 z-50 w-full">

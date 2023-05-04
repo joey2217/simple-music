@@ -26,6 +26,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   openPath: (fullPath: string) => ipcRenderer.invoke('OPEN_PATH', fullPath),
   showOpenDialog: (options: OpenDialogOptions) =>
     ipcRenderer.invoke('OPEN_DIALOG', options),
+  setMainTitleBarOverlay: (options: Electron.TitleBarOverlayOptions) =>
+    ipcRenderer.invoke('SET_MAIN_TITLE_BAR_OVERLAY', options),
 })
 
 contextBridge.exposeInMainWorld('versions', {

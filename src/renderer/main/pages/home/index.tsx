@@ -122,7 +122,7 @@ const Home: React.FC = () => {
   ])
 
   return (
-    <div className="container mx-auto">
+    <div>
       <div className="flex items-baseline gap-4">
         <h2 className="font-semibold text-2xl">排行榜</h2>
         <Link

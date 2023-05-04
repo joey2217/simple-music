@@ -12,6 +12,7 @@ interface IElectronAPI {
   showItemInFolder: (fullPath: string) => Promise<void>
   openPath: (fullPath: string) => Promise<void>
   showOpenDialog: (options: Electron.OpenDialogOptions) =>  Promise<Electron.OpenDialogReturnValue>
+  setMainTitleBarOverlay: (options: Electron.TitleBarOverlayOptions) => void
 }
 
 interface IDevAPI {

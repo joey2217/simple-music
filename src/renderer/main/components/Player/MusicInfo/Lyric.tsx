@@ -8,9 +8,10 @@ import React, {
 } from 'react'
 import { createPortal } from 'react-dom'
 import { usePlaylist } from '../../../store/hooks'
-import { ChevronDown, LoadingIcon, RoundClose } from '../../icons'
+import { ChevronDown, LoadingIcon } from '../../icons'
 import emitter from '../../../utils/events'
 import { Link } from 'react-router-dom'
+import { useTheme } from '../../../context/ThemeContext'
 
 interface Props {
   open: boolean
@@ -21,6 +22,7 @@ let prevTime = 0
 
 const Lyric: React.FC<Props> = ({ open, onClose }) => {
   const lyricEl = useRef<HTMLDivElement>(null)
+  const { theme } = useTheme()
   const { currentPlayLyricLoadable, currentPlay } = usePlaylist()
 
   const [lyricIndex, setLyricIndex] = useState(0)
@@ -109,35 +111,48 @@ const Lyric: React.FC<Props> = ({ open, onClose }) => {
   useEffect(() => {
     if (open) {
       document.body.classList.add('overflow-hidden')
+      if (theme === 'dark') {
+        window.electronAPI.setMainTitleBarOverlay({
+          color: '#525252',
+          symbolColor: '#fff',
+        })
+      }
     } else {
       document.body.classList.remove('overflow-hidden')
+      if (theme === 'dark') {
+        window.electronAPI.setMainTitleBarOverlay({
+          color: '#141414',
+          symbolColor: '#4f46e5',
+        })
+      }
     }
-  }, [open])
+  }, [open, theme])
 
   return createPortal(
     <div
-      className={`fixed top-0 right-0 w-full p-4 rounded h-screen bg-neutral-50 dark:bg-neutral-600 transition-transform ease-in-out duration-300 ${
+      className={`fixed z-10 top-0 right-0 w-full rounded h-screen bg-neutral-50 dark:bg-neutral-600 transition-transform ease-in-out duration-300 ${
         open ? 'translate-y-0' : 'translate-y-full'
       }	`}
     >
-      <div className="flex items-start justify-center">
-        <button 
+      <div className="flex items-start justify-center p-4">
+        <button
           title="收起"
           onClick={onClose}
-          className="text-4xl hover:text-indigo-600">
+          className="text-4xl hover:text-indigo-600"
+        >
           <ChevronDown />
         </button>
-        <div className="flex-1 text-center">
+        <div className="flex-1 text-center draggable">
           {currentPlay && (
             <>
               <Link
                 to={'/music/' + currentPlay.rid}
-                className="text-2xl link"
+                className="text-2xl link nonDraggable"
                 onClick={onClose}
               >
                 {currentPlay.name}
               </Link>
-              <p className="flex items-center justify-center my-2 gap-2">
+              <p className="flex items-center justify-center my-2 gap-2 nonDraggable">
                 <Link
                   to={'/artist/' + currentPlay.artistid}
                   className="link"
@@ -157,13 +172,14 @@ const Lyric: React.FC<Props> = ({ open, onClose }) => {
             </>
           )}
         </div>
-        <button
+        <div className="w-9"></div>
+        {/* <button
           title="关闭"
           onClick={onClose}
           className="text-4xl hover:text-indigo-600"
         >
           <RoundClose />
-        </button>
+        </button> */}
       </div>
       <div
         className="flex flex-col gap-2 pt-4 pb-10 text-center overflow-auto"

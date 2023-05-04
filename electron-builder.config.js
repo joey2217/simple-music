@@ -17,7 +17,7 @@ module.exports = {
   },
   files: ['dist'],
   win: {
-    icon: 'resources/icon.png',
+    icon: 'resources/icon.ico',
     target: {
       target: 'nsis',
       arch: ['x64']
