@@ -5,7 +5,7 @@ on:
     # branches: [ main ]
     # Sequence of patterns matched against refs/tags
     tags:
-     - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+      - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
   release:
@@ -16,26 +16,46 @@ jobs:
         os: [macos-latest, windows-latest]
 
     steps:
-      - name: Check out Git repository
+      - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install Node.js, NPM and Yarn
+      - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
-          cache: "yarn"
+          node-version: 16
 
-      - name: install dependencies
-        run: yarn install
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
 
       - name: publish windows app
         if: matrix.os == 'windows-latest'
         run: pack:win
-        env: 
+        env:
           GH_TOKEN: ${{secrets.GH_TOKEN}}
 
       - name: publish mac app
         if: matrix.os == 'macos-latest'
         run: pack:mac
-        env: 
+        env:
           GH_TOKEN: ${{secrets.GH_TOKEN}}
