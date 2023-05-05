@@ -141,6 +141,13 @@ const Control: React.FC = () => {
     }
   }, [playerVolume])
 
+  useEffect(() => {
+    emitter.on('togglePlay', togglePlaying)
+    return () => {
+      emitter.off('togglePlay', togglePlaying)
+    }
+  }, [togglePlaying])
+
   return (
     <div>
       <div className="flex justify-center items-center gap-4">

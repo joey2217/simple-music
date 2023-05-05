@@ -1,7 +1,7 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { version } from '../../../package.json'
 import type { DownloadInfo } from '../types'
-import type { OpenDialogOptions } from 'electron'
+import type { OpenDialogOptions, IpcRendererEvent } from 'electron'
 
 /**
  * 不能加载常量,sandbox无法加载
@@ -28,6 +28,17 @@ contextBridge.exposeInMainWorld('electronAPI', {
     ipcRenderer.invoke('OPEN_DIALOG', options),
   setMainTitleBarOverlay: (options: Electron.TitleBarOverlayOptions) =>
     ipcRenderer.invoke('SET_MAIN_TITLE_BAR_OVERLAY', options),
+  setMainThumbarButtons: (playing: boolean, disabled = false) =>
+    ipcRenderer.invoke('SET_MAIN_THUMBAR_BUTTONS', playing, disabled),
+  onMusicControl: (
+    callback: (
+      e: IpcRendererEvent,
+      type: 'prev' | 'play' | 'pause' | 'next'
+    ) => void
+  ) => ipcRenderer.on('MUSIC_CONTROL', callback),
+  onToggleFullScreen: (
+    callback: (e: IpcRendererEvent, isFull: boolean) => void
+  ) => ipcRenderer.on('TOGGLE_FULL_SCREEN', callback),
 })
 
 contextBridge.exposeInMainWorld('versions', {

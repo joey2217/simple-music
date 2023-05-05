@@ -15,6 +15,16 @@ interface IElectronAPI {
     options: Electron.OpenDialogOptions
   ) => Promise<Electron.OpenDialogReturnValue>
   setMainTitleBarOverlay: (options: Electron.TitleBarOverlayOptions) => void
+  setMainThumbarButtons: (playing: boolean, disabled = false) => Promise<void>
+  onMusicControl: (
+    callback: (
+      e: Electron.IpcRendererEvent,
+      type: 'prev' | 'play' | 'pause' | 'next'
+    ) => void
+  ) => void
+  onToggleFullScreen: (
+    callback: (e: IpcRendererEvent, isFull: boolean) => void
+  ) => void
 }
 
 interface IDevAPI {

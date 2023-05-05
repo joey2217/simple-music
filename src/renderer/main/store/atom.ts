@@ -59,3 +59,8 @@ export const defaultSearchHotKeysState = atom<string[]>({
   key: 'defaultSearchHotKeysState',
   default: fetchSearchKeys(),
 })
+
+export const isFullScreenState = atom<boolean>({
+  key: 'isFullScreenState',
+  default: false,
+})

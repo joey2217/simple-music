@@ -24,6 +24,9 @@ import SearchAlbum from './pages/search/album'
 import SearchArtist from './pages/search/artist'
 import SearchMv from './pages/search/mv'
 import SearchSongList from './pages/search/song-list'
+import Download from './pages/download'
+import Setting from './pages/setting'
+import About from './pages/setting/about'
 
 const router = createHashRouter([
   {
@@ -148,6 +151,23 @@ const router = createHashRouter([
           {
             path: 'artist',
             element: <LikeArtist />,
+            errorElement: <Error />,
+          },
+        ],
+      },
+      {
+        path: 'download',
+        element: <Download />,
+        errorElement: <Error />,
+      },
+      {
+        path: 'setting',
+        element: <Setting />,
+        errorElement: <Error />,
+        children: [
+          {
+            path: 'about',
+            element: <About />,
             errorElement: <Error />,
           },
         ],

@@ -1,6 +1,6 @@
 import React from 'react'
-import Providers from './context/Providers'
 import { RouterProvider } from 'react-router-dom'
+import Providers from './context/Providers'
 import router from './router'
 
 const App: React.FC = () => {

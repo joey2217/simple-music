@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react'
 import { createPortal } from 'react-dom'
-import { usePlaylist } from '../../../store/hooks'
+import { useFullScreen, usePlaylist } from '../../../store/hooks'
 import { ChevronDown, LoadingIcon } from '../../icons'
 import emitter from '../../../utils/events'
 import { Link } from 'react-router-dom'
@@ -24,6 +24,7 @@ const Lyric: React.FC<Props> = ({ open, onClose }) => {
   const lyricEl = useRef<HTMLDivElement>(null)
   const { theme } = useTheme()
   const { currentPlayLyricLoadable, currentPlay } = usePlaylist()
+  const { full } = useFullScreen()
 
   const [lyricIndex, setLyricIndex] = useState(0)
 
@@ -136,25 +137,27 @@ const Lyric: React.FC<Props> = ({ open, onClose }) => {
         open ? 'translate-y-0' : 'translate-y-full'
       }	`}
     >
-      <div className="flex items-start justify-center py-1">
+      <div className="flex items-start justify-center py-1 px-2">
         <button
           title="收起"
           onClick={onClose}
-          className="text-4xl hover:text-indigo-600 titleBar-ml"
+          className={`text-4xl hover:text-indigo-600 ${
+            full ? 'ml-0' : 'titleBar-ml'
+          }`}
         >
           <ChevronDown />
         </button>
-        <div className="flex-1 text-center draggable">
+        <div className="flex-1 flex flex-col items-center  text-center draggable">
           {currentPlay && (
-            <div>
+            <>
               <Link
                 to={'/music/' + currentPlay.rid}
-                className="text-2xl pt-2 block link nonDraggable"
+                className="text-2xl pt-2 link nonDraggable"
                 onClick={onClose}
               >
                 {currentPlay.name}
               </Link>
-              <p className="flex items-center justify-center my-2 gap-2 nonDraggable">
+              <p className="inline-flex items-center justify-center my-2 gap-2 nonDraggable">
                 <Link
                   to={'/artist/' + currentPlay.artistid}
                   className="link"
@@ -171,7 +174,7 @@ const Lyric: React.FC<Props> = ({ open, onClose }) => {
                   {currentPlay.album}
                 </Link>
               </p>
-            </div>
+            </>
           )}
         </div>
         <div className="w-9"></div>

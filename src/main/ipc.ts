@@ -5,6 +5,7 @@ import {
   send as sendToMain,
   showOpenDialog,
   setMainTitleBarOverlay,
+  setMainThumbarButtons,
 } from './windows/main'
 import type { DownloadInfo } from './types'
 import type { OpenDialogOptions } from 'electron'
@@ -51,6 +52,13 @@ export default function handleIPC() {
       if (process.platform === 'win32') {
         setMainTitleBarOverlay(options)
       }
+    }
+  )
+
+  ipcMain.handle(
+    'SET_MAIN_THUMBAR_BUTTONS',
+    (_e, playing: boolean, disabled = false) => {
+      setMainThumbarButtons(playing, disabled)
     }
   )
 }

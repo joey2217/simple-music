@@ -6,6 +6,7 @@ type Events = {
   seek: number
   end?: boolean
   timeUpdate: number
+  togglePlay: void
 }
 
 const emitter = mitt<Events>() // inferred as Emitter<Events>

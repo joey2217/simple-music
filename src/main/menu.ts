@@ -66,10 +66,9 @@ if (process.platform === 'darwin') {
       submenu: [
         { role: 'minimize', label: '最小化' },
         { role: 'zoom', label: '缩放' },
-        { type: 'separator', label: '切换全屏' },
+        { type: 'separator' },
         { role: 'front', label: '置顶' },
-        { type: 'separator', label: '切换全屏' },
-        { role: 'window' },
+        { role: 'togglefullscreen', label: '切换全屏' },
       ],
     },
     // {

@@ -8,6 +8,7 @@ import handleIPC from './ipc'
 import { checkUpdate } from './updater'
 import './proxy'
 import './menu'
+import './tray'
 
 const gotTheLock = app.requestSingleInstanceLock()
 
@@ -32,3 +33,5 @@ if (import.meta.env.DEV) {
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit()
 })
+
+// TODO mac 音乐控制

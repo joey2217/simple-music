@@ -158,9 +158,12 @@ button:disabled {
   top: 0;
   display: flex;
   height: 100%;
-  left: env(titlebar-area-x, 0);
   width: env(titlebar-area-width, 100%);
   text-align: center;
+}
+
+.titleBar-left {
+  left: env(titlebar-area-x, 0);
 }
 
 .titleBar-top {
