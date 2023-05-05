@@ -5,7 +5,7 @@ const filter = {
   urls: ['https://www.kuwo.cn/*'],
 }
 
-let csrf = ''
+let csrf = '2GTRO51Y2VM'
 let reqCookie = ''
 const HEADER_COOKIE_KEY = 'Cookie'
 const CSRF_KEY = 'csrf'
