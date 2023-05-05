@@ -1,11 +1,9 @@
 # simple-music
 
-> https://github.com/lyswhut/lx-music-desktop
+## 版本管理
 
-> https://www.npmjs.com/package/howler
-
-> https://www.kuwo.cn/
-
-- 想你的365天-李玟  
-
-> https://www.electronjs.org/zh/docs/latest/tutorial/window-customization
+```sh
+npm version patch # 升级修订版本号
+npm version minor # 升级次版本号
+npm version major # 升级主版本号
+```
