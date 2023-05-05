@@ -1,6 +1,7 @@
 import { app } from 'electron'
 import { loadDevTools } from './dev'
 import {
+  beforeQuit,
   create as createMainWindow,
   focus as focusMainWindow,
 } from './windows/main'
@@ -33,5 +34,7 @@ if (import.meta.env.DEV) {
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit()
 })
+
+app.on('before-quit', beforeQuit)
 
 // TODO mac 音乐控制

@@ -1,10 +1,9 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import type { Music, PlayMode } from '../types'
 import {
   useRecoilState,
   useRecoilValue,
   useRecoilValueLoadable,
-  useSetRecoilState,
 } from 'recoil'
 import {
   playListState,
@@ -14,7 +13,6 @@ import {
   likeMusicState,
   likeArtistState,
   playerVolumeState,
-  isFullScreenState,
 } from './atom'
 import {
   currentPlayUrlState,
@@ -288,17 +286,3 @@ export function useArtistLikes() {
   } as const
 }
 
-export function useFullScreen() {
-  const [full, setFull] = useRecoilState(isFullScreenState)
-
-  useEffect(() => {
-    window.electronAPI.onToggleFullScreen((e, bool) => {
-      setFull(bool)
-    })
-  }, [setFull])
-
-  return {
-    full,
-    setFull,
-  } as const
-}

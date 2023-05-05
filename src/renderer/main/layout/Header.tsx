@@ -3,20 +3,15 @@ import ThemeButton from './ThemeButton'
 import Logo from './Logo'
 import { NavLink, useLocation } from 'react-router-dom'
 import SearchInput from '../components/SearchInput'
-import { useFullScreen } from '../store/hooks'
 
 const Header: React.FC = () => {
   const { pathname } = useLocation()
-  const { full } = useFullScreen()
   return (
     <header
       id="titleBarContainer"
       className="w-full border-b border-slate-900/20 dark:border-slate-50/20"
     >
-      <div
-        id="titleBar"
-        className={`px-4 ${full ? 'titleBar-left' : 'left-0'}`}
-      >
+      <div id="titleBar" className="px-4">
         <div className="w-full flex items-center h-10 gap-4">
           <Logo />
           <nav className="flex gap-2">

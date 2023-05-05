@@ -61,9 +61,6 @@ export function create() {
       win.hide()
     }
   })
-  
-  win.on('enter-full-screen', () => send('TOGGLE_FULL_SCREEN', true))
-  win.on('leave-full-screen', () => send('TOGGLE_FULL_SCREEN', false))
 
   if (process.platform === 'win32') {
     const bool = win.setThumbarButtons(thumbarButtons)
@@ -138,4 +135,8 @@ export function setMainThumbarButtons(playing: boolean, disabled = false) {
       }
     }
   }
+}
+
+export function beforeQuit() {
+  quit = true
 }

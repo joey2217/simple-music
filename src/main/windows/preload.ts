@@ -36,9 +36,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
       type: 'prev' | 'play' | 'pause' | 'next'
     ) => void
   ) => ipcRenderer.on('MUSIC_CONTROL', callback),
-  onToggleFullScreen: (
-    callback: (e: IpcRendererEvent, isFull: boolean) => void
-  ) => ipcRenderer.on('TOGGLE_FULL_SCREEN', callback),
 })
 
 contextBridge.exposeInMainWorld('versions', {

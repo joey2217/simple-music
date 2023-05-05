@@ -16,7 +16,7 @@ if (process.platform === 'darwin') {
         { role: 'hideOthers', label: '隐藏其他' },
         { role: 'unhide', label: '全部显示' },
         { type: 'separator' },
-        { role: 'quit', label: '退出 ' + appName },
+        { label: '退出 ' + appName, role: 'quit' },
       ],
     },
     // { role: 'fileMenu' }

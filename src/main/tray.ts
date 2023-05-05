@@ -25,12 +25,13 @@ const contextMenu = Menu.buildFromTemplate([
   { label: '上一曲', icon: prevIcon, click: musicControl('prev') },
   { label: '下一曲', icon: nextIcon, click: musicControl('next') },
   { type: 'separator' },
-  { label: '退出', role: 'quit', icon: logoutIcon },
+  { label: '退出', icon: logoutIcon, role: 'quit' },
 ])
 
 app.whenReady().then(() => {
   tray = new Tray(appIcon)
-  tray.setTitle('轻音乐')
+  // tray.setTitle('轻音乐')
+  tray.setToolTip('轻音乐')
   tray.setContextMenu(contextMenu)
   tray.on('click', focus)
 })

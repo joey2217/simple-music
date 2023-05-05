@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react'
 import { createPortal } from 'react-dom'
-import { useFullScreen, usePlaylist } from '../../../store/hooks'
+import { usePlaylist } from '../../../store/hooks'
 import { ChevronDown, LoadingIcon } from '../../icons'
 import emitter from '../../../utils/events'
 import { Link } from 'react-router-dom'
@@ -24,7 +24,6 @@ const Lyric: React.FC<Props> = ({ open, onClose }) => {
   const lyricEl = useRef<HTMLDivElement>(null)
   const { theme } = useTheme()
   const { currentPlayLyricLoadable, currentPlay } = usePlaylist()
-  const { full } = useFullScreen()
 
   const [lyricIndex, setLyricIndex] = useState(0)
 
@@ -141,9 +140,7 @@ const Lyric: React.FC<Props> = ({ open, onClose }) => {
         <button
           title="收起"
           onClick={onClose}
-          className={`text-4xl hover:text-indigo-600 ${
-            full ? 'ml-0' : 'titleBar-ml'
-          }`}
+          className="text-4xl hover:text-indigo-600 titleBar-ml"
         >
           <ChevronDown />
         </button>
