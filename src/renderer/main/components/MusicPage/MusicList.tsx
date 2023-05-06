@@ -1,8 +1,13 @@
 import React, { memo } from 'react'
 import { Link } from 'react-router-dom'
-import { useMusicLikes, usePlaylist } from '../../store/hooks'
+import { useDownload, useMusicLikes, usePlaylist } from '../../store/hooks'
 import type { Music } from '../../types'
-import { FluentAdd, FluentHeart, PlayOutline } from '../icons'
+import {
+  FluentAdd,
+  FluentArrowDownload,
+  FluentHeart,
+  PlayOutline,
+} from '../icons'
 
 interface Props {
   list: Music[]
@@ -10,6 +15,7 @@ interface Props {
 
 const MusicList: React.FC<Props> = ({ list }) => {
   const { addPlaylist, playNow } = usePlaylist()
+  const { downloadMusic } = useDownload()
   const { musicLikeIds, addLikeMusic, removeLikeMusic } = useMusicLikes()
   return (
     <table className="min-w-full divide-y-2 divide-gray-200 text-base dark:divide-gray-700">
@@ -30,7 +36,7 @@ const MusicList: React.FC<Props> = ({ list }) => {
             <td className="w-10 text-center">
               <div>{index + 1}</div>
             </td>
-            <td className="w-20">
+            <td className="w-24">
               <div className="flex gap-2 justify-center w-full">
                 <button
                   title="播放"
@@ -55,10 +61,21 @@ const MusicList: React.FC<Props> = ({ list }) => {
                     <FluentHeart />
                   </button>
                 ) : (
-                  <button title="喜欢" onClick={() => addLikeMusic(m)}  className="text-neutral-400">
+                  <button
+                    title="喜欢"
+                    onClick={() => addLikeMusic(m)}
+                    className="text-neutral-400"
+                  >
                     <FluentHeart />
                   </button>
                 )}
+                <button
+                  title="下载"
+                  onClick={() => downloadMusic(m)}
+                  className="hover:text-indigo-600"
+                >
+                  <FluentArrowDownload />
+                </button>
               </div>
             </td>
             <td className="py-2">

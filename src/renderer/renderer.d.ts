@@ -16,10 +16,18 @@ interface IElectronAPI {
   ) => Promise<Electron.OpenDialogReturnValue>
   setMainTitleBarOverlay: (options: Electron.TitleBarOverlayOptions) => void
   setMainThumbarButtons: (playing: boolean, disabled = false) => Promise<void>
+  trashItem: (path: string) => Promise<void>
   onMusicControl: (
     callback: (
       e: Electron.IpcRendererEvent,
       type: 'prev' | 'play' | 'pause' | 'next'
+    ) => void
+  ) => void
+  onDownloadFinish: (
+    callback: (
+      e: Electron.IpcRendererEvent,
+      rid: number,
+      success: boolean
     ) => void
   ) => void
 }

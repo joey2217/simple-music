@@ -30,12 +30,16 @@ contextBridge.exposeInMainWorld('electronAPI', {
     ipcRenderer.invoke('SET_MAIN_TITLE_BAR_OVERLAY', options),
   setMainThumbarButtons: (playing: boolean, disabled = false) =>
     ipcRenderer.invoke('SET_MAIN_THUMBAR_BUTTONS', playing, disabled),
+  trashItem: (path: string) => ipcRenderer.invoke('TRASH_ITEM', path),
   onMusicControl: (
     callback: (
       e: IpcRendererEvent,
       type: 'prev' | 'play' | 'pause' | 'next'
     ) => void
   ) => ipcRenderer.on('MUSIC_CONTROL', callback),
+  onDownloadFinish: (
+    callback: (e: IpcRendererEvent, rid: number, success: boolean) => void
+  ) => ipcRenderer.on('DOWNLOAD_FINISHED', callback),
 })
 
 contextBridge.exposeInMainWorld('versions', {

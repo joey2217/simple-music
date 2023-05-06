@@ -61,4 +61,8 @@ export default function handleIPC() {
       setMainThumbarButtons(playing, disabled)
     }
   )
+
+  ipcMain.handle('TRASH_ITEM', (_e, itemPath: string) => {
+    return shell.trashItem(path.normalize(itemPath))
+  })
 }

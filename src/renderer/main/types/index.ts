@@ -61,6 +61,14 @@ export interface Music {
   url: string
 }
 
+export type DownloadStatus = 'success' | 'downloading' | 'failed'
+
+export interface DownloadMusic extends Music {
+  fileName: string
+  downloadPath: string
+  status: DownloadStatus
+}
+
 export interface Mvpayinfo {
   play: number
   vid: number

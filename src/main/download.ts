@@ -2,6 +2,7 @@ import { app, session } from 'electron'
 import * as path from 'path'
 import type { DownloadItem } from 'electron'
 import type { DownloadInfo } from './types'
+import { send as sendMain } from './windows/main'
 
 let downloadPath = app.getPath('downloads')
 
@@ -33,32 +34,39 @@ app.whenReady().then(() => {
     downloadItem = item
     item.setSavePath(path.join(downloadPath, downloadFile.fileName))
 
-    item.on('updated', (event, state) => {
-      if (state === 'interrupted') {
-        console.log('Download is interrupted but can be resumed')
-      } else if (state === 'progressing') {
-        if (item.isPaused()) {
-          console.log('Download is paused')
-        } else {
-          console.log(`Received bytes: ${item.getReceivedBytes()}`)
-        }
-      }
-    })
+    // item.on('updated', (event, state) => {
+    //   if (state === 'interrupted') {
+    //     console.log('Download is interrupted but can be resumed')
+    //   } else if (state === 'progressing') {
+    //     if (item.isPaused()) {
+    //       console.log('Download is paused')
+    //     } else {
+    //       console.log(`Received bytes: ${item.getReceivedBytes()}`)
+    //     }
+    //   }
+    // })
     item.once('done', (event, state) => {
       if (state === 'completed') {
         console.log('Download successfully')
-        onCompleted()
+        onCompleted(true)
       } else {
         console.log(`Download failed: ${state}`)
+        onCompleted(false)
       }
     })
   })
 })
 
-function onCompleted() {
+function onCompleted(success: boolean) {
+  if (downloadFile) {
+    sendMain('DOWNLOAD_FINISHED', downloadFile.rid, success)
+  }
   if (downloadFiles.length > 0) {
     downloadFile = downloadFiles.shift()
     downloadItem = null
+    if (downloadFile) {
+      session.defaultSession.downloadURL(downloadFile.url)
+    }
   } else {
     downloadItem = null
     downloadFile = null

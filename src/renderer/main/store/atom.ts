@@ -1,5 +1,5 @@
 import { atom } from 'recoil'
-import type { Music, PlayMode } from '../types'
+import type { DownloadMusic, Music, PlayMode } from '../types'
 import { localStorageEffect } from './utils'
 import type { Artist } from '../types/artist'
 import { getMusicLikeList } from '../db/music'
@@ -58,4 +58,37 @@ export const searchKeywordState = atom({
 export const defaultSearchHotKeysState = atom<string[]>({
   key: 'defaultSearchHotKeysState',
   default: fetchSearchKeys(),
+})
+
+const DOWNLOAD_PATH = 'download_path'
+
+export const downloadPathState = atom<string>({
+  key: 'downloadPathState',
+  default: '',
+  effects: [
+    ({ setSelf, onSet }) => {
+      const savedValue = localStorage.getItem(DOWNLOAD_PATH)
+      let localDownloadPath = ''
+      if (savedValue != null) {
+        try {
+          const parseData = JSON.parse(savedValue)
+          localDownloadPath = parseData as string
+        } catch (error) {}
+      }
+      if (localDownloadPath) {
+        setSelf(localDownloadPath)
+      } else {
+        setSelf(window.electronAPI.getDownloadsPath())
+      }
+      onSet((newValue) => {
+        localStorage.setItem(DOWNLOAD_PATH, JSON.stringify(newValue))
+        window.electronAPI.setDownloadPath(newValue)
+      })
+    },
+  ],
+})
+
+export const downloadListState = atom<DownloadMusic[]>({
+  key: 'downloadListState',
+  default: [],
 })

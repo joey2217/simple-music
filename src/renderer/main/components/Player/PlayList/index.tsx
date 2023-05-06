@@ -20,7 +20,6 @@ const PlayList: React.FC = () => {
     removePlaylistMusic,
     setCurrentPlayIndex,
   } = usePlaylist()
-  const { musicLikeIds, addLikeMusic, removeLikeMusic } = useMusicLikes()
   const [open, setOpen] = useState(false)
   return (
     <div>
@@ -55,15 +54,20 @@ const PlayList: React.FC = () => {
             <table>
               <thead>
                 <tr>
-                  <th className="px-2 py-1 text-center">#</th>
+                  <th className="px-2 py-1 text-center"></th>
                   <th className="px-2 py-1 text-left">歌曲</th>
                   <th className="px-2 py-1 text-left">歌手</th>
                   <th className="px-2 py-1 text-left">时长</th>
+                  <th className="px-2 py-1 text-center"></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {playlist.map((m, index) => (
-                  <tr key={m.rid} className="cursor-pointer">
+                  <tr
+                    key={m.rid}
+                    className="cursor-pointer"
+                    onClick={() => setCurrentPlayIndex(index)}
+                  >
                     <td className="pr-1 py-1 font-medium text-gray-900 dark:text-white">
                       <div className="text-lg flex justify-end items-center gap-1.5">
                         {currentPlay?.rid === m.rid &&
@@ -72,17 +76,17 @@ const PlayList: React.FC = () => {
                           ) : (
                             <Pause className="text-sm text-indigo-600" />
                           ))}
-                        <button
+                        {/* <button
                           title="播放"
                           className="hover:text-indigo-600"
                           onClick={() => setCurrentPlayIndex(index)}
                         >
                           <Play />
-                        </button>
+                        </button> */}
                         {/* <button title="下载" className="hover:text-indigo-600">
                           <FluentArrowDownload />
                         </button> */}
-                        {musicLikeIds.includes(m.rid) ? (
+                        {/* {musicLikeIds.includes(m.rid) ? (
                           <button
                             title="取消喜欢"
                             onClick={() => removeLikeMusic(m)}
@@ -94,14 +98,14 @@ const PlayList: React.FC = () => {
                           <button title="喜欢" onClick={() => addLikeMusic(m)}>
                             <FluentHeart />
                           </button>
-                        )}
-                        <button
+                        )} */}
+                        {/* <button
                           title="移除"
                           className="hover:text-indigo-600"
                           onClick={() => removePlaylistMusic(m)}
                         >
                           <FluentDelete />
-                        </button>
+                        </button> */}
                       </div>
                     </td>
                     <td className="px-2 py-1" title={m.name}>
@@ -112,6 +116,20 @@ const PlayList: React.FC = () => {
                     </td>
                     <td className="px-2 py-1">
                       <div className="w-11 truncate">{m.songTimeMinutes}</div>
+                    </td>
+                    <td className="px-2 py-1">
+                      <div>
+                        <button
+                          title="移除"
+                          className="hover:text-indigo-600"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            removePlaylistMusic(m)
+                          }}
+                        >
+                          <FluentDelete />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

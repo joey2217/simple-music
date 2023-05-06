@@ -1,10 +1,6 @@
 import { useCallback, useMemo } from 'react'
-import type { Music, PlayMode } from '../types'
-import {
-  useRecoilState,
-  useRecoilValue,
-  useRecoilValueLoadable,
-} from 'recoil'
+import type { DownloadMusic, Music, PlayMode } from '../types'
+import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from 'recoil'
 import {
   playListState,
   currentPlayIndexState,
@@ -13,6 +9,8 @@ import {
   likeMusicState,
   likeArtistState,
   playerVolumeState,
+  downloadPathState,
+  downloadListState,
 } from './atom'
 import {
   currentPlayUrlState,
@@ -33,6 +31,7 @@ import {
 } from '../db/playlist'
 import { Artist } from '../types/artist'
 import { fetchAlbum } from '../api/album'
+import { fetchMusicUrl } from '../api/music'
 
 export interface PlaylistOptions {
   reset: boolean
@@ -286,3 +285,72 @@ export function useArtistLikes() {
   } as const
 }
 
+export function useDownload() {
+  const [downloadPath, setDownloadPath] = useRecoilState(downloadPathState)
+  const [downloadList, setDownloadList] = useRecoilState(downloadListState)
+
+  const openDownloadPath = useCallback(() => {
+    window.electronAPI.openPath(downloadPath)
+  }, [downloadPath])
+
+  const selectDownloadPath = useCallback(() => {
+    window.electronAPI
+      .showOpenDialog({
+        title: '选择下载目录',
+        properties: ['openDirectory'],
+      })
+      .then(({ filePaths }) => {
+        const [filePath] = filePaths
+        if (filePath) {
+          setDownloadPath(filePath)
+        }
+      })
+  }, [setDownloadPath])
+
+  const downloadMusic = useCallback(
+    (m: Music) => {
+      fetchMusicUrl(m.rid).then((url) => {
+        const urlArr = url.split('.')
+        const ext = urlArr[urlArr.length - 1]
+        const fileName = `${m.artist}-${m.name}.${ext}`
+        const mPath = `${downloadPath}/${fileName}`
+        const downloadItem: DownloadMusic = {
+          ...m,
+          url,
+          fileName,
+          downloadPath: mPath,
+          status: 'downloading',
+        }
+        setDownloadList((list) => [downloadItem, ...list])
+        window.electronAPI.download([downloadItem])
+      })
+    },
+    [downloadPath, setDownloadList]
+  )
+
+  const removeDownloadMusic = useCallback(
+    (index: number, m: DownloadMusic, deleteFile = false) => {
+      setDownloadList((list) => [
+        ...list.slice(0, index),
+        ...list.slice(index + 1),
+      ])
+      if (deleteFile) {
+        window.electronAPI.trashItem(m.downloadPath).catch((error) => {
+          console.error(error, '删除文件失败')
+        })
+      }
+    },
+    [setDownloadList]
+  )
+
+  return {
+    downloadPath,
+    setDownloadPath,
+    downloadList,
+    setDownloadList,
+    downloadMusic,
+    removeDownloadMusic,
+    openDownloadPath,
+    selectDownloadPath,
+  }
+}
