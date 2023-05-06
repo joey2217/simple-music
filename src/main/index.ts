@@ -7,9 +7,10 @@ import {
 } from './windows/main'
 import handleIPC from './ipc'
 import { checkUpdate } from './updater'
-import './proxy'
 import './menu'
 import './tray'
+import './proxy'
+import { initCSRF } from './proxy'
 
 const gotTheLock = app.requestSingleInstanceLock()
 
@@ -21,7 +22,10 @@ if (!gotTheLock) {
     focusMainWindow()
   })
   app.whenReady().then(() => {
-    createMainWindow()
+    initCSRF().then((csrf) => {
+      console.log('initCSRF', csrf)
+      createMainWindow()
+    })
     handleIPC()
     checkUpdate()
   })

@@ -114,7 +114,7 @@ const Lyric: React.FC<Props> = ({ open, onClose }) => {
         // document.body.classList.add('overflow-hidden')
         if (theme === 'dark') {
           window.electronAPI.setMainTitleBarOverlay({
-            color: '#525252',
+            color: '#262626',
             symbolColor: '#fff',
           })
         }
@@ -132,65 +132,74 @@ const Lyric: React.FC<Props> = ({ open, onClose }) => {
 
   return createPortal(
     <div
-      className={`fixed z-10 top-0 right-0 w-full rounded h-screen bg-neutral-50 dark:bg-neutral-600 transition-transform ease-in-out duration-300 ${
+      className={`fixed z-10 top-0 right-0 w-full rounded h-screen bg-neutral-50 dark:bg-neutral-800 transition-transform ease-in-out duration-300 ${
         open ? 'translate-y-0' : 'translate-y-full'
       }	`}
     >
-      <div className="flex items-start justify-center py-1 px-2">
-        <button
-          title="收起"
-          onClick={onClose}
-          className="text-4xl hover:text-indigo-600 titleBar-ml"
-        >
-          <ChevronDown />
-        </button>
-        <div className="flex-1 flex flex-col items-center  text-center draggable">
-          {currentPlay && (
-            <>
-              <Link
-                to={'/music/' + currentPlay.rid}
-                className="text-2xl pt-2 link nonDraggable"
-                onClick={onClose}
-              >
-                {currentPlay.name}
-              </Link>
-              <p className="inline-flex items-center justify-center my-2 gap-2 nonDraggable">
+      <div className="absolute z-10 top-0 left-0 mx-auto my-auto w-full h-full flex justify-center items-center">
+        <img
+          src={currentPlay?.pic}
+          alt="cover"
+          className="w-fit h-2/3 blur-md brightness-50"
+        />
+      </div>
+      <div className="absolute z-20 top-0 left-0 mx-auto my-auto w-full h-full">
+        <div className="flex items-start justify-center py-1 px-2">
+          <button
+            title="收起"
+            onClick={onClose}
+            className="text-4xl hover:text-indigo-600 titleBar-ml"
+          >
+            <ChevronDown />
+          </button>
+          <div className="flex-1 flex flex-col items-center  text-center draggable">
+            {currentPlay && (
+              <>
                 <Link
-                  to={'/artist/' + currentPlay.artistid}
-                  className="link"
+                  to={'/music/' + currentPlay.rid}
+                  className="text-2xl pt-2 link nonDraggable"
                   onClick={onClose}
                 >
-                  {currentPlay.artist}
+                  {currentPlay.name}
                 </Link>
-                <span>-</span>
-                <Link
-                  to={'/album/' + currentPlay.albumid}
-                  className="link"
-                  onClick={onClose}
-                >
-                  {currentPlay.album}
-                </Link>
-              </p>
-            </>
-          )}
-        </div>
-        <div className="w-9"></div>
-        {/* <button
+                <p className="inline-flex items-center justify-center my-2 gap-2 nonDraggable">
+                  <Link
+                    to={'/artist/' + currentPlay.artistid}
+                    className="link"
+                    onClick={onClose}
+                  >
+                    {currentPlay.artist}
+                  </Link>
+                  <span>-</span>
+                  <Link
+                    to={'/album/' + currentPlay.albumid}
+                    className="link"
+                    onClick={onClose}
+                  >
+                    {currentPlay.album}
+                  </Link>
+                </p>
+              </>
+            )}
+          </div>
+          <div className="w-9"></div>
+          {/* <button
           title="关闭"
           onClick={onClose}
           className="text-4xl hover:text-indigo-600"
         >
           <RoundClose />
         </button> */}
-      </div>
-      <div
-        className="flex flex-col gap-2 pt-4 pb-10 text-center overflow-auto"
-        style={{
-          height: 'calc(100vh - 190px)',
-        }}
-        ref={lyricEl}
-      >
-        {lyric}
+        </div>
+        <div
+          className="flex flex-col gap-2 pt-4 pb-10 text-center text-lg overflow-auto"
+          style={{
+            height: 'calc(100vh - 190px)',
+          }}
+          ref={lyricEl}
+        >
+          {lyric}
+        </div>
       </div>
     </div>,
     document.body

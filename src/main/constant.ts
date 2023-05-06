@@ -1,0 +1,1 @@
+export const APP_NAME = '轻音乐'

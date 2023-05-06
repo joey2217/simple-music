@@ -9,11 +9,12 @@ import {
   musicIcon,
 } from './icons'
 import { focus, musicControl } from './windows/main'
+import { APP_NAME } from './constant'
 
 let tray: Tray
 
 const contextMenu = Menu.buildFromTemplate([
-  { id: 'app', label: '轻音乐', icon: musicIcon, click: focus },
+  { id: 'music', label: APP_NAME, icon: musicIcon, click: focus },
   { id: 'play', label: '播放', icon: playIcon, click: musicControl('play') },
   {
     id: 'pause',
@@ -31,7 +32,36 @@ const contextMenu = Menu.buildFromTemplate([
 app.whenReady().then(() => {
   tray = new Tray(appIcon)
   // tray.setTitle('轻音乐')
-  tray.setToolTip('轻音乐')
+  tray.setToolTip(APP_NAME)
   tray.setContextMenu(contextMenu)
   tray.on('click', focus)
 })
+
+export function setCurrentPlay(name: string) {
+  const titleMenu = contextMenu.getMenuItemById('music')
+  if (titleMenu) {
+    titleMenu.label = name
+    console.log(titleMenu.label, name, 'setCurrentPlay')
+  }
+}
+
+export function onPlayingChange(playing: boolean) {
+  const playMenu = contextMenu.getMenuItemById('play')
+  const pauseMenu = contextMenu.getMenuItemById('pause')
+  if (playing) {
+    if (playMenu) {
+      playMenu.visible = false
+    }
+    if (pauseMenu) {
+      pauseMenu.visible = true
+    }
+  } else {
+    if (playMenu) {
+      playMenu.visible = true
+    }
+    if (pauseMenu) {
+      pauseMenu.visible = false
+    }
+  }
+  // tray.setContextMenu(contextMenu)
+}

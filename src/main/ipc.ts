@@ -9,6 +9,8 @@ import {
 } from './windows/main'
 import type { DownloadInfo } from './types'
 import type { OpenDialogOptions } from 'electron'
+import { onPlayingChange, setCurrentPlay } from './tray'
+import { onMenuPlayingChange } from './menu'
 
 export default function handleIPC() {
   nativeTheme.themeSource = 'dark'
@@ -64,5 +66,14 @@ export default function handleIPC() {
 
   ipcMain.handle('TRASH_ITEM', (_e, itemPath: string) => {
     return shell.trashItem(path.normalize(itemPath))
+  })
+
+  ipcMain.handle('SET_CURRENT_PLAY', (_e, name: string) => {
+    setCurrentPlay(name)
+  })
+
+  ipcMain.handle('SET_PLAYING', (_e, playing: boolean) => {
+    onPlayingChange(playing)
+    onMenuPlayingChange(playing)
   })
 }

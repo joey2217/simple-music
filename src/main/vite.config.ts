@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import { builtinModules } from 'module'
 import * as path from 'path'
 
-const NODE_VERSION = '16'
+const NODE_VERSION = '18'
 const ROOT = path.resolve(__dirname, '../../')
 
 // https://vitejs.dev/config/

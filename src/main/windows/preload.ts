@@ -31,6 +31,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   setMainThumbarButtons: (playing: boolean, disabled = false) =>
     ipcRenderer.invoke('SET_MAIN_THUMBAR_BUTTONS', playing, disabled),
   trashItem: (path: string) => ipcRenderer.invoke('TRASH_ITEM', path),
+  setPlaying: (playing: boolean) => ipcRenderer.invoke('SET_PLAYING', playing),
+  setCurrentPlay: (name: string) =>
+    ipcRenderer.invoke('SET_CURRENT_PLAY', name),
   onMusicControl: (
     callback: (
       e: IpcRendererEvent,

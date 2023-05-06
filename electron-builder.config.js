@@ -1,6 +1,9 @@
+/* eslint-disable no-template-curly-in-string */
 const { version, author, productName } = require('./package.json')
 
 const year = new Date().getFullYear()
+
+const shortcutName = '轻音乐'
 
 /**
  * @type {import('electron-builder').Configuration}
@@ -8,7 +11,7 @@ const year = new Date().getFullYear()
  */
 module.exports = {
   productName,
-  appId: "com.joey.music",
+  appId: 'com.joey.music',
   copyright: `Copyright © ${year} ${author}`,
   directories: {
     output: 'release',
@@ -19,14 +22,15 @@ module.exports = {
     icon: 'resources/icon.ico',
     target: {
       target: 'nsis',
-      arch: ['x64']
-    }
+      arch: ['x64'],
+    },
   },
   nsis: {
     oneClick: false,
-    language: "2052",
+    language: '2052',
     perMachine: true,
-    allowToChangeInstallationDirectory: true
+    allowToChangeInstallationDirectory: true,
+    shortcutName,
   },
   mac: {
     icon: 'resources/icon.icns',
@@ -34,22 +38,23 @@ module.exports = {
   },
   dmg: {
     window: {
-      "width": 540,
-      "height": 380
+      width: 540,
+      height: 380,
     },
     contents: [
       {
-        "x": 410,
-        "y": 150,
-        "type": "link",
-        "path": "/Applications"
+        x: 410,
+        y: 150,
+        type: 'link',
+        path: '/Applications',
       },
       {
-        "x": 130,
-        "y": 150,
-        "type": "file"
-      }
-    ]
+        x: 130,
+        y: 150,
+        type: 'file',
+        name: shortcutName,
+      },
+    ],
   },
   extraMetadata: {
     version,

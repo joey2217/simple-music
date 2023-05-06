@@ -1,12 +1,16 @@
-import { app, Menu } from 'electron'
+import { Menu } from 'electron'
 import type { MenuItemConstructorOptions } from 'electron'
+import { APP_NAME } from './constant'
+import { nextIcon, pauseIcon, playIcon, prevIcon } from './icons'
+import { musicControl } from './windows/main'
+
+let menu: Menu
 
 if (process.platform === 'darwin') {
-  const appName = app.name
   const template: MenuItemConstructorOptions[] = [
     // { role: 'appMenu' }
     {
-      label: appName,
+      label: APP_NAME,
       submenu: [
         { role: 'about', label: '关于' },
         { type: 'separator' },
@@ -16,7 +20,7 @@ if (process.platform === 'darwin') {
         { role: 'hideOthers', label: '隐藏其他' },
         { role: 'unhide', label: '全部显示' },
         { type: 'separator' },
-        { label: '退出 ' + appName, role: 'quit' },
+        { label: '退出 ' + APP_NAME, role: 'quit' },
       ],
     },
     // { role: 'fileMenu' }
@@ -71,6 +75,26 @@ if (process.platform === 'darwin') {
         { role: 'togglefullscreen', label: '切换全屏' },
       ],
     },
+    {
+      label: '控制',
+      submenu: [
+        {
+          id: 'play',
+          label: '播放',
+          icon: playIcon,
+          click: musicControl('play'),
+        },
+        {
+          id: 'pause',
+          label: '暂停',
+          icon: pauseIcon,
+          click: musicControl('pause'),
+          visible: false,
+        },
+        { label: '上一曲', icon: prevIcon, click: musicControl('prev') },
+        { label: '下一曲', icon: nextIcon, click: musicControl('next') },
+      ],
+    },
     // {
     //   role: 'help',
     //   submenu: [
@@ -84,9 +108,31 @@ if (process.platform === 'darwin') {
     //   ],
     // },
   ]
-
-  const menu = Menu.buildFromTemplate(template)
+  menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
 } else {
   Menu.setApplicationMenu(null)
+}
+
+export function onMenuPlayingChange(playing: boolean) {
+  if (menu) {
+    const playMenu = menu.getMenuItemById('play')
+    const pauseMenu = menu.getMenuItemById('pause')
+    if (playing) {
+      if (playMenu) {
+        playMenu.visible = false
+      }
+      if (pauseMenu) {
+        pauseMenu.visible = true
+      }
+    } else {
+      if (playMenu) {
+        playMenu.visible = true
+      }
+      if (pauseMenu) {
+        pauseMenu.visible = false
+      }
+    }
+  }
+  // tray.setContextMenu(contextMenu)
 }

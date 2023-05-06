@@ -5,7 +5,7 @@ const filter = {
   urls: ['https://www.kuwo.cn/*'],
 }
 
-let csrf = 'B4SGOW3FTK6'
+let csrf = ''
 let reqCookie = ''
 const HEADER_COOKIE_KEY = 'Cookie'
 const CSRF_KEY = 'csrf'
@@ -47,21 +47,27 @@ function setToken(cookies: string[]) {
 }
 
 // 初始化cookies
-https
-  .get(KUWO_URL + '/down', (res) => {
-    if (res.headers && res.headers['set-cookie']) {
-      setToken(res.headers['set-cookie'])
-    }
+export function initCSRF() {
+  return new Promise((resolve, reject) => {
+    https
+      .get(KUWO_URL + '/down', (res) => {
+        if (res.headers && res.headers['set-cookie']) {
+          setToken(res.headers['set-cookie'])
+          resolve(csrf)
+        }
+        reject()
+      })
+      .on('error', (e) => {
+        console.error(e)
+        reject()
+      })
   })
-  .on('error', (e) => {
-    console.error(e)
-  })
+}
 
 app.whenReady().then(() => {
   session.defaultSession.webRequest.onBeforeSendHeaders(
     filter,
     (details, callback) => {
-      console.log(csrf, 'csrf')
       if (csrf) {
         details.requestHeaders[CSRF_KEY] = csrf
         details.requestHeaders[HEADER_COOKIE_KEY] = reqCookie

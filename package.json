@@ -5,7 +5,7 @@
   "main": "dist/main.js",
   "author": "joey",
   "description": "simple music app",
-  "productName": "轻音乐",
+  "productName": "SimpleMusic",
   "scripts": {
     "publish": "npm run build && electron-builder build -c electron-builder.config.js -p always",
     "package": "npm run build && electron-builder build -c electron-builder.config.js",

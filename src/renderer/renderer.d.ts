@@ -17,6 +17,8 @@ interface IElectronAPI {
   setMainTitleBarOverlay: (options: Electron.TitleBarOverlayOptions) => void
   setMainThumbarButtons: (playing: boolean, disabled = false) => Promise<void>
   trashItem: (path: string) => Promise<void>
+  setPlaying: (playing: boolean) => Promise<void>
+  setCurrentPlay: (name: string) => Promise<void>
   onMusicControl: (
     callback: (
       e: Electron.IpcRendererEvent,
