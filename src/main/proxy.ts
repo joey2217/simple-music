@@ -58,7 +58,7 @@ export function initCSRF() {
         reject()
       })
       .on('error', (e) => {
-        console.error(e)
+        console.error(e, 'error')
         reject()
       })
   })

@@ -23,8 +23,8 @@ const contextMenu = Menu.buildFromTemplate([
     click: musicControl('pause'),
     visible: false,
   },
-  { label: '上一曲', icon: prevIcon, click: musicControl('prev') },
-  { label: '下一曲', icon: nextIcon, click: musicControl('next') },
+  { label: '上一首', icon: prevIcon, click: musicControl('prev') },
+  { label: '下一首', icon: nextIcon, click: musicControl('next') },
   { type: 'separator' },
   { label: '退出', icon: logoutIcon, role: 'quit' },
 ])
@@ -38,11 +38,12 @@ app.whenReady().then(() => {
 })
 
 export function setCurrentPlay(name: string) {
-  const titleMenu = contextMenu.getMenuItemById('music')
-  if (titleMenu) {
-    titleMenu.label = name
-    console.log(titleMenu.label, name, 'setCurrentPlay')
-  }
+  // const titleMenu = contextMenu.getMenuItemById('music')
+  // if (titleMenu) {
+  //   titleMenu.label = name
+  //   console.log(titleMenu.label, name, 'setCurrentPlay')
+  // }
+  contextMenu.items[0].label = name
 }
 
 export function onPlayingChange(playing: boolean) {

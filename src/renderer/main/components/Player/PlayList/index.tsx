@@ -1,10 +1,9 @@
 import React, { memo, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { useMusicLikes, usePlaylist } from '../../../store/hooks'
+import { useDownload, usePlaylist } from '../../../store/hooks'
 import {
+  FluentArrowDownload,
   FluentDelete,
-  FluentHeart,
-  Play,
   Pause,
   PlayListIcon,
   PlayingIcon,
@@ -15,17 +14,19 @@ const PlayList: React.FC = () => {
   const {
     playlist,
     currentPlay,
+    currentPlayUrl,
     clearPlaylist,
     playing,
     removePlaylistMusic,
     setCurrentPlayIndex,
   } = usePlaylist()
+  const { downloadMusic } = useDownload()
   const [open, setOpen] = useState(false)
   return (
-    <div>
+    <div className='flex items-center gap-4 justify-center'>
       {createPortal(
         <div
-          className={`fixed titleBar-top right-0 z-30 text-sm p-4 rounded h-screen max-w-full w-[475px] bg-neutral-100 dark:bg-neutral-700/95 transition-transform ease-in-out duration-300 ${
+          className={`fixed titleBar-top right-0 z-30 text-sm p-4 pb-20 rounded h-screen max-w-full w-[475px] bg-neutral-100 dark:bg-neutral-700/95 transition-transform ease-in-out duration-300 ${
             open ? 'translate-y-0' : 'translate-y-full'
           }	`}
         >
@@ -139,6 +140,16 @@ const PlayList: React.FC = () => {
         </div>,
         document.body
       )}
+      <button
+        title="下载"
+        disabled={currentPlay == null}
+        onClick={() =>
+          currentPlay && downloadMusic(currentPlay, currentPlayUrl)
+        }
+        className="hover:text-indigo-600 text-2xl"
+      >
+        <FluentArrowDownload />
+      </button>
       <button
         title="播放列表"
         className={`text-2xl ${open ? 'text-indigo-600' : ' '}`}

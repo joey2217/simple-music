@@ -52,7 +52,7 @@ export function create() {
   })
   win.once('ready-to-show', () => {
     win.show()
-    win.webContents.openDevTools({ mode: 'bottom' })
+    // win.webContents.openDevTools({ mode: 'bottom' })
   })
 
   win.on('close', (e) => {

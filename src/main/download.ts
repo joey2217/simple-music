@@ -1,12 +1,10 @@
 import { app, session } from 'electron'
 import * as path from 'path'
-import type { DownloadItem } from 'electron'
 import type { DownloadInfo } from './types'
 import { send as sendMain } from './windows/main'
 
 let downloadPath = app.getPath('downloads')
 
-let downloadItem: DownloadItem | null = null
 let downloadFile: DownloadInfo | null = null
 const downloadFiles: DownloadInfo[] = []
 
@@ -31,7 +29,6 @@ export function download(items: DownloadInfo[]) {
 // https://www.electronjs.org/zh/docs/latest/api/download-item
 app.whenReady().then(() => {
   session.defaultSession.on('will-download', (event, item, webContents) => {
-    downloadItem = item
     item.setSavePath(path.join(downloadPath, downloadFile.fileName))
 
     // item.on('updated', (event, state) => {
@@ -63,12 +60,10 @@ function onCompleted(success: boolean) {
   }
   if (downloadFiles.length > 0) {
     downloadFile = downloadFiles.shift()
-    downloadItem = null
     if (downloadFile) {
       session.defaultSession.downloadURL(downloadFile.url)
     }
   } else {
-    downloadItem = null
     downloadFile = null
   }
 }

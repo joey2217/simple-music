@@ -1,6 +1,11 @@
 import { useCallback, useMemo } from 'react'
 import type { DownloadMusic, Music, PlayMode } from '../types'
-import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from 'recoil'
+import {
+  useRecoilState,
+  useRecoilStateLoadable,
+  useRecoilValue,
+  useRecoilValueLoadable,
+} from 'recoil'
 import {
   playListState,
   currentPlayIndexState,
@@ -286,8 +291,16 @@ export function useArtistLikes() {
 }
 
 export function useDownload() {
-  const [downloadPath, setDownloadPath] = useRecoilState(downloadPathState)
+  const [downloadPathLoadable, setDownloadPath] =
+    useRecoilStateLoadable(downloadPathState)
   const [downloadList, setDownloadList] = useRecoilState(downloadListState)
+
+  const downloadPath = useMemo(() => {
+    if (downloadPathLoadable.state === 'hasValue') {
+      return downloadPathLoadable.contents
+    }
+    return ''
+  }, [downloadPathLoadable.contents, downloadPathLoadable.state])
 
   const openDownloadPath = useCallback(() => {
     window.electronAPI.openPath(downloadPath)
@@ -308,8 +321,8 @@ export function useDownload() {
   }, [setDownloadPath])
 
   const downloadMusic = useCallback(
-    (m: Music) => {
-      fetchMusicUrl(m.rid).then((url) => {
+    (m: Music, url?: string) => {
+      const download = (url: string) => {
         const urlArr = url.split('.')
         const ext = urlArr[urlArr.length - 1]
         const fileName = `${m.artist}-${m.name}.${ext}`
@@ -321,9 +334,19 @@ export function useDownload() {
           downloadPath: mPath,
           status: 'downloading',
         }
-        setDownloadList((list) => [downloadItem, ...list])
+        setDownloadList((list) => [
+          downloadItem,
+          ...list.filter((item) => item.rid !== m.rid),
+        ])
         window.electronAPI.download([downloadItem])
-      })
+      }
+      if (url) {
+        download(url)
+      } else {
+        fetchMusicUrl(m.rid).then((url) => {
+          download(url)
+        })
+      }
     },
     [downloadPath, setDownloadList]
   )

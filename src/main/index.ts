@@ -21,13 +21,13 @@ if (!gotTheLock) {
     // 当运行第二个实例时,将会聚焦到Window这个窗口
     focusMainWindow()
   })
-  app.whenReady().then(() => {
-    initCSRF().then((csrf) => {
-      console.log('initCSRF', csrf)
+  initCSRF().then((csrf) => {
+    console.log('initCSRF', csrf)
+    app.whenReady().then(() => {
       createMainWindow()
+      handleIPC()
+      checkUpdate()
     })
-    handleIPC()
-    checkUpdate()
   })
 }
 

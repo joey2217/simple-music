@@ -62,7 +62,7 @@ button:disabled {
 }
 
 #playlist-table {
-  height: calc(100vh - 130px);
+  height: calc(100vh - 180px);
 }
 
 .rc-slider-disabled {
