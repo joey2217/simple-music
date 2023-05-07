@@ -101,11 +101,12 @@ export function usePlaylist() {
   )
 
   const removePlaylistMusic = useCallback(
-    (m: Music) => {
+    (m: Music, index: number) => {
       setPlaylist((list) => list.filter((item) => item.rid !== m.rid))
       deletePlaylist(m)
+      setCurrentPlayIndex((i) => (index < i ? i - 1 : i))
     },
-    [setPlaylist]
+    [setCurrentPlayIndex, setPlaylist]
   )
 
   const playSongList = useCallback(
@@ -182,7 +183,8 @@ export function usePlaylist() {
   const clearPlaylist = useCallback(() => {
     setPlaylist([])
     clearDBPlaylist()
-  }, [setPlaylist])
+    setCurrentPlayIndex(0)
+  }, [setCurrentPlayIndex, setPlaylist])
 
   const changePlayMode = useCallback(() => {
     setPlayMode((m) => NEXT_PLAY_MODE[m])

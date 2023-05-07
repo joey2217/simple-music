@@ -1,16 +1,11 @@
-import { app, session } from 'electron'
+import { app, session, Notification } from 'electron'
 import * as path from 'path'
 import type { DownloadInfo } from './types'
-import { send as sendMain } from './windows/main'
-
-let downloadPath = app.getPath('downloads')
+import { mainNavigate, send as sendMain } from './windows/main'
+import { downloadIcon } from './icons'
 
 let downloadFile: DownloadInfo | null = null
 const downloadFiles: DownloadInfo[] = []
-
-export function setDownloadPath(dPath) {
-  downloadPath = dPath
-}
 
 export function download(items: DownloadInfo[]) {
   if (items.length > 0) {
@@ -29,7 +24,7 @@ export function download(items: DownloadInfo[]) {
 // https://www.electronjs.org/zh/docs/latest/api/download-item
 app.whenReady().then(() => {
   session.defaultSession.on('will-download', (event, item, webContents) => {
-    item.setSavePath(path.join(downloadPath, downloadFile.fileName))
+    item.setSavePath(path.normalize(downloadFile.downloadPath))
 
     // item.on('updated', (event, state) => {
     //   if (state === 'interrupted') {
@@ -44,7 +39,10 @@ app.whenReady().then(() => {
     // })
     item.once('done', (event, state) => {
       if (state === 'completed') {
-        console.log('Download successfully')
+        console.log(
+          'Download successfully',
+          downloadFile.downloadPath
+        )
         onCompleted(true)
       } else {
         console.log(`Download failed: ${state}`)
@@ -54,9 +52,19 @@ app.whenReady().then(() => {
   })
 })
 
+let notification: Notification
+
 function onCompleted(success: boolean) {
   if (downloadFile) {
     sendMain('DOWNLOAD_FINISHED', downloadFile.rid, success)
+    notification = new Notification({
+      title: `${downloadFile.fileName}下载成功!`,
+      icon: downloadIcon,
+    })
+    notification.on('click', () => {
+      mainNavigate('/download')
+    })
+    notification.show()
   }
   if (downloadFiles.length > 0) {
     downloadFile = downloadFiles.shift()

@@ -18,8 +18,6 @@ contextBridge.exposeInMainWorld('devAPI', {
 contextBridge.exposeInMainWorld('electronAPI', {
   download: (files: DownloadInfo[]) =>
     ipcRenderer.invoke('DOWNLOAD_FILES', files),
-  setDownloadPath: (downloadPath: string) =>
-    ipcRenderer.invoke('SET_DOWNLOAD_PATH', downloadPath),
   getDownloadsPath: () => ipcRenderer.invoke('GET_DOWNLOADS_PATH'),
   showItemInFolder: (fullPath: string) =>
     ipcRenderer.invoke('SHOW_ITEM_IN_FOLDER', fullPath),
@@ -34,6 +32,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   setPlaying: (playing: boolean) => ipcRenderer.invoke('SET_PLAYING', playing),
   setCurrentPlay: (name: string) =>
     ipcRenderer.invoke('SET_CURRENT_PLAY', name),
+  checkUpdate: () => ipcRenderer.invoke('CHECK_FOR_UPDATE'),
   onMusicControl: (
     callback: (
       e: IpcRendererEvent,
@@ -43,6 +42,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   onDownloadFinish: (
     callback: (e: IpcRendererEvent, rid: number, success: boolean) => void
   ) => ipcRenderer.on('DOWNLOAD_FINISHED', callback),
+  onNavigate: (callback: (e: IpcRendererEvent, to: string) => void) =>
+    ipcRenderer.on('NAVIGATE', callback),
 })
 
 contextBridge.exposeInMainWorld('versions', {

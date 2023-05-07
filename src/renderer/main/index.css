@@ -113,15 +113,15 @@ button:disabled {
 }
 
 .primary-btn {
-  @apply px-4 py-1 flex items-center gap-2 ring-1 text-white rounded-full bg-indigo-600 hover:bg-indigo-600/80;
+  @apply px-4 py-1 inline-flex items-center gap-2 ring-1 text-white rounded-full bg-indigo-600 hover:bg-indigo-600/80;
 }
 
 .defalut-btn {
-  @apply px-4 py-1 flex items-center gap-2 ring-1 hover:text-indigo-600 hover:ring-indigo-600 rounded-full;
+  @apply px-4 py-1 inline-flex items-center gap-2 ring-1 hover:text-indigo-600 hover:ring-indigo-600 rounded-full;
 }
 
 .text-btn {
-  @apply px-4 py-1 flex items-center gap-2 hover:bg-indigo-600/50 rounded-full;
+  @apply px-4 py-1 inline-flex items-center gap-2 hover:bg-indigo-600/50 rounded-full;
 }
 
 .card-grid {

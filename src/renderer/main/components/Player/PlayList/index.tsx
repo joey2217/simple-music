@@ -23,7 +23,7 @@ const PlayList: React.FC = () => {
   const { downloadMusic } = useDownload()
   const [open, setOpen] = useState(false)
   return (
-    <div className='flex items-center gap-4 justify-center'>
+    <div className="flex items-center gap-4 justify-center">
       {createPortal(
         <div
           className={`fixed titleBar-top right-0 z-30 text-sm p-4 pb-20 rounded h-screen max-w-full w-[475px] bg-neutral-100 dark:bg-neutral-700/95 transition-transform ease-in-out duration-300 ${
@@ -59,7 +59,7 @@ const PlayList: React.FC = () => {
                   <th className="px-2 py-1 text-left">歌曲</th>
                   <th className="px-2 py-1 text-left">歌手</th>
                   <th className="px-2 py-1 text-left">时长</th>
-                  <th className="px-2 py-1 text-center"></th>
+                  <th className="px-2 py-1 text-center">操作</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -119,13 +119,13 @@ const PlayList: React.FC = () => {
                       <div className="w-11 truncate">{m.songTimeMinutes}</div>
                     </td>
                     <td className="px-2 py-1">
-                      <div>
+                      <div className="text-center">
                         <button
                           title="移除"
                           className="hover:text-indigo-600"
                           onClick={(e) => {
                             e.stopPropagation()
-                            removePlaylistMusic(m)
+                            removePlaylistMusic(m, index)
                           }}
                         >
                           <FluentDelete />

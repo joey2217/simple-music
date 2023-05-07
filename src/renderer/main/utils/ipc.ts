@@ -1,12 +1,14 @@
 import { useEffect } from 'react'
 import { useDownload, usePlaylist } from '../store/hooks'
 import emitter from './events'
+import { useNavigate } from 'react-router-dom'
 
 const MAX_TITLE_LENGTH = 10
 
 export function useIPC() {
   const { playNext, currentPlay, playing } = usePlaylist()
   const { setDownloadList } = useDownload()
+  const navigate = useNavigate()
 
   useEffect(() => {
     window.electronAPI.onMusicControl((_e, type) => {
@@ -57,6 +59,12 @@ export function useIPC() {
   useEffect(() => {
     window.electronAPI.setPlaying(playing)
   }, [playing])
+
+  useEffect(() => {
+    window.electronAPI.onNavigate((_e, to) => {
+      navigate(to)
+    })
+  }, [navigate])
 
   // useEffect(() => {
   //   window.electronAPI.setMainThumbarButtons(playing, actionDisabled)

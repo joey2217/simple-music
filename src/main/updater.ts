@@ -4,5 +4,5 @@ import log from 'electron-log'
 export function checkUpdate() {
   log.transports.file.level = 'debug'
   autoUpdater.logger = log
-  autoUpdater.checkForUpdatesAndNotify()
+  return autoUpdater.checkForUpdatesAndNotify()
 }

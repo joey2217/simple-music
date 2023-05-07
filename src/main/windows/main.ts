@@ -140,3 +140,7 @@ export function setMainThumbarButtons(playing: boolean, disabled = false) {
 export function beforeQuit() {
   quit = true
 }
+
+export function mainNavigate(to: string) {
+  send('NAVIGATE', to)
+}

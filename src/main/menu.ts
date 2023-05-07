@@ -2,13 +2,13 @@ import { Menu, app } from 'electron'
 import type { MenuItemConstructorOptions } from 'electron'
 import { APP_NAME } from './constant'
 import { nextIcon, pauseIcon, playIcon, prevIcon } from './icons'
-import { musicControl } from './windows/main'
+import { mainNavigate, musicControl } from './windows/main'
 
 const template: MenuItemConstructorOptions[] = [
   {
     label: APP_NAME,
     submenu: [
-      { role: 'about', label: '关于' },
+      { label: '关于', click: () => mainNavigate('/setting/about') },
       { type: 'separator' },
       { role: 'services', label: '服务' },
       { type: 'separator' },

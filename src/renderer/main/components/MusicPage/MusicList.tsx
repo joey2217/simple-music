@@ -22,7 +22,7 @@ const MusicList: React.FC<Props> = ({ list }) => {
       <thead>
         <tr>
           <th className="py-2">#</th>
-          <th className="py-2"></th>
+          <th className="py-2">操作</th>
           <th className="text-left py-2 w-14"></th>
           <th className="text-left py-2">歌曲</th>
           <th className="text-left py-2">歌手</th>

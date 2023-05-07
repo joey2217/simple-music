@@ -7,7 +7,6 @@ interface DownloadInfo {
 
 interface IElectronAPI {
   download: (files: DownloadInfo[]) => Promise<void>
-  setDownloadPath: (downloadPath: string) => Promise<void>
   getDownloadsPath: () => Promise<string>
   showItemInFolder: (fullPath: string) => Promise<void>
   openPath: (fullPath: string) => Promise<void>
@@ -19,6 +18,7 @@ interface IElectronAPI {
   trashItem: (path: string) => Promise<void>
   setPlaying: (playing: boolean) => Promise<void>
   setCurrentPlay: (name: string) => Promise<void>
+  checkUpdate: () => Promise<UpdateCheckResult>
   onMusicControl: (
     callback: (
       e: Electron.IpcRendererEvent,
@@ -31,6 +31,9 @@ interface IElectronAPI {
       rid: number,
       success: boolean
     ) => void
+  ) => void
+  onNavigate: (
+    callback: (e: Electron.IpcRendererEvent, to: string) => void
   ) => void
 }
 

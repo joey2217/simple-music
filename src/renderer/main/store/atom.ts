@@ -81,8 +81,8 @@ export const downloadPathState = atom<string>({
         setSelf(window.electronAPI.getDownloadsPath())
       }
       onSet((newValue) => {
+        console.log('newValue', newValue)
         localStorage.setItem(DOWNLOAD_PATH, JSON.stringify(newValue))
-        window.electronAPI.setDownloadPath(newValue)
       })
     },
   ],
