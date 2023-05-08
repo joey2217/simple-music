@@ -4,7 +4,7 @@
   "version": "0.2.6",
   "main": "dist/main.js",
   "author": "joey",
-  "description": "simple music app",
+  "description": "轻音乐",
   "productName": "SimpleMusic",
   "scripts": {
     "publish": "npm run build && electron-builder build -c electron-builder.config.js -p always",

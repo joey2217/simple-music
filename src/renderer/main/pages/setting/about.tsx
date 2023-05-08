@@ -1,16 +1,28 @@
 import React, { memo, useState } from 'react'
 
 const About: React.FC = () => {
-  const [version, setVersion] = useState<string | null>(null)
+  const [updateInfo, setUpdateInfo] = useState<string>('')
+  const [disabled, setDisabled] = useState(false)
 
   const checkUpdate = () => {
-    window.electronAPI.checkUpdate().then((res) => {
-      if (res) {
-        setVersion(res.updateInfo.version)
-      } else {
-        setVersion('')
-      }
-    })
+    setDisabled(false)
+    setUpdateInfo('检测更新中...')
+    window.electronAPI
+      .checkUpdate()
+      .then((res) => {
+        if (res) {
+          setUpdateInfo(`新版本:${res.updateInfo.version}更新中...`)
+        } else {
+          setUpdateInfo('当前已经是最新版本')
+        }
+      })
+      .catch((error) => {
+        setUpdateInfo('检测更新出错了')
+        console.error(error, '检测更新错误')
+      })
+      .finally(() => {
+        setDisabled(false)
+      })
   }
 
   return (
@@ -38,16 +50,24 @@ const About: React.FC = () => {
         <span className="label">版本</span>
         <span>{window.versions.version}</span>
       </p>
-      {version != null && (
-        <p>{version === '' ? '暂无新版本' : `新版本:${version}更新中`}</p>
-      )}
+      {updateInfo && <p>{updateInfo}</p>}
       <p>
         <button
-          disabled={version != null && version !== ''}
-          className="primary-btn"
+          disabled={disabled}
+          className="primary-btn mr-4"
           onClick={checkUpdate}
         >
           检测更新
+        </button>
+        <button
+          className="default-btn"
+          onClick={() =>
+            window.electronAPI.openExternal(
+              'https://github.com/joey2217/simple-music/releases'
+            )
+          }
+        >
+          手动下载
         </button>
       </p>
       <p>
@@ -60,6 +80,14 @@ const About: React.FC = () => {
           }
         >
           意见反馈
+        </button>
+      </p>
+      <p>
+        <button
+          className="text-btn"
+          onClick={() => window.devAPI.toggleDevtools()}
+        >
+          切换开发者工具
         </button>
       </p>
       <p>

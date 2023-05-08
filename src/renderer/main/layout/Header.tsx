@@ -49,14 +49,6 @@ const Header: React.FC = () => {
             top={28}
           />
           <ThemeButton />
-          {import.meta.env.DEV && (
-            <button
-              className="text-btn"
-              onClick={() => window.devAPI.toggleDevtools()}
-            >
-              devtools
-            </button>
-          )}
         </div>
       </div>
     </header>
