@@ -27,6 +27,7 @@ import SearchSongList from './pages/search/song-list'
 import Download from './pages/download'
 import Setting from './pages/setting'
 import About from './pages/setting/about'
+import SettingDownload from './pages/setting/download'
 
 const router = createHashRouter([
   {
@@ -165,6 +166,11 @@ const router = createHashRouter([
         element: <Setting />,
         errorElement: <Error />,
         children: [
+          {
+            index: true,
+            element: <SettingDownload />,
+            errorElement: <Error />,
+          },
           {
             path: 'about',
             element: <About />,

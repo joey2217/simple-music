@@ -143,3 +143,9 @@ export interface Lyric {
   lineLyric: string
   time: number
 }
+
+export type DownloadMusicPattern = 'artist_name' | 'name_artist' | 'name'
+
+export interface DownloadSetting {
+  pattern: DownloadMusicPattern
+}

@@ -1,5 +1,5 @@
 import { atom } from 'recoil'
-import type { DownloadMusic, Music, PlayMode } from '../types'
+import type { DownloadMusic, DownloadSetting, Music, PlayMode } from '../types'
 import { localStorageEffect } from './utils'
 import type { Artist } from '../types/artist'
 import { getMusicLikeList } from '../db/music'
@@ -91,4 +91,12 @@ export const downloadPathState = atom<string>({
 export const downloadListState = atom<DownloadMusic[]>({
   key: 'downloadListState',
   default: [],
+})
+
+export const downloadSettingState = atom<DownloadSetting>({
+  key: 'downloadSettingState',
+  default: {
+    pattern: 'artist_name',
+  },
+  effects: [localStorageEffect('downloadSetting')],
 })

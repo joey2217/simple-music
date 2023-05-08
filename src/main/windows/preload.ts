@@ -33,6 +33,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   setCurrentPlay: (name: string) =>
     ipcRenderer.invoke('SET_CURRENT_PLAY', name),
   checkUpdate: () => ipcRenderer.invoke('CHECK_FOR_UPDATE'),
+  openExternal: (url: string) => ipcRenderer.invoke('OPEN_EXTERNAL', url),
   onMusicControl: (
     callback: (
       e: IpcRendererEvent,

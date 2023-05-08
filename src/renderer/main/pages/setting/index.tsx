@@ -6,14 +6,13 @@ const Setting: React.FC = () => {
     <div>
       <nav className="flex justify-center my-4 gap-2">
         <NavLink className="link" to="" end>
-          单曲
+          下载
         </NavLink>
-
         <NavLink className="link" to="about">
           关于
         </NavLink>
       </nav>
-      <div>
+      <div className="container mx-auto">
         <Outlet />
       </div>
     </div>

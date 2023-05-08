@@ -51,6 +51,18 @@ const About: React.FC = () => {
         </button>
       </p>
       <p>
+        <button
+          className="default-btn"
+          onClick={() =>
+            window.electronAPI.openExternal(
+              'https://github.com/joey2217/simple-music/issues'
+            )
+          }
+        >
+          意见反馈
+        </button>
+      </p>
+      <p>
         <span className="label">chrome</span>
         <span>{window.versions.chrome}</span>
       </p>

@@ -19,6 +19,7 @@ interface IElectronAPI {
   setPlaying: (playing: boolean) => Promise<void>
   setCurrentPlay: (name: string) => Promise<void>
   checkUpdate: () => Promise<UpdateCheckResult>
+  openExternal: (url: string) => Promise<void>,
   onMusicControl: (
     callback: (
       e: Electron.IpcRendererEvent,

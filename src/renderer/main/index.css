@@ -181,3 +181,32 @@ button:disabled {
 .titleBar-ml {
   margin-left: env(titlebar-area-x, 0);
 }
+
+.form-item {
+  @apply mb-3;
+}
+
+.form-item .label {
+  @apply text-right inline-block;
+}
+.form-item .label::after {
+  content: ':';
+  position: relative;
+  top: -0.5px;
+  margin-inline: 2px 8px;
+}
+
+.form-radio {
+  @apply inline-flex items-center gap-2;
+}
+
+.form-item input[type='radio'] {
+  @apply appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:border-indigo-600 checked:border-4 focus:outline-none cursor-pointer;
+}
+
+.form-item input[type='radio'] + * {
+  @apply cursor-pointer;
+}
+.form-item input[type='radio']:checked + * {
+  @apply text-indigo-600;
+}
