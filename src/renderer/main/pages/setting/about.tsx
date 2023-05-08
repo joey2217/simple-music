@@ -14,7 +14,7 @@ const About: React.FC = () => {
   }
 
   return (
-    <div className="text-center">
+    <div className="text-center flex flex-col gap-4">
       <div className="text-indigo-600 text-5xl flex justify-center">
         <svg
           viewBox="0 0 1024 1024"
@@ -63,16 +63,16 @@ const About: React.FC = () => {
         </button>
       </p>
       <p>
-        <span className="label">chrome</span>
-        <span>{window.versions.chrome}</span>
+        <span className="label">electron</span>
+        <span>{window.versions.electron}</span>
       </p>
       <p>
         <span className="label">node</span>
         <span>{window.versions.node}</span>
       </p>
       <p>
-        <span className="label">electron</span>
-        <span>{window.versions.electron}</span>
+        <span className="label">chrome</span>
+        <span>{window.versions.chrome}</span>
       </p>
     </div>
   )

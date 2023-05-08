@@ -120,7 +120,7 @@ const Artist: React.FC = () => {
                 <span>播放全部</span>
               </button>
               <button
-                className="defalut-btn"
+                className="default-btn"
                 onClick={() => addPlaylist(artistSongList)}
               >
                 <FluentAdd />

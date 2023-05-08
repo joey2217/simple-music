@@ -30,7 +30,7 @@ const Download: React.FC = () => {
         <div className="form-item">
           <label className="w-40 label">下载路径</label>
           <span>{downloadPath}</span>
-          <button className="defalut-btn ml-2" onClick={openDownloadPath}>
+          <button className="default-btn ml-2" onClick={openDownloadPath}>
             打开
           </button>
         </div>

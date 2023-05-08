@@ -68,7 +68,7 @@ const MusicPage: React.FC = () => {
                 <span>播放</span>
               </button>
               <button
-                className="defalut-btn"
+                className="default-btn"
                 onClick={() => addPlaylist(musicInfo)}
               >
                 <FluentAdd />

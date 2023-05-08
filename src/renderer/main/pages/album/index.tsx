@@ -59,7 +59,7 @@ const AlbumPage: React.FC = () => {
               <span>播放全部</span>
             </button>
             <button
-              className="defalut-btn"
+              className="default-btn"
               onClick={() => addPlaylist(album.musicList)}
             >
               <FluentAdd />

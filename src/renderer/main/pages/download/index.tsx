@@ -66,7 +66,7 @@ const Download: React.FC = () => {
       <div className="flex items-center gap-4">
         <div className="label">下载路径</div>
         <div>{downloadPath}</div>
-        <button className="defalut-btn" onClick={openDownloadPath}>
+        <button className="default-btn" onClick={openDownloadPath}>
           打开
         </button>
         <button className="primary-btn" onClick={selectDownloadPath}>
@@ -186,7 +186,7 @@ const Download: React.FC = () => {
             <button className="primary-btn" onClick={confirmRemoveDownload}>
               确认
             </button>
-            <button className="defalut-btn" onClick={() => setOpen(false)}>
+            <button className="default-btn" onClick={() => setOpen(false)}>
               取消
             </button>
           </div>
