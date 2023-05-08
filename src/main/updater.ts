@@ -1,6 +1,7 @@
 import { autoUpdater } from 'electron-updater'
 import log from 'electron-log'
 import { dialog } from 'electron'
+import { send as sendMain } from './windows/main'
 
 autoUpdater.autoDownload = false
 
@@ -9,9 +10,11 @@ autoUpdater.on('error', (error) => {
     '更新出错了',
     error == null ? 'unknown' : (error.stack || error).toString()
   )
+  sendMain('VERSION_UPDATE', '更新出错了')
 })
 
 autoUpdater.on('update-available', (info) => {
+  sendMain('VERSION_UPDATE', `检测到新版本 ${info.version}`)
   dialog
     .showMessageBox({
       type: 'info',
@@ -27,6 +30,7 @@ autoUpdater.on('update-available', (info) => {
 })
 
 autoUpdater.on('update-not-available', () => {
+  sendMain('VERSION_UPDATE', '当前版本已经是最新版本')
   dialog.showMessageBox({
     title: '暂无更新',
     message: '当前版本已经是最新版本',
@@ -34,12 +38,13 @@ autoUpdater.on('update-not-available', () => {
 })
 
 autoUpdater.on('update-downloaded', () => {
+  sendMain('VERSION_UPDATE', '更新下载完成')
   dialog
     .showMessageBox({
       type: 'info',
       title: '更新下载完成',
       message: '是否立刻更新并重启应用?',
-      buttons: ['立刻更新', '下次重启更新'],
+      buttons: ['立刻更新', '下次启动更新'],
     })
     .then((res) => {
       if (res.response === 0) {
@@ -51,5 +56,5 @@ autoUpdater.on('update-downloaded', () => {
 export function checkForUpdates() {
   log.transports.file.level = 'debug'
   autoUpdater.logger = log
-  autoUpdater.checkForUpdates()
+  return autoUpdater.checkForUpdates()
 }

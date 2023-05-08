@@ -3,9 +3,11 @@
   "private": true,
   "version": "0.2.7",
   "main": "dist/main.js",
-  "author": "joey",
+  "author": "Joey",
   "description": "轻音乐",
-  "productName": "SimpleMusic",
+  "license": "MIT",
+  "homepage": "https://github.com/joey2217/simple-music",
+  "repository": "https://github.com/joey2217/simple-music",
   "scripts": {
     "publish": "npm run build && electron-builder build -c electron-builder.config.js -p always",
     "package": "npm run build && electron-builder build -c electron-builder.config.js",

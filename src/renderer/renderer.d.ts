@@ -18,8 +18,8 @@ interface IElectronAPI {
   trashItem: (path: string) => Promise<void>
   setPlaying: (playing: boolean) => Promise<void>
   setCurrentPlay: (name: string) => Promise<void>
-  checkUpdate: () => Promise<void>
-  openExternal: (url: string) => Promise<void>,
+  checkUpdate: () => Promise<string>
+  openExternal: (url: string) => Promise<void>
   onMusicControl: (
     callback: (
       e: Electron.IpcRendererEvent,
@@ -35,6 +35,13 @@ interface IElectronAPI {
   ) => void
   onNavigate: (
     callback: (e: Electron.IpcRendererEvent, to: string) => void
+  ) => void
+  onVersionUpdate: (
+    callback: (
+      e: IpcRendererEvent,
+      info: string,
+      status: 'normal' | 'error'
+    ) => void
   ) => void
 }
 

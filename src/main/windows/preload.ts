@@ -45,8 +45,13 @@ contextBridge.exposeInMainWorld('electronAPI', {
   ) => ipcRenderer.on('DOWNLOAD_FINISHED', callback),
   onNavigate: (callback: (e: IpcRendererEvent, to: string) => void) =>
     ipcRenderer.on('NAVIGATE', callback),
-  onVersionUpdate: (callback: (e: IpcRendererEvent, to: string) => void) =>
-    ipcRenderer.on('VERSION_UPDATE', callback),
+  onVersionUpdate: (
+    callback: (
+      e: IpcRendererEvent,
+      info: string,
+      status: 'normal' | 'error'
+    ) => void
+  ) => ipcRenderer.on('VERSION_UPDATE', callback),
 })
 
 contextBridge.exposeInMainWorld('versions', {

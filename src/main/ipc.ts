@@ -75,7 +75,7 @@ export default function handleIPC() {
   })
 
   ipcMain.handle('CHECK_FOR_UPDATE', () => {
-    checkForUpdates()
+    return checkForUpdates().then((res) => (res ? res.updateInfo.version : ''))
   })
 
   ipcMain.handle('OPEN_EXTERNAL', (_e, url: string) => {

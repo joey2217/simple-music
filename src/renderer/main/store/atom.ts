@@ -100,3 +100,23 @@ export const downloadSettingState = atom<DownloadSetting>({
   },
   effects: [localStorageEffect('downloadSetting')],
 })
+
+let init = true
+
+export const autoUpdateState = atom({
+  key: 'autoUpdateState',
+  default: true,
+  effects: [
+    localStorageEffect('autoUpdate'),
+    ({ onSet }) => {
+      onSet((newValue) => {
+        if (init) {
+          init = false
+          if (newValue) {
+            window.electronAPI.checkUpdate()
+          }
+        }
+      })
+    },
+  ],
+})

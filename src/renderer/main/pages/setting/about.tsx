@@ -1,29 +1,32 @@
-import React, { memo, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
+import { useRecoilState } from 'recoil'
+import { autoUpdateState } from '../../store/atom'
 
 const About: React.FC = () => {
   const [updateInfo, setUpdateInfo] = useState<string>('')
   const [disabled, setDisabled] = useState(false)
+  const [autoUpdate, setAutoUpdate] = useRecoilState(autoUpdateState)
 
   const checkUpdate = () => {
     setDisabled(false)
-    setUpdateInfo('检测更新中...')
     window.electronAPI
       .checkUpdate()
       .then((version) => {
-        if (version) {
-          setUpdateInfo(`新版本:${version}更新中...`)
-        } else {
-          setUpdateInfo('当前已经是最新版本')
-        }
+        console.log('新版本', version)
       })
       .catch((error) => {
-        setUpdateInfo('检测更新出错了')
         console.error(error, '检测更新错误')
       })
       .finally(() => {
         setDisabled(false)
       })
   }
+
+  useEffect(() => {
+    window.electronAPI.onVersionUpdate((_e, info, status) => {
+      setUpdateInfo(info)
+    })
+  }, [])
 
   return (
     <div className="text-center flex flex-col gap-4">
@@ -50,7 +53,30 @@ const About: React.FC = () => {
         <span className="label">版本</span>
         <span>{window.versions.version}</span>
       </p>
-      {updateInfo && <p>{updateInfo}</p>}
+      <p className="flex items-center justify-center gap-2">
+        <div className="form-label">更新策略</div>
+        <div className="form-radio">
+          <input
+            type="radio"
+            name="pattern"
+            id="auto"
+            defaultChecked={autoUpdate}
+            onChange={(e) => setAutoUpdate(e.target.checked)}
+          />
+          <label htmlFor="auto">自动更新</label>
+        </div>
+        <div className="form-radio">
+          <input
+            type="radio"
+            name="pattern"
+            id="not-auto"
+            defaultChecked={!autoUpdate}
+            onChange={(e) => setAutoUpdate(!e.target.checked)}
+          />
+          <label htmlFor="not-auto">手动更新</label>
+        </div>
+      </p>
+      {updateInfo && <p>{updateInfo} </p>}
       <p>
         <button
           disabled={disabled}

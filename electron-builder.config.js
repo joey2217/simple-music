@@ -1,18 +1,14 @@
 /* eslint-disable no-template-curly-in-string */
-const { version, author, productName } = require('./package.json')
-
-const year = new Date().getFullYear()
-
-const shortcutName = '轻音乐'
+const nameEN = 'SimpleMusic'
 
 /**
  * @type {import('electron-builder').Configuration}
  * @see https://www.electron.build/configuration/configuration
  */
 module.exports = {
-  productName,
+  productName: '轻音乐',
   appId: 'com.joey.music',
-  copyright: `Copyright © ${year} ${author}`,
+  artifactName: nameEN + '-${version}-${arch}.${ext}',
   directories: {
     output: 'release',
     buildResources: 'resources',
@@ -30,11 +26,10 @@ module.exports = {
     language: '2052',
     perMachine: true,
     allowToChangeInstallationDirectory: true,
-    shortcutName,
   },
   mac: {
     icon: 'resources/icon.icns',
-    target: 'dmg',
+    target: 'default',
   },
   dmg: {
     window: {
@@ -44,19 +39,15 @@ module.exports = {
     contents: [
       {
         x: 410,
-        y: 150,
+        y: 190,
         type: 'link',
         path: '/Applications',
       },
       {
         x: 130,
-        y: 150,
+        y: 190,
         type: 'file',
-        name: shortcutName,
       },
     ],
-  },
-  extraMetadata: {
-    version,
   },
 }
