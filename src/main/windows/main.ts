@@ -98,7 +98,11 @@ export function setMainTitleBarOverlay(
 }
 
 export function musicControl(type: 'prev' | 'play' | 'pause' | 'next') {
-  return () => win.webContents.send('MUSIC_CONTROL', type)
+  return () => {
+    win.webContents.send('MUSIC_CONTROL', type)
+    console.log('MUSIC_CONTROL', type)
+    
+  }
 }
 
 export function setMainThumbarButtons(playing: boolean, disabled = false) {

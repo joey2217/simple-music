@@ -50,37 +50,43 @@ const Control: React.FC = () => {
     emitter.emit('end', loop)
   }, [])
 
-  const onPause = useCallback(
-    (id?: number) => {
-      console.log('onPause', id)
-      setPlaying(false)
-      emitter.emit('pause')
-    },
-    [setPlaying]
-  )
-  const onPlay = useCallback(
-    (id?: number) => {
-      console.log('onPlay', id)
-      setPlaying(true)
-      emitter.emit('play')
-    },
-    [setPlaying]
-  )
+  const onPause = useCallback((id?: number) => {
+    console.log('onPause', id)
+    emitter.emit('pause')
+  }, [])
+
+  const onPlay = useCallback((id?: number) => {
+    console.log('onPlay', id)
+    emitter.emit('play')
+  }, [])
 
   const togglePlaying = useCallback(() => {
-    if (playing) {
-      audio?.pause()
-    } else {
-      audio?.play()
+    console.log('togglePlaying')
+    if (audio) {
+      if (audio.playing()) {
+        audio.pause()
+        setPlaying(false)
+      } else {
+        audio.play()
+        setPlaying(true)
+      }
     }
-  }, [playing])
+  }, [setPlaying])
 
   const onSeek = useCallback((val: number) => {
     audio?.seek(val)
   }, [])
 
+  const unloadAudio = useCallback(() => {
+    if (audio != null) {
+      audio.unload()
+      audio = null
+    }
+  }, [])
+
   useEffect(() => {
     if (currentPlayUrl) {
+      unloadAudio()
       audio = new Howl({
         src: currentPlayUrl,
         html5: true,
@@ -90,7 +96,7 @@ const Control: React.FC = () => {
       audio.on('end', onEnd)
       audio.on('pause', onPause)
       audio.on('play', onPlay)
-      audio.once('load', () => {
+      audio.once('load', (id?: number) => {
         if (init) {
           setInit()
         } else {
@@ -98,18 +104,10 @@ const Control: React.FC = () => {
         }
       })
     } else {
-      if (audio != null) {
-        audio.unload()
-        audio = null
-      }
+      unloadAudio()
     }
-    return () => {
-      if (audio != null) {
-        audio.unload()
-        audio = null
-      }
-    }
-  }, [currentPlayUrl, onEnd, onPause, onPlay])
+    return unloadAudio
+  }, [currentPlayUrl, onEnd, onPause, onPlay, togglePlaying, unloadAudio])
 
   useEffect(() => {
     const next = (loop?: boolean) => playNext('next', loop)

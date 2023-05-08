@@ -182,7 +182,7 @@ const Lyric: React.FC<Props> = ({ open, onClose }) => {
               </>
             )}
           </div>
-          <div className="w-9"></div>
+          <div className="w-9 h-1 titleBar-mr"></div>
           {/* <button
           title="关闭"
           onClick={onClose}

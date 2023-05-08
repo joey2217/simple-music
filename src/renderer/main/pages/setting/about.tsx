@@ -49,11 +49,11 @@ const About: React.FC = () => {
         </svg>
       </div>
       <h2 className="text-xl font-semibold">轻音乐</h2>
-      <p>
+      <div>
         <span className="label">版本</span>
         <span>{window.versions.version}</span>
-      </p>
-      <p className="flex items-center justify-center gap-2">
+      </div>
+      <div className="flex items-center justify-center gap-2">
         <div className="form-label">更新策略</div>
         <div className="form-radio">
           <input
@@ -75,9 +75,9 @@ const About: React.FC = () => {
           />
           <label htmlFor="not-auto">手动更新</label>
         </div>
-      </p>
-      {updateInfo && <p>{updateInfo} </p>}
-      <p>
+      </div>
+      {updateInfo && <div>{updateInfo} </div>}
+      <div>
         <button
           disabled={disabled}
           className="primary-btn mr-4"
@@ -95,8 +95,8 @@ const About: React.FC = () => {
         >
           手动下载
         </button>
-      </p>
-      <p>
+      </div>
+      <div>
         <button
           className="default-btn"
           onClick={() =>
@@ -107,27 +107,27 @@ const About: React.FC = () => {
         >
           意见反馈
         </button>
-      </p>
-      <p>
+      </div>
+      <div>
         <button
           className="text-btn"
           onClick={() => window.devAPI.toggleDevtools()}
         >
           切换开发者工具
         </button>
-      </p>
-      <p>
+      </div>
+      <div>
         <span className="label">electron</span>
         <span>{window.versions.electron}</span>
-      </p>
-      <p>
+      </div>
+      <div>
         <span className="label">node</span>
         <span>{window.versions.node}</span>
-      </p>
-      <p>
+      </div>
+      <div>
         <span className="label">chrome</span>
         <span>{window.versions.chrome}</span>
-      </p>
+      </div>
     </div>
   )
 }
