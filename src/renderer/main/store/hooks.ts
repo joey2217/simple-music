@@ -16,6 +16,7 @@ import {
   playerVolumeState,
   downloadPathState,
   downloadListState,
+  downloadSettingState,
 } from './atom'
 import {
   currentPlayUrlState,
@@ -296,6 +297,7 @@ export function useDownload() {
   const [downloadPathLoadable, setDownloadPath] =
     useRecoilStateLoadable(downloadPathState)
   const [downloadList, setDownloadList] = useRecoilState(downloadListState)
+  const downloadSetting = useRecoilValue(downloadSettingState)
 
   const downloadPath = useMemo(() => {
     if (downloadPathLoadable.state === 'hasValue') {
@@ -327,7 +329,14 @@ export function useDownload() {
       const download = (url: string) => {
         const urlArr = url.split('.')
         const ext = urlArr[urlArr.length - 1]
-        const fileName = `${m.artist}-${m.name}.${ext}`
+        let fileName = ''
+        if (downloadSetting.pattern === 'artist_name') {
+          fileName = `${m.artist}-${m.name}.${ext}`
+        } else if (downloadSetting.pattern === 'name_artist') {
+          fileName = `${m.name}-${m.artist}.${ext}`
+        } else {
+          fileName = `${m.name}.${ext}`
+        }
         const mPath = `${downloadPath}/${fileName}`
         const downloadItem: DownloadMusic = {
           ...m,
@@ -350,7 +359,7 @@ export function useDownload() {
         })
       }
     },
-    [downloadPath, setDownloadList]
+    [downloadPath, downloadSetting.pattern, setDownloadList]
   )
 
   const removeDownloadMusic = useCallback(
