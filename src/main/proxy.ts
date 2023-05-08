@@ -45,12 +45,11 @@ function setToken(cookies: string[]) {
     })
   }
 }
-
 // 初始化cookies
 export function initCSRF() {
   return new Promise((resolve, reject) => {
     https
-      .get(KUWO_URL + '/down', (res) => {
+      .get(KUWO_URL + '/favicon.ico?v=1', (res) => {
         if (res.headers && res.headers['set-cookie']) {
           setToken(res.headers['set-cookie'])
           resolve(csrf)
