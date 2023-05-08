@@ -11,7 +11,7 @@ import type { DownloadInfo } from './types'
 import type { OpenDialogOptions } from 'electron'
 import { onPlayingChange, setCurrentPlay } from './tray'
 import { onMenuPlayingChange } from './menu'
-import { checkUpdate } from './updater'
+import { checkForUpdates } from './updater'
 
 export default function handleIPC() {
   nativeTheme.themeSource = 'dark'
@@ -75,7 +75,7 @@ export default function handleIPC() {
   })
 
   ipcMain.handle('CHECK_FOR_UPDATE', () => {
-    return checkUpdate()
+    checkForUpdates()
   })
 
   ipcMain.handle('OPEN_EXTERNAL', (_e, url: string) => {

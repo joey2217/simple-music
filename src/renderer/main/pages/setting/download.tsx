@@ -42,7 +42,7 @@ const Download: React.FC = () => {
         </div>
         <div className="form-item">
           <div className="w-40 label">音乐命名格式</div>
-          <div className="inline-flex gap-4 items-center">
+          <div className="inline-flex gap-4 items-center flex-wrap">
             {DOWNLOAD_MUSIC_PATTERN.map((p) => (
               <div key={p.value} className="form-radio">
                 <input

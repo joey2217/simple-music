@@ -9,9 +9,9 @@ const About: React.FC = () => {
     setUpdateInfo('检测更新中...')
     window.electronAPI
       .checkUpdate()
-      .then((res) => {
-        if (res) {
-          setUpdateInfo(`新版本:${res.updateInfo.version}更新中...`)
+      .then((version) => {
+        if (version) {
+          setUpdateInfo(`新版本:${version}更新中...`)
         } else {
           setUpdateInfo('当前已经是最新版本')
         }

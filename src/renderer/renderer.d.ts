@@ -18,7 +18,7 @@ interface IElectronAPI {
   trashItem: (path: string) => Promise<void>
   setPlaying: (playing: boolean) => Promise<void>
   setCurrentPlay: (name: string) => Promise<void>
-  checkUpdate: () => Promise<UpdateCheckResult>
+  checkUpdate: () => Promise<void>
   openExternal: (url: string) => Promise<void>,
   onMusicControl: (
     callback: (

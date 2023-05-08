@@ -6,7 +6,6 @@ import {
   focus as focusMainWindow,
 } from './windows/main'
 import handleIPC from './ipc'
-import { checkUpdate } from './updater'
 import './menu'
 import './tray'
 import './proxy'
@@ -26,7 +25,6 @@ if (!gotTheLock) {
     app.whenReady().then(() => {
       createMainWindow()
       handleIPC()
-      checkUpdate()
     })
   })
 }
