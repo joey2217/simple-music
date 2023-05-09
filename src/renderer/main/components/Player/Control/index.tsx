@@ -139,12 +139,31 @@ const Control: React.FC = () => {
     }
   }, [playerVolume])
 
+  const musicControl = useCallback(
+    (type: 'prev' | 'play' | 'pause' | 'next') => {
+      switch (type) {
+        case 'play':
+        case 'pause':
+          togglePlaying()
+          break
+        case 'next':
+        case 'prev':
+          playNext(type)
+          break
+        default:
+          break
+      }
+    },
+    [playNext, togglePlaying]
+  )
+
   useEffect(() => {
-    emitter.on('togglePlay', togglePlaying)
+    emitter.on('musicControl', musicControl)
     return () => {
-      emitter.off('togglePlay', togglePlaying)
+      console.log('off musicControl')
+      emitter.off('musicControl', musicControl)
     }
-  }, [togglePlaying])
+  }, [musicControl])
 
   return (
     <div>

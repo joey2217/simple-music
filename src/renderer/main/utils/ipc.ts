@@ -6,26 +6,15 @@ import { useNavigate } from 'react-router-dom'
 const MAX_TITLE_LENGTH = 10
 
 export function useIPC() {
-  const { playNext, currentPlay, playing } = usePlaylist()
+  const { currentPlay, playing } = usePlaylist()
   const { setDownloadList } = useDownload()
   const navigate = useNavigate()
 
   useEffect(() => {
     window.electronAPI.onMusicControl((_e, type) => {
-      switch (type) {
-        case 'play':
-        case 'pause':
-          emitter.emit('togglePlay')
-          break
-        case 'next':
-        case 'prev':
-          playNext(type)
-          break
-        default:
-          break
-      }
+      emitter.emit('musicControl', type)
     })
-  }, [playNext])
+  }, [])
 
   useEffect(() => {
     window.electronAPI.onDownloadFinish((_e, rid, success) => {
