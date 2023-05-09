@@ -36,13 +36,13 @@ module.exports = {
     contents: [
       {
         x: 410,
-        y: 190,
+        y: 150,
         type: 'link',
         path: '/Applications',
       },
       {
         x: 130,
-        y: 190,
+        y: 150,
         type: 'file',
       },
     ],
