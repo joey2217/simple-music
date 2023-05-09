@@ -8,7 +8,7 @@ const nameEN = 'SimpleMusic'
 module.exports = {
   productName: '轻音乐',
   appId: 'com.joey.music',
-  artifactName: nameEN + '-${version}-${arch}.${ext}',
+  artifactName: nameEN + '-${version}-${os}-${arch}.${ext}',
   directories: {
     output: 'release',
     buildResources: 'resources',
