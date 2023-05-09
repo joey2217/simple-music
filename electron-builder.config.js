@@ -16,10 +16,7 @@ module.exports = {
   files: ['dist'],
   win: {
     icon: 'resources/icon.ico',
-    target: {
-      target: 'nsis',
-      arch: ['x64'],
-    },
+    target: 'nsis',
   },
   nsis: {
     oneClick: false,
