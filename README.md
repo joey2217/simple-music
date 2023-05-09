@@ -11,3 +11,17 @@
 ## [BUG 反馈](https://github.com/joey2217/simple-music/issues)
 
 ## Have fun!
+
+## 截图
+
+### 首页
+
+![首页](screenshot/screenshot-index.png)
+
+### 歌手
+
+![歌手](screenshot/screenshot-artist.png)
+
+### 搜索
+
+![搜索](screenshot/screenshot-search.png)
