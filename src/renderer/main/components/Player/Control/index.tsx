@@ -50,28 +50,34 @@ const Control: React.FC = () => {
     emitter.emit('end', loop)
   }, [])
 
-  const onPause = useCallback((id?: number) => {
-    console.log('onPause', id)
-    emitter.emit('pause')
-  }, [])
+  const onPause = useCallback(
+    (id?: number) => {
+      console.log('onPause', id)
+      emitter.emit('pause')
+      setPlaying(false)
+    },
+    [setPlaying]
+  )
 
-  const onPlay = useCallback((id?: number) => {
-    console.log('onPlay', id)
-    emitter.emit('play')
-  }, [])
+  const onPlay = useCallback(
+    (id?: number) => {
+      console.log('onPlay', id)
+      emitter.emit('play')
+      setPlaying(true)
+    },
+    [setPlaying]
+  )
 
   const togglePlaying = useCallback(() => {
     console.log('togglePlaying')
     if (audio) {
       if (audio.playing()) {
         audio.pause()
-        setPlaying(false)
       } else {
         audio.play()
-        setPlaying(true)
       }
     }
-  }, [setPlaying])
+  }, [])
 
   const onSeek = useCallback((val: number) => {
     audio?.seek(val)
