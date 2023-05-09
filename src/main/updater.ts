@@ -32,6 +32,7 @@ autoUpdater.on('update-available', (info) => {
 autoUpdater.on('update-not-available', () => {
   sendMain('VERSION_UPDATE', '当前版本已经是最新版本')
   dialog.showMessageBox({
+    type: 'info',
     title: '暂无更新',
     message: '当前版本已经是最新版本',
   })

@@ -4,11 +4,11 @@ import { autoUpdateState } from '../../store/atom'
 
 const About: React.FC = () => {
   const [updateInfo, setUpdateInfo] = useState<string>('')
-  const [disabled, setDisabled] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [autoUpdate, setAutoUpdate] = useRecoilState(autoUpdateState)
 
   const checkUpdate = () => {
-    setDisabled(false)
+    setLoading(true)
     window.electronAPI
       .checkUpdate()
       .then((version) => {
@@ -18,7 +18,7 @@ const About: React.FC = () => {
         console.error(error, '检测更新错误')
       })
       .finally(() => {
-        setDisabled(false)
+        setLoading(false)
       })
   }
 
@@ -79,11 +79,33 @@ const About: React.FC = () => {
       {updateInfo && <div>{updateInfo} </div>}
       <div>
         <button
-          disabled={disabled}
+          disabled={loading}
           className="primary-btn mr-4"
           onClick={checkUpdate}
         >
-          检测更新
+          {loading && (
+            <svg
+              className="animate-spin -ml-1 h-5 w-5 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+          )}
+          <span>检测更新</span>
         </button>
         <button
           className="default-btn"
