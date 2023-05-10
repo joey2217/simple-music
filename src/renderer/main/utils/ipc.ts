@@ -3,8 +3,6 @@ import { useDownload, usePlaylist } from '../store/hooks'
 import emitter from './events'
 import { useNavigate } from 'react-router-dom'
 
-const MAX_TITLE_LENGTH = 10
-
 export function useIPC() {
   const { currentPlay, playing } = usePlaylist()
   const { setDownloadList } = useDownload()
@@ -36,10 +34,7 @@ export function useIPC() {
 
   useEffect(() => {
     if (currentPlay) {
-      let title = `${currentPlay.name} - ${currentPlay.artist}`
-      if (title.length > MAX_TITLE_LENGTH) {
-        title = title.slice(0, MAX_TITLE_LENGTH) + '...'
-      }
+      const title = `${currentPlay.name} - ${currentPlay.artist}`
       console.log('title', title)
       window.electronAPI.setCurrentPlay(title)
     }

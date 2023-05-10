@@ -26,7 +26,7 @@ const MusicInfo: React.FC = () => {
           <div className="hidden md:block py-1 truncate">
             <h5
               onClick={() => setOpen((o) => !o)}
-              className="py-1 cursor-pointer"
+              className="text-lg py-1 cursor-pointer"
             >
               {name}
             </h5>

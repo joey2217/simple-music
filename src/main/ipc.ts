@@ -33,7 +33,6 @@ export default function handleIPC() {
   })
 
   ipcMain.handle('SHOW_ITEM_IN_FOLDER', (e, fullPath: string) => {
-    // console.log('SHOW_ITEM_IN_FOLDER',path.normalize(fullPath));
     shell.showItemInFolder(path.normalize(fullPath))
   })
 

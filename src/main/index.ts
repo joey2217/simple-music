@@ -1,4 +1,5 @@
 import { BrowserWindow, app } from 'electron'
+import log from 'electron-log'
 import { loadDevTools } from './dev'
 import {
   beforeQuit,
@@ -14,13 +15,16 @@ import { initCSRF } from './proxy'
 const gotTheLock = app.requestSingleInstanceLock()
 
 function createWindow() {
-  initCSRF().then((csrf) => {
-    console.log('initCSRF', csrf)
-    app.whenReady().then(() => {
-      createMainWindow()
-      handleIPC()
+  initCSRF()
+    .then((csrf) => {
+      log.info('initCSRF', csrf)
     })
-  })
+    .finally(() => {
+      app.whenReady().then(() => {
+        createMainWindow()
+        handleIPC()
+      })
+    })
 }
 
 if (!gotTheLock) {

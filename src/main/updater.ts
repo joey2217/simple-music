@@ -59,3 +59,8 @@ export function checkForUpdates() {
   autoUpdater.logger = log
   return autoUpdater.checkForUpdates()
 }
+
+// 日志
+// on Linux: ~/.config/{app name}/logs/main.log
+// on macOS: ~/Library/Logs/{app name}/main.log
+// on Windows C:\Users\%USERPROFILE%\AppData\Roaming\{app name}\logs\main.log

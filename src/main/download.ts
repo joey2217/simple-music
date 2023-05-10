@@ -1,4 +1,5 @@
 import { app, session, Notification } from 'electron'
+import log from 'electron-log'
 import * as path from 'path'
 import type { DownloadInfo } from './types'
 import { mainNavigate, send as sendMain } from './windows/main'
@@ -28,24 +29,21 @@ app.whenReady().then(() => {
 
     // item.on('updated', (event, state) => {
     //   if (state === 'interrupted') {
-    //     console.log('Download is interrupted but can be resumed')
+    //     log.info('Download is interrupted but can be resumed')
     //   } else if (state === 'progressing') {
     //     if (item.isPaused()) {
-    //       console.log('Download is paused')
+    //       log.info('Download is paused')
     //     } else {
-    //       console.log(`Received bytes: ${item.getReceivedBytes()}`)
+    //       log.info(`Received bytes: ${item.getReceivedBytes()}`)
     //     }
     //   }
     // })
     item.once('done', (event, state) => {
       if (state === 'completed') {
-        console.log(
-          'Download successfully',
-          downloadFile.downloadPath
-        )
+        log.info('Download successfully', downloadFile.downloadPath)
         onCompleted(true)
       } else {
-        console.log(`Download failed: ${state}`)
+        log.info(`Download failed: ${state}`)
         onCompleted(false)
       }
     })

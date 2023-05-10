@@ -1,4 +1,5 @@
 import { BrowserWindow, dialog } from 'electron'
+import log from 'electron-log'
 import * as path from 'path'
 import type { OpenDialogOptions } from 'electron'
 import { nextIcon, pauseIcon, playIcon, prevIcon } from '../icons'
@@ -64,7 +65,7 @@ export function create() {
 
   if (process.platform === 'win32') {
     const bool = win.setThumbarButtons(thumbarButtons)
-    console.log('create', bool)
+    log.info('create', bool)
   }
   if (import.meta.env.DEV) {
     win.loadURL('http://localhost:5174')
@@ -112,7 +113,7 @@ export function setMainThumbarButtons(playing: boolean, disabled = false) {
         }
       })
       const bool = win.setThumbarButtons(buttons)
-      console.log('SET_MAIN_THUMBAR_BUTTONS', bool)
+      log.info('SET_MAIN_THUMBAR_BUTTONS', bool)
     } else {
       if (playing) {
         const buttons = thumbarButtons.map((btn, index) => {
@@ -122,7 +123,7 @@ export function setMainThumbarButtons(playing: boolean, disabled = false) {
           }
         })
         const bool = win.setThumbarButtons(buttons)
-        console.log('SET_MAIN_THUMBAR_BUTTONS', bool)
+        log.info('SET_MAIN_THUMBAR_BUTTONS', bool)
       } else {
         const buttons = thumbarButtons.map((btn, index) => {
           return {
@@ -131,7 +132,7 @@ export function setMainThumbarButtons(playing: boolean, disabled = false) {
           }
         })
         const bool = win.setThumbarButtons(buttons)
-        console.log('SET_MAIN_THUMBAR_BUTTONS', bool)
+        log.info('SET_MAIN_THUMBAR_BUTTONS', bool)
       }
     }
   }

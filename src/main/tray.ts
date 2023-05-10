@@ -13,6 +13,9 @@ import { APP_NAME } from './constant'
 
 let tray: Tray
 
+const MAX_TITLE_LENGTH = 10
+let toolTip = APP_NAME
+
 const contextMenu = Menu.buildFromTemplate([
   { id: 'music', label: APP_NAME, icon: musicIcon, click: focus },
   { id: 'play', label: '播放', icon: playIcon, click: musicControl('play') },
@@ -32,7 +35,7 @@ const contextMenu = Menu.buildFromTemplate([
 app.whenReady().then(() => {
   tray = new Tray(appIcon)
   // tray.setTitle('轻音乐')
-  tray.setToolTip(APP_NAME)
+  tray.setToolTip(toolTip)
   tray.setContextMenu(contextMenu)
   tray.on('click', focus)
 })
@@ -41,28 +44,25 @@ export function setCurrentPlay(name: string) {
   // const titleMenu = contextMenu.getMenuItemById('music')
   // if (titleMenu) {
   //   titleMenu.label = name
-  //   console.log(titleMenu.label, name, 'setCurrentPlay')
   // }
-  contextMenu.items[0].label = name
+  if (tray) {
+    tray.setToolTip(name)
+  }
+  let title = name
+  if (title.length > MAX_TITLE_LENGTH) {
+    title = title.slice(0, MAX_TITLE_LENGTH) + '...'
+  }
+  contextMenu.items[0].label = title
 }
 
 export function onPlayingChange(playing: boolean) {
   const playMenu = contextMenu.getMenuItemById('play')
   const pauseMenu = contextMenu.getMenuItemById('pause')
-  if (playing) {
-    if (playMenu) {
-      playMenu.visible = false
-    }
-    if (pauseMenu) {
-      pauseMenu.visible = true
-    }
-  } else {
-    if (playMenu) {
-      playMenu.visible = true
-    }
-    if (pauseMenu) {
-      pauseMenu.visible = false
-    }
+  if (playMenu) {
+    playMenu.visible = !playing
+  }
+  if (pauseMenu) {
+    pauseMenu.visible = playing
   }
   // tray.setContextMenu(contextMenu)
 }

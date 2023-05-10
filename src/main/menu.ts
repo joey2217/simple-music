@@ -97,20 +97,11 @@ export function onMenuPlayingChange(playing: boolean) {
   if (process.platform === 'darwin') {
     const playMenu = menu.getMenuItemById('play')
     const pauseMenu = menu.getMenuItemById('pause')
-    if (playing) {
-      if (playMenu) {
-        playMenu.visible = false
-      }
-      if (pauseMenu) {
-        pauseMenu.visible = true
-      }
-    } else {
-      if (playMenu) {
-        playMenu.visible = true
-      }
-      if (pauseMenu) {
-        pauseMenu.visible = false
-      }
+    if (playMenu) {
+      playMenu.visible = !playing
+    }
+    if (pauseMenu) {
+      pauseMenu.visible = playing
     }
   }
   // FIXME dock menu visible
