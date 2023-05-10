@@ -22,7 +22,7 @@ const MusicPage: React.FC = () => {
       case 'loading':
         return (
           <div className="col-span-5 min-h-[650px] flex justify-center items-center">
-            <LoadingIcon className="text-4xl" />
+            <LoadingIcon className="text-4xl text-indigo-600" />
           </div>
         )
       case 'hasError':
