@@ -7,9 +7,8 @@ const logger = createLogger('info', {
   prefix: '[build]',
 })
 
-const defaultLogOptions = {
-  timestamp: true,
-}
+const loggerInfo = logger.info
+logger.info = (msg, options) => loggerInfo(msg, { timestamp: true, ...options })
 
 async function build() {
   await buildMain()
@@ -21,7 +20,7 @@ async function buildMain() {
     configFile: path.join(ROOT, 'src/main/vite.config.ts'),
     mode: 'production',
   })
-  logger.info('build main success!', defaultLogOptions)
+  logger.info('build main success!')
 }
 
 async function buildRenderer(configFile) {
@@ -29,7 +28,7 @@ async function buildRenderer(configFile) {
     configFile,
     mode: 'production',
   })
-  logger.info('build renderer success!', defaultLogOptions)
+  logger.info('build renderer success!')
 }
 
 build()

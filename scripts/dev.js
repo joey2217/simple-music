@@ -11,10 +11,11 @@ let electronProcess
 const logger = createLogger('info', {
   prefix: '[main]',
 })
-
-const defaultLogOptions = {
-  timestamp: true,
-}
+const loggerInfo = logger.info
+const loggerError = logger.error
+logger.info = (msg, options) => loggerInfo(msg, { timestamp: true, ...options })
+logger.error = (msg, options) =>
+  loggerError(msg, { timestamp: true, ...options })
 
 async function start() {
   await startRendererServer(path.join(ROOT, 'src/renderer/vite.config.ts'))
@@ -26,7 +27,7 @@ async function start() {
     },
   })
   watcher.on('event', function (e) {
-    logger.info(`build ${e.code}`, defaultLogOptions)
+    logger.info(`build ${e.code}`)
     if (e.code === 'END') {
       startElectron()
     }
@@ -34,7 +35,7 @@ async function start() {
 }
 
 function startElectron() {
-  logger.info('start electron', defaultLogOptions)
+  logger.info('start electron')
   if (electronProcess != null) {
     // windows 上，不支持 signal 参数
     electronProcess.kill()
@@ -43,13 +44,13 @@ function startElectron() {
   }
   electronProcess = spawn(electron, [path.join(ROOT, 'dist/main.js')])
   electronProcess.stdout.on('data', (data) => {
-    logger.info(data.toString(), defaultLogOptions)
+    logger.info(data.toString())
   })
   electronProcess.stderr.on('data', (data) => {
-    logger.error(data.toString().substring(0, 1000), defaultLogOptions)
+    logger.error(data.toString().substring(0, 1000))
   })
   electronProcess.on('close', (code) => {
-    logger.info(`child process exited with code ${code}`, defaultLogOptions)
+    logger.info(`child process exited with code ${code}`)
     if (code != null) {
       process.exit(code)
     }
@@ -66,7 +67,6 @@ async function startRendererServer(configFile, port = 5174) {
   })
   await viteDevServer.listen()
   logger.info(`renderer server start at: http://localhost:${port}`, {
-    ...defaultLogOptions,
     prefix: ['renderer'],
   })
   return viteDevServer
