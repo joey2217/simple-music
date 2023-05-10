@@ -76,7 +76,9 @@ const SearchInput: React.FC<Props> = ({ className = '', inputStyle, top }) => {
   const defaultSearchOptions = useMemo(() => {
     return (
       <div>
-        <div className="px-2 py-1 flex items-center gap-4">最近搜索记录</div>
+        {keywordHistory.length > 0 && (
+          <div className="px-2 py-1 flex items-center gap-4">最近搜索记录</div>
+        )}
         <ul className="flex flex-wrap gap-1">
           {keywordHistory.map((word) => (
             <li
