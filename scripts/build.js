@@ -5,10 +5,10 @@ const ROOT = path.resolve(__dirname, '../')
 
 const logger = createLogger('info', {
   prefix: '[build]',
-});
+})
 
 const defaultLogOptions = {
-  timestamp: true
+  timestamp: true,
 }
 
 async function build() {
