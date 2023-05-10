@@ -1,4 +1,11 @@
-import React, { memo, useCallback, useEffect, useMemo, useState } from 'react'
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from 'recoil'
 import { FluentSearch, LoadingIcon, RoundClose } from './icons'
 import {
@@ -8,6 +15,7 @@ import {
 } from '../store/atom'
 import { searchHotKeysState } from '../store/selector'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useSearchHistory } from '../store/hooks'
 
 interface Props {
   className?: string
@@ -18,25 +26,28 @@ interface Props {
 const SearchInput: React.FC<Props> = ({ className = '', inputStyle, top }) => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
-
-  const [open, setOpen] = useState(false)
-
+  const { setKeywordHistoryData, keywordHistory } = useSearchHistory()
   const [keyword, setKeyword] = useRecoilState(searchKeywordState)
   const [searchValue, setSearchValue] = useRecoilState(searchValueState)
   const defaultSearchHotKeys = useRecoilValue(defaultSearchHotKeysState)
   const searchHotKeysLoadable = useRecoilValueLoadable(searchHotKeysState)
 
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [open, setOpen] = useState(false)
+
   const onSearch = useCallback(
     (word?: string) => {
       if (word != null) {
+        setSearchValue(word)
         setKeyword(word)
+        setKeywordHistoryData(word)
       }
       setOpen(false)
       if (pathname !== '/search') {
         navigate(`/search?keyword=${word}`)
       }
     },
-    [navigate, pathname, setKeyword]
+    [navigate, pathname, setKeyword, setKeywordHistoryData, setSearchValue]
   )
 
   const onBlur = () => {
@@ -46,8 +57,14 @@ const SearchInput: React.FC<Props> = ({ className = '', inputStyle, top }) => {
   }
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // console.log(e.code)
     if (e.key === 'Enter') {
       onSearch((e.target as any).value)
+    } else if (e.key === 'Escape') {
+      const inputEl = inputRef.current
+      if (inputEl) {
+        inputEl.blur()
+      }
     }
   }
 
@@ -59,20 +76,36 @@ const SearchInput: React.FC<Props> = ({ className = '', inputStyle, top }) => {
   const defaultSearchOptions = useMemo(() => {
     return (
       <div>
-        <ul>
-          {defaultSearchHotKeys.map((word) => (
+        <div className="px-2 py-1 flex items-center gap-4">最近搜索记录</div>
+        <ul className="flex flex-wrap gap-1">
+          {keywordHistory.map((word) => (
             <li
               key={word}
-              className="cursor-pointer py-1 px-2 hover:bg-neutral-500/50 rounded-md"
+              className="cursor-pointer py-1 px-2 hover:bg-neutral-500/50 rounded-md flex items-center gap-4"
               onClick={() => onSearch(word)}
             >
               {word}
             </li>
           ))}
         </ul>
+        <div className="px-2 py-1">最近热搜</div>
+        <ul>
+          {defaultSearchHotKeys.map((word, index) => (
+            <li
+              key={word}
+              className="cursor-pointer py-1 px-2 hover:bg-neutral-500/50 rounded-md flex items-center gap-3"
+              onClick={() => onSearch(word)}
+            >
+              <div className="w-6 h-6 text-center bg-indigo-600/80 rounded">
+                {index + 1}
+              </div>
+              <div className="truncate">{word}</div>
+            </li>
+          ))}
+        </ul>
       </div>
     )
-  }, [defaultSearchHotKeys, onSearch])
+  }, [defaultSearchHotKeys, keywordHistory, onSearch])
 
   const searchOptions = useMemo(() => {
     if (searchHotKeysLoadable.state === 'hasValue') {
@@ -109,6 +142,7 @@ const SearchInput: React.FC<Props> = ({ className = '', inputStyle, top }) => {
       >
         <FluentSearch className="text-xl text-neutral-500 dark:text-neutral-100" />
         <input
+          ref={inputRef}
           className={`flex-1 py-2 px-2 sm:text-sm ring-0 bg-neutral-200 dark:bg-neutral-600 focus:outline-none`}
           placeholder="搜索音乐/MV/歌单/歌手"
           style={inputStyle}

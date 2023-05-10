@@ -17,6 +17,7 @@ import {
   downloadPathState,
   downloadListState,
   downloadSettingState,
+  searchKeywordHistoryState,
 } from './atom'
 import {
   currentPlayUrlState,
@@ -386,5 +387,42 @@ export function useDownload() {
     removeDownloadMusic,
     openDownloadPath,
     selectDownloadPath,
-  }
+  } as const
+}
+
+const MAX_KEYWORD_HISTORY_COUNT = 10
+
+export function useSearchHistory() {
+  const [keywordHistory, setKeywordHistory] = useRecoilState(
+    searchKeywordHistoryState
+  )
+
+  const setKeywordHistoryData = useCallback(
+    (word: string) => {
+      setKeywordHistory((list) =>
+        [word, ...list.filter((s) => s !== word)].slice(
+          0,
+          MAX_KEYWORD_HISTORY_COUNT
+        )
+      )
+    },
+    [setKeywordHistory]
+  )
+
+  const clearHistory = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, index: number) => {
+      setKeywordHistory((list) => [
+        ...list.slice(0, index),
+        ...list.slice(index + 1),
+      ])
+    },
+    [setKeywordHistory]
+  )
+
+  return {
+    keywordHistory,
+    setKeywordHistory,
+    setKeywordHistoryData,
+    clearHistory,
+  } as const
 }

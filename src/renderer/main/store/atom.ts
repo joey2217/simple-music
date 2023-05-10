@@ -55,6 +55,12 @@ export const searchKeywordState = atom({
   default: '',
 })
 
+export const searchKeywordHistoryState = atom<string[]>({
+  key: 'searchKeywordHistoryState',
+  default: [],
+  effects: [localStorageEffect('local_keyword_history')],
+})
+
 export const defaultSearchHotKeysState = atom<string[]>({
   key: 'defaultSearchHotKeysState',
   default: fetchSearchKeys(),
