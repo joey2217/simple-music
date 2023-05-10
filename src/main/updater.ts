@@ -19,7 +19,7 @@ autoUpdater.on('update-available', (info) => {
     .showMessageBox({
       type: 'info',
       title: `检测到新版本 ${info.version}`,
-      message: '是否马上更新!',
+      message: '是否马上开始下载更新!',
       buttons: ['是', '否'],
     })
     .then((res) => {
