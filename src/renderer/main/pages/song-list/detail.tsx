@@ -6,6 +6,7 @@ import type { SongListDetail } from '../../types/songList'
 import MusicPage from '../../components/MusicPage'
 import { FluentAdd, Play } from '../../components/icons'
 import { usePlaylist } from '../../store/hooks'
+import PageHeader from '../../components/PageHeader'
 
 const SongListDetailPage: React.FC = () => {
   const { id } = useParams()
@@ -30,6 +31,7 @@ const SongListDetailPage: React.FC = () => {
   if (songListDetail) {
     return (
       <div>
+        <PageHeader title={'歌单 : ' + songListDetail.name} />
         <div className="flex mb-4 gap-4 items-start flex-wrap">
           <img
             src={songListDetail.img}
@@ -48,10 +50,7 @@ const SongListDetailPage: React.FC = () => {
                 <Play />
                 <span>播放全部</span>
               </button>
-              <button
-                className="default-btn"
-                onClick={() => addPlaylist(list)}
-              >
+              <button className="default-btn" onClick={() => addPlaylist(list)}>
                 <FluentAdd />
                 <span>添加</span>
               </button>
@@ -62,7 +61,7 @@ const SongListDetailPage: React.FC = () => {
       </div>
     )
   }
-  return null
+  return <PageHeader title="未知歌单" />
 }
 
 export default memo(SongListDetailPage)

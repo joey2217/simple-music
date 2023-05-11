@@ -4,6 +4,7 @@ import { useRecoilValueLoadable } from 'recoil'
 import { FluentAdd, LoadingIcon, Play } from '../../components/icons'
 import { musicLyricQuery, musicQuery } from './store'
 import { usePlaylist } from '../../store/hooks'
+import PageHeader from '../../components/PageHeader'
 
 const MusicPage: React.FC = () => {
   const { id } = useParams()
@@ -16,8 +17,8 @@ const MusicPage: React.FC = () => {
   const lyric = useMemo(() => {
     switch (musicLyricLoadable.state) {
       case 'hasValue':
-        return musicLyricLoadable.contents.map((l) => (
-          <div key={l.time}>{l.lineLyric}</div>
+        return musicLyricLoadable.contents.map((l, index) => (
+          <div key={l.time + index}>{l.lineLyric}</div>
         ))
       case 'loading':
         return (
@@ -33,7 +34,7 @@ const MusicPage: React.FC = () => {
   if (musicInfoLoadable.state === 'loading') {
     return (
       <div className="min-h-[500px] flex justify-center items-center">
-        <LoadingIcon className="text-4xl" />
+        <LoadingIcon className="text-4xl text-indigo-600" />
       </div>
     )
   }
@@ -41,7 +42,8 @@ const MusicPage: React.FC = () => {
     const musicInfo = musicInfoLoadable.contents
     return (
       <div>
-        <div className="grid grid-cols-4">
+        <PageHeader title={'歌曲 : ' + musicInfo.name} />
+        <div className="px-4 grid grid-cols-4">
           <div className="col-span-3 flex flex-col gap-4">
             <h2 className="text-xl font-semibold">{musicInfo.name}</h2>
             <Link
@@ -63,7 +65,10 @@ const MusicPage: React.FC = () => {
               {musicInfo.albuminfo}
             </div>
             <div className="flex gap-4">
-              <button className="primary-btn" onClick={() => playNow(musicInfo)}>
+              <button
+                className="primary-btn"
+                onClick={() => playNow(musicInfo)}
+              >
                 <Play />
                 <span>播放</span>
               </button>
@@ -88,7 +93,12 @@ const MusicPage: React.FC = () => {
       </div>
     )
   }
-  return <h3>未知歌曲</h3>
+  return (
+    <div>
+      <PageHeader />
+      <h3 className="text-center">未知歌曲</h3>
+    </div>
+  )
 }
 
 export default memo(MusicPage)

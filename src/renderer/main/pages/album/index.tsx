@@ -4,6 +4,7 @@ import { useRecoilValueLoadable } from 'recoil'
 import { albumQuery } from './store'
 import { LoadingIcon, Play, FluentAdd } from '../../components/icons'
 import { usePlaylist } from '../../store/hooks'
+import PageHeader from '../../components/PageHeader'
 
 const AlbumPage: React.FC = () => {
   const { id } = useParams()
@@ -13,7 +14,7 @@ const AlbumPage: React.FC = () => {
   if (albumLoadable.state === 'loading') {
     return (
       <div className="min-h-[500px] flex justify-center items-center">
-        <LoadingIcon className="text-4xl" />
+        <LoadingIcon className="text-4xl text-indigo-600" />
       </div>
     )
   }
@@ -21,6 +22,7 @@ const AlbumPage: React.FC = () => {
     const album = albumLoadable.contents
     return (
       <div>
+        <PageHeader title={'专辑 : ' + album.album} />
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-4 gap-4">
             <div className="col-span-3 flex flex-col gap-4">
@@ -109,7 +111,7 @@ const AlbumPage: React.FC = () => {
     )
   }
 
-  return <h3>未知专辑</h3>
+  return <PageHeader title="未知专辑" />
 }
 
 export default memo(AlbumPage)

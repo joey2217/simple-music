@@ -21,7 +21,7 @@ const RankingMenu: React.FC = () => {
       case 'loading':
         return (
           <div className="min-h-screen flex justify-center items-center">
-            <LoadingIcon className="text-4xl" />
+            <LoadingIcon className="text-4xl text-indigo-600" />
           </div>
         )
       case 'hasError':

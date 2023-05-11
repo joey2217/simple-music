@@ -16,6 +16,7 @@ import {
   Play,
 } from '../../components/icons'
 import { useArtistLikes, usePlaylist } from '../../store/hooks'
+import PageHeader from '../../components/PageHeader'
 
 const Artist: React.FC = () => {
   const { id } = useParams()
@@ -58,6 +59,7 @@ const Artist: React.FC = () => {
     const artistInfo = artistInfoLoadable.contents
     return (
       <section>
+        <PageHeader title={'歌手 : ' + artistInfo.name} />
         <div className="flex gap-4">
           <img
             className="rounded-full w-[160px] h-[160px]"
@@ -166,7 +168,13 @@ const Artist: React.FC = () => {
       </section>
     )
   }
-  return <h3>未知歌手</h3>
+
+  return (
+    <section>
+      <PageHeader />
+      <h3>未知歌手</h3>
+    </section>
+  )
 }
 
 export default memo(Artist)
