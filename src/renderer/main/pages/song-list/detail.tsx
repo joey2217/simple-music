@@ -4,7 +4,7 @@ import { fetchSongListDetail } from '../../api/songList'
 import type { Music } from '../../types'
 import type { SongListDetail } from '../../types/songList'
 import MusicPage from '../../components/MusicPage'
-import { FluentAdd, Play } from '../../components/icons'
+import { FluentAdd, LoadingIcon, Play } from '../../components/icons'
 import { usePlaylist } from '../../store/hooks'
 import PageHeader from '../../components/PageHeader'
 
@@ -14,19 +14,33 @@ const SongListDetailPage: React.FC = () => {
   const [list, setList] = useState<Music[]>([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
+  const [loading, setLoading] = useState(false)
   const [songListDetail, setSongListDetail] = useState<SongListDetail | null>(
     null
   )
 
   useEffect(() => {
     if (id) {
-      fetchSongListDetail(id as string, { pn: page }).then((data) => {
-        setList(data.musicList)
-        setSongListDetail(data)
-        setTotal(data.total)
-      })
+      setLoading(true)
+      fetchSongListDetail(id as string, { pn: page })
+        .then((data) => {
+          setList(data.musicList)
+          setSongListDetail(data)
+          setTotal(data.total)
+        })
+        .finally(() => {
+          setLoading(false)
+        })
     }
   }, [id, page])
+
+  if (loading) {
+    return (
+      <div className="min-h-[650px] flex justify-center items-center">
+        <LoadingIcon className="text-4xl text-indigo-600" />
+      </div>
+    )
+  }
 
   if (songListDetail) {
     return (
