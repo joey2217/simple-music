@@ -138,7 +138,7 @@ const About: React.FC = () => {
           切换开发者工具
         </button>
       </div>
-      <div>
+      {/* <div>
         <span className="label">electron</span>
         <span>{window.versions.electron}</span>
       </div>
@@ -149,7 +149,7 @@ const About: React.FC = () => {
       <div>
         <span className="label">chrome</span>
         <span>{window.versions.chrome}</span>
-      </div>
+      </div> */}
     </div>
   )
 }
