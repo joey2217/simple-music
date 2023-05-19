@@ -1,12 +1,13 @@
 import React, { memo, useState } from 'react'
 
 interface Props {
+  defalutValue?: string | number 
   options: { label: string; value: string | number }[]
   onChange: (value: string | number) => void
 }
 
-const Tags: React.FC<Props> = ({ options, onChange }) => {
-  const [active, setActive] = useState(options[0]?.value)
+const Tags: React.FC<Props> = ({ options, onChange, defalutValue }) => {
+  const [active, setActive] = useState(defalutValue || options[0]?.value)
 
   const onClick = (value: string | number) => {
     setActive(value)

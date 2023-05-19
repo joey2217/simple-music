@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import { useSetRecoilState } from 'recoil'
+import { useRecoilState } from 'recoil'
 import Tags from '../../components/Tags'
 import { artistListParamsState } from './store'
 
@@ -31,14 +31,16 @@ const KIND_TAGS = [
 ].map((s, index) => ({ label: s, value: index }))
 
 const ArtistTags: React.FC = () => {
-  const setParams = useSetRecoilState(artistListParamsState)
+  const [params, setParams] = useRecoilState(artistListParamsState)
   return (
     <div className="flex flex-col gap-2">
       <Tags
+        defalutValue={params.prefix}
         options={LETTER_TAGS}
         onChange={(prefix) => setParams((p) => ({ ...p, prefix, page: 1 }))}
       />
       <Tags
+        defalutValue={params.category}
         options={KIND_TAGS}
         onChange={(category) =>
           setParams((p) => ({ ...p, category: category, page: 1 }))
