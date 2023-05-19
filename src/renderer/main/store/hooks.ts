@@ -182,6 +182,13 @@ export function usePlaylist() {
     ]
   )
 
+  const removeCurrentMusic = useCallback(() => {
+    setPlaylist((list) => [
+      ...list.slice(0, currentPlayIndex),
+      ...list.slice(currentPlayIndex + 1),
+    ])
+  }, [currentPlayIndex, setPlaylist])
+
   const clearPlaylist = useCallback(() => {
     setPlaylist([])
     clearDBPlaylist()
@@ -235,6 +242,7 @@ export function usePlaylist() {
     playerVolume,
     setPlayerVolume,
     currentPlayLyricLoadable,
+    removeCurrentMusic,
   } as const
 }
 

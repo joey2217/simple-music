@@ -25,6 +25,7 @@ const Control: React.FC = () => {
     playMode,
     playerVolume,
     playlist,
+    removeCurrentMusic,
   } = usePlaylist()
 
   const { addLikeMusic, removeLikeMusic, musicLikeIds } = useMusicLikes()
@@ -90,6 +91,11 @@ const Control: React.FC = () => {
     }
   }, [])
 
+  const onLoadError = useCallback(() => {
+    console.warn('加载音乐失败,跳过')
+    removeCurrentMusic()
+  }, [removeCurrentMusic])
+
   useEffect(() => {
     if (currentPlayUrl) {
       unloadAudio()
@@ -109,11 +115,20 @@ const Control: React.FC = () => {
           audio?.play()
         }
       })
+      audio.once('loaderror', onLoadError)
     } else {
       unloadAudio()
     }
     return unloadAudio
-  }, [currentPlayUrl, onEnd, onPause, onPlay, togglePlaying, unloadAudio])
+  }, [
+    currentPlayUrl,
+    onEnd,
+    onLoadError,
+    onPause,
+    onPlay,
+    togglePlaying,
+    unloadAudio,
+  ])
 
   useEffect(() => {
     const next = (loop?: boolean) => playNext('next', loop)
