@@ -4,7 +4,8 @@ import { v4 as uuidv4 } from 'uuid'
 export const reqId = uuidv4()
 
 const request = axios.create({
-  baseURL: 'https://www.kuwo.cn/',
+  baseURL: 'https://wapi.kuwo.cn/',
+  // baseURL: 'https://www.kuwo.cn/',
   // withCredentials: true,
   // timeout: 5000
 })

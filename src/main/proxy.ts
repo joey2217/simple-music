@@ -2,7 +2,7 @@ import { app, session } from 'electron'
 import https from 'https'
 
 const filter = {
-  urls: ['https://www.kuwo.cn/*'],
+  urls: ['https://wapi.kuwo.cn/*'],
 }
 
 let csrf = ''
@@ -11,7 +11,7 @@ const HEADER_COOKIE_KEY = 'Cookie'
 const CSRF_KEY = 'csrf'
 const COOKIE_HEADER_KEY = 'Set-Cookie'
 const COOKIE_KEY = 'kw_token'
-const KUWO_URL = 'https://www.kuwo.cn/'
+const KUWO_URL = 'https://wapi.kuwo.cn/'
 
 // kw_token=2GTRO51Y2VM; path=/; expires=Fri, 17 Feb 2023 07:31:18 GMT
 function setToken(cookies: string[]) {
