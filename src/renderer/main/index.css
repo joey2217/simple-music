@@ -55,6 +55,7 @@ body {
     100vh - env(titlebar-area-height, var(--fallback-title-bar-height))
   );
   margin-top: env(titlebar-area-height, var(--fallback-title-bar-height));
+  overflow: auto;
 }
 
 .titleBar-ml {

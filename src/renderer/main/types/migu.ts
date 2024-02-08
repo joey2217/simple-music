@@ -151,3 +151,12 @@ export interface MiguResponse<T> {
   msg: string
   data: T
 }
+
+export interface SongInfo {
+  playUrl: string
+  formatId: string
+  salePrice: string
+  bizType: string
+  bizCode: string
+  auditionsLength: number
+}

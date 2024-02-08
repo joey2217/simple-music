@@ -1,3 +1,4 @@
+/*eslint-env node*/
 import { build as viteBuild, createLogger } from 'vite'
 import { join } from 'node:path'
 

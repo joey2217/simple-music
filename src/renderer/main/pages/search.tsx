@@ -3,8 +3,10 @@ import { useSearchParams } from 'react-router-dom'
 import { fetchSearchData } from '../api/migu'
 import type { SearchSinger, SongItem } from '../types/migu'
 import { useState } from 'react'
+import { usePlayer } from '../context/PlayerContext'
 
 const Search: React.FC = () => {
+  const { play } = usePlayer()
   const [searchParams] = useSearchParams()
   const [keyword, setKeyword] = useState(searchParams.get('keyword') || '')
   const [singer, setSinger] = useState<SearchSinger>()
@@ -51,6 +53,11 @@ const Search: React.FC = () => {
                   <td>{song.name}</td>
                   <td>{song.singers.map((s) => s.name).join()}</td>
                   <td>{song.album.name}</td>
+                  <td>
+                    <button className="btn" onClick={() => play(song)}>
+                      播放
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

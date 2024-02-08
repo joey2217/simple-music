@@ -1,3 +1,4 @@
+/*eslint-env node*/
 import electron from 'electron'
 import { build, createLogger, createServer } from 'vite'
 import { spawn } from 'node:child_process'
