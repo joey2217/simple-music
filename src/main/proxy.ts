@@ -1,84 +1,45 @@
 import { app, session } from 'electron'
-import https from 'https'
 
-const filter = {
-  urls: ['https://wapi.kuwo.cn/*'],
+let headers = {
+  Referer: 'https://m.music.migu.cn/v4/',
+  'User-Agent':
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36 HBPC/12.1.2.300',
+  By: '04f81461a98c7af557fea3cf28c4ea15',
+  channel: '014000D',
+  Cookie: 'SESSION=ZTIwODkyMDQtOTE1NS00MDhlLThhMWEtMjQ0N2Y2Mzk2OTAz',
 }
 
-let csrf = ''
-let reqCookie = ''
-const HEADER_COOKIE_KEY = 'Cookie'
-const CSRF_KEY = 'csrf'
-const COOKIE_HEADER_KEY = 'Set-Cookie'
-const COOKIE_KEY = 'kw_token'
-const KUWO_URL = 'https://wapi.kuwo.cn/'
-
-// kw_token=2GTRO51Y2VM; path=/; expires=Fri, 17 Feb 2023 07:31:18 GMT
-function setToken(cookies: string[]) {
-  if (cookies.length > 0) {
-    cookies.forEach((cookieStr) => {
-      const arr = cookieStr.split(';')
-      const cookie = arr[0]
-      const expires = arr[2]
-      const [, expirationDateStr] = expires.split('=')
-      const expirationDate = new Date(expirationDateStr).getTime()
-      const [key, value] = cookie.split('=')
-      if (key === COOKIE_KEY) {
-        csrf = value
-        reqCookie = cookie
-        session.defaultSession.cookies
-          .set({
-            url: KUWO_URL,
-            name: key,
-            value,
-            expirationDate,
-          })
-          .then(
-            () => {
-              csrf = value
-            },
-            (error) => {
-              console.error('error')
-            }
-          )
+// 初始化header
+function fetchHeader() {
+  return fetch('http://api.fonger.top/pc/headers.json')
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.mg) {
+        headers = data.mg
       }
     })
-  }
 }
-// 初始化cookies
-export function initCSRF() {
-  return new Promise((resolve, reject) => {
-    https
-      .get(KUWO_URL + '/favicon.ico?v=1', (res) => {
-        if (res.headers && res.headers['set-cookie']) {
-          setToken(res.headers['set-cookie'])
-          resolve(csrf)
-        }
-        reject()
-      })
-      .on('error', (e) => {
-        console.error(e, 'error')
-        reject()
-      })
-  })
+
+fetchHeader()
+
+const filter: Electron.WebRequestFilter = {
+  urls: ['https://m.music.migu.cn/*'],
 }
 
 app.whenReady().then(() => {
   session.defaultSession.webRequest.onBeforeSendHeaders(
     filter,
     (details, callback) => {
-      if (csrf) {
-        details.requestHeaders[CSRF_KEY] = csrf
-        details.requestHeaders[HEADER_COOKIE_KEY] = reqCookie
-        details.requestHeaders['origin'] = KUWO_URL
-        details.requestHeaders['Referer'] = KUWO_URL
-      }
+      details.requestHeaders['Referer'] = headers.Referer
+      details.requestHeaders['User-Agent'] = headers['User-Agent']
+      details.requestHeaders['By'] = headers.By
+      details.requestHeaders['channel'] = headers.channel
+      details.requestHeaders['Cookie'] = headers.Cookie
       callback({ requestHeaders: details.requestHeaders })
     }
   )
   session.defaultSession.webRequest.onCompleted(filter, (details) => {
-    if (details.responseHeaders && details.responseHeaders[COOKIE_HEADER_KEY]) {
-      setToken(details.responseHeaders[COOKIE_HEADER_KEY])
+    if (details.responseHeaders) {
     }
   })
 })

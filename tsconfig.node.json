@@ -1,15 +1,16 @@
 {
   "compilerOptions": {
     "composite": true,
+    "skipLibCheck": true,
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true,
-    "types": ["vite/client"],
+    "types": [
+      "./src/vite-env.d.ts"
+    ]
   },
   "include": [
     "src/renderer/vite.config.ts",
-    "src/main",
-    "package.json"
+    "src/main", "src/renderer.d.ts",
   ]
 }

@@ -1,11 +1,10 @@
-import { defineConfig, PluginOption } from 'vite'
+import { defineConfig, type PluginOption } from 'vite'
 import react from '@vitejs/plugin-react-swc'
-import { builtinModules } from 'module'
-import * as path from 'path'
+import * as path from 'node:path'
 
 // https://vitejs.dev/config/
-const ROOT = path.resolve(__dirname, '../../')
-const CHROME_VERSION = 112
+const ROOT = process.cwd()
+const CHROME_VERSION = 120
 
 const cspMate = `<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">`
 
@@ -32,7 +31,6 @@ export default defineConfig({
       input: {
         main: path.join(__dirname, 'index.html'),
       },
-      external: ['electron', ...builtinModules],
     },
   },
 })

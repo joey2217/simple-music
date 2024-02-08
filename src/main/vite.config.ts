@@ -3,12 +3,16 @@ import { builtinModules } from 'module'
 import * as path from 'path'
 
 const NODE_VERSION = '18'
-const ROOT = path.resolve(__dirname, '../../')
+const ROOT = process.cwd()
+const EXTERNAL = builtinModules
+  .map((bm) => `node:${bm}`)
+  .concat(builtinModules)
+  .concat('electron')
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   return {
-    root: __dirname,
+    root: ROOT,
     envDir: process.cwd(),
     build: {
       sourcemap: mode === 'development' ? 'inline' : false,
@@ -17,14 +21,14 @@ export default defineConfig(({ mode }) => {
       emptyOutDir: true,
       minify: mode === 'development' ? false : 'esbuild',
       rollupOptions: {
-        external: ['electron', ...builtinModules],
+        external: EXTERNAL,
         input: {
           main: path.join(__dirname, 'index.ts'),
           preload: path.join(__dirname, 'windows/preload.ts'),
         },
         output: {
-          format: 'cjs',
-          entryFileNames: '[name].js',
+          format: 'module',
+          entryFileNames: '[name].mjs',
         },
       },
     },

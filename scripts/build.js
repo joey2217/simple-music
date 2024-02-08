@@ -1,7 +1,7 @@
-const { build: viteBuild, createLogger } = require('vite')
-const path = require('path')
+import { build as viteBuild, createLogger } from 'vite'
+import { join } from 'node:path'
 
-const ROOT = path.resolve(__dirname, '../')
+const ROOT = process.cwd()
 
 const logger = createLogger('info', {
   prefix: '[build]',
@@ -12,12 +12,12 @@ logger.info = (msg, options) => loggerInfo(msg, { timestamp: true, ...options })
 
 async function build() {
   await buildMain()
-  await buildRenderer(path.join(ROOT, 'src/renderer/vite.config.ts'))
+  await buildRenderer(join(ROOT, 'src/renderer/vite.config.ts'))
 }
 
 async function buildMain() {
   await viteBuild({
-    configFile: path.join(ROOT, 'src/main/vite.config.ts'),
+    configFile: join(ROOT, 'src/main/vite.config.ts'),
     mode: 'production',
   })
   logger.info('build main success!')

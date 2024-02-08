@@ -1,9 +1,9 @@
-const { spawn } = require('child_process')
-const { build, createLogger, createServer } = require('vite')
-const electron = require('electron')
-const path = require('path')
+import electron from 'electron'
+import { build, createLogger, createServer } from 'vite'
+import { spawn } from 'node:child_process'
+import { join } from 'node:path'
 
-const ROOT = path.resolve(__dirname, '../')
+const ROOT = process.cwd()
 
 /** @type import('child_process').ChildProcess  */
 let electronProcess
@@ -18,9 +18,9 @@ logger.error = (msg, options) =>
   loggerError(msg, { timestamp: true, ...options })
 
 async function start() {
-  await startRendererServer(path.join(ROOT, 'src/renderer/vite.config.ts'))
+  await startRendererServer(join(ROOT, 'src/renderer/vite.config.ts'))
   const watcher = await build({
-    configFile: path.join(ROOT, 'src/main/vite.config.ts'),
+    configFile: join(ROOT, 'src/main/vite.config.ts'),
     mode: 'development',
     build: {
       watch: {},
@@ -42,7 +42,7 @@ function startElectron() {
     // electronProcess = null
     // process.exit()
   }
-  electronProcess = spawn(electron, [path.join(ROOT, 'dist/main.js')])
+  electronProcess = spawn(electron, [join(ROOT, 'dist/main.mjs')])
   electronProcess.stdout.on('data', (data) => {
     logger.info(data.toString())
   })

@@ -1,39 +1,14 @@
-import { BrowserWindow, dialog } from 'electron'
-import log from 'electron-log'
-import * as path from 'path'
+import { BrowserWindow, dialog, nativeTheme } from 'electron'
+import * as path from 'node:path'
 import type { OpenDialogOptions } from 'electron'
-import { nextIcon, pauseIcon, playIcon, prevIcon } from '../icons'
+import { fileURLToPath } from 'node:url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 let win: BrowserWindow = null!
 
-let quit = false
-
-const thumbarButtons: Electron.ThumbarButton[] = [
-  {
-    icon: prevIcon,
-    click: musicControl('prev'),
-    tooltip: '上一首',
-    flags: ['disabled'],
-  },
-  {
-    icon: playIcon,
-    click: musicControl('play'),
-    tooltip: '播放',
-    flags: ['disabled'],
-  },
-  {
-    icon: pauseIcon,
-    click: musicControl('pause'),
-    tooltip: '暂停',
-    flags: ['disabled'],
-  },
-  {
-    icon: nextIcon,
-    click: musicControl('next'),
-    tooltip: '下一首',
-    flags: ['disabled'],
-  },
-]
+const DARK_BACK_COLOR = '#1d232a'
 
 export function create() {
   win = new BrowserWindow({
@@ -42,31 +17,30 @@ export function create() {
     show: false,
     titleBarStyle: 'hidden',
     titleBarOverlay: {
-      color: '#fff',
-      symbolColor: '#4f46e5',
+      color: nativeTheme.shouldUseDarkColors ? DARK_BACK_COLOR : '#fff',
+      symbolColor: '#641AE6',
       height: 40,
     },
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'preload.mjs'),
       webSecurity: import.meta.env.PROD,
+      sandbox: false,
     },
   })
   win.once('ready-to-show', () => {
     win.show()
-    // win.webContents.openDevTools({ mode: 'bottom' })
-  })
-
-  win.on('close', (e) => {
-    if (!quit) {
-      e.preventDefault()
-      win.hide()
+    if (import.meta.env.DEV || process.argv.includes('--dev')) {
+      win.webContents.openDevTools({ mode: 'bottom' })
     }
   })
 
-  if (process.platform === 'win32') {
-    const bool = win.setThumbarButtons(thumbarButtons)
-    log.info('create', bool)
-  }
+  // win.on('close', (e) => {
+  //   if (!quit) {
+  //     e.preventDefault()
+  //     win.hide()
+  //   }
+  // })
+
   if (import.meta.env.DEV) {
     win.loadURL('http://localhost:5174')
   } else {
@@ -90,58 +64,8 @@ export function showOpenDialog(options: OpenDialogOptions) {
   return dialog.showOpenDialog(win, options)
 }
 
-export function setMainTitleBarOverlay(
-  options: Electron.TitleBarOverlayOptions
-) {
+export function setMainTitleBarOverlay(options: Electron.TitleBarOverlay) {
   if (win) {
     win.setTitleBarOverlay(options)
   }
-}
-
-export function musicControl(type: 'prev' | 'play' | 'pause' | 'next') {
-  return () => win.webContents.send('MUSIC_CONTROL', type)
-}
-
-export function setMainThumbarButtons(playing: boolean, disabled = false) {
-  if (process.platform === 'win32' && win) {
-    if (disabled) {
-      const buttons = thumbarButtons.map((btn) => {
-        btn.flags = ['disabled']
-        return {
-          ...btn,
-          flags: ['disabled'],
-        }
-      })
-      const bool = win.setThumbarButtons(buttons)
-      log.info('SET_MAIN_THUMBAR_BUTTONS', bool)
-    } else {
-      if (playing) {
-        const buttons = thumbarButtons.map((btn, index) => {
-          return {
-            ...btn,
-            flags: index === 1 ? ['enabled', 'hidden'] : ['enabled'],
-          }
-        })
-        const bool = win.setThumbarButtons(buttons)
-        log.info('SET_MAIN_THUMBAR_BUTTONS', bool)
-      } else {
-        const buttons = thumbarButtons.map((btn, index) => {
-          return {
-            ...btn,
-            flags: index === 2 ? ['enabled', 'hidden'] : ['enabled'],
-          }
-        })
-        const bool = win.setThumbarButtons(buttons)
-        log.info('SET_MAIN_THUMBAR_BUTTONS', bool)
-      }
-    }
-  }
-}
-
-export function beforeQuit() {
-  quit = true
-}
-
-export function mainNavigate(to: string) {
-  send('NAVIGATE', to)
 }

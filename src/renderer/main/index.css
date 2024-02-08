@@ -3,138 +3,18 @@
 @tailwind utilities;
 
 :root {
-  --main-color: #4f46e5;
   --fallback-title-bar-height: 40px;
-}
-
-html {
-  color-scheme: light;
-  color: #000000e0;
-  user-select: none;
-  /* background-color: #fff; */
-}
-html.dark {
-  color-scheme: dark;
-  color: #ffffffd9;
-  background-color: #141414;
 }
 
 body {
   @apply overflow-hidden;
 }
 
-a.link {
-  @apply truncate text-gray-700 hover:text-black dark:text-gray-300 dark:hover:text-white;
-}
-
-a.link.active {
-  @apply text-indigo-600 font-semibold;
-}
-
-/* table {
-  @apply min-w-full divide-y-2 divide-gray-200 text-sm dark:divide-gray-700;
-}
-table tbody {
-  @apply divide-y divide-gray-200 dark:divide-gray-700;
-}
-
-table th {
-  @apply px-4 py-2 text-left font-medium text-gray-900 dark:text-white;
-}
-
-table td {
-  @apply px-4 py-2 font-medium text-gray-900 dark:text-white;
-} */
-
-button:disabled {
-  @apply cursor-not-allowed text-gray-400;
-}
-
-.pagination li > button:enabled {
-  @apply hover:bg-gray-400/50;
-}
-
-.pagination li > button {
-  @apply inline-flex h-8 w-8 items-center justify-center rounded;
-}
-.pagination li > button.current {
-  @apply bg-indigo-600/70 text-white hover:bg-indigo-600/50;
-}
-
-#playlist-table {
-  height: calc(100vh - 180px);
-}
-
-.rc-slider-disabled {
-  @apply bg-transparent;
-}
-
-.rc-slider-track {
-  background-color: var(--main-color);
-}
-
-.rc-slider-handle {
-  border: solid 2px var(--main-color);
-}
-
-.rc-slider-handle-dragging.rc-slider-handle-dragging.rc-slider-handle-dragging {
-  border-color: var(--main-color);
-  box-shadow: 0 0 0 5px var(--main-color);
-}
-
-.rc-slider-handle:focus-visible {
-  border-color: var(--main-color);
-  box-shadow: 0 0 0 3px var(--main-color);
-}
-.rc-slider-handle-click-focused:focus {
-  border-color: var(--main-color);
-}
-.rc-slider-handle:hover {
-  border-color: var(--main-color);
-}
-.rc-slider-handle:active {
-  border-color: var(--main-color);
-  box-shadow: 0 0 5px var(--main-color);
-}
-
-.text-secondary {
-  @apply text-gray-400;
-}
-
-.label {
-  @apply text-gray-400;
-}
-
-.label::after {
-  content: ':';
-  position: relative;
-  top: -0.5px;
-  margin-inline: 2px 8px;
-}
-
-.primary-btn {
-  @apply px-4 py-1 inline-flex items-center gap-2 ring-1 text-white rounded-full bg-indigo-600 hover:bg-indigo-600/80;
-}
-
-.default-btn {
-  @apply px-4 py-1 inline-flex items-center gap-2 ring-1 hover:text-indigo-600 hover:ring-indigo-600 rounded-full;
-}
-
-.text-btn {
-  @apply px-4 py-1 inline-flex items-center gap-2 hover:bg-indigo-600/50 rounded-full;
-}
-
-.card-grid {
-  @apply grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4;
-}
-
 .draggable {
-  app-region: drag;
   -webkit-app-region: drag;
 }
 
 .nonDraggable {
-  app-region: no-drag;
   -webkit-app-region: no-drag;
 }
 
@@ -144,13 +24,8 @@ button:disabled {
   height: env(titlebar-area-height, var(--fallback-title-bar-height));
   width: 100%;
   cursor: pointer;
-  z-index: 9;
-  background-color: #fff;
+  z-index: 99;
   box-sizing: content-box;
-}
-
-.dark #titleBarContainer {
-  background-color: #141414;
 }
 
 #titleBar,
@@ -176,7 +51,10 @@ button:disabled {
 }
 
 #main {
-  height: calc(100vh - 120px);
+  height: calc(
+    100vh - env(titlebar-area-height, var(--fallback-title-bar-height))
+  );
+  margin-top: env(titlebar-area-height, var(--fallback-title-bar-height));
 }
 
 .titleBar-ml {
@@ -186,35 +64,7 @@ button:disabled {
   margin-right: env(titlebar-area-x, 0);
 }
 
-.form-item {
-  @apply mb-3;
-}
-
-.form-label,
-.form-item .label {
-  @apply text-right inline-block;
-}
-
-.form-label::after,
-.form-item .label::after {
-  content: ':';
-  position: relative;
-  top: -0.5px;
-  margin-inline: 2px 8px;
-}
-
-.form-radio {
-  @apply inline-flex items-center gap-2;
-}
-
-input[type='radio'] {
-  @apply appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:border-indigo-600 checked:border-4 focus:outline-none cursor-pointer;
-}
-
-input[type='radio'] + * {
-  @apply cursor-pointer;
-}
-
-input[type='radio']:checked + * {
-  @apply text-indigo-600;
+.link.active,
+a.active {
+  @apply link-primary;
 }
