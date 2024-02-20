@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { fetchSearchData } from '../api/migu'
 import type { SearchSinger, SongItem } from '../types/migu'
-import { useState } from 'react'
 import { usePlayer } from '../context/PlayerContext'
+import { songItem2Music } from '../utils/player'
 
 const Search: React.FC = () => {
   const { play } = usePlayer()
@@ -48,16 +48,17 @@ const Search: React.FC = () => {
               {/* row 1 */}
               {songList.map((song) => (
                 <tr key={song.copyrightId}>
-                  <td>{song.id}</td>
-                  <td>{song.copyrightId}</td>
                   <td>{song.name}</td>
-                  <td>{song.singers.map((s) => s.name).join()}</td>
-                  <td>{song.album.name}</td>
                   <td>
-                    <button className="btn" onClick={() => play(song)}>
+                    <button
+                      className="btn"
+                      onClick={() => play(songItem2Music(song))}
+                    >
                       播放
                     </button>
                   </td>
+                  <td>{song.singers.map((s) => s.name).join()}</td>
+                  <td>{song.album.name}</td>
                 </tr>
               ))}
             </tbody>

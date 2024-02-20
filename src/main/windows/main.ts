@@ -56,7 +56,7 @@ export function focus() {
   }
 }
 
-export function send(channel: string, ...args: any[]) {
+export function send(channel: string, ...args: unknown[]) {
   win.webContents.send(channel, ...args)
 }
 
@@ -68,4 +68,8 @@ export function setMainTitleBarOverlay(options: Electron.TitleBarOverlay) {
   if (win) {
     win.setTitleBarOverlay(options)
   }
+}
+
+export function mainNavigate(to: string) {
+  send('NAVIGATE', to)
 }

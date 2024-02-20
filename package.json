@@ -24,6 +24,7 @@
     "electron-log": "^5.1.1",
     "electron-updater": "^6.1.7",
     "howler": "^2.2.4",
+    "node-id3": "^0.2.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.0",

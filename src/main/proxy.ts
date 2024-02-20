@@ -23,7 +23,10 @@ function fetchHeader() {
 fetchHeader()
 
 const filter: Electron.WebRequestFilter = {
-  urls: ['https://m.music.migu.cn/*'],
+  urls: [
+    'https://m.music.migu.cn/*',
+    'https://app.c.nf.migu.cn/*'
+  ],
 }
 
 app.whenReady().then(() => {
@@ -38,8 +41,7 @@ app.whenReady().then(() => {
       callback({ requestHeaders: details.requestHeaders })
     }
   )
-  session.defaultSession.webRequest.onCompleted(filter, (details) => {
-    if (details.responseHeaders) {
-    }
-  })
+  // session.defaultSession.webRequest.onCompleted(filter, (details) => {
+  //   if (details.responseHeaders) { }
+  // })
 })

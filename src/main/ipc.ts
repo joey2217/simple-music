@@ -1,6 +1,8 @@
-import { ipcMain, nativeTheme, shell } from 'electron'
+import { app, ipcMain, nativeTheme, shell } from 'electron'
 import { send as sendToMain, setMainTitleBarOverlay } from './windows/main'
 import { checkForUpdates } from './updater'
+import type { DownloadInfo } from './types'
+import { download } from './download'
 
 export default function handleIPC() {
   nativeTheme.themeSource = 'system'
@@ -9,7 +11,7 @@ export default function handleIPC() {
     event.sender.toggleDevTools()
   })
 
-  ipcMain.handle('SEND_TO_MAIN', (e, channel: string, ...args: any[]) => {
+  ipcMain.handle('SEND_TO_MAIN', (e, channel: string, ...args: unknown[]) => {
     sendToMain(channel, ...args)
   })
 
@@ -27,5 +29,13 @@ export default function handleIPC() {
   )
   ipcMain.handle('OPEN_EXTERNAL', (_e, url: string) => {
     return shell.openExternal(url)
+  })
+
+  ipcMain.handle('DOWNLOAD_FILES', (e, files: DownloadInfo[]) => {
+    download(files)
+  })
+
+  ipcMain.handle('GET_DOWNLOADS_PATH', () => {
+    return app.getPath('downloads')
   })
 }

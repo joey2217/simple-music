@@ -1,4 +1,9 @@
-import type { MiguResponse, SearchData, SongInfo } from '../types/migu'
+import type {
+  MiguResponse,
+  RankingListData,
+  SearchData,
+  SongInfo,
+} from '../types/migu'
 
 //搜索
 export function fetchSearchData(keyword: string, page: number = 1) {
@@ -17,10 +22,15 @@ export function fetchSearchData(keyword: string, page: number = 1) {
     })
 }
 
+// const songInfoCache = new Map<string, SongInfo>()
+
 // 歌曲详情
 export function fetchSongInfo(copyrightId: string) {
+  // if (songInfoCache.has(copyrightId)) {
+  //   return Promise.resolve(songInfoCache.get(copyrightId)!)
+  // }
   return fetch(
-    `https://m.music.migu.cn/migumusic/h5/play/auth/getSongPlayInfo?copyrightId=${copyrightId}&type=1`,
+    `https://m.music.migu.cn/migumusic/h5/play/auth/getSongPlayInfo?copyrightId=${copyrightId}&type=2`,
     {
       cache: 'force-cache',
     }
@@ -28,8 +38,27 @@ export function fetchSongInfo(copyrightId: string) {
     .then((res) => res.json())
     .then((data: MiguResponse<SongInfo>) => {
       if (data.code === '200') {
-        return data.data
+        // songInfoCache.set(copyrightId, data.data)
+        const songInfo = data.data
+        if (songInfo.playUrl.startsWith('//')) {
+          songInfo.playUrl = 'http:' + songInfo.playUrl
+        }
+        return songInfo
       }
       throw new Error(data.msg)
+    })
+}
+
+// 排行榜 "https://app.c.nf.migu.cn/MIGUM3.0/v1.0/content/querycontentbyId.do?needAll=0&columnId=27553319"
+export function fetchRankingList(columnId: string) {
+  return fetch(
+    `https://app.c.nf.migu.cn/MIGUM3.0/v1.0/content/querycontentbyId.do?needAll=0&columnId=${columnId}`
+  )
+    .then((res) => res.json())
+    .then((data: RankingListData) => {
+      if (data.code === '000000') {
+        return data.columnInfo
+      }
+      throw new Error(data.info)
     })
 }

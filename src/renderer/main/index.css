@@ -4,6 +4,7 @@
 
 :root {
   --fallback-title-bar-height: 40px;
+  --player-height: 80px;
 }
 
 body {
@@ -52,10 +53,15 @@ body {
 
 #main {
   height: calc(
-    100vh - env(titlebar-area-height, var(--fallback-title-bar-height))
+    100vh - env(titlebar-area-height, var(--fallback-title-bar-height)) -
+      var(--player-height)
   );
   margin-top: env(titlebar-area-height, var(--fallback-title-bar-height));
   overflow: auto;
+}
+
+#player {
+  height: var(--player-height);
 }
 
 .titleBar-ml {
@@ -69,3 +75,27 @@ body {
 a.active {
   @apply link-primary;
 }
+
+#play-list {
+  bottom: var(--player-height);
+  height: calc(
+    100vh - env(titlebar-area-height, var(--fallback-title-bar-height)) -
+      var(--player-height)
+  );
+}
+
+.play-list-row {
+  --row-display: none;
+}
+
+.play-list-row:hover {
+  --row-display: block;
+}
+
+
+/*可以修改容器的若干样式*/
+/* ::-webkit-slider-container {} */
+/*可以修改轨道的若干样式*/
+/* ::-webkit-slider-runnable-track {} */
+/*可以修改滑块的若干样式*/
+/* ::-webkit-slider-thumb {} */

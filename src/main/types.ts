@@ -1,6 +1,11 @@
 export interface DownloadInfo {
-  rid: number
-  url: string
   fileName: string
   downloadPath: string
+  rid: string
+  url: string
+  title: string
+  artist: string
+  album: string
+  cover: string
+  lyric?: string
 }

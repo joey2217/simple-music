@@ -4,12 +4,14 @@ import Error from './layout/Error'
 import Home from './pages/home'
 import Search from './pages/search'
 import About from './pages/about'
+import TopPage from './pages/top'
+import TopList, { topListLoader } from './pages/top/list'
 
 const router = createHashRouter([
   {
     path: '/',
     element: <Layout />,
-    errorElement: <Error />,
+    // errorElement: <Error />,
     children: [
       {
         index: true,
@@ -25,6 +27,18 @@ const router = createHashRouter([
         path: 'about',
         element: <About />,
         errorElement: <Error />,
+      },
+      {
+        path: 'top',
+        element: <TopPage />,
+        errorElement: <Error />,
+        children: [
+          {
+            path: ':id',
+            loader: topListLoader,
+            element: <TopList />,
+          }
+        ]
       },
     ],
   },
