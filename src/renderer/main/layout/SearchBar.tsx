@@ -10,20 +10,22 @@ const SearchBar: React.FC = () => {
     console.log(keyword)
     if (keyword !== '') {
       navigate(`/search?keyword=${keyword}`)
-    //   setKeyword('')
+      //   setKeyword('')
     }
   }
 
   return (
-    <div className="join">
-      <input
-        className="join-item input input-sm input-bordered"
-        value={keyword}
-        onChange={(e) => setKeyword(e.target.value)}
-      />
-      <button className="join-item btn btn-sm" onClick={onSearch}>
-        Search
-      </button>
+    <div className="px-1">
+      <div className="join">
+        <input
+          className="join-item input input-sm input-bordered"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+        />
+        <button className="join-item btn btn-sm btn-primary" onClick={onSearch}>
+          搜 索
+        </button>
+      </div>
     </div>
   )
 }

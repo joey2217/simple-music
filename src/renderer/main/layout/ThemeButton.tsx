@@ -1,7 +1,39 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+
+type Theme = 'dark' | 'light'
+
+const LOCAL_THEME = 'local_theme'
+
+function getTheme(): Theme {
+  if (
+    localStorage[LOCAL_THEME] === 'dark' ||
+    (!(LOCAL_THEME in localStorage) &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches)
+  ) {
+    return 'dark'
+  }
+  return 'light'
+}
+
+const THEME_ATTR = 'data-theme'
+
+const DARK_BACK_COLOR = '#1d232a'
+
+export function setLocalTheme(theme: Theme) {
+  document.documentElement.setAttribute(THEME_ATTR, theme)
+  if (theme === 'dark') {
+    window.electronAPI.setMainTitleBarOverlay({ color: DARK_BACK_COLOR })
+  } else {
+    window.electronAPI.setMainTitleBarOverlay({ color: '#fff' })
+  }
+}
 
 const ThemeButton: React.FC = () => {
-  const [theme, setTheme] = useState('dark')
+  const [theme, setTheme] = useState<Theme>(getTheme())
+
+  useEffect(() => {
+    setLocalTheme(theme)
+  }, [theme])
 
   return (
     <label className="swap swap-rotate">

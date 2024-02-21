@@ -29,6 +29,7 @@ interface Mv {
   copyrightId: string
   productId: string
 }
+
 interface Crbt {
   name: string
   copyrightId: string
@@ -386,4 +387,74 @@ export interface ColumnInfo {
 
 export interface RankingListData extends MiguRes {
   columnInfo: ColumnInfo
+}
+
+export type ArtistType = 'nan' | 'nv' | 'group'
+
+export type ArtistArea = 'huayu' | 'oumei' | 'rihan'
+
+export interface ArtistContent {
+  view: string
+  viewId: string
+  action: string
+  resType: string
+  resId: string
+  track: string
+  txt: string
+  txt2: string
+  txt3: string
+  txt4: string
+  img: string
+}
+
+export interface ArtistData {
+  header: {
+    dataVersion: string
+    title: string
+  }
+  contents: ArtistContent[]
+}
+
+export interface ArtistRes extends MiguRes {
+  data: ArtistData
+}
+
+export interface ArtistInfo {
+  id: string
+  name: string
+  smallPic: string
+  mediumPic: string
+  largePic: string
+  intro: string
+}
+
+interface Album {
+  id: string
+  name: string
+  type: number
+}
+
+
+interface AlbumItem {
+  name: string
+  id: string
+  type: number
+  singers: Artist[]
+  publishDate: string
+  smallPic: string
+  mediumPic: string
+  largePic: string
+  highlightStr: string[]
+}
+
+export interface PageData<T> {
+  total: number
+  items: T[]
+}
+
+
+export interface ArtistPageData {
+  song: PageData<SongItem>
+  album: PageData<AlbumItem>
+  mv: PageData<unknown>
 }

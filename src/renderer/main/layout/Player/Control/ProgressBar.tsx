@@ -24,7 +24,7 @@ const ProgressBar: React.FC = () => {
         max={duration}
         value={time}
         onChange={(e) => seek(Number(e.target.value))}
-        className="range range-xs range-success flex-1"
+        className="range range-xs range-primary flex-1"
       />
       <div>{toMinutes(duration)}</div>
     </div>

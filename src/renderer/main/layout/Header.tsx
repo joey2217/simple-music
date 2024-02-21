@@ -61,6 +61,9 @@ const Header: React.FC = () => {
           <NavLink to="/top/27553319" className="link link-hover">
             排行榜
           </NavLink>
+          <NavLink to="/artists/nan/huayu" className="link link-hover">
+            歌手
+          </NavLink>
 
           {/* <NavLink to="/search" className="link link-hover">
             搜索

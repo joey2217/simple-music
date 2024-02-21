@@ -22,32 +22,32 @@
   },
   "dependencies": {
     "electron-log": "^5.1.1",
-    "electron-updater": "^6.1.7",
+    "electron-updater": "^6.1.8",
     "howler": "^2.2.4",
     "node-id3": "^0.2.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.22.0",
-    "zustand": "^4.5.0"
+    "react-router-dom": "^6.22.1",
+    "zustand": "^4.5.1"
   },
   "devDependencies": {
     "@types/howler": "^2.2.11",
-    "@types/node": "^20.11.16",
-    "@types/react": "^18.2.55",
-    "@types/react-dom": "^18.2.18",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^6.21.0",
+    "@types/node": "^20.11.19",
+    "@types/react": "^18.2.57",
+    "@types/react-dom": "^18.2.19",
+    "@typescript-eslint/eslint-plugin": "^7.0.2",
+    "@typescript-eslint/parser": "^7.0.2",
     "@vitejs/plugin-react-swc": "^3.6.0",
     "autoprefixer": "^10.4.17",
-    "daisyui": "^4.6.2",
-    "electron": "^28.2.1",
-    "electron-builder": "^24.9.1",
+    "daisyui": "^4.7.2",
+    "electron": "^29.0.0",
+    "electron-builder": "^24.12.0",
     "eslint": "^8.56.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
-    "postcss": "^8.4.34",
+    "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3",
-    "vite": "^5.0.12"
+    "vite": "^5.1.3"
   }
 }

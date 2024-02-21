@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react'
+import logo from '../assets/icon.png'
 
 const About: React.FC = () => {
   useEffect(() => {
     console.log('##version##')
     console.table(window.versions)
   }, [])
+
   return (
     <div className="page text-center">
-      <img src="./logo.png" alt="logo" className="w-10 h-10 mx-auto" />
-      <h2 className="text-xl font-semibold my-2">视界</h2>
+      <img src={logo} alt="logo" className="w-10 h-10 mx-auto" />
+      <h2 className="text-xl font-semibold my-2">轻音乐</h2>
       <div className="my-2">
         <span>版本 : </span>
         <span>{window.versions.version}</span>
@@ -31,7 +33,7 @@ const About: React.FC = () => {
           手动下载
         </button>
       </div>
-      <div className='flex gap-4 justify-center'>
+      <div className="flex gap-4 justify-center">
         <button
           className="btn btn-sm"
           onClick={() => window.devAPI.toggleDevtools()}

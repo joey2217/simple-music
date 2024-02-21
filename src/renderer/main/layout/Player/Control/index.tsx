@@ -4,11 +4,15 @@ import { PlayIcon, Pause, Previous, Next } from '../../../components/Icons'
 import { usePlayer } from '../../../context/PlayerContext'
 
 const Control: React.FC = () => {
-  const { paused, togglePaused } = usePlayer()
+  const { paused, togglePaused, playNext } = usePlayer()
   return (
     <div>
       <div className="flex justify-center items-center gap-2 mb-1">
-        <button className="btn btn-circle btn-outline btn-sm" title="上一首">
+        <button
+          className="btn btn-circle btn-outline btn-sm"
+          title="上一首"
+          onClick={() => playNext('prev')}
+        >
           <Previous />
         </button>
         {paused ? (
@@ -28,7 +32,11 @@ const Control: React.FC = () => {
             <Pause />
           </button>
         )}
-        <button className="btn btn-circle btn-outline btn-sm" title="下一首">
+        <button
+          className="btn btn-circle btn-outline btn-sm"
+          title="下一首"
+          onClick={() => playNext('next')}
+        >
           <Next />
         </button>
       </div>

@@ -1,4 +1,7 @@
 import type {
+  ArtistInfo,
+  ArtistPageData,
+  ArtistRes,
   MiguResponse,
   RankingListData,
   SearchData,
@@ -60,5 +63,53 @@ export function fetchRankingList(columnId: string) {
         return data.columnInfo
       }
       throw new Error(data.info)
+    })
+}
+
+//  `https://app.c.nf.migu.cn/MIGUM3.0/bmw/singer-index/list/v1.0?templateVersion=3&tab=${e}-${t}`,
+export function fetchArtistList(type: string, area: string) {
+  return fetch(
+    `https://app.c.nf.migu.cn/MIGUM3.0/bmw/singer-index/list/v1.0?templateVersion=3&tab=${area}-${type}`
+  )
+    .then((res) => res.json())
+    .then((data: ArtistRes) => {
+      if (data.code === '000000') {
+        return data.data.contents
+      }
+      throw new Error(data.info)
+    })
+}
+
+// `https://m.music.migu.cn/migumusic/h5/singer/getSingerDetail?singerId=${e}`
+export function fetchArtistDetail(singerId: string) {
+  return fetch(
+    `https://m.music.migu.cn/migumusic/h5/singer/getSingerDetail?singerId=${singerId}`
+  )
+    .then((res) => res.json())
+    .then((data: MiguResponse<ArtistInfo>) => {
+      console.log(data)
+      if (data.code === '200') {
+        return data.data
+      }
+      throw new Error(data.msg)
+    })
+}
+
+//`https://m.music.migu.cn/migumusic/h5/singer/getSingerSAM?singerId=${e}&pageNo=${t}&pageSize=${n}&sam=${o}`,
+export function fetchArtistSong(
+  singerId: string,
+  pageNo = 1,
+  sam = 100, // 歌曲/专辑/MV
+  pageSize = 30
+) {
+  return fetch(
+    `https://m.music.migu.cn/migumusic/h5/singer/getSingerSAM?singerId=${singerId}&pageNo=${pageNo}&pageSize=${pageSize}&sam=${sam}`
+  )
+    .then((res) => res.json())
+    .then((data: MiguResponse<ArtistPageData>) => {
+      if (data.code === '200') {
+        return data.data
+      }
+      throw new Error(data.msg)
     })
 }

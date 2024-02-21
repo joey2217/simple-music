@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 import { usePlayer } from '../../../context/PlayerContext'
 import {
@@ -52,15 +52,23 @@ const PlayListRow: React.FC<Props> = ({ item, index }) => {
 
 const PlayList: React.FC = () => {
   const { playList } = usePlayer()
+  const [show, setShow] = useState(false)
   return (
     <div className="h-full flex items-center justify-center">
-      <button className="text-2xl">
+      <button
+        className={`text-2xl btn  ${show ? 'btn-primary' : ''}`}
+        onClick={() => setShow((s) => !s)}
+      >
         <PlayListIcon />
       </button>
       {ReactDOM.createPortal(
         <div
           id="play-list"
-          className="fixed right-0 w-96 z-50 p-2 bg-neutral rounded-md shadow-md"
+          className="fixed right-0 z-50 p-2 bg-neutral rounded-md shadow-md"
+          style={{
+            transform: show ? 'translateX(0)' : 'translateX(100%)',
+            transitionDuration: '300ms',
+          }}
         >
           <div>
             <h2 className="text-lg font-semibold">播放列表</h2>

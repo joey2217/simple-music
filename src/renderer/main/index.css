@@ -82,6 +82,8 @@ a.active {
     100vh - env(titlebar-area-height, var(--fallback-title-bar-height)) -
       var(--player-height)
   );
+  overflow: auto;
+  width: 415px;
 }
 
 .play-list-row {
@@ -92,10 +94,13 @@ a.active {
   --row-display: block;
 }
 
-
 /*可以修改容器的若干样式*/
 /* ::-webkit-slider-container {} */
 /*可以修改轨道的若干样式*/
 /* ::-webkit-slider-runnable-track {} */
 /*可以修改滑块的若干样式*/
 /* ::-webkit-slider-thumb {} */
+
+.page {
+  @apply p-4;
+}

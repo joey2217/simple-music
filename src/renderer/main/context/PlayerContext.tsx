@@ -24,6 +24,7 @@ interface PlayerContextProps {
   seek: (t: number) => void
   addToPlayerList: (m: Music | Music[]) => void
   removeFromPlayerList: (m: Music) => void
+  playNext: (dir: 'next' | 'prev') => void
 }
 
 const PlayerContext = React.createContext<PlayerContextProps>({
@@ -38,18 +39,19 @@ const PlayerContext = React.createContext<PlayerContextProps>({
   seek: () => {},
   addToPlayerList: () => {},
   removeFromPlayerList: () => {},
+  playNext: () => {},
 })
 
 export function usePlayer() {
   return React.useContext(PlayerContext)
 }
 
-// let howler: Howl | null
+let init = true
 
 export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [index, setIndex] = useState(0)
+  const [index, setIndex] = useLocalStorage('play-index', 0)
   const [paused, setPaused] = useState(true)
-  const [playList, setPlayList] = useState<Music[]>([])
+  const [playList, setPlayList] = useLocalStorage<Music[]>('play-list', [])
   const [duration, setDuration] = useState(0)
   const [time, setTime] = useState(0)
 
@@ -91,7 +93,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
         }
       }
     },
-    [playList]
+    [playList, setIndex, setPlayList]
   )
 
   const removeFromPlayerList = useCallback(
@@ -106,23 +108,20 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
         }
       }
     },
-    [index, playList]
+    [index, playList, setIndex, setPlayList]
   )
 
   const current = useMemo(() => playList[index], [index, playList])
-  const playListLength = useMemo(() => playList.length, [playList])
 
   const playNext = useCallback(
     (dir: 'next' | 'prev' = 'next') => {
       if (dir === 'next') {
-        setIndex((i) =>
-          i + 1 > playListLength - 1 ? playListLength - 1 : i + 1
-        )
+        setIndex((i) => (i + 1 > playList.length - 1 ? 0 : i + 1))
       } else {
         setIndex((i) => (i - 1 < 0 ? 0 : i - 1))
       }
     },
-    [playListLength]
+    [playList.length, setIndex]
   )
 
   const play = useCallback(
@@ -139,7 +138,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
         setIndex(idx)
       }
     },
-    [index, playList]
+    [index, playList, setIndex, setPlayList]
   )
 
   const download = useCallback(
@@ -169,6 +168,10 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
   }, [current, index, playList])
 
   useEffect(() => {
+    if (init) {
+      init = false
+      return
+    }
     if (current?.copyrightId) {
       fetchSongInfo(current.copyrightId).then((data) => {
         howlerRef.current?.stop()
@@ -189,7 +192,10 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
         })
         howler.on('play', () => setPaused(false))
         howler.on('pause', () => setPaused(true))
-        howler.once('end', () => playNext())
+        howler.once('end', () => {
+          clearInterval(timer.current)
+          playNext()
+        })
         howlerRef.current = howler
       })
     } else {
@@ -226,6 +232,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
         seek,
         addToPlayerList,
         removeFromPlayerList,
+        playNext,
       }}
     >
       {children}
