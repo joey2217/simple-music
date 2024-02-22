@@ -1,7 +1,13 @@
-import { BrowserWindow, dialog, nativeTheme } from 'electron'
+import {
+  BrowserWindow,
+  dialog,
+  nativeTheme,
+  type OpenDialogOptions,
+} from 'electron'
 import * as path from 'node:path'
-import type { OpenDialogOptions } from 'electron'
 import { fileURLToPath } from 'node:url'
+import log from 'electron-log'
+import { nextIcon, pauseIcon, playIcon, prevIcon } from '../icons'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -18,7 +24,7 @@ export function create() {
     titleBarStyle: 'hidden',
     titleBarOverlay: {
       color: nativeTheme.shouldUseDarkColors ? DARK_BACK_COLOR : '#fff',
-      symbolColor: '#641AE6',
+      symbolColor: nativeTheme.shouldUseDarkColors ? '#7480ff' : '#641AE6',
       height: 40,
     },
     webPreferences: {
@@ -72,4 +78,71 @@ export function setMainTitleBarOverlay(options: Electron.TitleBarOverlay) {
 
 export function mainNavigate(to: string) {
   send('NAVIGATE', to)
+}
+
+export function musicControl(type: 'prev' | 'play' | 'pause' | 'next') {
+  return () => win.webContents.send('MUSIC_CONTROL', type)
+}
+
+const thumbarButtons: Electron.ThumbarButton[] = [
+  {
+    icon: prevIcon,
+    click: musicControl('prev'),
+    tooltip: '上一首',
+    flags: ['disabled'],
+  },
+  {
+    icon: playIcon,
+    click: musicControl('play'),
+    tooltip: '播放',
+    flags: ['disabled'],
+  },
+  {
+    icon: pauseIcon,
+    click: musicControl('pause'),
+    tooltip: '暂停',
+    flags: ['disabled'],
+  },
+  {
+    icon: nextIcon,
+    click: musicControl('next'),
+    tooltip: '下一首',
+    flags: ['disabled'],
+  },
+]
+
+export function setMainThumbarButtons(playing: boolean, disabled = false) {
+  if (process.platform === 'win32' && win) {
+    if (disabled) {
+      const buttons = thumbarButtons.map((btn) => {
+        btn.flags = ['disabled']
+        return {
+          ...btn,
+          flags: ['disabled'],
+        }
+      })
+      const bool = win.setThumbarButtons(buttons)
+      log.info('SET_MAIN_THUMBAR_BUTTONS', bool)
+    } else {
+      if (playing) {
+        const buttons = thumbarButtons.map((btn, index) => {
+          return {
+            ...btn,
+            flags: index === 1 ? ['enabled', 'hidden'] : ['enabled'],
+          }
+        })
+        const bool = win.setThumbarButtons(buttons)
+        log.info('SET_MAIN_THUMBAR_BUTTONS', bool)
+      } else {
+        const buttons = thumbarButtons.map((btn, index) => {
+          return {
+            ...btn,
+            flags: index === 2 ? ['enabled', 'hidden'] : ['enabled'],
+          }
+        })
+        const bool = win.setThumbarButtons(buttons)
+        log.info('SET_MAIN_THUMBAR_BUTTONS', bool)
+      }
+    }
+  }
 }

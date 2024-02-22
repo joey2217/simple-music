@@ -5,6 +5,7 @@
 :root {
   --fallback-title-bar-height: 40px;
   --player-height: 80px;
+  --swiper-theme-color: #7480ff;
 }
 
 body {
@@ -103,4 +104,28 @@ a.active {
 
 .page {
   @apply p-4;
+}
+
+.h-content {
+  height: calc(
+    100vh - env(titlebar-area-height, var(--fallback-title-bar-height)) -
+      var(--player-height)
+  );
+  overflow: auto;
+}
+
+#artist-info {
+  height: calc(
+    100vh - env(titlebar-area-height, var(--fallback-title-bar-height)) -
+      var(--player-height) - 220px
+  );
+  overflow: auto;
+}
+
+#artist-content {
+  height: calc(
+    100vh - env(titlebar-area-height, var(--fallback-title-bar-height)) -
+      var(--player-height) - 200px
+  );
+  overflow: auto;
 }

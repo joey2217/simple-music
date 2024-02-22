@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import { throttle } from '../utils/func'
 
 interface Props {
   loadMore: () => void
@@ -14,13 +15,14 @@ const LoadMore: React.FC<Props> = ({ loadMore, finished }) => {
       observer.current?.disconnect()
       observer.current = null
     } else {
+      const throttledLoadMore = throttle(loadMore, 500)
       observer.current = new IntersectionObserver(
         (entries, intersectionObserver) => {
           if (finished) {
             intersectionObserver.disconnect()
             observer.current = null
           } else if (entries[0].intersectionRatio > 0) {
-            loadMore()
+            throttledLoadMore()
           }
         }
       )
@@ -33,6 +35,14 @@ const LoadMore: React.FC<Props> = ({ loadMore, finished }) => {
       observer.current = null
     }
   }, [finished, loadMore])
+
+  if (finished) {
+    return (
+      <div ref={loadMoreRef} className="text-center">
+        finished
+      </div>
+    )
+  }
 
   return (
     <div ref={loadMoreRef} className="text-center">

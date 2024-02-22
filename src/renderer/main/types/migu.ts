@@ -434,8 +434,7 @@ interface Album {
   type: number
 }
 
-
-interface AlbumItem {
+export interface AlbumItem {
   name: string
   id: string
   type: number
@@ -452,9 +451,16 @@ export interface PageData<T> {
   items: T[]
 }
 
-
 export interface ArtistPageData {
   song: PageData<SongItem>
   album: PageData<AlbumItem>
   mv: PageData<unknown>
+}
+
+export interface BannerItem {
+  title: string
+  info: string
+  image: string
+  url: string
+  field1?: unknown
 }

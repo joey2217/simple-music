@@ -15,7 +15,7 @@ interface DownloadInfo {
 interface IElectronAPI {
   download: (files: DownloadInfo[]) => Promise<void>
   getDownloadsPath: () => Promise<string>
-  setMainTitleBarOverlay: (options: Electron.TitleBarOverlayOptions) => void
+  setMainTitleBarOverlay: (options: Electron.TitleBarOverlay) => void
   checkUpdate: () => Promise<string>
   openExternal: (url: string) => Promise<void>
   onNavigate: (

@@ -1,4 +1,4 @@
-import { createHashRouter, redirect } from 'react-router-dom'
+import { createHashRouter } from 'react-router-dom'
 import Layout from './layout'
 import Error from './layout/Error'
 import Home from './pages/home'
@@ -9,6 +9,7 @@ import Artists, { artistsLoader } from './pages/artists'
 import TopList, { topListLoader } from './pages/top/list'
 import Artist, { artistLoader } from './pages/artist'
 import ArtistSong, { artistSongLoader } from './pages/artist/song'
+import ArtistAlbum, { artistAlbumLoader } from './pages/artist/album'
 
 const router = createHashRouter([
   {
@@ -57,12 +58,14 @@ const router = createHashRouter([
         children: [
           {
             index: true,
-            loader: () => redirect('song'),
-          },
-          {
-            path: 'song/:page?',
             element: <ArtistSong />,
             loader: artistSongLoader,
+            errorElement: <Error />,
+          },
+          {
+            path: 'album',
+            element: <ArtistAlbum />,
+            loader: artistAlbumLoader,
             errorElement: <Error />,
           },
         ],

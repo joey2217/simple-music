@@ -30,3 +30,5 @@ async function r(){_.value=!1,o.value=[],await P(p(s[l.value]),p(t[c.value]))
 .then(e=>{e.length==0&&(_.value=!0),o.value=e})}
 function p(e){return e==t[0]?"nan":e==t[1]?"nv":e==t[2]?"group":e==s[0]?"huayu":e==s[1]?"oumei":e==s[2]?"rihan":"nan"}
 ```
+
+[banner](https://m.music.migu.cn/migumusic/h5/home/banner)

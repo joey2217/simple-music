@@ -18,13 +18,21 @@ function getTheme(): Theme {
 const THEME_ATTR = 'data-theme'
 
 const DARK_BACK_COLOR = '#1d232a'
+const SYMBOL_COLOR = '#1d232a'
+const DARK_SYMBOL_COLOR = '#1d232a'
 
 export function setLocalTheme(theme: Theme) {
   document.documentElement.setAttribute(THEME_ATTR, theme)
   if (theme === 'dark') {
-    window.electronAPI.setMainTitleBarOverlay({ color: DARK_BACK_COLOR })
+    window.electronAPI.setMainTitleBarOverlay({
+      color: DARK_BACK_COLOR,
+      symbolColor: DARK_SYMBOL_COLOR,
+    })
   } else {
-    window.electronAPI.setMainTitleBarOverlay({ color: '#fff' })
+    window.electronAPI.setMainTitleBarOverlay({
+      color: '#fff',
+      symbolColor: SYMBOL_COLOR,
+    })
   }
 }
 

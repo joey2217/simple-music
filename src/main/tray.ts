@@ -14,7 +14,7 @@ import { APP_NAME } from './constant'
 let tray: Tray
 
 const MAX_TITLE_LENGTH = 10
-let toolTip = APP_NAME
+const toolTip = APP_NAME
 
 const contextMenu = Menu.buildFromTemplate([
   { id: 'music', label: APP_NAME, icon: musicIcon, click: focus },

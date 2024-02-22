@@ -2,6 +2,7 @@ import type {
   ArtistInfo,
   ArtistPageData,
   ArtistRes,
+  BannerItem,
   MiguResponse,
   RankingListData,
   SearchData,
@@ -69,7 +70,10 @@ export function fetchRankingList(columnId: string) {
 //  `https://app.c.nf.migu.cn/MIGUM3.0/bmw/singer-index/list/v1.0?templateVersion=3&tab=${e}-${t}`,
 export function fetchArtistList(type: string, area: string) {
   return fetch(
-    `https://app.c.nf.migu.cn/MIGUM3.0/bmw/singer-index/list/v1.0?templateVersion=3&tab=${area}-${type}`
+    `https://app.c.nf.migu.cn/MIGUM3.0/bmw/singer-index/list/v1.0?templateVersion=3&tab=${area}-${type}`,
+    {
+      cache: 'force-cache',
+    }
   )
     .then((res) => res.json())
     .then((data: ArtistRes) => {
@@ -83,11 +87,13 @@ export function fetchArtistList(type: string, area: string) {
 // `https://m.music.migu.cn/migumusic/h5/singer/getSingerDetail?singerId=${e}`
 export function fetchArtistDetail(singerId: string) {
   return fetch(
-    `https://m.music.migu.cn/migumusic/h5/singer/getSingerDetail?singerId=${singerId}`
+    `https://m.music.migu.cn/migumusic/h5/singer/getSingerDetail?singerId=${singerId}`,
+    {
+      cache: 'force-cache',
+    }
   )
     .then((res) => res.json())
     .then((data: MiguResponse<ArtistInfo>) => {
-      console.log(data)
       if (data.code === '200') {
         return data.data
       }
@@ -99,7 +105,7 @@ export function fetchArtistDetail(singerId: string) {
 export function fetchArtistSong(
   singerId: string,
   pageNo = 1,
-  sam = 100, // 歌曲/专辑/MV
+  sam = '100', // 歌曲/专辑/MV
   pageSize = 30
 ) {
   return fetch(
@@ -107,6 +113,17 @@ export function fetchArtistSong(
   )
     .then((res) => res.json())
     .then((data: MiguResponse<ArtistPageData>) => {
+      if (data.code === '200') {
+        return data.data
+      }
+      throw new Error(data.msg)
+    })
+}
+
+export function fetchBanner() {
+  return fetch('https://m.music.migu.cn/migumusic/h5/home/banner')
+    .then((res) => res.json())
+    .then((data: MiguResponse<BannerItem[]>) => {
       if (data.code === '200') {
         return data.data
       }

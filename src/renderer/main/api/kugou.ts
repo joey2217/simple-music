@@ -55,7 +55,7 @@ export function fetchSearchSong(keyword: string, page: number = 1) {
       credentials: 'include',
     }
   ).then(res=>res.text()).then(text=>{
-    const json = text.replace(reg, (m, p1) => p1)
+    const json = text.replace(reg, (_m, p1) => p1)
     const data = JSONParse(json)
     console.log(data)
     return data
