@@ -464,3 +464,13 @@ export interface BannerItem {
   url: string
   field1?: unknown
 }
+
+export interface PlayListItem {
+  playListId: string
+  createUserId: string
+  createUserName: string
+  playListName: string
+  image: string
+  playCount: number
+  sysSonglist: number
+}

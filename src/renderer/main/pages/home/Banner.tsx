@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules'
+import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { BannerItem } from '../../types/migu'
 import { fetchBanner } from '../../api/migu'
@@ -19,9 +19,11 @@ const Banner: React.FC = () => {
 
   return (
     <Swiper
-      modules={[Navigation, Pagination, Scrollbar, A11y]}
+      modules={[Navigation, Pagination]}
       spaceBetween={50}
       navigation
+      autoplay
+      loop
       pagination={{ clickable: true }}
       scrollbar={{ draggable: true }}
       onSwiper={(swiper) => console.log(swiper)}
@@ -29,7 +31,7 @@ const Banner: React.FC = () => {
     >
       {banner.map((b, index) => (
         <SwiperSlide key={index}>
-          <Link to={b.url} className="h-80 w-screen relative">
+          <Link to={b.url} className="h-80 w-screen relative" title={b.title}>
             <img
               src={b.image}
               alt={b.title}

@@ -22,9 +22,10 @@ interface PlayerContextProps {
   download: (song: Music) => void
   togglePaused: () => void
   seek: (t: number) => void
-  addToPlayerList: (m: Music | Music[]) => void
+  addToPlayList: (m: Music | Music[]) => void
   removeFromPlayerList: (m: Music) => void
   playNext: (dir: 'next' | 'prev') => void
+  clearPlayList: () => void
 }
 
 const PlayerContext = React.createContext<PlayerContextProps>({
@@ -37,9 +38,10 @@ const PlayerContext = React.createContext<PlayerContextProps>({
   download: () => {},
   togglePaused: () => {},
   seek: () => {},
-  addToPlayerList: () => {},
+  addToPlayList: () => {},
   removeFromPlayerList: () => {},
   playNext: () => {},
+  clearPlayList: () => {},
 })
 
 export function usePlayer() {
@@ -77,7 +79,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
     howlerRef.current?.seek(t)
   }, [])
 
-  const addToPlayerList = useCallback(
+  const addToPlayList = useCallback(
     (m: Music | Music[]) => {
       if (Array.isArray(m)) {
         // const items = m.filter((item) =>
@@ -162,6 +164,8 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
     [downloadDir]
   )
 
+  const clearPlayList = useCallback(() => setPlayList([]), [setPlayList])
+
   useEffect(() => {
     console.log(current, index)
     console.table(playList)
@@ -230,9 +234,10 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
         download,
         togglePaused,
         seek,
-        addToPlayerList,
+        addToPlayList,
         removeFromPlayerList,
         playNext,
+        clearPlayList,
       }}
     >
       {children}

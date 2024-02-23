@@ -1,7 +1,7 @@
 import React from 'react'
 import { useLoaderData, type LoaderFunction } from 'react-router-dom'
 import { fetchRankingList } from '../../api/migu'
-import type { AlbumImg, ColumnInfo } from '../../types/migu'
+import type { AlbumImg, ColumnContent, ColumnInfo } from '../../types/migu'
 import { usePlayer } from '../../context/PlayerContext'
 import { columnContent2Music } from '../../utils/player'
 import { PlayIcon, FluentAdd } from '../../components/Icons'
@@ -27,7 +27,8 @@ const AlbumImage: React.FC<{ albumImgList: AlbumImg[] }> = ({
 
 const TopList: React.FC = () => {
   const data = useLoaderData() as ColumnInfo
-  const { play, addToPlayerList } = usePlayer()
+  const { play, addToPlayList } = usePlayer()
+
   return (
     <div
       className="p-2 w-full"
@@ -64,7 +65,7 @@ const TopList: React.FC = () => {
                     </button>
                     <button
                       className="btn btn-xs btn-circle btn-outline"
-                      onClick={() => addToPlayerList(columnContent2Music(item))}
+                      onClick={() => addToPlayList(columnContent2Music(item))}
                       title="添加到播放列表"
                     >
                       <FluentAdd />

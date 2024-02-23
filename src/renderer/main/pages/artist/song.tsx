@@ -30,7 +30,7 @@ const Song: React.FC = () => {
     end: boolean
     id: string
   }
-  const { play, addToPlayerList } = usePlayer()
+  const { play, addToPlayList } = usePlayer()
 
   const [list, setList] = useState(data.items)
   const [finished, setFinished] = useState(end)
@@ -82,7 +82,7 @@ const Song: React.FC = () => {
                 </button>
                 <button
                   className="btn btn-xs btn-circle btn-outline"
-                  onClick={() => addToPlayerList(songItem2Music(song))}
+                  onClick={() => addToPlayList(songItem2Music(song))}
                   title="添加到播放列表"
                 >
                   <FluentAdd />

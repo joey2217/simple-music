@@ -51,7 +51,7 @@ const PlayListRow: React.FC<Props> = ({ item, index }) => {
 }
 
 const PlayList: React.FC = () => {
-  const { playList } = usePlayer()
+  const { playList, clearPlayList } = usePlayer()
   const [show, setShow] = useState(false)
   return (
     <div className="h-full flex items-center justify-center">
@@ -72,6 +72,7 @@ const PlayList: React.FC = () => {
         >
           <div>
             <h2 className="text-lg font-semibold">播放列表</h2>
+            <button onClick={clearPlayList}>clear</button>
           </div>
           <div className="overflow-x-auto">
             <table className="table table-xs">

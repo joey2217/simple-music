@@ -4,6 +4,8 @@ import type {
   ArtistRes,
   BannerItem,
   MiguResponse,
+  PageData,
+  PlayListItem,
   RankingListData,
   SearchData,
   SongInfo,
@@ -129,6 +131,22 @@ export function fetchBanner() {
           ...d,
           url: d.url.replace('/v4/music', ''),
         }))
+      }
+      throw new Error(data.msg)
+    })
+}
+
+// 歌单
+//  (e, t, n) => `https://m.music.migu.cn/migumusic/h5/playlist/list?columnId=15127272&tagId=${e}&pageNum=${t}&pageSize=${n}
+// https://m.music.migu.cn/migumusic/h5/playlist/list?columnId=15127272&tagId=1000001683&pageNum=1&pageSize=30
+export function fetchPlaylist(tagId: string, page = 1, size = 30) {
+  return fetch(
+    `https://m.music.migu.cn/migumusic/h5/playlist/list?columnId=15127272&tagId=${tagId}&pageNum=${page}&pageSize=${size}`
+  )
+    .then((res) => res.json())
+    .then((data: MiguResponse<PageData<PlayListItem>>) => {
+      if (data.code === '200') {
+        return data.data
       }
       throw new Error(data.msg)
     })
