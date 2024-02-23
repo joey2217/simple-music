@@ -1,15 +1,22 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules'
-
 import { Swiper, SwiperSlide } from 'swiper/react'
+import type { BannerItem } from '../../types/migu'
+import { fetchBanner } from '../../api/migu'
 
-// Import Swiper styles
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
+import { Link } from 'react-router-dom'
 
 const Banner: React.FC = () => {
+  const [banner, setBanners] = useState<BannerItem[]>([])
+
+  useEffect(() => {
+    fetchBanner().then(setBanners)
+  }, [])
+
   return (
     <Swiper
       modules={[Navigation, Pagination, Scrollbar, A11y]}
@@ -20,9 +27,15 @@ const Banner: React.FC = () => {
       onSwiper={(swiper) => console.log(swiper)}
       onSlideChange={() => console.log('slide change')}
     >
-      {Array.from({ length: 10 }).map((b, index) => (
+      {banner.map((b, index) => (
         <SwiperSlide key={index}>
-          <div className="h-80 w-screen">Slide {index}</div>
+          <Link to={b.url} className="h-80 w-screen relative">
+            <img
+              src={b.image}
+              alt={b.title}
+              className="h-full w-full object-cover"
+            />
+          </Link>
         </SwiperSlide>
       ))}
     </Swiper>

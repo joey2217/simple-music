@@ -125,7 +125,10 @@ export function fetchBanner() {
     .then((res) => res.json())
     .then((data: MiguResponse<BannerItem[]>) => {
       if (data.code === '200') {
-        return data.data
+        return data.data.map((d) => ({
+          ...d,
+          url: d.url.replace('/v4/music', ''),
+        }))
       }
       throw new Error(data.msg)
     })

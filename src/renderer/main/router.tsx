@@ -10,6 +10,8 @@ import TopList, { topListLoader } from './pages/top/list'
 import Artist, { artistLoader } from './pages/artist'
 import ArtistSong, { artistSongLoader } from './pages/artist/song'
 import ArtistAlbum, { artistAlbumLoader } from './pages/artist/album'
+import Album, { albumLoader } from './pages/album'
+import Song, { songLoader } from './pages/song'
 
 const router = createHashRouter([
   {
@@ -69,6 +71,18 @@ const router = createHashRouter([
             errorElement: <Error />,
           },
         ],
+      },
+      {
+        path: 'album/:id',
+        element: <Album />,
+        loader: albumLoader,
+        errorElement: <Error />,
+      },
+      {
+        path: 'song/:id',
+        element: <Song />,
+        loader: songLoader,
+        errorElement: <Error />,
       },
     ],
   },

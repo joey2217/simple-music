@@ -21,3 +21,7 @@ export function shuffle<T = unknown>(list: T[]) {
   }
   return arr
 }
+
+export function formatURL(url: string) {
+  return url.startsWith('//') ? `http:${url}` : url
+}
