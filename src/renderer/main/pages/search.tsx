@@ -1,38 +1,48 @@
 import React, { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import {
+  type LoaderFunction,
+  useLoaderData,
+} from 'react-router-dom'
 import { fetchSearchData } from '../api/migu'
-import type { SearchSinger, SongItem } from '../types/migu'
+import type { SongItem } from '../types/migu'
 import { usePlayer } from '../context/PlayerContext'
 import { songItem2Music } from '../utils/player'
 
+export const searchLoader: LoaderFunction = ({ request }) => {
+  const url = new URL(request.url)
+  const searchParams = url.searchParams
+  console.log(searchParams.get('keyword'), url.toString())
+  return searchParams.get('keyword')
+}
+
 const Search: React.FC = () => {
+  const keyword = useLoaderData() as string | null
   const { play } = usePlayer()
-  const [searchParams] = useSearchParams()
-  const [keyword, setKeyword] = useState(searchParams.get('keyword') || '')
-  const [singer, setSinger] = useState<SearchSinger>()
+  // const [keyword, setKeyword] = useState(searchParams.get('keyword') || '')
+  // const [singer, setSinger] = useState<SearchSinger>()
   const [songList, setSingList] = useState<SongItem[]>([])
   const [total, setTotal] = useState(0)
 
   useEffect(() => {
-    fetchSearchData(keyword)
-      .then((data) => {
-        const {
-          bestShow: { bestShowSinger },
-          songsData: { items, total },
-        } = data
-        setSinger(bestShowSinger)
-        setSingList(items)
-        setTotal(total)
-        setKeyword('') // TODO
-      })
-      .catch((err) => {
-        console.error(err)
-      })
+    if (keyword) {
+      fetchSearchData(keyword)
+        .then((data) => {
+          const {
+            // bestShow: { bestShowSinger },
+            songsData: { items, total },
+          } = data
+          // setSinger(bestShowSinger)
+          setSingList(items)
+          setTotal(total)
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    }
   }, [keyword])
 
   return (
     <div>
-      <div>{singer && <div>{singer.name}</div>}</div>
       <div>
         <div className="overflow-x-auto">
           <table className="table">
@@ -59,7 +69,7 @@ const Search: React.FC = () => {
                     </button>
                   </td>
                   <td>{song.singers.map((s) => s.name).join()}</td>
-                  <td>{song.album.name}</td>
+                  <td>{song.album?.name}</td>
                 </tr>
               ))}
             </tbody>

@@ -10,14 +10,21 @@ import type {
   PlayListTag,
   RankingListData,
   SearchData,
+  SearchHorWord,
   SongDetail,
   SongInfo,
 } from '../types/migu'
 
-function miguRequeset<T>(
+const cache = new Map<string, unknown>()
+
+function miguRequest<T>(
   input: string | URL | Request,
+  cacheKey?: string,
   init?: RequestInit | undefined
 ) {
+  if (cacheKey && cache.has(cacheKey)) {
+    return Promise.resolve(cache.get(cacheKey) as T)
+  }
   return fetch(input, init)
     .then((res) => res.json())
     .then((data: MiguResponse<T>) => {
@@ -28,6 +35,7 @@ function miguRequeset<T>(
     })
     .catch((error) => {
       console.error(error, init, init)
+      throw error
     })
 }
 
@@ -212,4 +220,18 @@ export function fetchSongDetail(copyrightId: string) {
       }
       throw new Error(data.msg)
     })
+}
+
+// 搜索热词
+// https://m.music.migu.cn/migumusic/h5/search/platform/hotWord
+export function fetchSearchHotWord() {
+  return miguRequest<SearchHorWord>(
+    'https://m.music.migu.cn/migumusic/h5/search/platform/hotWord',
+    'hotWords'
+  ).then((data) => {
+    if (data && data.hotwords.length > 0) {
+      return data.hotwords[0].hotwordList
+    }
+    throw new Error('获取搜索热词失败')
+  })
 }

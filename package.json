@@ -9,6 +9,9 @@
   "license": "MIT",
   "homepage": "https://github.com/joey2217/simple-music",
   "repository": "https://github.com/joey2217/simple-music",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "release": "npm run build && electron-builder build -c electron-builder.config.cjs -p always",
     "package": "npm run build && electron-builder build -c electron-builder.config.cjs",
