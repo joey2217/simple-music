@@ -17,7 +17,7 @@ interface BestShow {
 export interface Artist {
   id: string
   name: string
-  image?: unknown
+  image: unknown
   nameSpelling?: string
 }
 interface Album {
@@ -473,4 +473,73 @@ export interface PlayListItem {
   image: string
   playCount: number
   sysSonglist: number
+}
+
+interface AlbumDetail {
+  id: string
+  name: string
+  albumDesc: string
+  type: number
+  singers: Artist[]
+  publishDate: string
+  publishCompany: string
+  smallPic: string
+  mediumPic: string
+  largePic: string
+}
+
+interface Songs {
+  pageNo: number
+  pageSize: number
+  pageTotal: number
+  itemTotal: number
+  items: SongItem[]
+}
+
+export interface AlbumInfo {
+  detailInfo: AlbumDetail
+  songs: Songs
+  otherAlbums: AlbumDetail[]
+}
+
+export interface PlayListTag {
+  tagId: string
+  tagName: string
+  parentTagId?: string
+}
+
+interface Singer {
+  singerId: string
+  singerName: string
+  singerStatus: number
+}
+
+export interface SongDetail {
+  musicId: string
+  musicName: string
+  copyrightId11: string
+  picUrl: string
+  lyricWriter: string
+  composer: string
+  lyricUrl: string
+  duration?: unknown
+  albumId: string
+  albumName: string
+  musicStatus: number
+  mcStatus: number
+  mvStatus: number
+  albumStatus: number
+  mvId?: unknown
+  mvPic?: unknown
+  mvName?: unknown
+  mvCopyrightId11?: unknown
+  isDigitalAlbum: number
+  digitalAlbumCopyright11?: unknown
+  allowDownload: number
+  vipFlag: number
+  firstPublish: number
+  singerNameStr?: unknown
+  singers: Singer[]
+  tags: PlayListTag[]
+  format: string[]
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useLoaderData, type LoaderFunction } from 'react-router-dom'
 import { fetchRankingList } from '../../api/migu'
-import type { AlbumImg, ColumnContent, ColumnInfo } from '../../types/migu'
+import type { AlbumImg, ColumnInfo } from '../../types/migu'
 import { usePlayer } from '../../context/PlayerContext'
 import { columnContent2Music } from '../../utils/player'
 import { PlayIcon, FluentAdd } from '../../components/Icons'

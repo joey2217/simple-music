@@ -24,7 +24,9 @@ export function create() {
     titleBarStyle: 'hidden',
     titleBarOverlay: {
       color: nativeTheme.shouldUseDarkColors ? DARK_BACK_COLOR : '#fff',
-      symbolColor: nativeTheme.shouldUseDarkColors ? '#7480ff' : '#641AE6',
+      // symbolColor: nativeTheme.shouldUseDarkColors ? '#7480ff' : '#641AE6',
+      // symbolColor: nativeTheme.shouldUseDarkColors ? '#cccccccc' : '#000000cc',
+      symbolColor: '#4f46e5',
       height: 40,
     },
     webPreferences: {

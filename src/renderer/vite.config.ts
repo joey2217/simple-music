@@ -4,7 +4,7 @@ import * as path from 'node:path'
 
 // https://vitejs.dev/config/
 const ROOT = process.cwd()
-const CHROME_VERSION = 120
+const CHROME_VERSION = 122
 
 const cspMate = `<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">`
 

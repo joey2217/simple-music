@@ -12,8 +12,8 @@ const Player: React.FC = () => {
       <div className="col-span-8 md:col-span-6">
         <Control />
       </div>
-      <div className="hidden md:block col-span-2">3</div>
-      <div className="col-span-1">
+      {/* <div className="hidden md:block col-span-2">3</div> */}
+      <div className="col-span-3">
         <PlayList />
       </div>
     </footer>

@@ -1,4 +1,5 @@
 import type {
+  AlbumInfo,
   ArtistInfo,
   ArtistPageData,
   ArtistRes,
@@ -6,10 +7,29 @@ import type {
   MiguResponse,
   PageData,
   PlayListItem,
+  PlayListTag,
   RankingListData,
   SearchData,
+  SongDetail,
   SongInfo,
 } from '../types/migu'
+
+function miguRequeset<T>(
+  input: string | URL | Request,
+  init?: RequestInit | undefined
+) {
+  return fetch(input, init)
+    .then((res) => res.json())
+    .then((data: MiguResponse<T>) => {
+      if (data.code === '200') {
+        return data.data
+      }
+      throw new Error(data.msg)
+    })
+    .catch((error) => {
+      console.error(error, init, init)
+    })
+}
 
 //搜索
 export function fetchSearchData(keyword: string, page: number = 1) {
@@ -130,6 +150,7 @@ export function fetchBanner() {
         return data.data.map((d) => ({
           ...d,
           url: d.url.replace('/v4/music', ''),
+          image: 'https:' + d.image,
         }))
       }
       throw new Error(data.msg)
@@ -139,12 +160,53 @@ export function fetchBanner() {
 // 歌单
 //  (e, t, n) => `https://m.music.migu.cn/migumusic/h5/playlist/list?columnId=15127272&tagId=${e}&pageNum=${t}&pageSize=${n}
 // https://m.music.migu.cn/migumusic/h5/playlist/list?columnId=15127272&tagId=1000001683&pageNum=1&pageSize=30
-export function fetchPlaylist(tagId: string, page = 1, size = 30) {
+export function fetchPlaylist(tagId: string = '', page = 1, size = 30) {
   return fetch(
     `https://m.music.migu.cn/migumusic/h5/playlist/list?columnId=15127272&tagId=${tagId}&pageNum=${page}&pageSize=${size}`
   )
     .then((res) => res.json())
     .then((data: MiguResponse<PageData<PlayListItem>>) => {
+      if (data.code === '200') {
+        return data.data
+      }
+      throw new Error(data.msg)
+    })
+}
+
+// 专辑 `https://m.music.migu.cn/migumusic/h5/album/info?albumId=${e}`
+export function fetchAlbum(albumId: string) {
+  return fetch(
+    `https://m.music.migu.cn/migumusic/h5/album/info?albumId=${albumId}`
+  )
+    .then((res) => res.json())
+    .then((data: MiguResponse<AlbumInfo>) => {
+      if (data.code === '200') {
+        return data.data
+      }
+      throw new Error(data.msg)
+    })
+}
+
+// 歌单tag
+export function fetchPlaylistTags() {
+  return fetch('https://m.music.migu.cn/migumusic/h5/playlist/hotTag')
+    .then((res) => res.json())
+    .then((data: MiguResponse<PlayListTag[]>) => {
+      if (data.code === '200') {
+        return data.data
+      }
+      throw new Error(data.msg)
+    })
+}
+
+// 歌曲详情
+// https://m.music.migu.cn/migumusic/h5/song/info?copyrightId=69918307280
+export function fetchSongDetail(copyrightId: string) {
+  return fetch(
+    `https://m.music.migu.cn/migumusic/h5/song/info?copyrightId=${copyrightId}`
+  )
+    .then((res) => res.json())
+    .then((data: MiguResponse<SongDetail>) => {
       if (data.code === '200') {
         return data.data
       }

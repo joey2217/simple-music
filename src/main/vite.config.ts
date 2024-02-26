@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import { builtinModules } from 'module'
 import * as path from 'path'
 
-const NODE_VERSION = '18'
+const NODE_VERSION = 20
 const ROOT = process.cwd()
 const EXTERNAL = builtinModules
   .map((bm) => `node:${bm}`)

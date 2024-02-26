@@ -23,6 +23,7 @@ const Search: React.FC = () => {
         setSinger(bestShowSinger)
         setSingList(items)
         setTotal(total)
+        setKeyword('') // TODO
       })
       .catch((err) => {
         console.error(err)
@@ -64,6 +65,7 @@ const Search: React.FC = () => {
             </tbody>
           </table>
         </div>
+        {total}
       </div>
     </div>
   )
