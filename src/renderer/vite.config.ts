@@ -23,6 +23,11 @@ export default defineConfig({
   root: __dirname,
   base: './',
   plugins: [react()],
+  resolve: {
+    alias: {
+      '@': path.join(ROOT, 'src/renderer'),
+    },
+  },
   build: {
     target: `chrome${CHROME_VERSION}`,
     outDir: path.join(ROOT, 'dist/renderer'),

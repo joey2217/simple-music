@@ -1,7 +1,8 @@
 # React + TypeScript + Vite
 
-## [howler](https://www.npmjs.com/package/howler)
+https://ui.shadcn.com/docs/installation
 
+## [howler](https://www.npmjs.com/package/howler)
 
 ## [node-id3](https://www.npmjs.com/package/node-id3)
 
@@ -35,4 +36,4 @@ function p(e){return e==t[0]?"nan":e==t[1]?"nv":e==t[2]?"group":e==s[0]?"huayu":
 
 > https://m.music.migu.cn/migumusic/h5/song/info?copyrightId=69918307280
 
-> https://fkhadra.github.io/react-contexify/
+ 

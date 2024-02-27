@@ -25,7 +25,13 @@
     "types": [
       "./src/renderer.d.ts",
       "./src/vite-env.d.ts",
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/renderer/*"
+      ]
+    }
   },
   "include": [
     "src/renderer"
