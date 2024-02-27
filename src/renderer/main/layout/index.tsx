@@ -9,12 +9,9 @@ const Layout: React.FC = () => {
     <>
       <Header />
       <main id="main" className="flex">
-        <aside>
-          <Sider />
-        </aside>
-        <section>
-          123
-          {/* <Outlet /> */}
+        <Sider />
+        <section id="content" className="grow">
+          <Outlet />
         </section>
       </main>
       <Player />

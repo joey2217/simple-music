@@ -49,7 +49,6 @@
   }
 }
 
- 
 @layer base {
   * {
     @apply border-border;
@@ -115,7 +114,11 @@ body {
       var(--player-height)
   );
   margin-top: env(titlebar-area-height, var(--fallback-title-bar-height));
-  overflow: auto;
+  overflow: hidden;
+}
+
+#content {
+  @apply h-full overflow-auto px-2 py-1;
 }
 
 #player {
@@ -128,7 +131,6 @@ body {
 .titleBar-mr {
   margin-right: env(titlebar-area-x, 0);
 }
-
 
 #play-list {
   bottom: var(--player-height);
@@ -181,4 +183,12 @@ body {
       var(--player-height) - 200px
   );
   overflow: auto;
+}
+
+.link {
+  @apply transition-colors hover:text-foreground/80 text-foreground/60 py-1 px-2 rounded-md;
+}
+
+.link.active {
+  @apply text-foreground bg-primary;
 }
