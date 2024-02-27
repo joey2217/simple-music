@@ -5,7 +5,7 @@ import type { DownloadInfo } from './types'
 import { download } from './download'
 
 export default function handleIPC() {
-  nativeTheme.themeSource = 'system'
+  nativeTheme.themeSource = 'dark'
 
   ipcMain.handle('TOGGLE_DEVTOOLS', (event) => {
     event.sender.toggleDevTools()

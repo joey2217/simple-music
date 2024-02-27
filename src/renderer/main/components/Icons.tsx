@@ -457,8 +457,6 @@ export function FluentHeart(props: SVGProps<SVGSVGElement>) {
   )
 }
 
-
-
 export function OutlineLoop(props: SVGProps<SVGSVGElement>) {
   return (
     <svg

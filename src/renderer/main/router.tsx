@@ -4,7 +4,7 @@ import Error from './layout/Error'
 import Home from './pages/home'
 import Search, { searchLoader } from './pages/search'
 import About from './pages/about'
-import TopPage from './pages/top'
+import TopPage, { topLoader } from './pages/top'
 import Artists, { artistsLoader } from './pages/artists'
 import TopList, { topListLoader } from './pages/top/list'
 import Artist, { artistLoader } from './pages/artist'
@@ -40,6 +40,7 @@ const router = createHashRouter([
       {
         path: 'top',
         element: <TopPage />,
+        loader: topLoader,
         errorElement: <Error />,
         children: [
           {

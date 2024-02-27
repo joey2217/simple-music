@@ -14,7 +14,7 @@ const __dirname = path.dirname(__filename)
 
 let win: BrowserWindow = null!
 
-const DARK_BACK_COLOR = '#1d232a'
+const DARK_BACK_COLOR = '#0c0a09'
 
 export function create() {
   win = new BrowserWindow({

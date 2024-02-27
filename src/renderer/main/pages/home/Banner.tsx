@@ -1,47 +1,45 @@
-import React, { useEffect, useState } from 'react'
-import { Navigation, Pagination } from 'swiper/modules'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import type { BannerItem } from '../../types/migu'
+import { useEffect, useState } from 'react'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel'
 import { fetchBanner } from '../../api/migu'
-
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
-import 'swiper/css/scrollbar'
+import { BannerItem } from '@/main/types/migu'
 import { Link } from 'react-router-dom'
 
-const Banner: React.FC = () => {
-  const [banner, setBanners] = useState<BannerItem[]>([])
+export default function Banner() {
+  const [banners, setBanners] = useState<BannerItem[]>([])
 
   useEffect(() => {
     fetchBanner().then(setBanners)
   }, [])
 
   return (
-    <Swiper
-      modules={[Navigation, Pagination]}
-      spaceBetween={50}
-      navigation
-      autoplay
-      loop
-      pagination={{ clickable: true }}
-      scrollbar={{ draggable: true }}
-      onSwiper={(swiper) => console.log(swiper)}
-      onSlideChange={() => console.log('slide change')}
-    >
-      {banner.map((b, index) => (
-        <SwiperSlide key={index}>
-          <Link to={b.url} className="h-80 w-screen relative" title={b.title}>
-            <img
-              src={b.image}
-              alt={b.title}
-              className="h-full w-full object-cover"
-            />
-          </Link>
-        </SwiperSlide>
-      ))}
-    </Swiper>
+    <Carousel className="w-full" opts={{ loop: true }}>
+      <CarouselContent>
+        {banners.map((b) => (
+          <CarouselItem key={b.url}>
+            <Link to={b.url} className="h-80 w-screen relative" title={b.title}>
+              <img
+                src={b.image}
+                alt={b.title}
+                className="h-full w-full object-cover"
+              />
+            </Link>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious
+        className="rounded-none h-1/2 w-10 opacity-50"
+        variant="outline"
+      />
+      <CarouselNext
+        className="rounded-none h-1/2 w-10 opacity-50"
+        variant="outline"
+      />
+    </Carousel>
   )
 }
-
-export default Banner

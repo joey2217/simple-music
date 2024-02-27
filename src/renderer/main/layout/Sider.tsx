@@ -10,7 +10,7 @@ const Sider: React.FC = () => {
       <NavLink to="/" className="link">
         精选
       </NavLink>
-      <NavLink to="/top/27553319" className="link">
+      <NavLink to="/top" className="link">
         排行榜
       </NavLink>
       <NavLink to="/artists/nan/huayu" className="link">

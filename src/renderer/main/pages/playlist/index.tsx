@@ -17,13 +17,11 @@ const PlayListIndex: React.FC = () => {
   return (
     <div>
       <nav>
-        <ul className="menu menu-vertical lg:menu-horizontal bg-base-200 rounded-box">
-          {data.map((t) => (
-            <li>
-              <NavLink to={t.tagId}>{t.tagName}</NavLink>
-            </li>
-          ))}
-        </ul>
+        {data.map((t) => (
+          <NavLink key={t.tagId} to={t.tagId}>
+            {t.tagName}
+          </NavLink>
+        ))}
       </nav>
       <Outlet />
     </div>

@@ -1,5 +1,10 @@
 import React from 'react'
-import { NavLink, Outlet } from 'react-router-dom'
+import {
+  type LoaderFunction,
+  NavLink,
+  Outlet,
+  redirect,
+} from 'react-router-dom'
 
 const menus = [
   { id: '27553319', name: '新歌榜' },
@@ -12,18 +17,27 @@ const menus = [
   { id: '15140034', name: '网络榜' },
 ]
 
+export const topLoader: LoaderFunction = ({ params }) => {
+  if (params.id === undefined) {
+    return redirect('/top/27553319')
+  }
+  return null
+}
+
 const TopPage: React.FC = () => {
   return (
     <div className="flex">
       <ul
-        className="menu bg-base-200 w-56 flex-shrink-0 rounded-box"
+        className="w-32 flex-shrink-0 "
         style={{
           height: 'calc(100vh - 140px)',
         }}
       >
         {menus.map((m) => (
           <li key={m.id}>
-            <NavLink to={`/top/${m.id}`}>{m.name}</NavLink>
+            <NavLink className="link block w-full" to={`/top/${m.id}`}>
+              {m.name}
+            </NavLink>
           </li>
         ))}
       </ul>

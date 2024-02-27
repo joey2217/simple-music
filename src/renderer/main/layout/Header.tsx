@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate, Location } from 'react-router-dom'
-import ThemeButton from './ThemeButton'
+import { useLocation, useNavigate, Location, Link } from 'react-router-dom'
 import SearchBar from './SearchBar'
 import { Button } from '@/components/ui/button'
+import { ThemeToggle } from './ThemeSelect'
 
 interface History {
   length: number
@@ -36,7 +36,9 @@ const Header: React.FC = () => {
   return (
     <header id="titleBarContainer">
       <div id="titleBar" className="pr-2 flex gap-2 items-center">
-        <div className="border-r w-44 h-10 leading-10">LOGO</div>
+        <Link to="/" className="border-r w-44 h-10 leading-10">
+          LOGO
+        </Link>
         <Button
           title="后退"
           size="sm"
@@ -57,7 +59,7 @@ const Header: React.FC = () => {
         </Button>
         <SearchBar />
         <div className="flex-1 h-full draggable"></div>
-        <ThemeButton />
+        <ThemeToggle />
       </div>
     </header>
   )

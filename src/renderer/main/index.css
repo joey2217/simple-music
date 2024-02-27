@@ -169,6 +169,14 @@ body {
   overflow: auto;
 }
 
+.max-h-content {
+  max-height: calc(
+    100vh - env(titlebar-area-height, var(--fallback-title-bar-height)) -
+      var(--player-height)
+  );
+  overflow: auto;
+}
+
 #artist-info {
   height: calc(
     100vh - env(titlebar-area-height, var(--fallback-title-bar-height)) -
@@ -183,6 +191,10 @@ body {
       var(--player-height) - 200px
   );
   overflow: auto;
+}
+
+a {
+  @apply focus-within:outline-none;
 }
 
 .link {

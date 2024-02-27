@@ -2,6 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import type { HotWordItem } from '../types/migu'
 import { fetchSearchHotWord } from '../api/migu'
+import { Input } from '@/components/ui/input'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 const SearchBar: React.FC = () => {
   const navigate = useNavigate()
@@ -16,9 +24,9 @@ const SearchBar: React.FC = () => {
   }, [])
 
   const onBlur = () => {
-    setTimeout(() => {
-      setOpen(false)
-    }, 200)
+    // setTimeout(() => {
+    setOpen(false)
+    // }, 200)
   }
 
   const onSearch = () => {
@@ -34,31 +42,27 @@ const SearchBar: React.FC = () => {
   }
 
   return (
-    <div className="px-1">
-      <details className="dropdown" open={open}>
-        <summary className="join">
-          <input
-            className="join-item input input-sm input-bordered grow"
+    <div>
+      <DropdownMenu>
+        <DropdownMenuTrigger className="focus-within:outline-none">
+          <Input
             value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
+            placeholder="搜索"
             onFocus={() => setOpen(true)}
             onBlur={onBlur}
+            onChange={(e) => setKeyword(e.target.value)}
           />
-          <button
-            className="join-item btn btn-sm btn-primary"
-            onClick={onSearch}
-          >
-            搜 索
-          </button>
-        </summary>
-        <ul className="p-2 shadow menu dropdown-content z-[100] bg-base-100 rounded-box w-52">
-          {hotWords.map((item) => (
-            <li key={item.note}>
-              <button onClick={() => onClick(item.word)}>{item.word}</button>
-            </li>
-          ))}
-        </ul>
-      </details>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-56">
+          <ScrollArea className="max-h-content">
+            {hotWords.map((w) => (
+              <DropdownMenuItem key={w.note} onClick={() => onClick(w.word)}>
+                {w.word}
+              </DropdownMenuItem>
+            ))}
+          </ScrollArea>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   )
 }

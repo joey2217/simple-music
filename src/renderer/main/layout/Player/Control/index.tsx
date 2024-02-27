@@ -2,43 +2,52 @@ import React from 'react'
 import ProgressBar from './ProgressBar'
 import { PlayIcon, Pause, Previous, Next } from '../../../components/Icons'
 import { usePlayer } from '../../../context/PlayerContext'
+import { Button } from '@/components/ui/button'
 
 const Control: React.FC = () => {
   const { paused, togglePaused, playNext } = usePlayer()
   return (
     <div>
       <div className="flex justify-center items-center gap-2 mb-1">
-        <button
-          className="btn btn-circle btn-outline btn-sm"
+        <Button
+          variant="ghost"
+          size="icon"
+          className="rounded-full"
           title="上一首"
           onClick={() => playNext('prev')}
         >
           <Previous />
-        </button>
+        </Button>
         {paused ? (
-          <button
-            className="btn btn-primary btn-circle btn-outline text-lg"
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full w-12 h-12 text-xl"
             onClick={togglePaused}
             title="播放"
           >
             <PlayIcon />
-          </button>
+          </Button>
         ) : (
-          <button
-            className="btn btn-primary btn-circle btn-outline text-lg"
+          <Button
+            size="icon"
+            variant="ghost"
+            className="rounded-full w-12 h-12 text-xl"
             onClick={togglePaused}
             title="暂停"
           >
             <Pause />
-          </button>
+          </Button>
         )}
-        <button
-          className="btn btn-circle btn-outline btn-sm"
+        <Button
+          variant="ghost"
+          size="icon"
+          className="rounded-full"
           title="下一首"
           onClick={() => playNext('next')}
         >
           <Next />
-        </button>
+        </Button>
       </div>
       <ProgressBar />
     </div>

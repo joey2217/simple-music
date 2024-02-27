@@ -1,10 +1,20 @@
 import React from 'react'
 import { useLoaderData, type LoaderFunction } from 'react-router-dom'
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 import { fetchRankingList } from '../../api/migu'
 import type { AlbumImg, ColumnInfo } from '../../types/migu'
 import { usePlayer } from '../../context/PlayerContext'
 import { columnContent2Music } from '../../utils/player'
 import { PlayIcon, FluentAdd } from '../../components/Icons'
+import { Button } from '@/components/ui/button'
 
 export const topListLoader: LoaderFunction = ({ params }) => {
   if (params.id) {
@@ -38,57 +48,60 @@ const TopList: React.FC = () => {
       }}
     >
       <div>
-        <h1 className="text-2xl font-bold mb-4">{data.columnTitle}</h1>
-        <div className="overflow-x-auto w-full">
-          <table className="table table-sm">
-            <tbody>
-              {data.contents.map((item, index) => (
-                <tr key={item.contentId}>
-                  <th>
-                    <div className="w-6 text-center">{index + 1}</div>
-                  </th>
-                  <td className="max-w-20 sm:max-w-40  md:max-w-60 lg:w-full">
-                    <div className="flex items-center gap-1">
-                      <AlbumImage albumImgList={item.objectInfo.albumImgs} />
-                      <div className="truncate flex-1 font-semibold text-base">
+        <h1 className="text-xl font-bold mb-4">{data.columnTitle}</h1>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-10 text-center">#</TableHead>
+              <TableHead className="max-w-96">标题</TableHead>
+              <TableHead>操作</TableHead>
+              <TableHead>专辑</TableHead>
+              <TableHead>时长</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {data.contents.map((item, index) => (
+              <TableRow key={item.contentId}>
+                <TableCell className="text-center">{index + 1}</TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2 max-w-96">
+                    <AlbumImage albumImgList={item.objectInfo.albumImgs} />
+                    <div className="truncate flex-1">
+                      <div className="truncate font-semibold text-base">
                         {item.objectInfo.songName}
                       </div>
+                      <div className="truncate">{item.objectInfo.singer}</div>
                     </div>
-                  </td>
-                  <td className="flex gap-1 items-center">
-                    <button
-                      className="btn btn-xs btn-circle btn-outline"
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex gap-2 text-lg">
+                    <Button
+                      variant="ghost"
+                      size="icon"
                       onClick={() => play(columnContent2Music(item))}
                       title="播放"
                     >
                       <PlayIcon />
-                    </button>
-                    <button
-                      className="btn btn-xs btn-circle btn-outline"
+                    </Button>
+                    <Button
+                      size="icon"
+                      variant="ghost"
                       onClick={() => addToPlayList(columnContent2Music(item))}
                       title="添加到播放列表"
                     >
                       <FluentAdd />
-                    </button>
-                  </td>
-                  <td
-                    title={item.objectInfo.singer}
-                    className="max-w-10 sm:max-w-20  md:max-w-40 lg:max-w-60 xl:max-w-80"
-                  >
-                    <div className="truncate">{item.objectInfo.singer}</div>
-                  </td>
-                  <td
-                    title={item.objectInfo.album}
-                    className="max-w-10 sm:max-w-20 md:max-w-40 lg:max-w-60 xl:max-w-80"
-                  >
-                    <div className="truncate">{item.objectInfo.album}</div>
-                  </td>
-                  <td className="hidden lg:block">{item.objectInfo.length}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                    </Button>
+                  </div>
+                </TableCell>
+                <TableCell title={item.objectInfo.album}>
+                  <div className="truncate">{item.objectInfo.album}</div>
+                </TableCell>
+                <TableCell>{item.objectInfo.length}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
     </div>
   )

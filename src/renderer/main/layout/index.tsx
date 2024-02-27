@@ -3,6 +3,7 @@ import Header from './Header'
 import { Outlet } from 'react-router-dom'
 import Player from './Player'
 import Sider from './Sider'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 const Layout: React.FC = () => {
   return (
@@ -10,9 +11,9 @@ const Layout: React.FC = () => {
       <Header />
       <main id="main" className="flex">
         <Sider />
-        <section id="content" className="grow">
+        <ScrollArea id="content" className="grow block">
           <Outlet />
-        </section>
+        </ScrollArea>
       </main>
       <Player />
     </>
