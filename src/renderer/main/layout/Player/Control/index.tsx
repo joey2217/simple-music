@@ -20,7 +20,7 @@ const Control: React.FC = () => {
         </Button>
         {paused ? (
           <Button
-            variant="ghost"
+            variant="secondary"
             size="icon"
             className="rounded-full w-12 h-12 text-xl"
             onClick={togglePaused}
@@ -31,7 +31,7 @@ const Control: React.FC = () => {
         ) : (
           <Button
             size="icon"
-            variant="ghost"
+            variant="secondary"
             className="rounded-full w-12 h-12 text-xl"
             onClick={togglePaused}
             title="暂停"

@@ -1,5 +1,6 @@
 import React from 'react'
 import { usePlayer } from '../../../context/PlayerContext'
+import { Slider } from '@/components/ui/slider'
 
 const toMinutes = (s: number) => {
   const minutes = Math.floor(s / 60)
@@ -15,15 +16,13 @@ const ProgressBar: React.FC = () => {
   const { duration, time, seek } = usePlayer()
 
   return (
-    <div className="flex items-center gap-1 text-sm">
+    <div className="flex items-center gap-2 text-sm">
       <div>{toMinutes(time)}</div>
-      <input
-        id="process-bar"
-        type="range"
+      <Slider
         min={0}
         max={duration}
-        value={time}
-        onChange={(e) => seek(Number(e.target.value))}
+        value={[time]}
+        onValueChange={(values) => seek(values[0])}
         className="range range-xs range-primary flex-1"
       />
       <div>{toMinutes(duration)}</div>

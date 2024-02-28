@@ -1,7 +1,11 @@
 import React, { useEffect } from 'react'
 import logo from '../assets/icon.png'
+import { Button } from '@/components/ui/button'
+import { useToast } from '@/components/ui/use-toast'
 
 const About: React.FC = () => {
+  const { toast } = useToast()
+
   useEffect(() => {
     console.log('##version##')
     console.table(window.versions)
@@ -16,14 +20,16 @@ const About: React.FC = () => {
         <span>{window.versions.version}</span>
       </div>
       <div className="my-2 flex justify-center gap-4">
-        <button
+        <Button
           onClick={window.electronAPI.checkUpdate}
-          className="btn-primary btn btn-sm"
+          variant="secondary"
+          size="sm"
         >
           检测更新
-        </button>
-        <button
-          className="btn btn-outline btn-sm"
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
           onClick={() =>
             window.electronAPI.openExternal(
               'https://github.com/joey2217/simple-tv/releases'
@@ -31,17 +37,19 @@ const About: React.FC = () => {
           }
         >
           手动下载
-        </button>
+        </Button>
       </div>
       <div className="flex gap-4 justify-center">
-        <button
-          className="btn btn-sm"
+        <Button
+          variant="secondary"
+          size="sm"
           onClick={() => window.devAPI.toggleDevtools()}
         >
           切换开发者工具
-        </button>
-        <button
-          className="btn btn-ghost btn-sm"
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={() =>
             window.electronAPI.openExternal(
               'https://github.com/joey2217/simple-tv/issues'
@@ -49,7 +57,17 @@ const About: React.FC = () => {
           }
         >
           反馈BUG
-        </button>
+        </Button>
+        <Button
+          onClick={() => {
+            toast({
+              title: 'Scheduled: Catch up ',
+              description: 'Friday, February 10, 2023 at 5:57 PM',
+            })
+          }}
+        >
+          toast
+        </Button>
       </div>
     </div>
   )

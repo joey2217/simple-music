@@ -172,10 +172,6 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
   }, [current, index, playList])
 
   useEffect(() => {
-    if (init) {
-      init = false
-      return
-    }
     if (current?.copyrightId) {
       fetchSongInfo(current.copyrightId).then((data) => {
         howlerRef.current?.stop()
@@ -183,19 +179,34 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
         current.url = data.playUrl
         const howler = new Howl({
           src: data.playUrl,
-          autoplay: true,
+          autoplay: !init,
           html5: true,
         })
         howler.once('load', () => {
           setDuration(Math.ceil(howler.duration()))
           setTime(0)
           clearInterval(timer.current)
-          timer.current = setInterval(() => {
-            setTime(Math.ceil(howler.seek()))
-          }, 1000) as unknown as number
+          if (init) {
+            init = false
+          } else {
+            timer.current = setInterval(() => {
+              setTime(Math.ceil(howler.seek()))
+            }, 1000) as unknown as number
+          }
         })
-        howler.on('play', () => setPaused(false))
-        howler.on('pause', () => setPaused(true))
+        howler.on('play', () => {
+          setPaused(false)
+          if (timer.current === 0) {
+            timer.current = setInterval(() => {
+              setTime(Math.ceil(howler.seek()))
+            }, 1000) as unknown as number
+          }
+        })
+        howler.on('pause', () => {
+          setPaused(true)
+          clearInterval(timer.current)
+          timer.current = 0
+        })
         howler.once('end', () => {
           clearInterval(timer.current)
           playNext()

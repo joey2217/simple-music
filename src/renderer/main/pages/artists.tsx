@@ -1,19 +1,21 @@
-import React from 'react'
+import React, { useMemo, useState } from 'react'
 import {
   useLoaderData,
   type LoaderFunction,
   Link,
   NavLink,
+  redirect,
 } from 'react-router-dom'
 import { fetchArtistList } from '../api/migu'
 import type { ArtistContent, ArtistType, ArtistArea } from '../types/migu'
 import LazyImage from '../components/LazyLoadImage'
 import { Option } from '../types'
-import { useState } from 'react'
-import { useMemo } from 'react'
 
 export const artistsLoader: LoaderFunction = async ({ params }) => {
-  const { type = 'nan', area = 'huayu' } = params
+  const { type, area } = params
+  if (type === undefined || area === undefined) {
+    return redirect('/artists/nan/huayu')
+  }
   return fetchArtistList(type, area).then((data) => ({
     data,
     type,
@@ -67,31 +69,25 @@ const Artists: React.FC = () => {
 
   return (
     <div className="page">
-      <div className="flex items-center gap-2 mb-2 px-10">
-        <div>歌手</div>
-        <div role="tablist" className="tabs tabs-boxed">
+      <div className="flex items-center gap-10 mb-4 px-2">
+        <h1 className="font-semibold text-lg">歌手</h1>
+        <div>
           {TYPES.map(({ label, value }) => (
             <NavLink
               to={`/artists/${value}/${area}`}
               key={value}
-              role="tab"
-              className={({ isActive }) =>
-                isActive ? 'tab-active tab' : 'tab'
-              }
+              className="link"
             >
               {label}
             </NavLink>
           ))}
         </div>
-        <div role="tablist" className="tabs tabs-boxed">
+        <div>
           {AREAS.map(({ label, value }) => (
             <NavLink
               to={`/artists/${type}/${value}`}
               key={value}
-              role="tab"
-              className={({ isActive }) =>
-                isActive ? 'tab-active tab' : 'tab'
-              }
+              className="link"
             >
               {label}
             </NavLink>

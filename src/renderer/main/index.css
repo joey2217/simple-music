@@ -180,15 +180,14 @@ body {
 #artist-info {
   height: calc(
     100vh - env(titlebar-area-height, var(--fallback-title-bar-height)) -
-      var(--player-height) - 220px
+      var(--player-height) - 230px
   );
-  overflow: auto;
 }
 
 #artist-content {
   height: calc(
     100vh - env(titlebar-area-height, var(--fallback-title-bar-height)) -
-      var(--player-height) - 200px
+      var(--player-height) - 100px
   );
   overflow: auto;
 }

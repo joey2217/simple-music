@@ -1,4 +1,4 @@
-import { createHashRouter } from 'react-router-dom'
+import { createHashRouter, redirect } from 'react-router-dom'
 import Layout from './layout'
 import Error from './layout/Error'
 import Home from './pages/home'
@@ -44,6 +44,10 @@ const router = createHashRouter([
         errorElement: <Error />,
         children: [
           {
+            index: true,
+            loader: () => redirect('27553319'),
+          },
+          {
             path: ':id',
             loader: topListLoader,
             element: <TopList />,
@@ -51,7 +55,7 @@ const router = createHashRouter([
         ],
       },
       {
-        path: 'artists/:type/:area',
+        path: 'artists/:type?/:area?',
         element: <Artists />,
         loader: artistsLoader,
         errorElement: <Error />,

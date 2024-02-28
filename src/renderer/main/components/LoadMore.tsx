@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { throttle } from '../utils/func'
+import { Skeleton } from '@/components/ui/skeleton'
 
 interface Props {
   loadMore: () => void
@@ -37,16 +38,12 @@ const LoadMore: React.FC<Props> = ({ loadMore, finished }) => {
   }, [finished, loadMore])
 
   if (finished) {
-    return (
-      <div ref={loadMoreRef} className="text-center">
-        finished
-      </div>
-    )
+    return null
   }
 
   return (
     <div ref={loadMoreRef} className="text-center">
-      loading...
+      <Skeleton className="h-10 rounded-xl" />
     </div>
   )
 }

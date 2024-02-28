@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLoaderData, type LoaderFunction } from 'react-router-dom'
+import { useLoaderData, type LoaderFunction, redirect } from 'react-router-dom'
 import {
   Table,
   TableBody,
@@ -15,6 +15,7 @@ import { columnContent2Music } from '../../utils/player'
 import { PlayIcon, FluentAdd } from '../../components/Icons'
 import { Button } from '@/components/ui/button'
 import Image from '@/main/components/Image'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 export const topListLoader: LoaderFunction = ({ params }) => {
   if (params.id) {
@@ -40,11 +41,10 @@ const TopList: React.FC = () => {
   const { play, addToPlayList } = usePlayer()
 
   return (
-    <div
+    <ScrollArea
       className="p-2 w-full"
       style={{
         height: 'calc(100vh - 140px)',
-        overflow: 'auto',
       }}
     >
       <div>
@@ -103,7 +103,7 @@ const TopList: React.FC = () => {
           </TableBody>
         </Table>
       </div>
-    </div>
+    </ScrollArea>
   )
 }
 

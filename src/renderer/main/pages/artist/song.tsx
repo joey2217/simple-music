@@ -6,6 +6,16 @@ import { usePlayer } from '../../context/PlayerContext'
 import { songItem2Music } from '../../utils/player'
 import { FluentAdd, PlayIcon } from '../../components/Icons'
 import LoadMore from '../../components/LoadMore'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { Button } from '@/components/ui/button'
+import Image from '@/main/components/Image'
 
 const PAGE_SIZE = 30
 const SAM = '100'
@@ -52,59 +62,66 @@ const Song: React.FC = () => {
   }, [id, pageNum])
 
   return (
-    <div className="overflow-x-auto">
-      <table className="table table-sm">
-        <tbody>
+    <>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-10 text-center">#</TableHead>
+            <TableHead className="max-w-96">标题</TableHead>
+            <TableHead>操作</TableHead>
+            <TableHead className="max-w-32">专辑</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {list.map((song, index) => (
-            <tr key={song.copyrightId}>
-              <th>
-                <div className="w-6 text-center">{index + 1}</div>
-              </th>
-              <td className="max-w-20 sm:max-w-40  md:max-w-60 lg:w-full">
+            <TableRow key={song.copyrightId}>
+              <TableCell className="text-center">{index + 1}</TableCell>
+              <TableCell>
                 <div className="flex items-center gap-1">
-                  <img
+                  <Image
                     src={song.smallPic}
                     alt="album"
                     className="w-10 h-10 rounded"
                   />
-                  <div className="truncate flex-1 font-semibold text-base">
-                    {song.name}
+                  <div className="truncate flex-1">
+                    <div className="truncate font-semibold text-base">
+                      {song.name}
+                    </div>
+                    <div className="truncate">
+                      {song.singers.map((s) => s.name).join('/')}
+                    </div>
                   </div>
                 </div>
-              </td>
-              <td className="flex gap-1 items-center">
-                <button
-                  className="btn btn-xs btn-circle btn-outline"
-                  onClick={() => play(songItem2Music(song))}
-                  title="播放"
-                >
-                  <PlayIcon />
-                </button>
-                <button
-                  className="btn btn-xs btn-circle btn-outline"
-                  onClick={() => addToPlayList(songItem2Music(song))}
-                  title="添加到播放列表"
-                >
-                  <FluentAdd />
-                </button>
-              </td>
-              <td className="max-w-10 sm:max-w-20  md:max-w-40 lg:max-w-60 xl:max-w-80">
-                <div className="truncate">
-                  {song.singers.map((s) => s.name).join()}
+              </TableCell>
+              <TableCell className="flex gap-1 items-center">
+                <div className="flex gap-2 text-lg">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => play(songItem2Music(song))}
+                    title="播放"
+                  >
+                    <PlayIcon />
+                  </Button>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => addToPlayList(songItem2Music(song))}
+                    title="添加到播放列表"
+                  >
+                    <FluentAdd />
+                  </Button>
                 </div>
-              </td>
-              <td
-                title={song.album?.name}
-                className="max-w-10 sm:max-w-20 md:max-w-40 lg:max-w-60 xl:max-w-80"
-              >
+              </TableCell>
+              <TableCell title={song.album?.name} className="max-w-32">
                 <div className="truncate">{song.album?.name}</div>
-              </td>
-            </tr>
+              </TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
       <LoadMore loadMore={loadMore} finished={finished} />
-    </div>
+    </>
   )
 }
 
