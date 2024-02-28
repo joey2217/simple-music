@@ -41,7 +41,10 @@ const TopPage: React.FC = () => {
           </li>
         ))}
       </ul>
-      <Outlet />
+      {/* {navigation.state === 'loading' ? 'loading' : <Outlet />} */}
+      <div className="grow">
+        <Outlet />
+      </div>
     </div>
   )
 }

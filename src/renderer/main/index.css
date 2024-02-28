@@ -193,7 +193,9 @@ body {
   overflow: auto;
 }
 
-a {
+a,
+button,
+input {
   @apply focus-within:outline-none;
 }
 

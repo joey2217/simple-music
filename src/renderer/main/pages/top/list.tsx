@@ -3,7 +3,6 @@ import { useLoaderData, type LoaderFunction } from 'react-router-dom'
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -15,6 +14,7 @@ import { usePlayer } from '../../context/PlayerContext'
 import { columnContent2Music } from '../../utils/player'
 import { PlayIcon, FluentAdd } from '../../components/Icons'
 import { Button } from '@/components/ui/button'
+import Image from '@/main/components/Image'
 
 export const topListLoader: LoaderFunction = ({ params }) => {
   if (params.id) {
@@ -29,7 +29,7 @@ const AlbumImage: React.FC<{ albumImgList: AlbumImg[] }> = ({
   const albumImg = albumImgList[albumImgList.length - 1]
   if (albumImg) {
     return (
-      <img src={albumImg.webpImg} alt="album" className="w-10 h-10 rounded" />
+      <Image src={albumImg.webpImg} alt="album" className="w-10 h-10 rounded" />
     )
   }
   return null
@@ -55,7 +55,7 @@ const TopList: React.FC = () => {
               <TableHead className="w-10 text-center">#</TableHead>
               <TableHead className="max-w-96">标题</TableHead>
               <TableHead>操作</TableHead>
-              <TableHead>专辑</TableHead>
+              <TableHead className="max-w-32">专辑</TableHead>
               <TableHead>时长</TableHead>
             </TableRow>
           </TableHeader>
@@ -94,7 +94,7 @@ const TopList: React.FC = () => {
                     </Button>
                   </div>
                 </TableCell>
-                <TableCell title={item.objectInfo.album}>
+                <TableCell title={item.objectInfo.album} className="max-w-32">
                   <div className="truncate">{item.objectInfo.album}</div>
                 </TableCell>
                 <TableCell>{item.objectInfo.length}</TableCell>

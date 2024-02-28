@@ -14,7 +14,6 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 const SearchBar: React.FC = () => {
   const navigate = useNavigate()
   const [keyword, setKeyword] = useState('')
-  const [open, setOpen] = useState(false)
   const [hotWords, setHotWords] = useState<HotWordItem[]>([])
 
   useEffect(() => {
@@ -23,16 +22,9 @@ const SearchBar: React.FC = () => {
     })
   }, [])
 
-  const onBlur = () => {
-    // setTimeout(() => {
-    setOpen(false)
-    // }, 200)
-  }
-
   const onSearch = () => {
     if (keyword !== '') {
       navigate(`/search?keyword=${keyword}`)
-      setOpen(false)
     }
   }
 
@@ -48,8 +40,6 @@ const SearchBar: React.FC = () => {
           <Input
             value={keyword}
             placeholder="搜索"
-            onFocus={() => setOpen(true)}
-            onBlur={onBlur}
             onChange={(e) => setKeyword(e.target.value)}
           />
         </DropdownMenuTrigger>
