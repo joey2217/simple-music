@@ -46,7 +46,7 @@ const SearchBar: React.FC = () => {
         <DropdownMenuContent className="w-56">
           <ScrollArea className="max-h-content">
             {hotWords.map((w) => (
-              <DropdownMenuItem key={w.note} onClick={() => onClick(w.word)}>
+              <DropdownMenuItem key={w.id} onClick={() => onClick(w.word)}>
                 {w.word}
               </DropdownMenuItem>
             ))}

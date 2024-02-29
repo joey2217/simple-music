@@ -544,31 +544,35 @@ export interface SongDetail {
   format: string[]
 }
 
-
 export interface HotWordItem {
-  note: string;
-  videoType: number;
-  icon?: string;
-  rank: number;
-  id?: string;
-  word: string;
-  resourceType: string;
-  url?: string;
+  note: string
+  videoType: number
+  icon?: string
+  rank: number
+  id: string
+  word: string
+  resourceType: string
+  url?: string
 }
 interface hotWords {
-  mode: number;
-  displayType: number;
-  hotwordList: HotWordItem[];
-  playAll: number;
-  programDisplayType: string;
-  maxNum: number;
-  type: string;
+  mode: number
+  displayType: number
+  hotwordList: HotWordItem[]
+  playAll: number
+  programDisplayType: string
+  maxNum: number
+  type: string
 }
-
 
 export interface SearchHorWord {
   discovery: unknown[]
   hotwords: hotWords[]
   quickEntryList: unknown[]
   songs: unknown[]
+}
+
+export interface LyricData {
+  lyric: string
+  sbslyric?: string
+  translatedLyric?: string
 }

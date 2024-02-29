@@ -2,9 +2,11 @@ import React, { useEffect } from 'react'
 import logo from '../assets/icon.png'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/use-toast'
+import { useApp } from '../context/AppContext'
 
 const About: React.FC = () => {
   const { toast } = useToast()
+  const { confirm } = useApp()
 
   useEffect(() => {
     console.log('##version##')
@@ -67,6 +69,18 @@ const About: React.FC = () => {
           }}
         >
           toast
+        </Button>
+        <Button
+          onClick={() => {
+            confirm({
+              title: 'Are you sure?',
+              message: 'message',
+            })
+              .then(console.log)
+              .catch(console.error)
+          }}
+        >
+          confirm
         </Button>
       </div>
     </div>

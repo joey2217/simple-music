@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLoaderData, type LoaderFunction, redirect } from 'react-router-dom'
+import { useLoaderData, type LoaderFunction } from 'react-router-dom'
 import {
   Table,
   TableBody,
@@ -30,7 +30,7 @@ const AlbumImage: React.FC<{ albumImgList: AlbumImg[] }> = ({
   const albumImg = albumImgList[albumImgList.length - 1]
   if (albumImg) {
     return (
-      <Image src={albumImg.webpImg} alt="album" className="w-10 h-10 rounded" />
+      <Image src={albumImg.webpImg} alt="album" className="w-10 h-10 rounded-md" />
     )
   }
   return null

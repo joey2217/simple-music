@@ -10,6 +10,7 @@ const Image: React.FC<
   return (
     <img
       {...props}
+      src={props.src || icon}
       onError={(e) => {
         (e.target as HTMLImageElement).onerror = null
         ;(e.target as HTMLImageElement).src = icon

@@ -1,8 +1,8 @@
-import { app, session, Notification } from 'electron'
+import { app, session } from 'electron'
 import log from 'electron-log'
 import * as path from 'path'
 import type { DownloadInfo } from './types'
-import { mainNavigate, send as sendMain } from './windows/main'
+import { send as sendMain } from './windows/main'
 import { Promise as NodeID3Promise } from 'node-id3'
 
 // import { downloadIcon } from './icons'
@@ -29,24 +29,11 @@ app.whenReady().then(() => {
   session.defaultSession.on('will-download', (event, item) => {
     downloadFile.downloadPath = path.normalize(downloadFile.downloadPath)
     item.setSavePath(downloadFile.downloadPath)
-    // item.setSavePath(
-    //   path.join(
-    //     app.getPath('downloads'),
-    //     downloadFile.fileName || 'download.mp3'
-    //   )
-    // )
+    sendMain('UPDATE_DOWNLOAD', {
+      ...downloadFile,
+      status: 'downloading',
+    } as DownloadInfo)
 
-    // item.on('updated', (event, state) => {
-    //   if (state === 'interrupted') {
-    //     log.info('Download is interrupted but can be resumed')
-    //   } else if (state === 'progressing') {
-    //     if (item.isPaused()) {
-    //       log.info('Download is paused')
-    //     } else {
-    //       log.info(`Received bytes: ${item.getReceivedBytes()}`)
-    //     }
-    //   }
-    // })
     item.once('done', (event, state) => {
       if (state === 'completed') {
         log.info('Download successfully', downloadFile.downloadPath)
@@ -58,8 +45,6 @@ app.whenReady().then(() => {
     })
   })
 })
-
-let notification: Notification
 
 function fetchCoverBuffer(imgUrl: string): Promise<ArrayBuffer | undefined> {
   let url = ''
@@ -78,17 +63,11 @@ function fetchCoverBuffer(imgUrl: string): Promise<ArrayBuffer | undefined> {
 
 function onCompleted(success: boolean) {
   if (downloadFile) {
-    sendMain('DOWNLOAD_FINISHED', downloadFile.rid, success)
-    notification = new Notification({
-      title: `${downloadFile.fileName}下载成功!`,
-      // icon: downloadIcon,
-    })
-    notification.on('click', () => {
-      mainNavigate('/download')
-    })
-    notification.show()
+    sendMain('UPDATE_DOWNLOAD', {
+      ...downloadFile,
+      status: success ? 'completed' : 'failed',
+    } as DownloadInfo)
     if (success) {
-      console.log(downloadFile)
       fetchCoverBuffer(downloadFile.cover).then((buffer) => {
         NodeID3Promise.write(
           {

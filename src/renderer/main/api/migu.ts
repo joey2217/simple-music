@@ -4,6 +4,7 @@ import type {
   ArtistPageData,
   ArtistRes,
   BannerItem,
+  LyricData,
   MiguResponse,
   PageData,
   PlayListItem,
@@ -14,6 +15,7 @@ import type {
   SongDetail,
   SongInfo,
 } from '../types/migu'
+import { parseLyric } from '../utils'
 
 const cache = new Map<string, unknown>()
 
@@ -29,6 +31,9 @@ function miguRequest<T>(
     .then((res) => res.json())
     .then((data: MiguResponse<T>) => {
       if (data.code === '200') {
+        if (cacheKey) {
+          cache.set(cacheKey, data.data)
+        }
         return data.data
       }
       throw new Error(data.msg)
@@ -210,16 +215,10 @@ export function fetchPlaylistTags() {
 // 歌曲详情
 // https://m.music.migu.cn/migumusic/h5/song/info?copyrightId=69918307280
 export function fetchSongDetail(copyrightId: string) {
-  return fetch(
-    `https://m.music.migu.cn/migumusic/h5/song/info?copyrightId=${copyrightId}`
+  return miguRequest<SongDetail>(
+    `https://m.music.migu.cn/migumusic/h5/song/info?copyrightId=${copyrightId}`,
+    'fetchSongDetail' + copyrightId
   )
-    .then((res) => res.json())
-    .then((data: MiguResponse<SongDetail>) => {
-      if (data.code === '200') {
-        return data.data
-      }
-      throw new Error(data.msg)
-    })
 }
 
 // 搜索热词
@@ -233,5 +232,19 @@ export function fetchSearchHotWord() {
       return data.hotwords[0].hotwordList
     }
     throw new Error('获取搜索热词失败')
+  })
+}
+
+// 歌词 `https://m.music.migu.cn/migumusic/h5/song/lyric?copyrightId=${e}`
+export function fetchSongLyric(copyrightId: string) {
+  return miguRequest<LyricData>(
+    `https://m.music.migu.cn/migumusic/h5/song/lyric?copyrightId=${copyrightId}`,
+    'fetchSongLyric' + copyrightId
+  ).then((data) => {
+    return Object.fromEntries(
+      Object.entries(data).map(([key, value]) => {
+        return [key, parseLyric(value)]
+      })
+    )
   })
 }

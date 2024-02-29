@@ -12,6 +12,7 @@ import type { Music } from '../../../types/player'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import Image from '@/main/components/Image'
 import { Button } from '@/components/ui/button'
+import { useDownload } from '@/main/store/download'
 
 interface Props {
   item: Music
@@ -19,7 +20,8 @@ interface Props {
 }
 
 const PlayListRow: React.FC<Props> = ({ item, index }) => {
-  const { play, current, removeFromPlayerList, download } = usePlayer()
+  const download = useDownload()
+  const { play, current, removeFromPlayerList } = usePlayer()
   return (
     <TableRow className="play-list-row" onDoubleClick={() => play(item)}>
       <TableCell className="text-center">

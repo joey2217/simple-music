@@ -10,3 +10,8 @@ export interface Music {
   pic: string
   url?: string
 }
+
+export interface LyricRow {  
+  time?: number
+  words: string
+}

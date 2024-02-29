@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { useLoaderData, type LoaderFunction } from 'react-router-dom'
+import { useLoaderData, type LoaderFunction, Link } from 'react-router-dom'
 import { fetchArtistSong } from '../../api/migu'
 import { AlbumItem, PageData } from '../../types/migu'
 import LoadMore from '../../components/LoadMore'
+import Image from '@/main/components/Image'
 
 const PAGE_SIZE = 30
 const SAM = '010'
@@ -61,10 +62,10 @@ const ArtistAlbum: React.FC = () => {
 
 const Album: React.FC<{ album: AlbumItem }> = ({ album }) => {
   return (
-    <div>
-      <img src={album.largePic} alt={album.name} />
+    <Link to={`/album/${album.id}`}>
+      <Image src={album.largePic} alt={album.name} />
       <div>{album.name}</div>
-    </div>
+    </Link>
   )
 }
 

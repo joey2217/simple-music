@@ -8,6 +8,7 @@ import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import log from 'electron-log'
 import { nextIcon, pauseIcon, playIcon, prevIcon } from '../icons'
+import type { Theme } from '../types'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -68,13 +69,11 @@ export function send(channel: string, ...args: unknown[]) {
   win.webContents.send(channel, ...args)
 }
 
-export function showOpenDialog(options: OpenDialogOptions) {
-  return dialog.showOpenDialog(win, options)
-}
-
-export function setMainTitleBarOverlay(options: Electron.TitleBarOverlay) {
+export function setMainTitleBarOverlay() {
   if (win) {
-    win.setTitleBarOverlay(options)
+    win.setTitleBarOverlay({
+      color: nativeTheme.shouldUseDarkColors ? DARK_BACK_COLOR : '#fff',
+    })
   }
 }
 

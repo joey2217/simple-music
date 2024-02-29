@@ -21,8 +21,6 @@ function getTheme(): Theme {
   return 'system'
 }
 
-const DARK_BACK_COLOR = '#0c0a09'
-
 function setLocalTheme(theme: Theme) {
   const root = window.document.documentElement
 
@@ -35,16 +33,7 @@ function setLocalTheme(theme: Theme) {
   }
 
   root.classList.add(systemTheme)
-
-  if (systemTheme === 'dark') {
-    window.electronAPI.setMainTitleBarOverlay({
-      color: DARK_BACK_COLOR,
-    })
-  } else {
-    window.electronAPI.setMainTitleBarOverlay({
-      color: '#fff',
-    })
-  }
+  window.electronAPI.setTheme(theme)
 }
 
 export function ThemeToggle() {

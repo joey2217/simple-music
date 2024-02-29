@@ -9,7 +9,6 @@ import React, {
 import { Howl } from 'howler'
 import type { Music } from '../types/player'
 import { fetchSongInfo } from '../api/migu'
-import type { DownloadInfo } from '../../../renderer'
 import useLocalStorage from '../hooks/useLocalStorage'
 
 interface PlayerContextProps {
@@ -19,7 +18,6 @@ interface PlayerContextProps {
   time: number
   playList: Music[]
   play: (song: Music) => void
-  download: (song: Music) => void
   togglePaused: () => void
   seek: (t: number) => void
   addToPlayList: (m: Music | Music[]) => void
@@ -35,7 +33,6 @@ const PlayerContext = React.createContext<PlayerContextProps>({
   time: 0,
   playList: [],
   play: () => {},
-  download: () => {},
   togglePaused: () => {},
   seek: () => {},
   addToPlayList: () => {},
@@ -56,8 +53,6 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [playList, setPlayList] = useLocalStorage<Music[]>('play-list', [])
   const [duration, setDuration] = useState(0)
   const [time, setTime] = useState(0)
-
-  const [downloadDir, setDownloadDir] = useLocalStorage('download_dir', '')
 
   const howlerRef = useRef<Howl | null>(null)
   const timer = useRef(0)
@@ -128,6 +123,9 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const play = useCallback(
     (song: Music) => {
+      if (init) {
+        init = false
+      }
       const idx = playList.findIndex((s) => s.copyrightId === song.copyrightId)
       if (idx === -1) {
         setPlayList((l) => l.toSpliced(index + 1, 0, song))
@@ -141,27 +139,6 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
       }
     },
     [index, playList, setIndex, setPlayList]
-  )
-
-  const download = useCallback(
-    (m: Music) => {
-      fetchSongInfo(m.copyrightId).then((data) => {
-        const url = new URL(data.playUrl)
-        const ext = url.pathname.split('.').pop()
-        const item: DownloadInfo = {
-          rid: m.copyrightId,
-          url: data.playUrl,
-          fileName: m.title,
-          downloadPath: `${downloadDir}/${m.title}.${ext}`,
-          title: m.title,
-          artist: m.artist,
-          album: m.album,
-          cover: m.pic,
-        }
-        window.electronAPI.download([item])
-      })
-    },
-    [downloadDir]
   )
 
   const clearPlayList = useCallback(() => setPlayList([]), [setPlayList])
@@ -225,14 +202,6 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
     }
   }, [current, playNext])
 
-  useEffect(() => {
-    if (downloadDir === '') {
-      window.electronAPI.getDownloadsPath().then((dir) => {
-        setDownloadDir(dir)
-      })
-    }
-  }, [downloadDir, setDownloadDir])
-
   return (
     <PlayerContext.Provider
       value={{
@@ -242,7 +211,6 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
         time,
         playList,
         play,
-        download,
         togglePaused,
         seek,
         addToPlayList,

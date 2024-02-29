@@ -1,15 +1,13 @@
 import React from 'react'
 import { RouterProvider } from 'react-router-dom'
 import router from './router'
-import { PlayerProvider } from './context/PlayerContext'
-import { Toaster } from '@/components/ui/toaster'
+import Providers from './context/Providers'
 
 const App: React.FC = () => {
   return (
-    <PlayerProvider>
+    <Providers>
       <RouterProvider router={router} />
-      <Toaster />
-    </PlayerProvider>
+    </Providers>
   )
 }
 

@@ -5,6 +5,16 @@ import type { AlbumInfo } from '../types/migu'
 import { usePlayer } from '../context/PlayerContext'
 import { songItem2Music } from '../utils/player'
 import { FluentAdd, PlayIcon } from '../components/Icons'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import Image from '../components/Image'
+import { Button } from '@/components/ui/button'
 
 export const albumLoader: LoaderFunction = ({ params }) => {
   if (params.id) {
@@ -19,61 +29,56 @@ const Album: React.FC = () => {
 
   return (
     <div>
-      <h2>{detailInfo.name}</h2>
-      <h3>{detailInfo.albumDesc}</h3>
-      <img src={detailInfo.mediumPic} alt={detailInfo.name} />
-      <div className="overflow-x-auto">
-        <table className="table table-sm">
-          <tbody>
-            {songs.items.map((song, index) => (
-              <tr key={song.copyrightId}>
-                <th>
-                  <div className="w-6 text-center">{index + 1}</div>
-                </th>
-                <td className="max-w-20 sm:max-w-40  md:max-w-60 lg:w-full">
-                  <div className="flex items-center gap-1">
-                    <img
-                      src={song.smallPic}
-                      alt="album"
-                      className="w-10 h-10 rounded"
-                    />
-                    <div className="truncate flex-1 font-semibold text-base">
-                      {song.name}
-                    </div>
-                  </div>
-                </td>
-                <td className="flex gap-1 items-center">
-                  <button
-                    className="btn btn-xs btn-circle btn-outline"
-                    onClick={() => play(songItem2Music(song))}
+      <div className="flex gap-2">
+        <Image
+          src={detailInfo.mediumPic}
+          alt={detailInfo.name}
+          className="w-20 h-20 rounded-md"
+        />
+        <div>
+          <h1 className="text-xl font-semibold">{detailInfo.name}</h1>
+          <h2 className="text-lg">
+            {detailInfo.singers.map((s) => s.name).join('/')}
+          </h2>
+        </div>
+      </div>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-10 text-center">#</TableHead>
+            <TableHead className="max-w-96">标题</TableHead>
+            <TableHead>操作</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {songs.items.map((item, index) => (
+            <TableRow key={item.copyrightId}>
+              <TableCell className="text-center">{index + 1}</TableCell>
+              <TableCell className="max-w-96 truncate">{item.name}</TableCell>
+              <TableCell>
+                <div className="flex gap-2 text-lg">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => play(songItem2Music(item))}
                     title="播放"
                   >
                     <PlayIcon />
-                  </button>
-                  <button
-                    className="btn btn-xs btn-circle btn-outline"
-                    onClick={() => addToPlayList(songItem2Music(song))}
+                  </Button>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => addToPlayList(songItem2Music(item))}
                     title="添加到播放列表"
                   >
                     <FluentAdd />
-                  </button>
-                </td>
-                <td className="max-w-10 sm:max-w-20  md:max-w-40 lg:max-w-60 xl:max-w-80">
-                  <div className="truncate">
-                    {song.singers.map((s) => s.name).join()}
-                  </div>
-                </td>
-                <td
-                  title={song.album?.name}
-                  className="max-w-10 sm:max-w-20 md:max-w-40 lg:max-w-60 xl:max-w-80"
-                >
-                  <div className="truncate">{song.album?.name}</div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                  </Button>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   )
 }

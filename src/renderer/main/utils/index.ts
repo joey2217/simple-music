@@ -1,3 +1,5 @@
+import { LyricRow } from '../types/player'
+
 export function JSONParse(str: string) {
   try {
     return JSON.parse(str)
@@ -24,4 +26,28 @@ export function shuffle<T = unknown>(list: T[]) {
 
 export function formatURL(url: string) {
   return url.startsWith('//') ? `http:${url}` : url
+}
+
+const LYRIC_SPLITTER = '\r\n'
+const LYRIC_RE = /\[(\d{2}):(\d{2}).\d{2,3}\](.*)/
+
+export function parseLyric(lyricStr: string): LyricRow[] {
+  if (!lyricStr) {
+    return []
+  }
+  return lyricStr
+    .replace('@migu music@', '')
+    .split(LYRIC_SPLITTER)
+    .map((s) => {
+      const match = s.match(LYRIC_RE)
+      if (match) {
+        return {
+          time: (parseInt(match[1]) * 60 + parseInt(match[2])) * 1000,
+          words: match[3],
+        }
+      }
+      return {
+        words: s,
+      }
+    })
 }

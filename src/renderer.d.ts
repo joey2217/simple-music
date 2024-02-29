@@ -1,5 +1,7 @@
 import Electron from 'electron'
 
+type DownloadStatus = 'init' | 'downloading' | 'completed' | 'failed'
+
 interface DownloadInfo {
   fileName: string
   downloadPath: string
@@ -8,6 +10,7 @@ interface DownloadInfo {
   title: string
   artist: string
   album: string
+  status: DownloadStatus
   lyric?: string
   cover?: string
 }
@@ -15,21 +18,20 @@ interface DownloadInfo {
 interface IElectronAPI {
   download: (files: DownloadInfo[]) => Promise<void>
   getDownloadsPath: () => Promise<string>
-  setMainTitleBarOverlay: (options: Electron.TitleBarOverlay) => void
   checkUpdate: () => Promise<string>
   openExternal: (url: string) => Promise<void>
+  setTheme: (theme: Theme) => Promise<void>
+  showItemInFolder: (fullPath: string) => Promise<void>
+  openPath: (fullPath: string) => Promise<string>
+  showOpenDialog: (
+    options: Electron.OpenDialogOptions
+  ) => Promise<Electron.OpenDialogReturnValue>
+  // ----------------------------------
   onNavigate: (
     callback: (e: Electron.IpcRendererEvent, to: string) => void
   ) => void
-  onDownloadFinish: (
-    callback: (
-      e: Electron.IpcRendererEvent,
-      rid: number,
-      success: boolean
-    ) => void
-  ) => void
-  getArgv: (
-    callback: (e: Electron.IpcRendererEvent, argv: string[]) => void
+  onUpdateDownload: (
+    callback: (e: Electron.IpcRendererEvent, info: DownloadInfo) => void
   ) => void
 }
 
