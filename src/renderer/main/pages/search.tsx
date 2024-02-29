@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import {
-  type LoaderFunction,
-  useLoaderData,
-} from 'react-router-dom'
+import { type LoaderFunction, useLoaderData } from 'react-router-dom'
 import { fetchSearchData } from '../api/migu'
 import type { SongItem } from '../types/migu'
 import { usePlayer } from '../context/PlayerContext'
 import { songItem2Music } from '../utils/player'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { Button } from '@/components/ui/button'
+import { PlayIcon } from '../components/Icons'
 
 export const searchLoader: LoaderFunction = ({ request }) => {
   const url = new URL(request.url)
@@ -43,40 +50,36 @@ const Search: React.FC = () => {
 
   return (
     <div>
-      <div>
-        <div className="overflow-x-auto">
-          <table className="table">
-            {/* head */}
-            {/* <thead>
-              <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Job</th>
-                <th>Favorite Color</th>
-              </tr>
-            </thead> */}
-            <tbody>
-              {/* row 1 */}
-              {songList.map((song) => (
-                <tr key={song.copyrightId}>
-                  <td>{song.name}</td>
-                  <td>
-                    <button
-                      className="btn"
-                      onClick={() => play(songItem2Music(song))}
-                    >
-                      播放
-                    </button>
-                  </td>
-                  <td>{song.singers.map((s) => s.name).join()}</td>
-                  <td>{song.album?.name}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {total}
-      </div>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-10 text-center">#</TableHead>
+            <TableHead className="max-w-96">标题</TableHead>
+            <TableHead>操作</TableHead>
+            <TableHead className="max-w-32">专辑</TableHead>
+            <TableHead>时长</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {songList.map((song) => (
+            <TableRow key={song.copyrightId}>
+              <TableCell>{song.name}</TableCell>
+              <TableCell>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => play(songItem2Music(song))}
+                >
+                  <PlayIcon />
+                </Button>
+              </TableCell>
+              <TableCell>{song.singers.map((s) => s.name).join()}</TableCell>
+              <TableCell>{song.album?.name}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      {total}
     </div>
   )
 }
