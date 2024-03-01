@@ -1,7 +1,7 @@
 {
   "name": "simple-music",
   "private": true,
-  "version": "0.3.4",
+  "version": "0.3.5",
   "main": "dist/main.mjs",
   "type": "module",
   "author": "Joey",
