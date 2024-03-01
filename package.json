@@ -13,7 +13,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "release": "npm run build && electron-builder build -c electron-builder.config.cjs -p always",
+    "publish": "npm run build && electron-builder build -c electron-builder.config.cjs -p always",
     "package": "npm run build && electron-builder build -c electron-builder.config.cjs",
     "dev": "node scripts/dev.js",
     "dev:renderer": "vite src/renderer",
