@@ -26,7 +26,9 @@ interface IElectronAPI {
   showOpenDialog: (
     options: Electron.OpenDialogOptions
   ) => Promise<Electron.OpenDialogReturnValue>
-  // ----------------------------------
+}
+
+interface MessageAPI {
   onNavigate: (
     callback: (e: Electron.IpcRendererEvent, to: string) => void
   ) => void
@@ -56,6 +58,7 @@ interface IVersions {
 declare global {
   interface Window {
     electronAPI: IElectronAPI
+    messageAPI: MessageAPI
     devAPI: IDevAPI
     versions: IVersions
   }

@@ -64,7 +64,7 @@ export const AppProvider: React.FC<PropsWithChildren> = ({ children }) => {
   )
 
   useEffect(() => {
-    window.electronAPI.onUpdateDownload((e, info) => updateDownloadItem(info))
+    window.messageAPI.onUpdateDownload((_e, info) => updateDownloadItem(info))
   }, [updateDownloadItem])
 
   return (

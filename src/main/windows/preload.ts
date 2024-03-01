@@ -4,15 +4,11 @@ import type { DownloadInfo, Theme } from '../types'
 /**
  * 不能加载常量,sandbox无法加载
  */
-contextBridge.exposeInMainWorld('darkMode', {
-  toggle: () => ipcRenderer.invoke('dark-mode:toggle'),
-  system: () => ipcRenderer.invoke('dark-mode:system'),
-})
-
 contextBridge.exposeInMainWorld('devAPI', {
   toggleDevtools: () => ipcRenderer.invoke('TOGGLE_DEVTOOLS'),
 })
 
+// renderer -> main
 contextBridge.exposeInMainWorld('electronAPI', {
   download: (files: DownloadInfo[]) =>
     ipcRenderer.invoke('DOWNLOAD_FILES', files),
@@ -25,6 +21,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   openPath: (fullPath: string) => ipcRenderer.invoke('OPEN_PATH', fullPath),
   showOpenDialog: (options: Electron.OpenDialogOptions) =>
     ipcRenderer.invoke('OPEN_DIALOG', options),
+})
+
+// main -> renderer
+contextBridge.exposeInMainWorld('messageAPI', {
   onNavigate: (callback: (e: Electron.IpcRendererEvent, to: string) => void) =>
     ipcRenderer.on('NAVIGATE', callback),
   onUpdateDownload: (
