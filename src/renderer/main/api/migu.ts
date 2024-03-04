@@ -9,11 +9,14 @@ import type {
   PageData,
   PlayListItem,
   PlayListTag,
+  PlaylistInfo,
   RankingListData,
   SearchData,
   SearchHorWord,
+  SearchSuggest,
   SongDetail,
   SongInfo,
+  SongItem,
 } from '../types/migu'
 import { parseLyric } from '../utils'
 
@@ -45,12 +48,16 @@ function miguRequest<T>(
 }
 
 //搜索
-export function fetchSearchData(keyword: string, page: number = 1) {
+export function fetchSearchData(
+  keyword: string,
+  page: number = 1,
+  pageSize = 30
+) {
   if (keyword === '') {
     throw new Error('搜索关键字不能为空')
   }
   return fetch(
-    `https://m.music.migu.cn/migumusic/h5/search/all?text=${keyword}&pageNo=${page}&pageSize=20`
+    `https://m.music.migu.cn/migumusic/h5/search/all?text=${keyword}&pageNo=${page}&pageSize=${pageSize}`
   )
     .then((res) => res.json())
     .then((data: MiguResponse<SearchData>) => {
@@ -186,6 +193,20 @@ export function fetchPlaylist(tagId: string = '', page = 1, size = 30) {
     })
 }
 
+// https://m.music.migu.cn/migumusic/h5/playlist/info?songListId=215243155
+export function fetchPlaylistInfo(playlistId: string) {
+  return miguRequest<PlaylistInfo>(
+    `https://m.music.migu.cn/migumusic/h5/playlist/info?songListId=${playlistId}`
+  )
+}
+// https://m.music.migu.cn/migumusic/h5/playlist/songsInfo?palylistId=215243155&pageNo=1&pageSize=18
+export function fetchPlaylistSongs(playlistId: string, page = 1, size = 20) {
+  return miguRequest<PageData<SongItem>>(
+    `https://m.music.migu.cn/migumusic/h5/playlist/songsInfo?palylistId=${playlistId}&pageNo=${page}&pageSize=${size}`,
+    `playlist_${playlistId}_${page}_${size}`
+  )
+}
+
 // 专辑 `https://m.music.migu.cn/migumusic/h5/album/info?albumId=${e}`
 export function fetchAlbum(albumId: string) {
   return fetch(
@@ -202,14 +223,10 @@ export function fetchAlbum(albumId: string) {
 
 // 歌单tag
 export function fetchPlaylistTags() {
-  return fetch('https://m.music.migu.cn/migumusic/h5/playlist/hotTag')
-    .then((res) => res.json())
-    .then((data: MiguResponse<PlayListTag[]>) => {
-      if (data.code === '200') {
-        return data.data
-      }
-      throw new Error(data.msg)
-    })
+  return miguRequest<PlayListTag[]>(
+    'https://m.music.migu.cn/migumusic/h5/playlist/hotTag',
+    'fetchPlaylistTags'
+  )
 }
 
 // 歌曲详情
@@ -233,6 +250,13 @@ export function fetchSearchHotWord() {
     }
     throw new Error('获取搜索热词失败')
   })
+}
+// https://m.music.migu.cn/migumusic/h5/search/suggest?text=%E5%91%A8
+// 搜索建议
+export function fetchSearchSuggest(keyword: string) {
+  return miguRequest<SearchSuggest>(
+    `https://m.music.migu.cn/migumusic/h5/search/suggest?text=${keyword}`
+  )
 }
 
 // 歌词 `https://m.music.migu.cn/migumusic/h5/song/lyric?copyrightId=${e}`

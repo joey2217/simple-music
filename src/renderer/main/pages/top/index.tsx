@@ -26,7 +26,7 @@ export const topLoader: LoaderFunction = ({ params }) => {
 
 const TopPage: React.FC = () => {
   return (
-    <div className="flex">
+    <div className="flex page">
       <ul
         className="w-32 flex-shrink-0 "
         style={{

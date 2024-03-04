@@ -576,3 +576,67 @@ export interface LyricData {
   sbslyric?: string
   translatedLyric?: string
 }
+
+interface SearchSuggestAlbum {
+  id: string
+  name: string
+  singerName: string
+  type: number
+  copyrightId: string
+  highlightStr: string[]
+}
+interface SearchSuggestSinger {
+  id: string
+  name: string
+  highlightStr: string[]
+}
+interface SearchSuggestSong {
+  id: string
+  name: string
+  singerName: string
+  copyrightId: string
+  highlightStr: string[]
+}
+
+export interface SearchSuggest {
+  albums?: SearchSuggestAlbum[]
+  singers?: SearchSuggestSinger[]
+  songs?: SearchSuggestSong[]
+}
+
+interface TagList {
+  tagid: number;
+  tagName: string;
+  tagDesc?: any;
+  tagPic?: string;
+  inserttime: string;
+  status: number;
+}
+interface ContentList {
+  songId: string;
+  contentId: string;
+  contentType: string;
+  contentName: string;
+  singerId: string;
+  singerName: string;
+}
+
+export interface PlaylistInfo {
+  createUserName?: string;
+  playListId: string;
+  playListType: string;
+  createUserId: string;
+  playListName: string;
+  summary: string;
+  image: string;
+  isDefault: number;
+  status: number;
+  createTime: string;
+  updateTime: string;
+  contentCount: string;
+  imageChangeType: number;
+  collecCount: number;
+  playCount: number;
+  tagLists: TagList[];
+  contentList: ContentList[];
+}

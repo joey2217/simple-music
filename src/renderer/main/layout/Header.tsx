@@ -3,6 +3,7 @@ import { useLocation, useNavigate, Location, Link } from 'react-router-dom'
 import SearchBar from './SearchBar'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from './ThemeSelect'
+import icon from '../assets/icon.png'
 
 interface History {
   length: number
@@ -36,8 +37,9 @@ const Header: React.FC = () => {
   return (
     <header id="titleBarContainer">
       <div id="titleBar" className="pr-2 flex gap-2 items-center">
-        <Link to="/" className="border-r w-44 h-10 leading-10">
-          LOGO
+        <Link to="/" className="border-r w-44 h-10 flex items-center gap-2 justify-center">
+          <img src={icon} alt="logo" className="w-8 h-8" />
+          <span>轻·音乐</span>
         </Link>
         <Button
           title="后退"

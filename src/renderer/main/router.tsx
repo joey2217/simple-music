@@ -12,8 +12,8 @@ import ArtistSong, { artistSongLoader } from './pages/artist/song'
 import ArtistAlbum, { artistAlbumLoader } from './pages/artist/album'
 import Album, { albumLoader } from './pages/album'
 import Song, { songLoader } from './pages/song'
-import PlayListIndex, { playlistIndexLoader } from './pages/playlist'
-import Playlist, { playlistLoader } from './pages/playlist/list'
+import PlayListIndex, { playlistIndexLoader } from './pages/playlists'
+import Playlist, { playlistLoader } from './pages/playlists/list'
 import Download from './pages/download'
 
 const router = createHashRouter([
@@ -94,7 +94,7 @@ const router = createHashRouter([
         errorElement: <Error />,
       },
       {
-        path: 'playlist',
+        path: 'playlists',
         element: <PlayListIndex />,
         loader: playlistIndexLoader,
         errorElement: <Error />,

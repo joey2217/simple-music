@@ -16,6 +16,9 @@ const Sider: React.FC = () => {
       <NavLink to="/artists" className="link">
         歌手
       </NavLink>
+      <NavLink to="/playlists" className="link">
+        歌单
+      </NavLink>
       <NavLink to="/download" className="link">
         下载
       </NavLink>
