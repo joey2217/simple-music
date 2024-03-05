@@ -5,8 +5,8 @@ export interface Music {
   title: string
   artist: string
   artists: Artist[]
-  album: string
-  albumId: string
+  album?: string
+  albumId?: string
   pic: string
   url?: string
 }

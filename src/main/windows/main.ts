@@ -1,21 +1,39 @@
-import {
-  BrowserWindow,
-  dialog,
-  nativeTheme,
-  type OpenDialogOptions,
-} from 'electron'
+import { BrowserWindow, nativeTheme } from 'electron'
 import * as path from 'node:path'
-import { fileURLToPath } from 'node:url'
-import log from 'electron-log'
 import { nextIcon, pauseIcon, playIcon, prevIcon } from '../icons'
-import type { Theme } from '../types'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+import { ROOT } from '../constant'
 
 let win: BrowserWindow = null!
+let quit = false
 
 const DARK_BACK_COLOR = '#0c0a09'
+
+const thumbarButtons: Electron.ThumbarButton[] = [
+  {
+    icon: prevIcon,
+    click: musicControl('prev'),
+    tooltip: '上一首',
+    flags: ['disabled'],
+  },
+  {
+    icon: playIcon,
+    click: musicControl('play'),
+    tooltip: '播放',
+    flags: ['disabled'],
+  },
+  {
+    icon: pauseIcon,
+    click: musicControl('pause'),
+    tooltip: '暂停',
+    flags: ['disabled'],
+  },
+  {
+    icon: nextIcon,
+    click: musicControl('next'),
+    tooltip: '下一首',
+    flags: ['disabled'],
+  },
+]
 
 export function create() {
   win = new BrowserWindow({
@@ -31,24 +49,25 @@ export function create() {
       height: 40,
     },
     webPreferences: {
-      preload: path.join(__dirname, 'preload.mjs'),
+      preload: path.join(ROOT, 'preload.mjs'),
       webSecurity: import.meta.env.PROD,
       sandbox: false,
     },
   })
   win.once('ready-to-show', () => {
     win.show()
+    win.setThumbarButtons(thumbarButtons)
     if (import.meta.env.DEV || process.argv.includes('--dev')) {
       win.webContents.openDevTools({ mode: 'bottom' })
     }
   })
 
-  // win.on('close', (e) => {
-  //   if (!quit) {
-  //     e.preventDefault()
-  //     win.hide()
-  //   }
-  // })
+  win.on('close', (e) => {
+    if (!quit) {
+      e.preventDefault()
+      win.hide()
+    }
+  })
 
   if (import.meta.env.DEV) {
     win.loadURL('http://localhost:5174')
@@ -85,65 +104,6 @@ export function musicControl(type: 'prev' | 'play' | 'pause' | 'next') {
   return () => win.webContents.send('MUSIC_CONTROL', type)
 }
 
-const thumbarButtons: Electron.ThumbarButton[] = [
-  {
-    icon: prevIcon,
-    click: musicControl('prev'),
-    tooltip: '上一首',
-    flags: ['disabled'],
-  },
-  {
-    icon: playIcon,
-    click: musicControl('play'),
-    tooltip: '播放',
-    flags: ['disabled'],
-  },
-  {
-    icon: pauseIcon,
-    click: musicControl('pause'),
-    tooltip: '暂停',
-    flags: ['disabled'],
-  },
-  {
-    icon: nextIcon,
-    click: musicControl('next'),
-    tooltip: '下一首',
-    flags: ['disabled'],
-  },
-]
-
-export function setMainThumbarButtons(playing: boolean, disabled = false) {
-  if (process.platform === 'win32' && win) {
-    if (disabled) {
-      const buttons = thumbarButtons.map((btn) => {
-        btn.flags = ['disabled']
-        return {
-          ...btn,
-          flags: ['disabled'],
-        }
-      })
-      const bool = win.setThumbarButtons(buttons)
-      log.info('SET_MAIN_THUMBAR_BUTTONS', bool)
-    } else {
-      if (playing) {
-        const buttons = thumbarButtons.map((btn, index) => {
-          return {
-            ...btn,
-            flags: index === 1 ? ['enabled', 'hidden'] : ['enabled'],
-          }
-        })
-        const bool = win.setThumbarButtons(buttons)
-        log.info('SET_MAIN_THUMBAR_BUTTONS', bool)
-      } else {
-        const buttons = thumbarButtons.map((btn, index) => {
-          return {
-            ...btn,
-            flags: index === 2 ? ['enabled', 'hidden'] : ['enabled'],
-          }
-        })
-        const bool = win.setThumbarButtons(buttons)
-        log.info('SET_MAIN_THUMBAR_BUTTONS', bool)
-      }
-    }
-  }
+export function beforeQuit() {
+  quit = true
 }

@@ -149,6 +149,25 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
   }, [current, index, playList])
 
   useEffect(() => {
+    // off music control
+    window.messageAPI.onMusicControl((_e, type) => {
+      switch (type) {
+        case 'next':
+        case 'prev':
+          playNext(type)
+          break
+        case 'pause':
+        case 'play':
+          togglePaused()
+          break
+
+        default:
+          break
+      }
+    })
+  }, [playNext, togglePaused])
+
+  useEffect(() => {
     if (current?.copyrightId) {
       fetchSongInfo(current.copyrightId).then((data) => {
         howlerRef.current?.stop()

@@ -3,11 +3,6 @@ import type { PlayListItem } from '../types/migu'
 import { Link } from 'react-router-dom'
 import {
   Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
 } from '@/components/ui/card'
 
 interface Props {

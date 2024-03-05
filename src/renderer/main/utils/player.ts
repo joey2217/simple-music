@@ -8,8 +8,8 @@ export function songItem2Music(songItem: SongItem): Music {
     title: songItem.name,
     artist: songItem.singers.map((s) => s.name).join('/'),
     artists: songItem.singers,
-    album: songItem.album.name,
-    albumId: songItem.album.name,
+    album: songItem.album?.name,
+    albumId: songItem.album?.id,
     pic: songItem.smallPic,
   }
 }

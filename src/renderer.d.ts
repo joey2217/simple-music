@@ -35,6 +35,12 @@ interface MessageAPI {
   onUpdateDownload: (
     callback: (e: Electron.IpcRendererEvent, info: DownloadInfo) => void
   ) => void
+  onMusicControl: (
+    callback: (
+      e: Electron.IpcRendererEvent,
+      type: 'prev' | 'play' | 'pause' | 'next'
+    ) => void
+  ) => void
 }
 
 interface IDevAPI {

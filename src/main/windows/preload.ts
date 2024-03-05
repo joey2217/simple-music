@@ -30,6 +30,12 @@ contextBridge.exposeInMainWorld('messageAPI', {
   onUpdateDownload: (
     callback: (e: Electron.IpcRendererEvent, info: DownloadInfo) => void
   ) => ipcRenderer.on('UPDATE_DOWNLOAD', callback),
+  onMusicControl: (
+    callback: (
+      e: Electron.IpcRendererEvent,
+      type: 'prev' | 'play' | 'pause' | 'next'
+    ) => void
+  ) => ipcRenderer.on('MUSIC_CONTROL', callback),
 })
 
 contextBridge.exposeInMainWorld('versions', {

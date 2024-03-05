@@ -1,11 +1,14 @@
 import { BrowserWindow, app } from 'electron'
 import { loadDevTools } from './dev'
 import {
+  beforeQuit,
   create as createMainWindow,
   focus as focusMainWindow,
 } from './windows/main'
 import handleIPC from './ipc'
 import './proxy'
+import './menu'
+import './tray'
 
 const gotTheLock = app.requestSingleInstanceLock()
 
@@ -37,3 +40,5 @@ app.on('activate', () => {
     focusMainWindow()
   }
 })
+
+app.on('before-quit', beforeQuit)

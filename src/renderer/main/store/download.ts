@@ -57,7 +57,7 @@ export function useDownload() {
           downloadPath: `${downloadDir}/${m.title}.${ext}`,
           title: m.title,
           artist: m.artist,
-          album: m.album,
+          album: m.album || '',
           cover: m.pic,
           status: 'init',
         }
