@@ -3,13 +3,12 @@ import {
   LoaderFunction,
   NavLink,
   Outlet,
-  redirect,
   useLoaderData,
 } from 'react-router-dom'
 import { fetchPlaylistTags } from '../../api/migu'
 import { PlayListTag } from '../../types/migu'
 
-export const playlistIndexLoader: LoaderFunction = ({ params }) => {
+export const playlistIndexLoader: LoaderFunction = () => {
   return fetchPlaylistTags().then((data) => {
     // if (params.tagId === undefined) {
     //   return redirect(`/playlist/${data[0].tagId}`)
@@ -21,10 +20,13 @@ export const playlistIndexLoader: LoaderFunction = ({ params }) => {
 const PlayListIndex: React.FC = () => {
   const data = useLoaderData() as PlayListTag[]
   return (
-    <div>
-      <nav>
+    <div className="page">
+      <nav className="mb-2">
+        <NavLink className="link" end to="">
+          最热
+        </NavLink>
         {data.map((t) => (
-          <NavLink className='link' key={t.tagId} to={t.tagId}>
+          <NavLink className="link" key={t.tagId} to={t.tagId}>
             {t.tagName}
           </NavLink>
         ))}

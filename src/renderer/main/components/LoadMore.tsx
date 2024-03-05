@@ -5,9 +5,10 @@ import { Skeleton } from '@/components/ui/skeleton'
 interface Props {
   loadMore: () => void
   finished: boolean
+  className?: string
 }
 
-const LoadMore: React.FC<Props> = ({ loadMore, finished }) => {
+const LoadMore: React.FC<Props> = ({ loadMore, finished, className }) => {
   const loadMoreRef = useRef<HTMLDivElement>(null)
   const observer = useRef<IntersectionObserver | null>(null)
 
@@ -16,7 +17,7 @@ const LoadMore: React.FC<Props> = ({ loadMore, finished }) => {
       observer.current?.disconnect()
       observer.current = null
     } else {
-      const throttledLoadMore = throttle(loadMore, 500)
+      const throttledLoadMore = throttle(loadMore, 500, { leading: false })
       observer.current = new IntersectionObserver(
         (entries, intersectionObserver) => {
           if (finished) {
@@ -42,8 +43,8 @@ const LoadMore: React.FC<Props> = ({ loadMore, finished }) => {
   }
 
   return (
-    <div ref={loadMoreRef} className="text-center">
-      <Skeleton className="h-10 rounded-xl" />
+    <div ref={loadMoreRef} className={`text-center ${className}`}>
+      <Skeleton className="h-10 rounded-xl bg-card" />
     </div>
   )
 }

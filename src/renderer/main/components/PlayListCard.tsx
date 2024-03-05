@@ -1,6 +1,14 @@
 import React from 'react'
 import type { PlayListItem } from '../types/migu'
 import { Link } from 'react-router-dom'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 
 interface Props {
   item: PlayListItem
@@ -8,9 +16,13 @@ interface Props {
 
 const PlayListCard: React.FC<Props> = ({ item }) => {
   return (
-    <Link  className="text-center" to={`/playlist/${item.playListId}`}>
-      <img src={item.image} alt={item.playListName} />
-      <h4>{item.playListName}</h4>
+    <Link to={`/playlist/${item.playListId}`}>
+      <Card>
+        <img src={item.image} alt={item.playListName} className="rounded-xl" />
+        <h4 className="py-2 px-1 truncate font-medium leading-none">
+          {item.playListName}
+        </h4>
+      </Card>
     </Link>
   )
 }

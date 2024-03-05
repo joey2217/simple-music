@@ -117,7 +117,7 @@ export interface SongItem {
   name: string
   copyrightId: string
   singers: Artist[]
-  album: Album
+  album?: Album
   mv?: Mv
   crbt?: Crbt
   ring: Ring
@@ -131,6 +131,7 @@ export interface SongItem {
   mediumPic: string
   largePic: string
   lyric?: unknown
+  duration: string
   highlightStr: string[]
 }
 
@@ -605,38 +606,38 @@ export interface SearchSuggest {
 }
 
 interface TagList {
-  tagid: number;
-  tagName: string;
-  tagDesc?: any;
-  tagPic?: string;
-  inserttime: string;
-  status: number;
+  tagid: number
+  tagName: string
+  tagDesc?: string
+  tagPic?: string
+  inserttime: string
+  status: number
 }
 interface ContentList {
-  songId: string;
-  contentId: string;
-  contentType: string;
-  contentName: string;
-  singerId: string;
-  singerName: string;
+  songId: string
+  contentId: string
+  contentType: string
+  contentName: string
+  singerId: string
+  singerName: string
 }
 
 export interface PlaylistInfo {
-  createUserName?: string;
-  playListId: string;
-  playListType: string;
-  createUserId: string;
-  playListName: string;
-  summary: string;
-  image: string;
-  isDefault: number;
-  status: number;
-  createTime: string;
-  updateTime: string;
-  contentCount: string;
-  imageChangeType: number;
-  collecCount: number;
-  playCount: number;
-  tagLists: TagList[];
-  contentList: ContentList[];
+  createUserName?: string
+  playListId: string
+  playListType: string
+  createUserId: string
+  playListName: string
+  summary: string
+  image: string
+  isDefault: number
+  status: number
+  createTime: string
+  updateTime: string
+  contentCount: string
+  imageChangeType: number
+  collecCount: number
+  playCount: number
+  tagLists: TagList[]
+  contentList: ContentList[]
 }

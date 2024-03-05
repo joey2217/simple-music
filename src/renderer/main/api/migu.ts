@@ -181,16 +181,10 @@ export function fetchBanner() {
 //  (e, t, n) => `https://m.music.migu.cn/migumusic/h5/playlist/list?columnId=15127272&tagId=${e}&pageNum=${t}&pageSize=${n}
 // https://m.music.migu.cn/migumusic/h5/playlist/list?columnId=15127272&tagId=1000001683&pageNum=1&pageSize=30
 export function fetchPlaylist(tagId: string = '', page = 1, size = 30) {
-  return fetch(
-    `https://m.music.migu.cn/migumusic/h5/playlist/list?columnId=15127272&tagId=${tagId}&pageNum=${page}&pageSize=${size}`
+  return miguRequest<PageData<PlayListItem>>(
+    `https://m.music.migu.cn/migumusic/h5/playlist/list?columnId=15127272&tagId=${tagId}&pageNum=${page}&pageSize=${size}`,
+    // `fetchPlaylist_${tagId}_${page}_${size}`
   )
-    .then((res) => res.json())
-    .then((data: MiguResponse<PageData<PlayListItem>>) => {
-      if (data.code === '200') {
-        return data.data
-      }
-      throw new Error(data.msg)
-    })
 }
 
 // https://m.music.migu.cn/migumusic/h5/playlist/info?songListId=215243155
