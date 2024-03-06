@@ -7,7 +7,7 @@ import {
 import { checkForUpdates } from './updater'
 import type { DownloadInfo, Theme } from './types'
 import { download } from './download'
-import { setTrayPaused, setTrayTitle } from './tray'
+import { setMenuPaused, setMenuTitle } from './menu'
 
 export default function handleIPC() {
   ipcMain.handle('TOGGLE_DEVTOOLS', (event) => {
@@ -50,18 +50,18 @@ export default function handleIPC() {
   })
 
   ipcMain.handle('SET_PAUSED', (_e, paused: boolean) => {
-    setTrayPaused(paused)
+    setMenuPaused(paused)
     if (process.platform === 'win32') {
       setThumbarButtonsPaused(paused)
     }
-    console.log('SET_PAUSED', paused)
+    // console.log('SET_PAUSED', paused)
   })
 
   ipcMain.handle('SET_APP_TITLE', (_e, title?: string) => {
-    setTrayTitle(title)
+    setMenuTitle(title)
     if (process.platform === 'win32') {
       setThumbarButtonsEnabled(Boolean(title))
     }
-    console.log('SET_APP_TITLE', title)
+    // console.log('SET_APP_TITLE', title)
   })
 }

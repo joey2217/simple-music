@@ -8,7 +8,6 @@ import {
 import handleIPC from './ipc'
 import './proxy'
 import './menu'
-import './tray'
 
 const gotTheLock = app.requestSingleInstanceLock()
 

@@ -29,6 +29,29 @@ export function create() {
   })
   win.once('ready-to-show', () => {
     win.show()
+    if (process.platform === 'win32') {
+      const thumbarButtons: Electron.ThumbarButton[] = [
+        {
+          icon: prevIcon,
+          click: musicControl('prev'),
+          tooltip: '上一首',
+          flags: ['disabled'],
+        },
+        {
+          icon: playIcon,
+          click: musicControl('play'),
+          tooltip: '播放',
+          flags: ['disabled'],
+        },
+        {
+          icon: nextIcon,
+          click: musicControl('next'),
+          tooltip: '下一首',
+          flags: ['disabled'],
+        },
+      ]
+      win.setThumbarButtons(thumbarButtons)
+    }
     if (import.meta.env.DEV || process.argv.includes('--dev')) {
       win.webContents.openDevTools({ mode: 'bottom' })
     }
@@ -121,7 +144,6 @@ export function setThumbarButtonsPaused(paused: boolean) {
           icon: pauseIcon,
           click: musicControl('pause'),
           tooltip: '暂停',
-          flags: ['disabled'],
         },
     {
       icon: nextIcon,
