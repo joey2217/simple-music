@@ -10,7 +10,7 @@ const About: React.FC = () => {
 
   useEffect(() => {
     console.log('##version##')
-    console.table(window.versions)
+    console.table(window.argv.version)
   }, [])
 
   return (
@@ -19,7 +19,7 @@ const About: React.FC = () => {
       <h2 className="text-xl font-semibold my-2">轻音乐</h2>
       <div className="my-2">
         <span>版本 : </span>
-        <span>{window.versions.version}</span>
+        <span>{window.argv.version}</span>
       </div>
       <div className="my-2 flex justify-center gap-4">
         <Button
