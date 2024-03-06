@@ -22,8 +22,8 @@ const Sider: React.FC = () => {
       <NavLink to="/download" className="link">
         下载
       </NavLink>
-      <NavLink to="/about" className="link">
-        关于
+      <NavLink to="/settings" className="link">
+        设置
       </NavLink>
     </nav>
   )

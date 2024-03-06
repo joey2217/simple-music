@@ -3,7 +3,6 @@ import Layout from './layout'
 import Error from './layout/Error'
 import Home from './pages/home'
 import Search, { searchLoader } from './pages/search'
-import About from './pages/about'
 import TopPage, { topLoader } from './pages/top'
 import Artists, { artistsLoader } from './pages/artists'
 import TopList, { topListLoader } from './pages/top/list'
@@ -16,6 +15,7 @@ import PlayListIndex, { playlistIndexLoader } from './pages/playlists'
 import Playlist, { playlistLoader } from './pages/playlists/list'
 import Download from './pages/download'
 import PlaylistPage, { playlistPageLoader } from './pages/playlist'
+import Settings  from './pages/settings'
 
 const router = createHashRouter([
   {
@@ -32,11 +32,6 @@ const router = createHashRouter([
         path: 'search',
         loader: searchLoader,
         element: <Search />,
-        errorElement: <Error />,
-      },
-      {
-        path: 'about',
-        element: <About />,
         errorElement: <Error />,
       },
       {
@@ -117,6 +112,11 @@ const router = createHashRouter([
       {
         path: 'download',
         element: <Download />,
+        errorElement: <Error />,
+      },
+      {
+        path: 'settings',
+        element: <Settings />,
         errorElement: <Error />,
       },
     ],
