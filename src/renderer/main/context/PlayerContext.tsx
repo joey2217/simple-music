@@ -149,6 +149,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
   }, [current, index, playList])
 
   useEffect(() => {
+    console.log('useEffect  window.messageAPI.onMusicControl ########')
     // off music control
     window.messageAPI.onMusicControl((_e, type) => {
       switch (type) {
@@ -165,6 +166,10 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
           break
       }
     })
+
+    return () => {
+      console.log('useEffect return  window.messageAPI.onMusicControl ########')
+    }
   }, [playNext, togglePaused])
 
   useEffect(() => {

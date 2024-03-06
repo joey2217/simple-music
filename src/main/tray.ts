@@ -16,28 +16,21 @@ let tray: Tray
 const MAX_TITLE_LENGTH = 10
 const toolTip = APP_NAME
 
-function musicPlay(type: 'play' | 'pause') {
-  const playMenu = contextMenu.getMenuItemById('play')
-  const pauseMenu = contextMenu.getMenuItemById('pause')
-  if (playMenu) {
-    playMenu.visible = type === 'play'
-  }
-  if (pauseMenu) {
-    pauseMenu.visible = type === 'pause'
-  }
-  musicControl(type)
-  // tray.setContextMenu(contextMenu)
-}
-
 const contextMenu = Menu.buildFromTemplate([
   { id: 'music', label: APP_NAME, icon: musicIcon, click: focus },
   { type: 'separator' },
-  { id: 'play', label: '播放', icon: playIcon, click: () => musicPlay('play') },
+  {
+    id: 'play',
+    label: '播放',
+    icon: playIcon,
+    click: musicControl('play'),
+    visible: false,
+  },
   {
     id: 'pause',
     label: '暂停',
     icon: pauseIcon,
-    click: () => musicPlay('pause'),
+    click: musicControl('pause'),
     visible: false,
   },
   { label: '上一首', icon: prevIcon, click: musicControl('prev') },
@@ -48,17 +41,30 @@ const contextMenu = Menu.buildFromTemplate([
 
 app.whenReady().then(() => {
   tray = new Tray(appIcon)
-  // tray.setTitle('轻音乐')
   tray.setToolTip(toolTip)
   tray.setContextMenu(contextMenu)
   tray.on('click', focus)
 })
 
-export function setCurrentPlay(name: string) {
-  // const titleMenu = contextMenu.getMenuItemById('music')
-  // if (titleMenu) {
-  //   titleMenu.label = name
-  // }
+export function setTrayTitle(name?: string) {
+  const playMenu = contextMenu.getMenuItemById('play')
+  const pauseMenu = contextMenu.getMenuItemById('pause')
+  if (name) {
+    if (playMenu && !playMenu.enabled) {
+      playMenu.enabled = true
+    }
+    if (pauseMenu && !pauseMenu.enabled) {
+      pauseMenu.enabled = true
+    }
+  } else {
+    if (playMenu && playMenu.enabled) {
+      playMenu.enabled = false
+    }
+    if (pauseMenu && pauseMenu.enabled) {
+      pauseMenu.enabled = false
+    }
+    return
+  }
   if (tray) {
     tray.setToolTip(name)
   }
@@ -67,4 +73,16 @@ export function setCurrentPlay(name: string) {
     title = title.slice(0, MAX_TITLE_LENGTH) + '...'
   }
   contextMenu.items[0].label = title
+}
+
+export function setTrayPaused(paused: boolean) {
+  const playMenu = contextMenu.getMenuItemById('play')
+  const pauseMenu = contextMenu.getMenuItemById('pause')
+  if (playMenu) {
+    playMenu.visible = paused
+  }
+  if (pauseMenu) {
+    pauseMenu.visible = !paused
+  }
+  // tray.setContextMenu(contextMenu)
 }

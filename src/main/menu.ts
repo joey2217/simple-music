@@ -93,15 +93,15 @@ if (process.platform === 'darwin') {
   Menu.setApplicationMenu(null)
 }
 
-export function onMenuPlayingChange(playing: boolean) {
+export function setMenuPaused(paused: boolean) {
   if (process.platform === 'darwin') {
     const playMenu = menu.getMenuItemById('play')
     const pauseMenu = menu.getMenuItemById('pause')
     if (playMenu) {
-      playMenu.visible = !playing
+      playMenu.visible = paused
     }
     if (pauseMenu) {
-      pauseMenu.visible = playing
+      pauseMenu.visible = !paused
     }
   }
   // FIXME dock menu visible

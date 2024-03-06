@@ -3,6 +3,7 @@ import { setMainTitleBarOverlay } from './windows/main'
 import { checkForUpdates } from './updater'
 import type { DownloadInfo, Theme } from './types'
 import { download } from './download'
+import { setTrayPaused, setTrayTitle } from './tray'
 
 export default function handleIPC() {
   ipcMain.handle('TOGGLE_DEVTOOLS', (event) => {
@@ -42,5 +43,13 @@ export default function handleIPC() {
 
   ipcMain.handle('OPEN_DIALOG', (e, options: Electron.OpenDialogOptions) => {
     return dialog.showOpenDialog(options)
+  })
+
+  ipcMain.handle('SET_PAUSED', (_e, paused: boolean) => {
+    setTrayPaused(paused)
+  })
+
+  ipcMain.handle('SET_APP_TITLE', (_e, title?: string) => {
+    setTrayTitle(title)
   })
 }
