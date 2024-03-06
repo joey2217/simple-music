@@ -26,6 +26,8 @@ interface IElectronAPI {
   showOpenDialog: (
     options: Electron.OpenDialogOptions
   ) => Promise<Electron.OpenDialogReturnValue>
+  setMusicPaused: (paused: boolean) => Promise<void>
+  setAppTitle: (title?: string) => Promise<void>
 }
 
 interface MessageAPI {
@@ -46,11 +48,12 @@ interface MessageAPI {
 interface IDevAPI {
   toggleDevtools: () => Promise<void>
 }
-interface IVersions {
+interface Argv {
   node: string
   chrome: string
   electron: string
   version: string
+  dev: boolean
   platform:
     | 'aix'
     | 'darwin'
@@ -66,6 +69,6 @@ declare global {
     electronAPI: IElectronAPI
     messageAPI: MessageAPI
     devAPI: IDevAPI
-    versions: IVersions
+    argv: Argv
   }
 }

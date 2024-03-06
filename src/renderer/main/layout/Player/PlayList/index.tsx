@@ -29,13 +29,11 @@ const PlayListRow: React.FC<Props> = ({ item, index }) => {
       </TableCell>
       <TableCell>
         <div className="flex items-center gap-1">
-          <div>
-            <Image
-              src={item.pic}
-              className="w-10 h-10 rounded-md"
-              alt={item.title}
-            />
-          </div>
+          <Image
+            src={item.pic}
+            className="w-10 h-10 rounded-md"
+            alt={item.title}
+          />
           <div className="w-60 truncate">
             <div className="w-60 truncate text-sm">{item.title}</div>
             <div className="w-60 truncate text-neutral-content">
@@ -59,10 +57,19 @@ const PlayListRow: React.FC<Props> = ({ item, index }) => {
 }
 
 const PlayList: React.FC = () => {
-  const { playList, clearPlayList } = usePlayer()
+  const { playList, clearPlayList, current } = usePlayer()
+  const download = useDownload()
   const [show, setShow] = useState(false)
   return (
-    <div className="h-full flex items-center justify-center">
+    <div className="h-full flex items-center justify-center gap-4">
+      <Button
+        size="icon"
+        variant="outline"
+        disabled={current === undefined}
+        onClick={() => download(current!)}
+      >
+        <FluentArrowDownload />
+      </Button>
       <Button
         variant={show ? 'default' : 'ghost'}
         size="icon"

@@ -27,3 +27,18 @@ export function columnContent2Music(columnContent: ColumnContent): Music {
     pic: albumImgs[albumImgs.length - 1].webpImg,
   }
 }
+
+export let vol = 100
+
+const VOL_KEY = 'vol'
+const localData = localStorage.getItem(VOL_KEY)
+if (localData) {
+  const num = Number(vol)
+  if (num) {
+    vol = num
+  }
+}
+
+export function setVol(num: number) {
+  localStorage.setItem(VOL_KEY, num.toString())
+}

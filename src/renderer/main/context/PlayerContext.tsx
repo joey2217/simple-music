@@ -10,6 +10,7 @@ import { Howl } from 'howler'
 import type { Music } from '../types/player'
 import { fetchSongInfo } from '../api/migu'
 import useLocalStorage from '../hooks/useLocalStorage'
+import { setVol, vol } from '../utils/player'
 
 interface PlayerContextProps {
   current?: Music
@@ -24,6 +25,7 @@ interface PlayerContextProps {
   removeFromPlayerList: (m: Music) => void
   playNext: (dir: 'next' | 'prev') => void
   clearPlayList: () => void
+  setVolume: (v: number) => void
 }
 
 const PlayerContext = React.createContext<PlayerContextProps>({
@@ -39,6 +41,7 @@ const PlayerContext = React.createContext<PlayerContextProps>({
   removeFromPlayerList: () => {},
   playNext: () => {},
   clearPlayList: () => {},
+  setVolume: () => {},
 })
 
 export function usePlayer() {
@@ -143,10 +146,29 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const clearPlayList = useCallback(() => setPlayList([]), [setPlayList])
 
+  const setVolume = useCallback((v: number) => {
+    howlerRef.current?.volume(v / 100)
+    setVol(v)
+  }, [])
+
+  // useEffect(() => {
+  //   console.log(current, index)
+  //   console.table(playList)
+  // }, [current, index, playList])
+
   useEffect(() => {
-    console.log(current, index)
-    console.table(playList)
-  }, [current, index, playList])
+    const title = current ? `${current.title}-${current.artist}` : ''
+    window.electronAPI.setAppTitle(title)
+    if (title) {
+      document.title = title
+    } else {
+      document.title = '轻·音乐'
+    }
+  }, [current])
+
+  useEffect(() => {
+    window.electronAPI.setMusicPaused(paused)
+  }, [paused])
 
   useEffect(() => {
     console.log('useEffect  window.messageAPI.onMusicControl ########')
@@ -182,6 +204,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
           src: data.playUrl,
           autoplay: !init,
           html5: true,
+          volume: vol / 100,
         })
         howler.once('load', () => {
           setDuration(Math.ceil(howler.duration()))
@@ -241,6 +264,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
         removeFromPlayerList,
         playNext,
         clearPlayList,
+        setVolume,
       }}
     >
       {children}

@@ -49,12 +49,21 @@ app.whenReady().then(() => {
 export function setTrayTitle(name?: string) {
   const playMenu = contextMenu.getMenuItemById('play')
   const pauseMenu = contextMenu.getMenuItemById('pause')
+  const music = contextMenu.getMenuItemById('music')
   if (name) {
     if (playMenu && !playMenu.enabled) {
       playMenu.enabled = true
     }
     if (pauseMenu && !pauseMenu.enabled) {
       pauseMenu.enabled = true
+    }
+    tray.setToolTip(name)
+    let title = name
+    if (title.length > MAX_TITLE_LENGTH) {
+      title = title.slice(0, MAX_TITLE_LENGTH) + '...'
+    }
+    if (music) {
+      music.label = title
     }
   } else {
     if (playMenu && playMenu.enabled) {
@@ -63,16 +72,11 @@ export function setTrayTitle(name?: string) {
     if (pauseMenu && pauseMenu.enabled) {
       pauseMenu.enabled = false
     }
-    return
+    if (music) {
+      music.label = APP_NAME
+    }
+    tray.setToolTip(APP_NAME)
   }
-  if (tray) {
-    tray.setToolTip(name)
-  }
-  let title = name
-  if (title.length > MAX_TITLE_LENGTH) {
-    title = title.slice(0, MAX_TITLE_LENGTH) + '...'
-  }
-  contextMenu.items[0].label = title
 }
 
 export function setTrayPaused(paused: boolean) {

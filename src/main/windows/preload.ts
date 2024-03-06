@@ -21,6 +21,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   openPath: (fullPath: string) => ipcRenderer.invoke('OPEN_PATH', fullPath),
   showOpenDialog: (options: Electron.OpenDialogOptions) =>
     ipcRenderer.invoke('OPEN_DIALOG', options),
+  setMusicPaused: (paused: boolean) => ipcRenderer.invoke('SET_PAUSED', paused),
+  setAppTitle: (title?: string) => ipcRenderer.invoke('SET_APP_TITLE', title),
 })
 
 // main -> renderer
@@ -38,10 +40,11 @@ contextBridge.exposeInMainWorld('messageAPI', {
   ) => ipcRenderer.on('MUSIC_CONTROL', callback),
 })
 
-contextBridge.exposeInMainWorld('versions', {
+contextBridge.exposeInMainWorld('argv', {
   node: process.versions.node,
   chrome: process.versions.chrome,
   electron: process.versions.electron,
   version,
   platform: process.platform,
+  dev: process.argv.includes('--dev'),
 })

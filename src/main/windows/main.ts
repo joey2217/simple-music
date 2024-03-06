@@ -8,33 +8,6 @@ let quit = false
 
 const DARK_BACK_COLOR = '#0c0a09'
 
-const thumbarButtons: Electron.ThumbarButton[] = [
-  {
-    icon: prevIcon,
-    click: musicControl('prev'),
-    tooltip: '上一首',
-    flags: ['disabled'],
-  },
-  {
-    icon: playIcon,
-    click: musicControl('play'),
-    tooltip: '播放',
-    flags: ['disabled'],
-  },
-  {
-    icon: pauseIcon,
-    click: musicControl('pause'),
-    tooltip: '暂停',
-    flags: ['disabled'],
-  },
-  {
-    icon: nextIcon,
-    click: musicControl('next'),
-    tooltip: '下一首',
-    flags: ['disabled'],
-  },
-]
-
 export function create() {
   win = new BrowserWindow({
     width: 1200,
@@ -56,7 +29,6 @@ export function create() {
   })
   win.once('ready-to-show', () => {
     win.show()
-    win.setThumbarButtons(thumbarButtons)
     if (import.meta.env.DEV || process.argv.includes('--dev')) {
       win.webContents.openDevTools({ mode: 'bottom' })
     }
@@ -106,4 +78,56 @@ export function musicControl(type: 'prev' | 'play' | 'pause' | 'next') {
 
 export function beforeQuit() {
   quit = true
+}
+
+export function setThumbarButtonsEnabled(enabled: boolean) {
+  const thumbarButtons: Electron.ThumbarButton[] = [
+    {
+      icon: prevIcon,
+      click: musicControl('prev'),
+      tooltip: '上一首',
+      flags: enabled ? undefined : ['disabled'],
+    },
+    {
+      icon: pauseIcon,
+      click: musicControl('pause'),
+      tooltip: '暂停',
+      flags: enabled ? undefined : ['disabled'],
+    },
+    {
+      icon: nextIcon,
+      click: musicControl('next'),
+      tooltip: '下一首',
+      flags: enabled ? undefined : ['disabled'],
+    },
+  ]
+  win.setThumbarButtons(thumbarButtons)
+}
+
+export function setThumbarButtonsPaused(paused: boolean) {
+  const thumbarButtons: Electron.ThumbarButton[] = [
+    {
+      icon: prevIcon,
+      click: musicControl('prev'),
+      tooltip: '上一首',
+    },
+    paused
+      ? {
+          icon: playIcon,
+          click: musicControl('play'),
+          tooltip: '播放',
+        }
+      : {
+          icon: pauseIcon,
+          click: musicControl('pause'),
+          tooltip: '暂停',
+          flags: ['disabled'],
+        },
+    {
+      icon: nextIcon,
+      click: musicControl('next'),
+      tooltip: '下一首',
+    },
+  ]
+  win.setThumbarButtons(thumbarButtons)
 }

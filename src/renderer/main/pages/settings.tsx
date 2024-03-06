@@ -78,14 +78,14 @@ const Download: React.FC = () => {
 
 const About: React.FC = () => (
   <SettingsCard title="关于">
-    <div className="text-center">
+    <div className="text-center w-60">
       <img src={logo} alt="logo" className="w-10 h-10 mx-auto" />
       <h2 className="text-xl font-semibold my-2">轻音乐</h2>
       <div className="my-2">
         <span>版本 : </span>
-        <span>{window.versions.version}</span>
+        <span>{window.argv.version}</span>
       </div>
-      <div className="my-2 flex justify-center gap-4">
+      <div className="grid grid-cols-2 gap-4">
         <Button
           onClick={window.electronAPI.checkUpdate}
           variant="secondary"
@@ -98,22 +98,21 @@ const About: React.FC = () => (
           size="sm"
           onClick={() =>
             window.electronAPI.openExternal(
-              'https://github.com/joey2217/simple-tv/releases'
+              'https://github.com/joey2217/simple-music/releases'
             )
           }
         >
           手动下载
         </Button>
-      </div>
-      <div className="flex gap-4 justify-center">
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => window.devAPI.toggleDevtools()}
-          className={`${import.meta.env.PROD ? 'hidden' : ''} `}
-        >
-          切换开发者工具
-        </Button>
+        {(import.meta.env.DEV || window.argv.dev) && (
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => window.devAPI.toggleDevtools()}
+          >
+            切换开发者工具
+          </Button>
+        )}
         <Button
           variant="ghost"
           size="sm"
@@ -131,8 +130,8 @@ const About: React.FC = () => (
 )
 const Settings: React.FC = () => {
   useEffect(() => {
-    console.log('##version##')
-    console.table(window.versions)
+    console.log('##argv##')
+    console.table(window.argv)
   }, [])
 
   return (

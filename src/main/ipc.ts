@@ -1,5 +1,9 @@
 import { app, ipcMain, nativeTheme, shell, dialog } from 'electron'
-import { setMainTitleBarOverlay } from './windows/main'
+import {
+  setMainTitleBarOverlay,
+  setThumbarButtonsEnabled,
+  setThumbarButtonsPaused,
+} from './windows/main'
 import { checkForUpdates } from './updater'
 import type { DownloadInfo, Theme } from './types'
 import { download } from './download'
@@ -47,9 +51,17 @@ export default function handleIPC() {
 
   ipcMain.handle('SET_PAUSED', (_e, paused: boolean) => {
     setTrayPaused(paused)
+    if (process.platform === 'win32') {
+      setThumbarButtonsPaused(paused)
+    }
+    console.log('SET_PAUSED', paused)
   })
 
   ipcMain.handle('SET_APP_TITLE', (_e, title?: string) => {
     setTrayTitle(title)
+    if (process.platform === 'win32') {
+      setThumbarButtonsEnabled(Boolean(title))
+    }
+    console.log('SET_APP_TITLE', title)
   })
 }
