@@ -199,9 +199,11 @@ input {
 }
 
 .link {
-  @apply transition-colors hover:text-foreground/80 text-foreground/60 py-1 px-2 rounded-md;
+  @apply h-9 px-4 py-2 inline-flex items-center justify-start whitespace-nowrap rounded-md
+   text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 
+   focus-visible:ring-ring hover:bg-accent hover:text-accent-foreground;
 }
 
 .link.active {
-  @apply text-foreground bg-primary;
+  @apply bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80;
 }
