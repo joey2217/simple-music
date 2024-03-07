@@ -1,6 +1,6 @@
 # 轻音乐
 
-## v0.2.5 🎉 2023/5/8
+## v0.4.0 🎉 2024/3/7
 
 - 音乐播放
 - 音乐下载
@@ -11,17 +11,3 @@
 ## [BUG 反馈](https://github.com/joey2217/simple-music/issues)
 
 ## Have fun!
-
-## 截图
-
-### 首页
-
-![首页](screenshot/screenshot-index.png)
-
-### 歌手
-
-![歌手](screenshot/screenshot-artist.png)
-
-### 搜索
-
-![搜索](screenshot/screenshot-search.png)
