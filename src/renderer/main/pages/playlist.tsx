@@ -58,7 +58,7 @@ const PlaylistPage: React.FC = () => {
   return (
     <div>
       <div className="flex gap-2">
-        <img
+        <Image
           src={data.image}
           alt={data.playListName}
           className="w-16 h-16 rounded-md"

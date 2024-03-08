@@ -104,15 +104,13 @@ const About: React.FC = () => (
         >
           手动下载
         </Button>
-        {(import.meta.env.DEV || window.argv.dev) && (
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => window.devAPI.toggleDevtools()}
-          >
-            切换开发者工具
-          </Button>
-        )}
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => window.devAPI.toggleDevtools()}
+        >
+          切换开发者工具
+        </Button>
         <Button
           variant="ghost"
           size="sm"

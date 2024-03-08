@@ -6,11 +6,14 @@ const Image: React.FC<
     React.ImgHTMLAttributes<HTMLImageElement>,
     HTMLImageElement
   >
-> = (props) => {
+> = ({ src, ...props }) => {
+  const srcUrl = src ? (src.startsWith('//') ? 'http:' + src : src) : icon
   return (
     <img
       {...props}
-      src={props.src || icon}
+      src={srcUrl}
+      data-src={src}
+      data-srcUrl={srcUrl}
       onError={(e) => {
         (e.target as HTMLImageElement).onerror = null
         ;(e.target as HTMLImageElement).src = icon

@@ -18,7 +18,7 @@ export default function LazyImage({
         if (entry.isIntersecting) {
           const lazyImage = entry.target as HTMLImageElement
           if (src) {
-            lazyImage.src = src
+            lazyImage.src = src.startsWith('//') ? 'http:' + src : src
           }
           observer.unobserve(lazyImage) // 观察一次后停止观察
           observer.disconnect() // 停止观察
@@ -32,5 +32,15 @@ export default function LazyImage({
     }
   }, [src])
 
-  return <img {...props} ref={imgRef} src={placeholderSrc} />
+  return (
+    <img
+      {...props}
+      ref={imgRef}
+      src={placeholderSrc}
+      onError={(e) => {
+        (e.target as HTMLImageElement).onerror = null
+        ;(e.target as HTMLImageElement).src = placeholderSrc
+      }}
+    />
+  )
 }

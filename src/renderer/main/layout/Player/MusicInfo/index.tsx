@@ -1,5 +1,6 @@
 import React from 'react'
 import { usePlayer } from '../../../context/PlayerContext'
+import Image from '@/main/components/Image'
 
 const MusicInfo: React.FC = () => {
   const { current } = usePlayer()
@@ -7,7 +8,7 @@ const MusicInfo: React.FC = () => {
   if (current) {
     return (
       <div className="flex gap-1">
-        <img
+        <Image
           className="h-16 w-16 rounded"
           src={current.pic}
           alt={current.title}

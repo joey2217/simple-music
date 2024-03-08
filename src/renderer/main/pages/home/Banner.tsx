@@ -9,6 +9,7 @@ import {
 import { fetchBanner } from '../../api/migu'
 import { BannerItem } from '@/main/types/migu'
 import { Link } from 'react-router-dom'
+import Image from '@/main/components/Image'
 
 export default function Banner() {
   const [banners, setBanners] = useState<BannerItem[]>([])
@@ -23,7 +24,7 @@ export default function Banner() {
         {banners.map((b) => (
           <CarouselItem key={b.url}>
             <Link to={b.url} className="h-80 w-screen relative" title={b.title}>
-              <img
+              <Image
                 src={b.image}
                 alt={b.title}
                 className="h-full w-full object-cover"

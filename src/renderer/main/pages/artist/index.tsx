@@ -8,6 +8,7 @@ import {
 import { fetchArtistDetail } from '../../api/migu'
 import type { ArtistInfo } from '../../types/migu'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import Image from '@/main/components/Image'
 
 export const artistLoader: LoaderFunction = async ({ params }) => {
   if (params.id) {
@@ -21,7 +22,7 @@ const Artist: React.FC = () => {
   return (
     <div className="page flex">
       <div className="w-60 flex-shrink-0">
-        <img
+        <Image
           src={info.smallPic}
           alt={info.name}
           className="w-40 h-40 rounded-full mx-auto"

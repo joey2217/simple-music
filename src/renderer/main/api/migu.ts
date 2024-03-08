@@ -86,10 +86,12 @@ export function fetchSongInfo(copyrightId: string) {
       if (data.code === '200') {
         // songInfoCache.set(copyrightId, data.data)
         const songInfo = data.data
-        if (songInfo.playUrl.startsWith('//')) {
-          songInfo.playUrl = 'http:' + songInfo.playUrl
+        if (songInfo.playUrl) {
+          if (songInfo.playUrl.startsWith('//')) {
+            songInfo.playUrl = 'http:' + songInfo.playUrl
+          }
+          return songInfo
         }
-        return songInfo
       }
       throw new Error(data.msg)
     })
@@ -182,7 +184,7 @@ export function fetchBanner() {
 // https://m.music.migu.cn/migumusic/h5/playlist/list?columnId=15127272&tagId=1000001683&pageNum=1&pageSize=30
 export function fetchPlaylist(tagId: string = '', page = 1, size = 30) {
   return miguRequest<PageData<PlayListItem>>(
-    `https://m.music.migu.cn/migumusic/h5/playlist/list?columnId=15127272&tagId=${tagId}&pageNum=${page}&pageSize=${size}`,
+    `https://m.music.migu.cn/migumusic/h5/playlist/list?columnId=15127272&tagId=${tagId}&pageNum=${page}&pageSize=${size}`
     // `fetchPlaylist_${tagId}_${page}_${size}`
   )
 }
