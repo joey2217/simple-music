@@ -64,7 +64,10 @@ export const AppProvider: React.FC<PropsWithChildren> = ({ children }) => {
   )
 
   useEffect(() => {
-    window.messageAPI.onUpdateDownload((_e, info) => updateDownloadItem(info))
+    const removeListener = window.messageAPI.onUpdateDownload((info) => {
+      updateDownloadItem(info)
+    })
+    return removeListener
   }, [updateDownloadItem])
 
   return (

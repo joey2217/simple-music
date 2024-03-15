@@ -30,24 +30,20 @@ interface IElectronAPI {
   setAppTitle: (title?: string) => Promise<void>
 }
 
+type RemoveListener = () => void
+
 interface MessageAPI {
-  onNavigate: (
-    callback: (e: Electron.IpcRendererEvent, to: string) => void
-  ) => void
-  onUpdateDownload: (
-    callback: (e: Electron.IpcRendererEvent, info: DownloadInfo) => void
-  ) => void
+  onNavigate: (callback: (to: string) => void) => RemoveListener
+  onUpdateDownload: (callback: (info: DownloadInfo) => void) => RemoveListener
   onMusicControl: (
-    callback: (
-      e: Electron.IpcRendererEvent,
-      type: 'prev' | 'play' | 'pause' | 'next'
-    ) => void
-  ) => void
+    callback: (type: 'prev' | 'play' | 'pause' | 'next') => void
+  ) => RemoveListener
 }
 
 interface IDevAPI {
   toggleDevtools: () => Promise<void>
 }
+
 interface Argv {
   node: string
   chrome: string

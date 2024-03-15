@@ -171,9 +171,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
   }, [paused])
 
   useEffect(() => {
-    console.log('useEffect  window.messageAPI.onMusicControl ########')
-    // off music control
-    window.messageAPI.onMusicControl((_e, type) => {
+    const removeListener = window.messageAPI.onMusicControl((type) => {
       switch (type) {
         case 'next':
         case 'prev':
@@ -183,15 +181,12 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
         case 'play':
           togglePaused()
           break
-
         default:
           break
       }
     })
 
-    return () => {
-      console.log('useEffect return  window.messageAPI.onMusicControl ########')
-    }
+    return removeListener
   }, [playNext, togglePaused])
 
   useEffect(() => {

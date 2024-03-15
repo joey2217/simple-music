@@ -25,19 +25,22 @@ contextBridge.exposeInMainWorld('electronAPI', {
   setAppTitle: (title?: string) => ipcRenderer.invoke('SET_APP_TITLE', title),
 })
 
+function addListener(channel: string, callback: (...args: unknown[]) => void) {
+  const listener = (_event: Electron.IpcRendererEvent, ...args: unknown[]) =>
+    callback(...args)
+  ipcRenderer.on(channel, listener)
+  return () => ipcRenderer.off(channel, listener)
+}
+
 // main -> renderer
 contextBridge.exposeInMainWorld('messageAPI', {
-  onNavigate: (callback: (e: Electron.IpcRendererEvent, to: string) => void) =>
-    ipcRenderer.on('NAVIGATE', callback),
-  onUpdateDownload: (
-    callback: (e: Electron.IpcRendererEvent, info: DownloadInfo) => void
-  ) => ipcRenderer.on('UPDATE_DOWNLOAD', callback),
+  onNavigate: (callback: (to: string) => void) =>
+    addListener('NAVIGATE', callback),
+  onUpdateDownload: (callback: (info: DownloadInfo) => void) =>
+    addListener('UPDATE_DOWNLOAD', callback),
   onMusicControl: (
-    callback: (
-      e: Electron.IpcRendererEvent,
-      type: 'prev' | 'play' | 'pause' | 'next'
-    ) => void
-  ) => ipcRenderer.on('MUSIC_CONTROL', callback),
+    callback: (type: 'prev' | 'play' | 'pause' | 'next') => void
+  ) => addListener('MUSIC_CONTROL', callback),
 })
 
 contextBridge.exposeInMainWorld('argv', {
