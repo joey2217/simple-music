@@ -1,9 +1,13 @@
 import { defineConfig } from 'vite'
-import { builtinModules } from 'module'
-import * as path from 'path'
+import { builtinModules } from 'node:module'
+import * as path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const __filename = fileURLToPath(import.meta.url)
+
+const ROOT = path.dirname(__filename)
 
 const NODE_VERSION = 20
-const ROOT = process.cwd()
 const EXTERNAL = builtinModules
   .map((bm) => `node:${bm}`)
   .concat(builtinModules)
@@ -21,8 +25,8 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         external: EXTERNAL,
         input: {
-          main: path.join(__dirname, 'index.ts'),
-          preload: path.join(__dirname, 'windows/preload.ts'),
+          main: path.join(ROOT, '/src-main/index.ts'),
+          preload: path.join(__dirname, '/src-main/windows/preload.ts'),
         },
         output: {
           format: 'module',

@@ -22,22 +22,15 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "types": [
-      "./src/renderer.d.ts",
-      "./src/vite-env.d.ts",
-    ],
     "baseUrl": ".",
     "paths": {
       "@/*": [
-        "./src/renderer/*"
+        "./src/*"
       ]
     }
   },
   "include": [
-    "src/renderer"
-  ],
-  "exclude": [
-    "src/renderer/vite.config.ts"
+    "src"
   ],
   "references": [
     {

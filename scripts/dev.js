@@ -19,9 +19,9 @@ logger.error = (msg, options) =>
   loggerError(msg, { timestamp: true, ...options })
 
 async function start() {
-  await startRendererServer(join(ROOT, 'src/renderer/vite.config.ts'))
+  await startRendererServer(join(ROOT, 'vite.config.ts'))
   const watcher = await build({
-    configFile: join(ROOT, 'src/main/vite.config.ts'),
+    configFile: join(ROOT, 'vite.main.config.ts'),
     mode: 'development',
     build: {
       watch: {},

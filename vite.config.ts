@@ -1,9 +1,13 @@
 import { defineConfig, type PluginOption } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import * as path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const __filename = fileURLToPath(import.meta.url)
+
+const ROOT = path.dirname(__filename)
 
 // https://vitejs.dev/config/
-const ROOT = process.cwd()
 const CHROME_VERSION = 122
 
 const cspMate = `<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">`
@@ -20,12 +24,11 @@ const htmlPlugin: () => PluginOption = () => {
 }
 
 export default defineConfig({
-  root: __dirname,
-  base: './',
+  root: path.join(ROOT, 'src'),
   plugins: [react()],
   resolve: {
     alias: {
-      '@': path.join(ROOT, 'src/renderer'),
+      '@': path.join(ROOT, 'src'),
     },
   },
   build: {
@@ -34,7 +37,7 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       input: {
-        main: path.join(__dirname, 'index.html'),
+        main: path.join(ROOT, 'src/index.html'),
       },
     },
   },

@@ -5,12 +5,8 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
-    "types": [
-      "./src/vite-env.d.ts"
-    ]
   },
   "include": [
-    "src/renderer/vite.config.ts",
-    "src/main", "src/renderer.d.ts",
+    "src-main",
   ]
 }

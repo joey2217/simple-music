@@ -2,7 +2,7 @@ import animate from 'tailwindcss-animate'
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ['class'],
-  content: ['./src/renderer/**/*.{jsx,tsx,html}'],
+  content: ['./src/**/*.{jsx,tsx,html}'],
   prefix: '',
   theme: {
     container: {

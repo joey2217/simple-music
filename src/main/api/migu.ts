@@ -75,11 +75,12 @@ export function fetchSongInfo(copyrightId: string) {
   // if (songInfoCache.has(copyrightId)) {
   //   return Promise.resolve(songInfoCache.get(copyrightId)!)
   // }
+  const cacheKey = `SongInfo_${copyrightId}`
+  if (cache.has(cacheKey)) {
+    return Promise.resolve(cache.get(cacheKey) as SongInfo)
+  }
   return fetch(
-    `https://m.music.migu.cn/migumusic/h5/play/auth/getSongPlayInfo?copyrightId=${copyrightId}&type=2`,
-    {
-      cache: 'force-cache',
-    }
+    `https://m.music.migu.cn/migumusic/h5/play/auth/getSongPlayInfo?copyrightId=${copyrightId}&type=2`
   )
     .then((res) => res.json())
     .then((data: MiguResponse<SongInfo>) => {
@@ -90,6 +91,7 @@ export function fetchSongInfo(copyrightId: string) {
           if (songInfo.playUrl.startsWith('//')) {
             songInfo.playUrl = 'http:' + songInfo.playUrl
           }
+          cache.set(cacheKey, songInfo)
           return songInfo
         }
       }
@@ -114,10 +116,7 @@ export function fetchRankingList(columnId: string) {
 //  `https://app.c.nf.migu.cn/MIGUM3.0/bmw/singer-index/list/v1.0?templateVersion=3&tab=${e}-${t}`,
 export function fetchArtistList(type: string, area: string) {
   return fetch(
-    `https://app.c.nf.migu.cn/MIGUM3.0/bmw/singer-index/list/v1.0?templateVersion=3&tab=${area}-${type}`,
-    {
-      cache: 'force-cache',
-    }
+    `https://app.c.nf.migu.cn/MIGUM3.0/bmw/singer-index/list/v1.0?templateVersion=3&tab=${area}-${type}`
   )
     .then((res) => res.json())
     .then((data: ArtistRes) => {
@@ -131,10 +130,7 @@ export function fetchArtistList(type: string, area: string) {
 // `https://m.music.migu.cn/migumusic/h5/singer/getSingerDetail?singerId=${e}`
 export function fetchArtistDetail(singerId: string) {
   return fetch(
-    `https://m.music.migu.cn/migumusic/h5/singer/getSingerDetail?singerId=${singerId}`,
-    {
-      cache: 'force-cache',
-    }
+    `https://m.music.migu.cn/migumusic/h5/singer/getSingerDetail?singerId=${singerId}`
   )
     .then((res) => res.json())
     .then((data: MiguResponse<ArtistInfo>) => {

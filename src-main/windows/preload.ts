@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron'
-import { version } from '../../../package.json'
+import { version } from '../../package.json'
 import type { DownloadInfo, Theme } from '../types'
 /**
  * 不能加载常量,sandbox无法加载
