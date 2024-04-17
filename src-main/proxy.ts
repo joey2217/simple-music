@@ -1,4 +1,5 @@
 import { app, session } from 'electron'
+import log from 'electron-log/main'
 
 let headers = {
   Referer: 'https://m.music.migu.cn/v4/',
@@ -16,6 +17,7 @@ function fetchHeader() {
     .then((data) => {
       if (data.mg) {
         headers = data.mg
+        log.info('fetchHeader', headers)
       }
     })
 }
@@ -26,7 +28,7 @@ const filter: Electron.WebRequestFilter = {
   urls: ['https://m.music.migu.cn/*', 'https://app.c.nf.migu.cn/*'],
 }
 
-const SINCE = new Date(Date.now() + 24 * 3600).toUTCString()
+// const SINCE = new Date(Date.now() + 24 * 3600).toUTCString()
 
 app.whenReady().then(() => {
   session.defaultSession.webRequest.onBeforeSendHeaders(

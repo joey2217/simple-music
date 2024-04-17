@@ -1,4 +1,8 @@
 import { BrowserWindow, app } from 'electron'
+import log from 'electron-log/main'
+import type { LogFile } from 'electron-log'
+import path from 'node:path'
+import fsp from 'node:fs/promises'
 import { loadDevTools } from './dev'
 import {
   beforeQuit,
@@ -9,6 +13,29 @@ import handleIPC from './ipc'
 import './proxy'
 import './menu'
 import './protocol'
+
+log.initialize()
+
+// 日志文件设置
+if (import.meta.env.PROD) {
+  log.transports.file.archiveLogFn = (oldLogFile: LogFile) => {
+    const file = oldLogFile.toString()
+    const info = path.parse(file)
+    fsp
+      .rename(
+        file,
+        path.join(info.dir, info.name + new Date().toLocaleString() + info.ext)
+      )
+      .then(() => {
+        log.info(`Log file archived: ${file}`)
+      })
+      .catch((err) => {
+        log.error(err)
+      })
+  }
+  log.transports.file.resolvePathFn = () =>
+    path.join(app.getAppPath(), 'logs/app.log')
+}
 
 const gotTheLock = app.requestSingleInstanceLock()
 

@@ -1,6 +1,6 @@
 import { app, session } from 'electron'
-import log from 'electron-log'
-import * as path from 'path'
+import log from 'electron-log/main'
+import * as path from 'node:path'
 import type { DownloadInfo } from './types'
 import { send as sendMain } from './windows/main'
 import { Promise as NodeID3Promise } from 'node-id3'

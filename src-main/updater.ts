@@ -1,5 +1,5 @@
 import { autoUpdater } from 'electron-updater'
-import log from 'electron-log'
+import log from 'electron-log/main'
 import { dialog } from 'electron'
 // import { send as sendMain } from './windows/main'
 
