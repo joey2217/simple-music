@@ -25,6 +25,7 @@ const htmlPlugin: () => PluginOption = () => {
 
 export default defineConfig({
   root: path.join(ROOT, 'src'),
+  base: './',
   plugins: [react()],
   resolve: {
     alias: {

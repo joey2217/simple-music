@@ -19,6 +19,10 @@ module.exports = {
     icon: 'resources/icon.ico',
     target: 'nsis',
   },
+  protocols: {
+    name: 'simple-music',
+    schemes: ['simple-music'],
+  },
   nsis: {
     oneClick: false,
     language: '2052',

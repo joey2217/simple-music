@@ -8,6 +8,7 @@ import {
 import handleIPC from './ipc'
 import './proxy'
 import './menu'
+import './protocol'
 
 const gotTheLock = app.requestSingleInstanceLock()
 
@@ -17,6 +18,8 @@ if (!gotTheLock) {
   app.on('second-instance', () => {
     // 当运行第二个实例时,将会聚焦到Window这个窗口
     focusMainWindow()
+    // windows 命令行是一个字符串数组，其中最后一个元素是深度链接的URL。
+    // dialog.showErrorBox('Welcome Back', `You arrived from: ${commandLine.pop()}`
   })
   app.whenReady().then(() => {
     createMainWindow()
@@ -41,3 +44,8 @@ app.on('activate', () => {
 })
 
 app.on('before-quit', beforeQuit)
+
+// mac 处理协议 在本例中，我们选择显示一个错误提示对话框。
+// app.on('open-url', (event, url) => {
+//   dialog.showErrorBox('欢迎回来', `导向自: ${url}`)
+// })
