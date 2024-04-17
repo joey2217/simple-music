@@ -1,11 +1,9 @@
-/* eslint-disable no-template-curly-in-string */
 const nameEN = 'SimpleMusic'
 
 /**
  * @type {import('electron-builder').Configuration}
  * @see https://www.electron.build/configuration/configuration
  */
-// eslint-disable-next-line no-undef
 module.exports = {
   productName: '轻音乐',
   appId: 'com.joey.music',

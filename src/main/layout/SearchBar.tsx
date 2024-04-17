@@ -132,7 +132,7 @@ const SearchBar: React.FC = () => {
             </div>
           </div>
         ) : (
-          <ScrollArea className="h-content">
+          <div className="max-h-content scrollbar">
             <div className="p-2 text-left">
               {searchHistory.length > 0 && (
                 <div className="mb-4">
@@ -175,7 +175,7 @@ const SearchBar: React.FC = () => {
                 </div>
               ))}
             </div>
-          </ScrollArea>
+          </div>
         )}
       </div>
     </div>

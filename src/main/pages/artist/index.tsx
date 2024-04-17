@@ -7,7 +7,6 @@ import {
 } from 'react-router-dom'
 import { fetchArtistDetail } from '../../api/migu'
 import type { ArtistInfo } from '../../types/migu'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import Image from '@/main/components/Image'
 
 export const artistLoader: LoaderFunction = async ({ params }) => {
@@ -28,12 +27,12 @@ const Artist: React.FC = () => {
           className="w-40 h-40 rounded-full mx-auto"
         />
         <h2 className="font-semibold text-lg">{info.name}</h2>
-        <ScrollArea id="artist-info">
+        <div id="artist-info" className='scrollbar'>
           <p
             className="whitespace-break-spaces pr-1 text-sm"
             dangerouslySetInnerHTML={{ __html: info.intro }}
           ></p>
-        </ScrollArea>
+        </div>
       </div>
       <div className="grow">
         <nav className="py-4">
@@ -44,9 +43,9 @@ const Artist: React.FC = () => {
             专辑
           </NavLink>
         </nav>
-        <ScrollArea id="artist-content">
+        <div id="artist-content" className='scrollbar'>
           <Outlet />
-        </ScrollArea>
+        </div>
       </div>
     </div>
   )

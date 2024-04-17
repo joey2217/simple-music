@@ -30,7 +30,11 @@ const AlbumImage: React.FC<{ albumImgList: AlbumImg[] }> = ({
   const albumImg = albumImgList[albumImgList.length - 1]
   if (albumImg) {
     return (
-      <Image src={albumImg.webpImg} alt="album" className="w-10 h-10 rounded-md" />
+      <Image
+        src={albumImg.webpImg}
+        alt="album"
+        className="w-10 h-10 rounded-md"
+      />
     )
   }
   return null
@@ -41,8 +45,8 @@ const TopList: React.FC = () => {
   const { play, addToPlayList } = usePlayer()
 
   return (
-    <ScrollArea
-      className="p-2 w-full"
+    <div
+      className="p-2 w-full scrollbar"
       style={{
         height: 'calc(100vh - 140px)',
       }}
@@ -103,7 +107,7 @@ const TopList: React.FC = () => {
           </TableBody>
         </Table>
       </div>
-    </ScrollArea>
+    </div>
   )
 }
 
