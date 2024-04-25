@@ -7,10 +7,12 @@ import React, {
   useMemo,
 } from 'react'
 import { Howl } from 'howler'
-import type { Music } from '../types/player'
+import type { Music, PlayMode } from '../types/player'
 import { fetchSongInfo } from '../api/migu'
 import useLocalStorage from '../hooks/useLocalStorage'
-import { setVol, vol } from '../utils/player'
+import { setVol, vol, mode } from '../utils/player'
+import { shuffle as shuffleFn } from '../utils'
+import { useRecentListStore } from '../store/playlist'
 
 interface PlayerContextProps {
   current?: Music
@@ -26,6 +28,7 @@ interface PlayerContextProps {
   playNext: (dir: 'next' | 'prev') => void
   clearPlayList: () => void
   setVolume: (v: number) => void
+  setShuffleIndexList: (m: PlayMode) => void
 }
 
 const PlayerContext = React.createContext<PlayerContextProps>({
@@ -42,6 +45,7 @@ const PlayerContext = React.createContext<PlayerContextProps>({
   playNext: () => {},
   clearPlayList: () => {},
   setVolume: () => {},
+  setShuffleIndexList: () => {},
 })
 
 export function usePlayer() {
@@ -50,12 +54,17 @@ export function usePlayer() {
 
 let init = true
 
+let shuffleIndexList: number[] = []
+
 export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [index, setIndex] = useLocalStorage('play-index', 0)
   const [paused, setPaused] = useState(true)
   const [playList, setPlayList] = useLocalStorage<Music[]>('play-list', [])
   const [duration, setDuration] = useState(0)
+
   const [time, setTime] = useState(0)
+
+  const addRecent = useRecentListStore((s) => s.addRecent)
 
   const howlerRef = useRef<Howl | null>(null)
   const timer = useRef(0)
@@ -111,14 +120,31 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
     [index, playList, setIndex, setPlayList]
   )
 
-  const current = useMemo(() => playList[index], [index, playList])
+  const current = useMemo(
+    () =>
+      mode === 'shuffle' ? playList[shuffleIndexList[index]] : playList[index],
+    [index, playList]
+  )
 
   const playNext = useCallback(
     (dir: 'next' | 'prev' = 'next') => {
       if (dir === 'next') {
-        setIndex((i) => (i + 1 > playList.length - 1 ? 0 : i + 1))
+        // setIndex((i) => (i + 1 > playList.length - 1 ? 0 : i + 1))
+        setIndex((i) => {
+          if (mode === 'sequence') {
+            return i + 1 > playList.length - 1 ? -1 : i + 1
+          } else {
+            return i + 1 > playList.length - 1 ? 0 : i + 1
+          }
+        })
       } else {
-        setIndex((i) => (i - 1 < 0 ? 0 : i - 1))
+        setIndex((i) => {
+          if (mode === 'sequence') {
+            return i - 1 < 0 ? -1 : i - 1
+          } else {
+            return i - 1 < 0 ? playList.length - 1 : i - 1
+          }
+        })
       }
     },
     [playList.length, setIndex]
@@ -151,24 +177,34 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
     setVol(v)
   }, [])
 
-  // useEffect(() => {
-  //   console.log(current, index)
-  //   console.table(playList)
-  // }, [current, index, playList])
+  const setShuffleIndexList = useCallback(
+    (m: PlayMode) => {
+      if (m === 'shuffle') {
+        shuffleIndexList = shuffleFn(
+          Array.from({ length: playList.length }, (_item, i) => i)
+        )
+      } else {
+        shuffleIndexList = []
+      }
+    },
+    [playList.length]
+  )
 
   useEffect(() => {
-    const title = current ? `${current.title}-${current.artist}` : ''
-    window.electronAPI.setAppTitle(title)
-    if (title) {
+    setShuffleIndexList(mode)
+  }, [playList, setShuffleIndexList])
+
+  useEffect(() => {
+    if (current) {
+      const title = `${current.title}-${current.artist}`
+      window.electronAPI.setMusicPaused(paused)
+      window.electronAPI.setAppTitle(title)
       document.title = title
     } else {
+      window.electronAPI.setAppTitle()
       document.title = '轻·音乐'
     }
-  }, [current])
-
-  useEffect(() => {
-    window.electronAPI.setMusicPaused(paused)
-  }, [paused])
+  }, [paused, current])
 
   useEffect(() => {
     const removeListener = window.messageAPI.onMusicControl((type) => {
@@ -195,9 +231,11 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
         howlerRef.current?.stop()
         howlerRef.current?.unload()
         current.url = data.playUrl
+        addRecent(current)
         const howler = new Howl({
           src: data.playUrl,
           autoplay: !init,
+          loop: mode === 'repeat',
           html5: true,
           volume: vol / 100,
         })
@@ -227,8 +265,14 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
           timer.current = 0
         })
         howler.once('end', () => {
-          clearInterval(timer.current)
-          playNext()
+          // TODO repeat end
+          console.log('end', mode)
+          if (mode !== 'repeat') {
+            clearInterval(timer.current)
+            playNext()
+          } else {
+            setTime(0)
+          }
         })
         howlerRef.current = howler
       })
@@ -242,7 +286,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
       howlerRef.current?.unload()
       clearInterval(timer.current)
     }
-  }, [current, playNext])
+  }, [current, playNext, addRecent])
 
   return (
     <PlayerContext.Provider
@@ -252,6 +296,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
         duration,
         time,
         playList,
+        setShuffleIndexList,
         play,
         togglePaused,
         seek,

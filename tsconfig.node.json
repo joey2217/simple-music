@@ -7,6 +7,6 @@
     "allowSyntheticDefaultImports": true,
   },
   "include": [
-    "src-main",
+    "src-main/**/*",
   ]
 }

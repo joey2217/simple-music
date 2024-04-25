@@ -14,12 +14,12 @@ const MusicInfo: React.FC = () => {
           alt={current.title}
         />
         <div className="flex-1 truncate">
-          <h2 className="text-lg font-semibold truncate leading-8">
+          <div className="text-lg font-semibold truncate leading-8">
             {current.title}
-          </h2>
-          <h3 className="truncate leading-8">
+          </div>
+          <div className="truncate leading-8">
             {current.artists.map((a) => a.name).join('/')}
-          </h3>
+          </div>
         </div>
       </div>
     )

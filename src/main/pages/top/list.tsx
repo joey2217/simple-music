@@ -15,7 +15,6 @@ import { columnContent2Music } from '../../utils/player'
 import { PlayIcon, FluentAdd } from '../../components/Icons'
 import { Button } from '@/components/ui/button'
 import Image from '@/main/components/Image'
-import { ScrollArea } from '@/components/ui/scroll-area'
 
 export const topListLoader: LoaderFunction = ({ params }) => {
   if (params.id) {

@@ -4,7 +4,6 @@ import SearchBar from './SearchBar'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from './ThemeSelect'
 import icon from '../assets/icon.png'
-import UserAvatar from './UserAvatar'
 
 interface History {
   length: number
@@ -40,7 +39,7 @@ const Header: React.FC = () => {
       <div id="titleBar" className="pr-2 flex gap-2 items-center">
         <Link
           to="/"
-          className="border-r w-44 h-10 flex items-center gap-2 justify-center draggable"
+          className="border-r w-44 h-10 flex items-center gap-2 justify-center"
         >
           <img src={icon} alt="logo" className="w-8 h-8" />
           <span>轻·音乐</span>
@@ -65,7 +64,6 @@ const Header: React.FC = () => {
         </Button>
         <SearchBar />
         <div className="flex-1 h-full draggable"></div>
-        <UserAvatar />
         <ThemeToggle />
       </div>
     </header>

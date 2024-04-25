@@ -1,5 +1,5 @@
 import type { SongItem, ColumnContent } from '../types/migu'
-import type { Music } from '../types/player'
+import type { Music, PlayMode } from '../types/player'
 
 export function songItem2Music(songItem: SongItem): Music {
   console.log('songItem2Music', songItem)
@@ -31,14 +31,34 @@ export function columnContent2Music(columnContent: ColumnContent): Music {
 export let vol = 100
 
 const VOL_KEY = 'vol'
-const localData = localStorage.getItem(VOL_KEY)
-if (localData) {
-  const num = Number(vol)
-  if (num) {
-    vol = num
+function getVol() {
+  const localData = localStorage.getItem(VOL_KEY)
+  if (localData) {
+    const num = Number(vol)
+    if (num) {
+      vol = num
+    }
   }
 }
+getVol()
 
 export function setVol(num: number) {
   localStorage.setItem(VOL_KEY, num.toString())
+}
+
+export let mode: PlayMode = 'sequence'
+
+const MODE_KEY = 'play_mode'
+
+function getMode() {
+  const localData = localStorage.getItem(MODE_KEY)
+  if (localData) {
+    mode = localData as PlayMode
+  }
+}
+getMode()
+
+export function setMode(newMode: PlayMode) {
+  mode = newMode
+  localStorage.setItem(MODE_KEY, newMode)
 }

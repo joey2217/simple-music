@@ -18,7 +18,7 @@ interface DownloadInfo {
 interface IElectronAPI {
   download: (files: DownloadInfo[]) => Promise<void>
   getDownloadsPath: () => Promise<string>
-  checkUpdate: () => Promise<string>
+  checkUpdate: (type?: 'auto' | 'hint' | 'manual') => Promise<string>
   openExternal: (url: string) => Promise<void>
   setTheme: (theme: Theme) => Promise<void>
   showItemInFolder: (fullPath: string) => Promise<void>

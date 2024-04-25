@@ -3,6 +3,8 @@ import { downloadDir, setLocalDownloadDir } from '../store/download'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import logo from '../assets/icon.png'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import useLocalStorage from '../hooks/useLocalStorage'
 
 interface SettingsCardProps {
   title: string
@@ -76,56 +78,87 @@ const Download: React.FC = () => {
   )
 }
 
-const About: React.FC = () => (
-  <SettingsCard title="关于">
-    <div className="text-center w-60">
-      <img src={logo} alt="logo" className="w-10 h-10 mx-auto" />
-      <h2 className="text-xl font-semibold my-2">轻音乐</h2>
-      <div className="my-2">
-        <span>版本 : </span>
-        <span>{window.argv.version}</span>
+type UpdateType = 'auto' | 'hint' | 'manual'
+
+const About: React.FC = () => {
+  const [update, setUpdate] = useLocalStorage<UpdateType>('auto_update', 'auto')
+
+  useEffect(() => {
+    if (update !== 'manual') {
+      window.electronAPI.checkUpdate(update)
+    }
+  }, [update])
+
+  return (
+    <SettingsCard title="关于">
+      <div className="text-center w-80">
+        <img src={logo} alt="logo" className="w-10 h-10 mx-auto" />
+        <h4>轻音乐</h4>
+        <div className="my-2">
+          <span>版本 : </span>
+          <span>{window.argv.version}</span>
+        </div>
+        <RadioGroup
+          defaultValue={update}
+          onValueChange={setUpdate}
+          className="flex mb-3"
+        >
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="auto" id="auto" />
+            <Label htmlFor="auto">自动更新</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="hint" id="hint" />
+            <Label htmlFor="hint">有新版本提醒我</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="manual" id="manual" />
+            <Label htmlFor="manual">手动更新</Label>
+          </div>
+        </RadioGroup>
+        <div className="grid grid-cols-2 gap-4">
+          <Button
+            onClick={() => window.electronAPI.checkUpdate('manual')}
+            variant="secondary"
+            size="sm"
+          >
+            检测更新
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() =>
+              window.electronAPI.openExternal(
+                'https://github.com/joey2217/simple-music/releases'
+              )
+            }
+          >
+            手动下载
+          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => window.devAPI.toggleDevtools()}
+          >
+            切换开发者工具
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() =>
+              window.electronAPI.openExternal(
+                'https://github.com/joey2217/simple-tv/issues'
+              )
+            }
+          >
+            反馈BUG
+          </Button>
+        </div>
       </div>
-      <div className="grid grid-cols-2 gap-4">
-        <Button
-          onClick={window.electronAPI.checkUpdate}
-          variant="secondary"
-          size="sm"
-        >
-          检测更新
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() =>
-            window.electronAPI.openExternal(
-              'https://github.com/joey2217/simple-music/releases'
-            )
-          }
-        >
-          手动下载
-        </Button>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => window.devAPI.toggleDevtools()}
-        >
-          切换开发者工具
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() =>
-            window.electronAPI.openExternal(
-              'https://github.com/joey2217/simple-tv/issues'
-            )
-          }
-        >
-          反馈BUG
-        </Button>
-      </div>
-    </div>
-  </SettingsCard>
-)
+    </SettingsCard>
+  )
+}
+
 const Settings: React.FC = () => {
   useEffect(() => {
     console.log('##argv##')

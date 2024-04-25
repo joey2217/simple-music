@@ -8,12 +8,23 @@ import {
   FluentArrowDownload,
   FluentSettings,
 } from '../components/Icons'
+import { ChevronDownIcon, HeartIcon, PlusIcon } from '@radix-ui/react-icons'
+import { Button } from '@/components/ui/button'
+import useLocalStorage from '../hooks/useLocalStorage'
+import Playlists from './Playlists'
 
 const Sider: React.FC = () => {
+  const [expanded, setExpanded] = useLocalStorage(
+    'sider_playlist_expanded',
+    false
+  )
   return (
-    <nav id="menu" className="flex-shrink-0 border-r w-44">
-      <div className="space-y-4 py-4">
-        <div className="px-3 py-2">
+    <nav
+      id="menu"
+      className="flex-shrink-0 border-r w-44 scrollbar overflow-auto select-none"
+    >
+      <div className="space-y-2 py-4">
+        <div className="px-3 py-1">
           <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
             发现
           </h2>
@@ -36,19 +47,55 @@ const Sider: React.FC = () => {
             </NavLink>
           </div>
         </div>
-        <div className="px-3 py-2">
+        <div className="px-3 py-1">
           <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
-            下载
+            我的
           </h2>
           <div className="space-y-1">
             <NavLink to="/download" className="link w-full ">
               <FluentArrowDownload className="mr-4" />
               <span>下 载</span>
             </NavLink>
+          </div>
+          <div className="space-y-1">
+            <NavLink to="/like" className="link w-full">
+              <HeartIcon className="mr-4" />
+              <span>收 藏</span>
+            </NavLink>
+          </div>
+        </div>
+        <div className="px-3 py-1">
+          <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
+            设置
+          </h2>
+          <div className="space-y-1">
             <NavLink to="/settings" className="link w-full ">
               <FluentSettings className="mr-4" />
               <span>设 置</span>
             </NavLink>
+          </div>
+        </div>
+        <div className="px-3 py-1">
+          <div className="flex items-center justify-between mb-2 px-4">
+            <h2
+              onClick={() => setExpanded((e) => !e)}
+              className="text-lg font-semibold tracking-tight flex items-center cursor-pointer"
+            >
+              <span>歌单</span>
+              <ChevronDownIcon
+                className={`${expanded ? 'rotate-180' : ''} text-xl ml-1`}
+              />
+            </h2>
+            <Button className="h-6 w-6 p-0" variant="outline">
+              <PlusIcon />
+            </Button>
+          </div>
+          <div className="space-y-1">
+            <NavLink to="/recently-played" className="link w-full ">
+              <PlaylistIcon className="mr-4" />
+              <span>最近播放</span>
+            </NavLink>
+            <Playlists />
           </div>
         </div>
       </div>

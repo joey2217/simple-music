@@ -13,7 +13,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   download: (files: DownloadInfo[]) =>
     ipcRenderer.invoke('DOWNLOAD_FILES', files),
   getDownloadsPath: () => ipcRenderer.invoke('GET_DOWNLOADS_PATH'),
-  checkUpdate: () => ipcRenderer.invoke('CHECK_FOR_UPDATE'),
+  checkUpdate: (status?: 'auto' | 'hint' | 'manual') => ipcRenderer.invoke('CHECK_FOR_UPDATE', status),
   openExternal: (url: string) => ipcRenderer.invoke('OPEN_EXTERNAL', url),
   setTheme: (theme: Theme) => ipcRenderer.invoke('SET_THEME', theme),
   showItemInFolder: (fullPath: string) =>

@@ -16,6 +16,8 @@ import Playlist, { playlistLoader } from './pages/playlists/list'
 import Download from './pages/download'
 import PlaylistPage, { playlistPageLoader } from './pages/playlist'
 import Settings  from './pages/settings'
+import Like from './pages/like'
+import Recent from './pages/recent'
 
 const router = createHashRouter([
   {
@@ -117,6 +119,16 @@ const router = createHashRouter([
       {
         path: 'settings',
         element: <Settings />,
+        errorElement: <Error />,
+      },
+      {
+        path: 'like',
+        element: <Like />,
+        errorElement: <Error />,
+      },
+      {
+        path: 'recently-played',
+        element: <Recent />,
         errorElement: <Error />,
       },
     ],

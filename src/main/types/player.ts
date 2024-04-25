@@ -15,3 +15,5 @@ export interface LyricRow {
   time?: number
   words: string
 }
+
+export type PlayMode = 'sequence' | 'loop' | 'repeat' | 'shuffle'

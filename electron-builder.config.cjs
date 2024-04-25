@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/*eslint-env node*/
+const { version } = require('./package.json')
 const nameEN = 'SimpleMusic'
 
 /**
@@ -7,7 +10,7 @@ const nameEN = 'SimpleMusic'
 module.exports = {
   productName: '轻音乐',
   appId: 'com.joey.music',
-  artifactName: nameEN + '-${version}-${os}-${arch}.${ext}',
+  artifactName: `${nameEN}-\${version}-\${os}-\${arch}.\${ext}`,
   directories: {
     output: 'release',
     buildResources: 'resources',
@@ -24,7 +27,7 @@ module.exports = {
   nsis: {
     oneClick: false,
     language: '2052',
-    perMachine: true,
+    perMachine: false,
     allowToChangeInstallationDirectory: true,
   },
   mac: {
@@ -49,5 +52,11 @@ module.exports = {
         type: 'file',
       },
     ],
+  },
+  releaseInfo: {
+    releaseName: `v${version}`,
+    releaseNotes: '1. 修复已知问题\n2. 优化用户体验\n',
+    releaseNotesFile: 'resources/release-notes.md',
+    releaseDate: new Date().toLocaleString(),
   },
 }
