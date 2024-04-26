@@ -76,7 +76,7 @@ const Artists: React.FC = () => {
             <NavLink
               to={`/artists/${value}/${area}`}
               key={value}
-              className="link"
+              className="nav-link"
             >
               {label}
             </NavLink>
@@ -87,7 +87,7 @@ const Artists: React.FC = () => {
             <NavLink
               to={`/artists/${type}/${value}`}
               key={value}
-              className="link"
+              className="nav-link"
             >
               {label}
             </NavLink>

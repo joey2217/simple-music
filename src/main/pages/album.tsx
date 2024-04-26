@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLoaderData, type LoaderFunction } from 'react-router-dom'
+import { Link, useLoaderData, type LoaderFunction } from 'react-router-dom'
 import { fetchAlbum } from '../api/migu'
 import type { AlbumInfo } from '../types/migu'
 import { usePlayer } from '../context/PlayerContext'
@@ -14,7 +14,9 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import Image from '../components/Image'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
+import { Download, ListPlus, ListVideo } from 'lucide-react'
+import { useDownload } from '../store/download'
 
 export const albumLoader: LoaderFunction = ({ params }) => {
   if (params.id) {
@@ -26,20 +28,54 @@ export const albumLoader: LoaderFunction = ({ params }) => {
 const Album: React.FC = () => {
   const { detailInfo, songs } = useLoaderData() as AlbumInfo
   const { play, addToPlayList } = usePlayer()
+  const download = useDownload()
 
   return (
-    <div>
-      <div className="flex gap-2">
+    <div className="page">
+      <div className="flex gap-2 mb-2">
         <Image
           src={detailInfo.mediumPic}
           alt={detailInfo.name}
-          className="w-20 h-20 rounded-md"
+          className="w-24 aspect-square rounded-md"
         />
-        <div>
+        <div className="space-y-2">
           <h1 className="text-xl font-semibold">{detailInfo.name}</h1>
-          <h2 className="text-lg">
-            {detailInfo.singers.map((s) => s.name).join('/')}
-          </h2>
+          <div className="flex gap-4 items-center">
+            <h2 className="text-base divide-x">
+              {detailInfo.singers.map((s) => (
+                <Link
+                  to={`/artist/${s.id}`}
+                  key={s.id}
+                  className={buttonVariants({ variant: 'link' })}
+                >
+                  {s.name}
+                </Link>
+              ))}
+            </h2>
+            <span className="text-muted-foreground text-sm">
+              {detailInfo.publishDate} 发布
+            </span>
+          </div>
+          <div className="flex gap-2 mb-3">
+            <Button
+              variant="default"
+              size="sm"
+              onClick={() =>
+                addToPlayList(songs.items.map(songItem2Music), true)
+              }
+            >
+              <ListVideo className="mr-2" />
+              <span>播放全部</span>
+            </Button>
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={() => addToPlayList(songs.items.map(songItem2Music))}
+            >
+              <ListPlus className="mr-2" />
+              <span>添加到播放列表</span>
+            </Button>
+          </div>
         </div>
       </div>
       <Table>
@@ -72,6 +108,14 @@ const Album: React.FC = () => {
                     title="添加到播放列表"
                   >
                     <FluentAdd />
+                  </Button>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => download(songItem2Music(item))}
+                    title="下载"
+                  >
+                    <Download size={16} />
                   </Button>
                 </div>
               </TableCell>

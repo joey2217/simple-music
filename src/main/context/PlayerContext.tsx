@@ -4,7 +4,6 @@ import React, {
   useCallback,
   useRef,
   useEffect,
-  useMemo,
 } from 'react'
 import { Howl } from 'howler'
 import type { Music, PlayMode } from '../types/player'
@@ -15,7 +14,7 @@ import { shuffle as shuffleFn } from '../utils'
 import { useRecentListStore } from '../store/playlist'
 
 interface PlayerContextProps {
-  current?: Music
+  current: Music | null
   paused: boolean
   duration: number
   time: number
@@ -23,7 +22,7 @@ interface PlayerContextProps {
   play: (song: Music) => void
   togglePaused: () => void
   seek: (t: number) => void
-  addToPlayList: (m: Music | Music[]) => void
+  addToPlayList: (m: Music | Music[], replace?: boolean) => void
   removeFromPlayerList: (m: Music) => void
   playNext: (dir: 'next' | 'prev') => void
   clearPlayList: () => void
@@ -32,7 +31,7 @@ interface PlayerContextProps {
 }
 
 const PlayerContext = React.createContext<PlayerContextProps>({
-  current: undefined,
+  current: null,
   paused: true,
   duration: 0,
   time: 0,
@@ -53,14 +52,27 @@ export function usePlayer() {
 }
 
 let init = true
-
 let shuffleIndexList: number[] = []
+let index = 0
+
+const LOCAL_INDEX = 'play-index'
+function getLocalIndex() {
+  const localData = localStorage.getItem(LOCAL_INDEX)
+  if (localData) {
+    index = Number(localData) || 0
+  }
+}
+getLocalIndex()
+function setLocalIndex(i: number) {
+  index = i
+  localStorage.setItem(LOCAL_INDEX, i.toString())
+}
 
 export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [index, setIndex] = useLocalStorage('play-index', 0)
   const [paused, setPaused] = useState(true)
   const [playList, setPlayList] = useLocalStorage<Music[]>('play-list', [])
   const [duration, setDuration] = useState(0)
+  const [current, setCurrent] = useLocalStorage<Music | null>('current', null)
 
   const [time, setTime] = useState(0)
 
@@ -87,22 +99,46 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
   }, [])
 
   const addToPlayList = useCallback(
-    (m: Music | Music[]) => {
+    (m: Music | Music[], replace = false) => {
+      if (init) {
+        init = false
+      }
+      console.log(m, 'addToPlayList')
       if (Array.isArray(m)) {
-        // const items = m.filter((item) =>
-        //   playList.some((c) => c.copyrightId !== item.copyrightId)
-        // )
-        // setPlayList((l) => l.concat(items))
-        setPlayList(m)
-        setIndex(0)
+        if (replace) {
+          setPlayList(m)
+          setLocalIndex(0)
+          setCurrent(mode === 'shuffle' ? m[shuffleIndexList[0]] : m[0])
+        } else {
+          const items =
+            playList.length > 0
+              ? m.filter((item) =>
+                  playList.some((c) => c.copyrightId !== item.copyrightId)
+                )
+              : m
+          setPlayList((l) => l.concat(items))
+          setCurrent((c) => {
+            if (c === null) {
+              return mode === 'shuffle' ? m[shuffleIndexList[0]] : m[0]
+            }
+            return c
+          })
+        }
       } else {
         const idx = playList.findIndex((s) => s.copyrightId === m.copyrightId)
         if (idx === -1) {
           setPlayList((l) => l.concat(m))
         }
+        setCurrent((c) => {
+          if (c === null) {
+            setLocalIndex(index + 1)
+            return m
+          }
+          return c
+        })
       }
     },
-    [playList, setIndex, setPlayList]
+    [playList, setCurrent, setPlayList]
   )
 
   const removeFromPlayerList = useCallback(
@@ -110,44 +146,46 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
       const idx = playList.findIndex((s) => s.copyrightId === m.copyrightId)
       if (idx !== -1) {
         setPlayList((l) => l.toSpliced(idx, 1))
-        if (idx < index) {
-          if (index > 0) {
-            setIndex(index - 1)
+        setCurrent((c) => {
+          if (c?.copyrightId === m.copyrightId) {
+            const nextIndex = index + 1 > playList.length - 1 ? 0 : index + 1
+            setLocalIndex(nextIndex)
+            return mode === 'shuffle'
+              ? playList[shuffleIndexList[nextIndex]]
+              : playList[nextIndex]
           }
-        }
+          return c
+        })
       }
     },
-    [index, playList, setIndex, setPlayList]
-  )
-
-  const current = useMemo(
-    () =>
-      mode === 'shuffle' ? playList[shuffleIndexList[index]] : playList[index],
-    [index, playList]
+    [playList, setCurrent, setPlayList]
   )
 
   const playNext = useCallback(
     (dir: 'next' | 'prev' = 'next') => {
       if (dir === 'next') {
         // setIndex((i) => (i + 1 > playList.length - 1 ? 0 : i + 1))
-        setIndex((i) => {
-          if (mode === 'sequence') {
-            return i + 1 > playList.length - 1 ? -1 : i + 1
-          } else {
-            return i + 1 > playList.length - 1 ? 0 : i + 1
-          }
-        })
+        if (mode === 'sequence') {
+          const i = index + 1 > playList.length - 1 ? -1 : index + 1
+          setLocalIndex(i)
+        } else {
+          const i = index + 1 > playList.length - 1 ? 0 : index + 1
+          setLocalIndex(i)
+        }
       } else {
-        setIndex((i) => {
-          if (mode === 'sequence') {
-            return i - 1 < 0 ? -1 : i - 1
-          } else {
-            return i - 1 < 0 ? playList.length - 1 : i - 1
-          }
-        })
+        if (mode === 'sequence') {
+          const i = index - 1 < 0 ? -1 : index - 1
+          setLocalIndex(i)
+        } else {
+          const i = index - 1 < 0 ? playList.length - 1 : index - 1
+          setLocalIndex(i)
+        }
       }
+      setCurrent(
+        mode === 'shuffle' ? playList[shuffleIndexList[index]] : playList[index]
+      )
     },
-    [playList.length, setIndex]
+    [setCurrent, playList]
   )
 
   const play = useCallback(
@@ -155,22 +193,27 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
       if (init) {
         init = false
       }
+      setCurrent(song)
       const idx = playList.findIndex((s) => s.copyrightId === song.copyrightId)
       if (idx === -1) {
         setPlayList((l) => l.toSpliced(index + 1, 0, song))
         if (playList.length > 0) {
-          setIndex((i) => i + 1)
+          setLocalIndex(index + 1)
         } else {
-          setIndex(0)
+          setLocalIndex(0)
         }
       } else {
-        setIndex(idx)
+        setLocalIndex(idx)
       }
     },
-    [index, playList, setIndex, setPlayList]
+    [playList, setCurrent, setPlayList]
   )
 
-  const clearPlayList = useCallback(() => setPlayList([]), [setPlayList])
+  const clearPlayList = useCallback(() => {
+    setPlayList([])
+    setCurrent(null)
+    setLocalIndex(0)
+  }, [setCurrent, setPlayList])
 
   const setVolume = useCallback((v: number) => {
     howlerRef.current?.volume(v / 100)

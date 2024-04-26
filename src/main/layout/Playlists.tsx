@@ -2,7 +2,7 @@ import React from 'react'
 
 const Playlists: React.FC = () => {
     return (
-        <div>Playlists</div>
+        <div></div>
     )
 }
 

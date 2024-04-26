@@ -36,10 +36,10 @@ const Artist: React.FC = () => {
       </div>
       <div className="grow">
         <nav className="py-4">
-          <NavLink to="" end className="link">
+          <NavLink to="" end className="nav-link">
             单曲
           </NavLink>
-          <NavLink to="album" className="link">
+          <NavLink to="album" className="nav-link">
             专辑
           </NavLink>
         </nav>

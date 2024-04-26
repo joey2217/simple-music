@@ -1,7 +1,6 @@
 import { PlayMode } from '@/main/types/player'
 import React, { useMemo, useState, type ReactNode } from 'react'
 import { ArrowRightToLine, Repeat, Repeat1, Shuffle } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import { mode, setMode } from '@/main/utils/player'
 import { usePlayer } from '@/main/context/PlayerContext'
 

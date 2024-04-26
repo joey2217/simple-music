@@ -22,11 +22,11 @@ const PlayListIndex: React.FC = () => {
   return (
     <div className="page">
       <nav className="mb-2">
-        <NavLink className="link" end to="">
+        <NavLink className="nav-link" end to="">
           最热
         </NavLink>
         {data.map((t) => (
-          <NavLink className="link" key={t.tagId} to={t.tagId}>
+          <NavLink className="nav-link" key={t.tagId} to={t.tagId}>
             {t.tagName}
           </NavLink>
         ))}

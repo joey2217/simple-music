@@ -5,21 +5,45 @@ import { usePlayer } from '../../../context/PlayerContext'
 import { Button } from '@/components/ui/button'
 import PlayModeButton from './PlayModeButton'
 import { Heart } from 'lucide-react'
+import { useLikeStore } from '@/main/store/like'
 
 const LikeButton: React.FC = () => {
+  const { current } = usePlayer()
+  const likeMusicIds = useLikeStore((s) =>
+    s.musicList.map((m) => m.copyrightId)
+  )
+  const addLikeMusic = useLikeStore((s) => s.addLikeMusic)
+  const removeLikeMusic = useLikeStore((s) => s.removeLikeMusic)
+
+  const isLiked = current && likeMusicIds.includes(current?.copyrightId)
+
+  const toggleLike = () => {
+    if (current) {
+      if (isLiked) {
+        addLikeMusic(current)
+      } else {
+        removeLikeMusic(current)
+      }
+    }
+  }
+
+  const title = isLiked ? '取消收藏' : '收藏'
+
   return (
-    <button title="收藏">
+    <button title={title} disabled={current == null} onClick={toggleLike}>
       <Heart className="fill-red-500 stroke-red-500" size={18} />
     </button>
   )
 }
 const Control: React.FC = () => {
-  const { paused, togglePaused, playNext } = usePlayer()
+  const { paused, togglePaused, playNext, current } = usePlayer()
+  const disabled = current == null
   return (
     <div>
       <div className="flex justify-center items-center gap-3 mb-1">
         <LikeButton />
         <Button
+          disabled={disabled}
           variant="ghost"
           size="icon"
           className="rounded-full text-base"
@@ -30,6 +54,7 @@ const Control: React.FC = () => {
         </Button>
         {paused ? (
           <Button
+            disabled={disabled}
             variant="secondary"
             size="icon"
             className="rounded-full w-12 h-12 text-2xl"
@@ -40,6 +65,7 @@ const Control: React.FC = () => {
           </Button>
         ) : (
           <Button
+            disabled={disabled}
             size="icon"
             variant="secondary"
             className="rounded-full w-12 h-12 text-2xl"
@@ -50,6 +76,7 @@ const Control: React.FC = () => {
           </Button>
         )}
         <Button
+          disabled={disabled}
           variant="ghost"
           size="icon"
           className="rounded-full text-base"

@@ -101,6 +101,10 @@ body {
   left: env(titlebar-area-x, 0);
 }
 
+#logo {
+  width: calc(11rem - env(titlebar-area-x, 0));
+}
+
 .titleBar-top {
   top: env(titlebar-area-height, var(--fallback-title-bar-height));
 }
@@ -197,14 +201,18 @@ input {
   @apply focus-within:outline-none;
 }
 
-.link {
+.nav-link {
   @apply h-9 px-4 py-2 inline-flex items-center justify-start whitespace-nowrap rounded-md
    text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 
    focus-visible:ring-ring hover:bg-accent hover:text-accent-foreground;
 }
 
-.link.active {
+.nav-link.active {
   @apply bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80;
+}
+
+.link {
+  @apply text-accent-foreground underline-offset-4 hover:underline;
 }
 
 /* 滚动条整体 */
@@ -255,3 +263,7 @@ h4 {
 p {
   @apply leading-7 [&:not(:first-child)]:mt-6;
 } */
+
+button:disabled {
+  @apply pointer-events-none opacity-50;
+}

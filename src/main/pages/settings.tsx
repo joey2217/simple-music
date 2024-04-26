@@ -100,7 +100,7 @@ const About: React.FC = () => {
         </div>
         <RadioGroup
           defaultValue={update}
-          onValueChange={setUpdate}
+          onValueChange={(val) => setUpdate(val as UpdateType)}
           className="flex mb-3"
         >
           <div className="flex items-center space-x-2">

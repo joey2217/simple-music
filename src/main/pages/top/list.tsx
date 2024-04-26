@@ -15,6 +15,8 @@ import { columnContent2Music } from '../../utils/player'
 import { PlayIcon, FluentAdd } from '../../components/Icons'
 import { Button } from '@/components/ui/button'
 import Image from '@/main/components/Image'
+import { Download, ListPlus, ListVideo } from 'lucide-react'
+import { useDownload } from '@/main/store/download'
 
 export const topListLoader: LoaderFunction = ({ params }) => {
   if (params.id) {
@@ -42,16 +44,39 @@ const AlbumImage: React.FC<{ albumImgList: AlbumImg[] }> = ({
 const TopList: React.FC = () => {
   const data = useLoaderData() as ColumnInfo
   const { play, addToPlayList } = usePlayer()
+  const download = useDownload()
 
   return (
     <div
-      className="p-2 w-full scrollbar"
+      className="py-2 px-4 w-full scrollbar overflow-auto"
       style={{
         height: 'calc(100vh - 140px)',
       }}
     >
       <div>
         <h1 className="text-xl font-bold mb-4">{data.columnTitle}</h1>
+        <div className="flex gap-2 mb-3">
+          <Button
+            variant="default"
+            size="sm"
+            onClick={() =>
+              addToPlayList(data.contents.map(columnContent2Music), true)
+            }
+          >
+            <ListVideo className="mr-2" />
+            <span>播放全部</span>
+          </Button>
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={() =>
+              addToPlayList(data.contents.map(columnContent2Music))
+            }
+          >
+            <ListPlus className="mr-2" />
+            <span>添加到播放列表</span>
+          </Button>
+        </div>
         <Table>
           <TableHeader>
             <TableRow>
@@ -78,7 +103,7 @@ const TopList: React.FC = () => {
                   </div>
                 </TableCell>
                 <TableCell>
-                  <div className="flex gap-2 text-lg">
+                  <div className="flex gap-1 text-lg">
                     <Button
                       variant="ghost"
                       size="icon"
@@ -94,6 +119,14 @@ const TopList: React.FC = () => {
                       title="添加到播放列表"
                     >
                       <FluentAdd />
+                    </Button>
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      onClick={() => download(columnContent2Music(item))}
+                      title="下载"
+                    >
+                      <Download size={16} />
                     </Button>
                   </div>
                 </TableCell>

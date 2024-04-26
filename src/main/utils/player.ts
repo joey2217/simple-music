@@ -1,4 +1,4 @@
-import type { SongItem, ColumnContent } from '../types/migu'
+import type { SongItem, ColumnContent, SongDetail } from '../types/migu'
 import type { Music, PlayMode } from '../types/player'
 
 export function songItem2Music(songItem: SongItem): Music {
@@ -28,6 +28,22 @@ export function columnContent2Music(columnContent: ColumnContent): Music {
   }
 }
 
+export function songDetail2Music(songDetail: SongDetail): Music {
+  return {
+    copyrightId: songDetail.copyrightId11,
+    title: songDetail.musicName,
+    artist: songDetail.singers.map((s) => s.singerName).join('/'),
+    artists: songDetail.singers.map((s) => ({
+      id: s.singerId,
+      name: s.singerName,
+      image: '',
+    })),
+    album: songDetail.albumId,
+    albumId: songDetail.albumName,
+    pic: songDetail.picUrl,
+  }
+}
+
 export let vol = 100
 
 const VOL_KEY = 'vol'
@@ -43,6 +59,7 @@ function getVol() {
 getVol()
 
 export function setVol(num: number) {
+  vol = num
   localStorage.setItem(VOL_KEY, num.toString())
 }
 

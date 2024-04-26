@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 import { usePlayer } from '../../../context/PlayerContext'
 import {
-  PlayListIcon,
   FluentDelete,
   FluentArrowDownload,
   PlayingIcon,
@@ -13,6 +12,7 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import Image from '@/main/components/Image'
 import { Button } from '@/components/ui/button'
 import { useDownload } from '@/main/store/download'
+import { ListMusic } from 'lucide-react'
 
 interface Props {
   item: Music
@@ -65,7 +65,7 @@ const PlayList: React.FC = () => {
       <Button
         size="icon"
         variant="outline"
-        disabled={current === undefined}
+        disabled={current == null}
         onClick={() => download(current!)}
       >
         <FluentArrowDownload />
@@ -75,12 +75,12 @@ const PlayList: React.FC = () => {
         size="icon"
         onClick={() => setShow((s) => !s)}
       >
-        <PlayListIcon className="text-2xl" />
+        <ListMusic />
       </Button>
       {ReactDOM.createPortal(
         <div
           id="play-list"
-          className="fixed right-0 z-50 p-2 rounded-md shadow-md bg-background/95"
+          className="scrollbar fixed right-0 z-50 p-2 rounded-md shadow-md bg-background/95"
           style={{
             transform: show ? 'translateX(0)' : 'translateX(100%)',
             transitionDuration: '300ms',

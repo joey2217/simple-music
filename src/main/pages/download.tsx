@@ -27,7 +27,7 @@ const Download: React.FC = () => {
   }
 
   return (
-    <div className='page'>
+    <div className="page">
       <Table>
         <TableHeader>
           <TableRow>
@@ -71,6 +71,7 @@ const Download: React.FC = () => {
               </TableCell>
               <TableCell>
                 <Button
+                  size="sm"
                   onClick={() =>
                     window.electronAPI.showItemInFolder(d.downloadPath)
                   }

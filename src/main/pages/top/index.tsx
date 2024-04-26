@@ -26,23 +26,39 @@ export const topLoader: LoaderFunction = ({ params }) => {
 
 const TopPage: React.FC = () => {
   return (
-    <div className="flex page">
-      <ul
-        className="w-32 flex-shrink-0 "
-        style={{
-          height: 'calc(100vh - 140px)',
-        }}
-      >
+    <div
+      className="flex page overflow-hidden"
+      style={{
+        height: 'calc(100vh - 140px)',
+      }}
+    >
+      <ul className="w-32 flex-shrink-0 h-full overflow-y-auto scrollbar">
         {menus.map((m) => (
           <li key={m.id}>
-            <NavLink className="link block w-full" to={`/top/${m.id}`}>
+            <NavLink className="nav-link block w-full" to={`/top/${m.id}`}>
               {m.name}
             </NavLink>
           </li>
         ))}
       </ul>
-      {/* {navigation.state === 'loading' ? 'loading' : <Outlet />} */}
+
       <div className="grow">
+        {/* {navigation.state === 'loading' ? (
+          <div className="flex flex-col space-y-3">
+            <Skeleton className="h-7 rounded-xl" />
+            <div className="flex gap-1">
+              <Skeleton className="h-8 w-28 rounded-xl" />
+              <Skeleton className="h-8 w-28 rounded-xl" />
+            </div>
+            <div className="space-y-2">
+              {Array.from({ length: 10 }).map((_item, index) => (
+                <Skeleton className="h-16" key={index} />
+              ))}
+            </div>
+          </div>
+        ) : (
+          <Outlet />
+        )} */}
         <Outlet />
       </div>
     </div>
