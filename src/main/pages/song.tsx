@@ -21,14 +21,13 @@ const Song: React.FC = () => {
 
   const { addToPlayList, play } = usePlayer()
   return (
-    <div>
+    <div className="relative">
       <div
-        className="text-center bg-no-repeat bg-center bg-fixed bg-opacity-10 blur-sm py-4 mr-44 text-secondary-foreground"
+        className="h-content overflow-hidden w-1/2 fixed left-80 -z-10  blur-sm bg-no-repeat bg-center bg-fixed"
         style={{
           backgroundImage: `url(${data.picUrl})`,
         }}
       ></div>
-      <Image src={data.picUrl} alt={data.musicName} />
       <div className="text-center text-secondary-foreground">
         <h1 className="font-semibold text-lg mb-2">{data.musicName}</h1>
         <h2>
