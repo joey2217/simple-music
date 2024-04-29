@@ -13,7 +13,6 @@ const Image: React.FC<
       {...props}
       src={srcUrl}
       data-src={src}
-      data-srcUrl={srcUrl}
       onError={(e) => {
         (e.target as HTMLImageElement).onerror = null
         ;(e.target as HTMLImageElement).src = icon

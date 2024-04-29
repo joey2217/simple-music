@@ -14,9 +14,9 @@ import { usePlayer } from '../context/PlayerContext'
 import {
   FluentArrowDownload,
   FluentDelete,
-  PlayingIcon,
 } from '../components/Icons'
-import Image from '@/main/components/Image'
+import Image from '@/main/components/LazyLoadImage'
+import { Button } from '@/components/ui/button'
 
 interface Props {
   item: Music
@@ -25,12 +25,10 @@ interface Props {
 
 const PlayListRow: React.FC<Props> = ({ item, index }) => {
   const download = useDownload()
-  const { play, current, removeFromPlayerList } = usePlayer()
+  const { play, removeFromPlayerList } = usePlayer()
   return (
     <TableRow className="play-list-row" onDoubleClick={() => play(item)}>
-      <TableCell className="text-center">
-        {current?.copyrightId === item.copyrightId ? <PlayingIcon /> : index}
-      </TableCell>
+      <TableCell className="text-center">{index}</TableCell>
       <TableCell>
         <div className="flex items-center gap-1">
           <Image
@@ -64,6 +62,31 @@ const Recent: React.FC = () => {
   const list = useRecentListStore((s) => s.recent)
   return (
     <div>
+        <div>
+            <h1 className="text-xl font-bold mb-4">最近播放</h1>
+            <div className="flex gap-2 mb-3">
+              <Button
+                variant="default"
+                size="sm"
+                onClick={() =>
+                  addToPlayList(data.contents.map(columnContent2Music), true)
+                }
+              >
+                <ListVideo className="mr-2" />
+                <span>播放全部</span>
+              </Button>
+              <Button
+                size="sm"
+                variant="secondary"
+                onClick={() =>
+                  addToPlayList(data.contents.map(columnContent2Music))
+                }
+              >
+                <ListPlus className="mr-2" />
+                <span>添加到播放列表</span>
+              </Button>
+            </div>
+          </div>
       <Table>
         <TableHeader>
           <TableRow>

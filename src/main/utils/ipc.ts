@@ -5,8 +5,9 @@ export default function useIPC() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    window.messageAPI.onNavigate((to) => {
+    const removeListener = window.messageAPI.onNavigate((to) => {
       navigate(to)
     })
+    return removeListener
   }, [navigate])
 }

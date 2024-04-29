@@ -10,6 +10,7 @@ import previousImg from './assets/FluentPrevious48Filled.png'
 import FluentPause48Filled from './assets/FluentPause48Filled.png'
 import logoutImg from './assets/logout.png'
 import downloadImg from './assets/download.png'
+import iconImg from './assets/icon.png'
 
 /**
  * @see https://cn.vitejs.dev/config/build-options.html#build-assetsinlinelimit
@@ -20,7 +21,9 @@ import downloadImg from './assets/download.png'
 
 export const winIcon = nativeImage.createFromDataURL(winIconImg)
 
-export const appleIcon = nativeImage.createFromPath(join(ROOT, appleIconImg))
+export const appleIcon = nativeImage.createFromDataURL(appleIconImg) // 16 *16
+
+export const icon = nativeImage.createFromPath(join(ROOT, iconImg))
 
 export const appIcon = process.platform === 'darwin' ? appleIcon : winIcon
 

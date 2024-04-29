@@ -1,4 +1,4 @@
-import { Menu, app, Tray } from 'electron'
+import { Menu, app, Tray, dialog } from 'electron'
 import { APP_NAME } from './constant'
 import {
   appIcon,
@@ -8,17 +8,35 @@ import {
   pauseIcon,
   nextIcon,
   musicIcon,
+  icon,
 } from './icons'
-import { mainNavigate, musicControl, focus } from './windows/main'
+import { musicControl, focus } from './windows/main'
+import { version } from '../package.json'
 
 let musicPaused = true
+
+function about() {
+  dialog.showMessageBox({
+    icon: icon,
+    type: 'info',
+    title: '关于',
+    message: `
+    ${APP_NAME}\n
+    v${version}\n
+    node: ${process.versions.node}\n
+    chrome: ${process.versions.chrome}\n
+    electron: ${process.versions.electron}\n
+    platform: ${process.platform}\n
+    v8: ${process.versions.v8}\n`,
+  })
+}
 
 if (process.platform === 'darwin') {
   const menu = Menu.buildFromTemplate([
     {
       label: APP_NAME,
       submenu: [
-        { label: '关于', click: () => mainNavigate('/setting/about') },
+        { label: '关于', click: about },
         { type: 'separator' },
         { role: 'services', label: '服务' },
         { type: 'separator' },
@@ -59,19 +77,18 @@ if (process.platform === 'darwin') {
         {
           id: 'play',
           label: '播放',
-          icon: playIcon,
+
           click: musicControl('play'),
           enabled: false,
         },
         {
           label: '上一首',
-          icon: prevIcon,
+
           click: musicControl('prev'),
           enabled: false,
         },
         {
           label: '下一首',
-          icon: nextIcon,
           click: musicControl('next'),
           enabled: false,
         },
@@ -164,7 +181,7 @@ export function setMenuTitle(name?: string) {
         {
           label: APP_NAME,
           submenu: [
-            { label: '关于', click: () => mainNavigate('/setting/about') },
+            { label: '关于', click: about },
             { type: 'separator' },
             { role: 'services', label: '服务' },
             { type: 'separator' },
@@ -206,23 +223,20 @@ export function setMenuTitle(name?: string) {
               ? {
                   id: 'play',
                   label: '播放',
-                  icon: playIcon,
+
                   click: musicControl('play'),
                 }
               : {
                   id: 'paused',
                   label: '暂停',
-                  icon: pauseIcon,
                   click: musicControl('pause'),
                 },
             {
               label: '上一首',
-              icon: prevIcon,
               click: musicControl('prev'),
             },
             {
               label: '下一首',
-              icon: nextIcon,
               click: musicControl('next'),
             },
           ],
@@ -234,23 +248,19 @@ export function setMenuTitle(name?: string) {
           ? {
               id: 'play',
               label: '播放',
-              icon: playIcon,
               click: musicControl('play'),
             }
           : {
               id: 'paused',
               label: '暂停',
-              icon: pauseIcon,
               click: musicControl('pause'),
             },
         {
           label: '上一首',
-          icon: prevIcon,
           click: musicControl('prev'),
         },
         {
           label: '下一首',
-          icon: nextIcon,
           click: musicControl('next'),
         },
       ])
@@ -271,7 +281,7 @@ export function setMenuTitle(name?: string) {
         {
           label: APP_NAME,
           submenu: [
-            { label: '关于', click: () => mainNavigate('/setting/about') },
+            { label: '关于', click: about },
             { type: 'separator' },
             { role: 'services', label: '服务' },
             { type: 'separator' },
@@ -390,7 +400,7 @@ export function setMenuPaused(paused: boolean) {
       {
         label: APP_NAME,
         submenu: [
-          { label: '关于', click: () => mainNavigate('/setting/about') },
+          { label: '关于', click: about },
           { type: 'separator' },
           { role: 'services', label: '服务' },
           { type: 'separator' },
