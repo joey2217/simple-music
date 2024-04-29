@@ -14,9 +14,14 @@ import { usePlayer } from '../../context/PlayerContext'
 import { columnContent2Music } from '../../utils/player'
 import { PlayIcon, FluentAdd } from '../../components/Icons'
 import { Button } from '@/components/ui/button'
-import Image from '@/main/components/Image'
 import { Download, ListPlus, ListVideo } from 'lucide-react'
 import { useDownload } from '@/main/store/download'
+import LazyImage from '@/main/components/LazyLoadImage'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 
 export const topListLoader: LoaderFunction = ({ params }) => {
   if (params.id) {
@@ -31,7 +36,7 @@ const AlbumImage: React.FC<{ albumImgList: AlbumImg[] }> = ({
   const albumImg = albumImgList[albumImgList.length - 1]
   if (albumImg) {
     return (
-      <Image
+      <LazyImage
         src={albumImg.webpImg}
         alt="album"
         className="w-10 h-10 rounded-md"
@@ -54,28 +59,44 @@ const TopList: React.FC = () => {
       }}
     >
       <div>
-        <h1 className="text-xl font-bold mb-4">{data.columnTitle}</h1>
-        <div className="flex gap-2 mb-3">
-          <Button
-            variant="default"
-            size="sm"
-            onClick={() =>
-              addToPlayList(data.contents.map(columnContent2Music), true)
-            }
-          >
-            <ListVideo className="mr-2" />
-            <span>播放全部</span>
-          </Button>
-          <Button
-            size="sm"
-            variant="secondary"
-            onClick={() =>
-              addToPlayList(data.contents.map(columnContent2Music))
-            }
-          >
-            <ListPlus className="mr-2" />
-            <span>添加到播放列表</span>
-          </Button>
+        <div className="flex justify-between">
+          <div>
+            <h1 className="text-xl font-bold mb-4">{data.columnTitle}</h1>
+            <div className="flex gap-2 mb-3">
+              <Button
+                variant="default"
+                size="sm"
+                onClick={() =>
+                  addToPlayList(data.contents.map(columnContent2Music), true)
+                }
+              >
+                <ListVideo className="mr-2" />
+                <span>播放全部</span>
+              </Button>
+              <Button
+                size="sm"
+                variant="secondary"
+                onClick={() =>
+                  addToPlayList(data.contents.map(columnContent2Music))
+                }
+              >
+                <ListPlus className="mr-2" />
+                <span>添加到播放列表</span>
+              </Button>
+            </div>
+          </div>
+          <Popover>
+            <PopoverTrigger>
+              <LazyImage
+                src={data.columnPicUrl}
+                alt={data.columnTitle}
+                className="h-20"
+              />
+            </PopoverTrigger>
+            <PopoverContent>
+              <p>{data.columnDes}</p>
+            </PopoverContent>
+          </Popover>
         </div>
         <Table>
           <TableHeader>

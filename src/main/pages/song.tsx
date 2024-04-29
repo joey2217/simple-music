@@ -7,7 +7,7 @@ import { Button, buttonVariants } from '@/components/ui/button'
 import { usePlayer } from '../context/PlayerContext'
 import { songDetail2Music } from '../utils/player'
 import { ListPlus, ListVideo } from 'lucide-react'
-import Image from '../components/Image'
+import LazyLoadImage from '../components/LazyLoadImage'
 
 export const songLoader: LoaderFunction = ({ params }) => {
   if (params.copyrightId) {
@@ -22,12 +22,13 @@ const Song: React.FC = () => {
   const { addToPlayList, play } = usePlayer()
   return (
     <div className="relative">
-      <div
-        className="h-content overflow-hidden w-1/2 fixed left-80 -z-10  blur-sm bg-no-repeat bg-center bg-fixed"
-        style={{
-          backgroundImage: `url(${data.picUrl})`,
-        }}
-      ></div>
+      <div className="fixed -z-10  w-full h-full pr-44 pb-20 flex items-center justify-center">
+        <LazyLoadImage
+          src={data.picUrl}
+          alt={data.albumName}
+          className="rounded brightness-50"
+        />
+      </div>
       <div className="text-center text-secondary-foreground">
         <h1 className="font-semibold text-lg mb-2">{data.musicName}</h1>
         <h2>
@@ -97,7 +98,7 @@ const SongLyric: React.FC<{ copyrightId: string }> = ({ copyrightId }) => {
     return <div>获取歌词错误</div>
   }
   return (
-    <div>
+    <div className="py-4">
       {lyric.map((row, index) => (
         <p key={index} className="p-1">
           {row.words || <br />}

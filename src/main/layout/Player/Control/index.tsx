@@ -20,9 +20,9 @@ const LikeButton: React.FC = () => {
   const toggleLike = () => {
     if (current) {
       if (isLiked) {
-        addLikeMusic(current)
-      } else {
         removeLikeMusic(current)
+      } else {
+        addLikeMusic(current)
       }
     }
   }
@@ -31,7 +31,10 @@ const LikeButton: React.FC = () => {
 
   return (
     <button title={title} disabled={current == null} onClick={toggleLike}>
-      <Heart className="fill-red-500 stroke-red-500" size={18} />
+      <Heart
+        className={`${isLiked ? 'fill-red-500 stroke-red-500' : ''}`}
+        size={18}
+      />
     </button>
   )
 }

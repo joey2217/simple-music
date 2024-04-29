@@ -11,6 +11,7 @@ export const playlistLoader: LoaderFunction = async ({ params }) => {
   return fetchPlaylist(params.tagId).then((data) => ({
     data,
     tagId: params.tagId,
+    end: data.total <= data.items.length || data.items.length < PAGE_SIZE,
   }))
 }
 
@@ -18,18 +19,13 @@ const Playlist: React.FC = () => {
   const data = useLoaderData() as {
     data: PageData<PlayListItem>
     tagId: string
+    end: boolean
   }
 
   const [items, setItems] = useState<PlayListItem[]>([])
 
-  const [finished, setFinished] = useState(true)
+  const [finished, setFinished] = useState(data.end)
   const [pageNum, setPageNum] = useState(1)
-
-  useEffect(() => {
-    setItems(data.data.items)
-    setFinished(data.data.items.length < PAGE_SIZE)
-    setPageNum(1)
-  }, [data.data.items])
 
   const loadMore = useCallback(() => {
     if (!finished) {
@@ -40,7 +36,9 @@ const Playlist: React.FC = () => {
   useEffect(() => {
     if (pageNum > 1) {
       fetchPlaylist(data.tagId, pageNum, PAGE_SIZE).then((data) => {
-        setFinished(data.items.length < PAGE_SIZE)
+        setFinished(
+          data.total <= data.items.length || data.items.length < PAGE_SIZE
+        )
         setItems((l) => l.concat(data.items))
       })
     }
@@ -48,6 +46,9 @@ const Playlist: React.FC = () => {
 
   return (
     <div className="grid grid-cols-6 gap-1">
+      {data.data.items.map((item) => (
+        <PlayListCard item={item} />
+      ))}
       {items.map((item) => (
         <PlayListCard item={item} />
       ))}

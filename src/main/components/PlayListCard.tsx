@@ -15,9 +15,9 @@ const PlayListCard: React.FC<Props> = ({ item }) => {
         <LazyLoadImage
           src={item.image}
           alt={item.playListName}
-          className="rounded-xl aspect-square"
+          className="rounded-t-xl aspect-square"
         />
-        <h4 className="py-2 px-1 truncate font-medium leading-none">
+        <h4 className="py-2 px-1.5 truncate font-medium leading-none">
           {item.playListName}
         </h4>
       </Card>

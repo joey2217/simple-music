@@ -3,7 +3,8 @@ import { useLoaderData, type LoaderFunction, Link } from 'react-router-dom'
 import { fetchArtistSong } from '../../api/migu'
 import { AlbumItem, PageData } from '../../types/migu'
 import LoadMore from '../../components/LoadMore'
-import Image from '@/main/components/Image'
+import { Card } from '@/components/ui/card'
+import LazyLoadImage from '@/main/components/LazyLoadImage'
 
 const PAGE_SIZE = 30
 const SAM = '010'
@@ -62,9 +63,17 @@ const ArtistAlbum: React.FC = () => {
 
 const Album: React.FC<{ album: AlbumItem }> = ({ album }) => {
   return (
-    <Link to={`/album/${album.id}`}>
-      <Image src={album.largePic} alt={album.name} />
-      <div>{album.name}</div>
+    <Link to={`/album/${album.id}`} title={album.name}>
+      <Card>
+        <LazyLoadImage
+          className="rounded-t-xl"
+          src={album.largePic}
+          alt={album.name}
+        />
+        <h4 className="py-2 px-1.5 truncate font-medium leading-none">
+          {album.name}
+        </h4>
+      </Card>
     </Link>
   )
 }

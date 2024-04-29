@@ -27,7 +27,7 @@ function miguRequest<T>(
   cacheKey?: string,
   init?: RequestInit | undefined
 ) {
-  if (cacheKey && cache.has(cacheKey)) {
+  if (cacheKey && cache.has(cacheKey) && import.meta.env.PROD) {
     return Promise.resolve(cache.get(cacheKey) as T)
   }
   return fetch(input, init)
@@ -42,7 +42,7 @@ function miguRequest<T>(
       throw new Error(data.msg)
     })
     .catch((error) => {
-      console.error(error, init, init)
+      console.error(error, init, cacheKey)
       throw error
     })
 }
@@ -180,15 +180,16 @@ export function fetchBanner() {
 // https://m.music.migu.cn/migumusic/h5/playlist/list?columnId=15127272&tagId=1000001683&pageNum=1&pageSize=30
 export function fetchPlaylist(tagId: string = '', page = 1, size = 30) {
   return miguRequest<PageData<PlayListItem>>(
-    `https://m.music.migu.cn/migumusic/h5/playlist/list?columnId=15127272&tagId=${tagId}&pageNum=${page}&pageSize=${size}`
-    // `fetchPlaylist_${tagId}_${page}_${size}`
+    `https://m.music.migu.cn/migumusic/h5/playlist/list?columnId=15127272&tagId=${tagId}&pageNum=${page}&pageSize=${size}`,
+    `fetchPlaylist_${tagId}_${page}_${size}`
   )
 }
 
 // https://m.music.migu.cn/migumusic/h5/playlist/info?songListId=215243155
 export function fetchPlaylistInfo(playlistId: string) {
   return miguRequest<PlaylistInfo>(
-    `https://m.music.migu.cn/migumusic/h5/playlist/info?songListId=${playlistId}`
+    `https://m.music.migu.cn/migumusic/h5/playlist/info?songListId=${playlistId}`,
+    `fetchPlaylistInfo_${playlistId}`
   )
 }
 // https://m.music.migu.cn/migumusic/h5/playlist/songsInfo?palylistId=215243155&pageNo=1&pageSize=18
@@ -201,16 +202,17 @@ export function fetchPlaylistSongs(playlistId: string, page = 1, size = 20) {
 
 // 专辑 `https://m.music.migu.cn/migumusic/h5/album/info?albumId=${e}`
 export function fetchAlbum(albumId: string) {
-  return fetch(
-    `https://m.music.migu.cn/migumusic/h5/album/info?albumId=${albumId}`
+  return miguRequest<AlbumInfo>(
+    `https://m.music.migu.cn/migumusic/h5/album/info?albumId=${albumId}`,
+    `fetchAlbum_${albumId}`
   )
-    .then((res) => res.json())
-    .then((data: MiguResponse<AlbumInfo>) => {
-      if (data.code === '200') {
-        return data.data
-      }
-      throw new Error(data.msg)
-    })
+  // .then((res) => res.json())
+  // .then((data: MiguResponse<AlbumInfo>) => {
+  //   if (data.code === '200') {
+  //     return data.data
+  //   }
+  //   throw new Error(data.msg)
+  // })
 }
 
 // 歌单tag

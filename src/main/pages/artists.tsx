@@ -10,6 +10,8 @@ import { fetchArtistList } from '../api/migu'
 import type { ArtistContent, ArtistType, ArtistArea } from '../types/migu'
 import LazyImage from '../components/LazyLoadImage'
 import { Option } from '../types'
+import { Input } from '@/components/ui/input'
+import { Card } from '@/components/ui/card'
 
 export const artistsLoader: LoaderFunction = async ({ params }) => {
   const { type, area } = params
@@ -69,7 +71,7 @@ const Artists: React.FC = () => {
 
   return (
     <div className="page">
-      <div className="flex items-center gap-10 mb-4 px-2">
+      <div className="flex items-center gap-2 md:gap-4 mb-4 px-2 flex-wrap">
         <h1 className="font-semibold text-lg">歌手</h1>
         <div>
           {TYPES.map(({ label, value }) => (
@@ -94,40 +96,31 @@ const Artists: React.FC = () => {
           ))}
         </div>
         <label className="input input-bordered input-sm flex items-center gap-2 ml-auto">
-          <input
+          <Input
             className="grow"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
             placeholder="筛选歌手"
           />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 16 16"
-            fill="currentColor"
-            className="w-4 h-4 opacity-70"
-          >
-            <path
-              fillRule="evenodd"
-              d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-              clipRule="evenodd"
-            />
-          </svg>
         </label>
       </div>
-      <div className="grid gap-2 grid-cols-12">
+      <div className="grid gap-2 grid-cols-2 sm:grid-cols-4 md:grid-cols-6  lg:grid-cols-8 xl:grid-cols-10">
         {filterList.map((a, i) => (
           <Link
             to={`/artist/${a.resId}`}
             key={a.viewId + i}
-            className="flex flex-col items-center gap-2"
+            className="flex flex-col items-center gap-2 rounded-xl border bg-card text-card-foreground shadow"
+            title={a.txt}
           >
             <LazyImage
               src={a.img}
               alt={a.txt}
-              className="w-16 h-16 rounded-lg"
+              className="rounded-t-xl w-full aspect-square"
               placeholderSrc="https://d.musicapp.migu.cn/prod/file-service/file-down/bcb5ddaf77828caee4eddc172edaa105/5ee9d2cf3f59411a217e83e6c8f691fd/d877668fc78107df5a67758ebd282674"
             />
-            <div className="truncate w-full text-center">{a.txt}</div>
+            <div className="truncate w-full text-center scroll-m-20 text-lg font-semibold tracking-tight">
+              {a.txt}
+            </div>
           </Link>
         ))}
       </div>

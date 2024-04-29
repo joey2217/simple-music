@@ -60,7 +60,7 @@ const Sider: React.FC = () => {
           <div className="space-y-1">
             <NavLink to="/like" className="nav-link w-full">
               <HeartIcon className="mr-4" />
-              <span>收 藏</span>
+              <span>喜 欢</span>
             </NavLink>
           </div>
         </div>
@@ -81,7 +81,7 @@ const Sider: React.FC = () => {
               onClick={() => setExpanded((e) => !e)}
               className="text-lg font-semibold tracking-tight flex items-center cursor-pointer"
             >
-              <span>歌单</span>
+              <span>歌 单</span>
               <ChevronDownIcon
                 className={`${expanded ? 'rotate-180' : ''} text-xl ml-1`}
               />

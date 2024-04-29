@@ -15,7 +15,7 @@ import PlayListIndex, { playlistIndexLoader } from './pages/playlists'
 import Playlist, { playlistLoader } from './pages/playlists/list'
 import Download from './pages/download'
 import PlaylistPage, { playlistPageLoader } from './pages/playlist'
-import Settings  from './pages/settings'
+import Settings from './pages/settings'
 import Like from './pages/like'
 import Recent from './pages/recent'
 

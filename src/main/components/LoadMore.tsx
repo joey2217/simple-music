@@ -25,6 +25,7 @@ const LoadMore: React.FC<Props> = ({ loadMore, finished, className }) => {
             observer.current = null
           } else if (entries[0].intersectionRatio > 0) {
             throttledLoadMore()
+            console.log('throttledLoadMore')
           }
         }
       )

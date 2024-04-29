@@ -10,13 +10,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import Image from '../components/Image'
 import { Button } from '@/components/ui/button'
 import { PlayIcon } from '@radix-ui/react-icons'
 import { FluentAdd } from '../components/Icons'
 import { usePlayer } from '../context/PlayerContext'
 import { songItem2Music } from '../utils/player'
 import LoadMore from '../components/LoadMore'
+import LazyImage from '../components/LazyLoadImage'
 
 export const playlistPageLoader: LoaderFunction = ({ params }) => {
   if (params.playlistId) {
@@ -37,7 +37,7 @@ const PlaylistPage: React.FC = () => {
   }
   const [items, setItems] = useState<SongItem[]>([])
   const { play, addToPlayList } = usePlayer()
-  const [finished, setFinished] = useState(false)
+  const [finished, setFinished] = useState(true)
   const [pageNum, setPageNum] = useState(1)
 
   const loadMore = useCallback(() => {
@@ -49,7 +49,7 @@ const PlaylistPage: React.FC = () => {
   useEffect(() => {
     fetchPlaylistSongs(playlistId, pageNum, PAGE_SIZE).then((data) => {
       setFinished(
-        data.total > data.items.length ? data.items.length < PAGE_SIZE : true
+        data.total <= data.items.length || data.items.length < PAGE_SIZE
       )
       setItems((l) => l.concat(data.items))
     })
@@ -58,10 +58,10 @@ const PlaylistPage: React.FC = () => {
   return (
     <div>
       <div className="flex gap-2">
-        <Image
+        <LazyImage
           src={data.image}
           alt={data.playListName}
-          className="w-16 h-16 rounded-md"
+          className="aspect-square h-24 rounded-md"
         />
         <div>
           <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
@@ -87,11 +87,11 @@ const PlaylistPage: React.FC = () => {
               <TableCell className="text-center">{index + 1}</TableCell>
               <TableCell>
                 <div className="flex items-center gap-1">
-                  <Image
+                  {/* <Image
                     src={song.smallPic}
                     alt="album"
                     className="w-10 h-10 rounded"
-                  />
+                  /> */}
                   <div className="truncate flex-1">
                     <div className="truncate font-semibold text-base">
                       {song.name}
