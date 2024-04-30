@@ -20,6 +20,14 @@ logger.error = (msg, options) =>
 
 async function start() {
   await startRendererServer(join(ROOT, 'vite.config.ts'))
+  await build({
+    configFile: join(ROOT, 'vite.preload.config.ts'),
+    mode: 'development',
+    build: {
+      watch: {},
+    },
+  })
+  logger.info('build preload')
   const watcher = await build({
     configFile: join(ROOT, 'vite.main.config.ts'),
     mode: 'development',
@@ -27,6 +35,7 @@ async function start() {
       watch: {},
     },
   })
+  logger.info('build main')
   watcher.on('event', function (e) {
     logger.info(`build ${e.code}`)
     if (e.code === 'END') {

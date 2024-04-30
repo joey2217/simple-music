@@ -5,6 +5,7 @@ import { AlbumItem, PageData } from '../../types/migu'
 import LoadMore from '../../components/LoadMore'
 import { Card } from '@/components/ui/card'
 import LazyLoadImage from '@/main/components/LazyLoadImage'
+import Pagination from '@/main/components/Pagination'
 
 const PAGE_SIZE = 30
 const SAM = '010'
@@ -56,7 +57,7 @@ const ArtistAlbum: React.FC = () => {
           <Album album={item} key={item.id} />
         ))}
       </div>
-      <LoadMore loadMore={loadMore} finished={finished} />
+      <Pagination total={100} />
     </div>
   )
 }

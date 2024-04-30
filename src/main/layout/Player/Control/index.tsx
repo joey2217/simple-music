@@ -27,7 +27,7 @@ const LikeButton: React.FC = () => {
     }
   }
 
-  const title = isLiked ? '取消收藏' : '收藏'
+  const title = isLiked ? '取消喜欢' : '喜欢'
 
   return (
     <button title={title} disabled={current == null} onClick={toggleLike}>

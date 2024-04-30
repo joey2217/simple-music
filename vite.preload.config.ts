@@ -20,13 +20,14 @@ export default defineConfig(({ mode }) => {
       sourcemap: mode === 'development' ? 'inline' : false,
       target: `node${NODE_VERSION}`,
       outDir: path.join(ROOT, 'dist'),
+      emptyOutDir: true,
       minify: mode === 'development' ? false : 'esbuild',
       lib: {
         entry: {
-          main: path.join(ROOT, '/src-main/index.ts'),
+          preload: path.join(ROOT, '/src-main/windows/preload.ts'),
         },
-        formats: ['es'],
-        fileName: (_format, entryName) => entryName + '.mjs',
+        formats: ['cjs'],
+        fileName: (_format, entryName) => entryName + '.cjs',
       },
       rollupOptions: {
         external: EXTERNAL,

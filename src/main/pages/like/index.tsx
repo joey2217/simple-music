@@ -9,7 +9,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
-import { Download, ListPlus, ListVideo } from 'lucide-react'
+import { Download, ListPlus, ListVideo, Trash2 } from 'lucide-react'
 import LazyImage from '@/main/components/LazyLoadImage'
 import { usePlayer } from '@/main/context/PlayerContext'
 import { useDownload } from '@/main/store/download'
@@ -17,6 +17,7 @@ import { FluentAdd, PlayIcon } from '@/main/components/Icons'
 
 const Like: React.FC = () => {
   const musicList = useLikeStore((s) => s.musicList)
+  const removeLikeMusic = useLikeStore((s) => s.removeLikeMusic)
   const { play, addToPlayList } = usePlayer()
   const download = useDownload()
   return (
@@ -55,7 +56,7 @@ const Like: React.FC = () => {
         </TableHeader>
         <TableBody>
           {musicList.map((item, index) => (
-            <TableRow key={item.copyrightId}>
+            <TableRow key={item.copyrightId} onDoubleClick={() => play(item)}>
               <TableCell className="text-center">{index + 1}</TableCell>
               <TableCell>
                 <div className="flex items-center gap-2 max-w-96">
@@ -97,6 +98,14 @@ const Like: React.FC = () => {
                     title="下载"
                   >
                     <Download size={16} />
+                  </Button>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => removeLikeMusic(item)}
+                    title="取消喜欢"
+                  >
+                    <Trash2 size={16} />
                   </Button>
                 </div>
               </TableCell>

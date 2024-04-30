@@ -22,9 +22,8 @@ export function create() {
       height: 40,
     },
     webPreferences: {
-      preload: path.join(ROOT, 'preload.mjs'),
+      preload: path.join(ROOT, 'preload.cjs'),
       webSecurity: import.meta.env.PROD,
-      sandbox: false,
     },
   })
   win.once('ready-to-show', () => {

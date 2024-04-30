@@ -143,7 +143,7 @@ body {
       var(--player-height)
   );
   overflow: auto;
-  width: 415px;
+  width: 380px;
 }
 
 .play-list-row {

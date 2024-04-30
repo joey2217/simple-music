@@ -33,12 +33,10 @@ const Search: React.FC = () => {
   const [songList, setSingList] = useState<SongItem[]>([])
   const [page, setPage] = useState(0)
   const [finished, setFinished] = useState(true)
-  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (keyword) {
       setPage(1)
-      setLoading(true)
       fetchSearchData(keyword, 1, PAGE_SIZE)
         .then((data) => {
           const {
@@ -53,16 +51,12 @@ const Search: React.FC = () => {
           console.error(err)
           setFinished(true)
         })
-        .finally(() => {
-          setLoading(false)
-        })
     }
   }, [keyword])
 
   const loadMore = useCallback(() => {
     if (keyword) {
       const nextPage = page + 1
-      setLoading(true)
       setPage(page)
       fetchSearchData(keyword, nextPage, PAGE_SIZE)
         .then((data) => {
@@ -77,9 +71,6 @@ const Search: React.FC = () => {
         .catch((err) => {
           console.error(err)
           setFinished(true)
-        })
-        .finally(() => {
-          setLoading(false)
         })
     }
   }, [keyword, page])

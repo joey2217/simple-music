@@ -1,8 +1,10 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { version } from '../../package.json'
 import type { DownloadInfo, Theme } from '../types'
+
 /**
- * 不能加载常量,sandbox无法加载
+ * Sandboxed preload scripts can't use ESM imports
+ * https://www.electronjs.org/zh/docs/latest/tutorial/esm#preload-%E8%84%9A%E6%9C%AC
  */
 contextBridge.exposeInMainWorld('devAPI', {
   toggleDevtools: () => ipcRenderer.invoke('TOGGLE_DEVTOOLS'),
@@ -13,7 +15,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   download: (files: DownloadInfo[]) =>
     ipcRenderer.invoke('DOWNLOAD_FILES', files),
   getDownloadsPath: () => ipcRenderer.invoke('GET_DOWNLOADS_PATH'),
-  checkUpdate: (status?: 'auto' | 'hint' | 'manual') => ipcRenderer.invoke('CHECK_FOR_UPDATE', status),
+  checkUpdate: (status?: 'auto' | 'hint' | 'manual') =>
+    ipcRenderer.invoke('CHECK_FOR_UPDATE', status),
   openExternal: (url: string) => ipcRenderer.invoke('OPEN_EXTERNAL', url),
   setTheme: (theme: Theme) => ipcRenderer.invoke('SET_THEME', theme),
   showItemInFolder: (fullPath: string) =>

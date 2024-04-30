@@ -11,12 +11,10 @@ import {
 import type { Music } from '../types/player'
 import { useDownload } from '../store/download'
 import { usePlayer } from '../context/PlayerContext'
-import {
-  FluentArrowDownload,
-  FluentDelete,
-} from '../components/Icons'
+import { FluentArrowDownload, FluentDelete } from '../components/Icons'
 import Image from '@/main/components/LazyLoadImage'
 import { Button } from '@/components/ui/button'
+import { ListPlus, ListVideo } from 'lucide-react'
 
 interface Props {
   item: Music
@@ -60,33 +58,30 @@ const PlayListRow: React.FC<Props> = ({ item, index }) => {
 
 const Recent: React.FC = () => {
   const list = useRecentListStore((s) => s.recent)
+  const { addToPlayList } = usePlayer()
   return (
     <div>
-        <div>
-            <h1 className="text-xl font-bold mb-4">最近播放</h1>
-            <div className="flex gap-2 mb-3">
-              <Button
-                variant="default"
-                size="sm"
-                onClick={() =>
-                  addToPlayList(data.contents.map(columnContent2Music), true)
-                }
-              >
-                <ListVideo className="mr-2" />
-                <span>播放全部</span>
-              </Button>
-              <Button
-                size="sm"
-                variant="secondary"
-                onClick={() =>
-                  addToPlayList(data.contents.map(columnContent2Music))
-                }
-              >
-                <ListPlus className="mr-2" />
-                <span>添加到播放列表</span>
-              </Button>
-            </div>
-          </div>
+      <div>
+        <h1 className="text-xl font-bold mb-4">最近播放</h1>
+        <div className="flex gap-2 mb-3">
+          <Button
+            variant="default"
+            size="sm"
+            onClick={() => addToPlayList(list, true)}
+          >
+            <ListVideo className="mr-2" />
+            <span>播放全部</span>
+          </Button>
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={() => addToPlayList(list)}
+          >
+            <ListPlus className="mr-2" />
+            <span>添加到播放列表</span>
+          </Button>
+        </div>
+      </div>
       <Table>
         <TableHeader>
           <TableRow>

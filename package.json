@@ -15,9 +15,9 @@
   "scripts": {
     "publish": "npm run build && electron-builder build -c electron-builder.config.cjs -p always",
     "package": "npm run build && electron-builder build -c electron-builder.config.cjs",
-    "dev": "node scripts/dev.js",
+    "dev": "node scripts/dev.mjs",
     "dev:renderer": "vite -c vite.config.ts",
-    "build": "vite build -c vite.main.config.ts && vite build -c vite.config.ts",
+    "build": "vite build -c vite.preload.config.ts && vite build -c vite.main.config.ts && vite build -c vite.config.ts",
     "prebuild": "npm run check",
     "check": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.json",
     "test": "vitest",

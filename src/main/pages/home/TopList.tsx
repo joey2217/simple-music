@@ -1,19 +1,10 @@
 import { fetchRankingList } from '@/main/api/migu'
 import React, { useEffect, useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button, buttonVariants } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { buttonVariants } from '@/components/ui/button'
 import { Link, useNavigate } from 'react-router-dom'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import type { AlbumImg, ColumnContent, ColumnInfo } from '@/main/types/migu'
-import { Skeleton } from '@/components/ui/skeleton'
-import { ListVideo, Play } from 'lucide-react'
+import type { AlbumImg, ColumnInfo } from '@/main/types/migu'
+import { Play } from 'lucide-react'
 import { usePlayer } from '@/main/context/PlayerContext'
 import { columnContent2Music } from '@/main/utils/player'
 import LazyImage from '@/main/components/LazyLoadImage'

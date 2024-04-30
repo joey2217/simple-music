@@ -4,7 +4,6 @@ import type { PlayListItem } from '../../types/migu'
 import PlayListCard from '../../components/PlayListCard'
 import { Link } from 'react-router-dom'
 import { buttonVariants } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 const PlayList: React.FC = () => {
   const [items, setItems] = useState<PlayListItem[]>([])

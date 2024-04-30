@@ -11,7 +11,6 @@ import type { ArtistContent, ArtistType, ArtistArea } from '../types/migu'
 import LazyImage from '../components/LazyLoadImage'
 import { Option } from '../types'
 import { Input } from '@/components/ui/input'
-import { Card } from '@/components/ui/card'
 
 export const artistsLoader: LoaderFunction = async ({ params }) => {
   const { type, area } = params
