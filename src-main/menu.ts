@@ -19,7 +19,7 @@ function about() {
   dialog.showMessageBox({
     icon: icon,
     type: 'info',
-    title: '关于',
+    title: '关于' + APP_NAME,
     message: `
     ${APP_NAME}\n
     v${version}\n
@@ -36,7 +36,7 @@ if (process.platform === 'darwin') {
     {
       label: APP_NAME,
       submenu: [
-        { label: '关于', click: about },
+        { label: '关于' + APP_NAME, click: about },
         { type: 'separator' },
         { role: 'services', label: '服务' },
         { type: 'separator' },
@@ -181,7 +181,7 @@ export function setMenuTitle(name?: string) {
         {
           label: APP_NAME,
           submenu: [
-            { label: '关于', click: about },
+            { label: '关于' + APP_NAME, click: about },
             { type: 'separator' },
             { role: 'services', label: '服务' },
             { type: 'separator' },
@@ -281,7 +281,7 @@ export function setMenuTitle(name?: string) {
         {
           label: APP_NAME,
           submenu: [
-            { label: '关于', click: about },
+            { label: '关于' + APP_NAME, click: about },
             { type: 'separator' },
             { role: 'services', label: '服务' },
             { type: 'separator' },
@@ -400,7 +400,7 @@ export function setMenuPaused(paused: boolean) {
       {
         label: APP_NAME,
         submenu: [
-          { label: '关于', click: about },
+          { label: '关于' + APP_NAME, click: about },
           { type: 'separator' },
           { role: 'services', label: '服务' },
           { type: 'separator' },

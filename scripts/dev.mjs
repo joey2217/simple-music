@@ -55,6 +55,9 @@ function startElectron() {
     // windows 上，不支持 signal 参数
     electronProcess.kill()
     // electronProcess = null
+    if (process.platform === 'darwin') {
+      electronProcess = null
+    }
     // process.exit()
   }
   electronProcess = spawn(electron, [join(ROOT, 'dist/main.mjs')])

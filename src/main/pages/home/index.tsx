@@ -8,8 +8,8 @@ const Home: React.FC = () => {
     <>
       <Banner />
       <div className="page space-y-3">
-        <PlayList />
         <TopList />
+        <PlayList />
       </div>
     </>
   )

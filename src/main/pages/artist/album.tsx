@@ -1,5 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { useLoaderData, type LoaderFunction, Link } from 'react-router-dom'
+import {
+  useLoaderData,
+  type LoaderFunction,
+  Link,
+  useNavigate,
+} from 'react-router-dom'
 import { fetchArtistSong } from '../../api/migu'
 import { AlbumItem, PageData } from '../../types/migu'
 import { Card } from '@/components/ui/card'
@@ -9,14 +14,19 @@ import Pagination from '@/main/components/Pagination'
 const PAGE_SIZE = 30
 const SAM = '010'
 
-export const artistAlbumLoader: LoaderFunction = ({ params }) => {
+export const artistAlbumLoader: LoaderFunction = ({ params, request }) => {
+  const url = new URL(request.url)
+  const pageStr = url.searchParams.get('page')
   const { id } = params
   if (id) {
-    return fetchArtistSong(id, 1, SAM, PAGE_SIZE).then((data) => {
+    const page = Number(pageStr) || 1
+    return fetchArtistSong(id, page, SAM, PAGE_SIZE).then((data) => {
       return {
         data: data.album,
         id,
+        page,
         end: data.album.items.length < PAGE_SIZE,
+        total: data.album.total,
       }
     })
   }
@@ -24,37 +34,28 @@ export const artistAlbumLoader: LoaderFunction = ({ params }) => {
 }
 
 const ArtistAlbum: React.FC = () => {
-  const { data, id, end } = useLoaderData() as {
+  const { data, id, total, page } = useLoaderData() as {
     data: PageData<AlbumItem>
-    end: boolean
+    total: number
+    page: number
     id: string
   }
-
-  const [list, setList] = useState(data.items)
-  const [finished, setFinished] = useState(end)
-  const [pageNum, setPageNum] = useState(1)
-
-  const loadMore = useCallback(() => {
-    if (!finished) {
-      setPageNum((p) => p + 1)
-    }
-  }, [finished])
-
-  useEffect(() => {
-    fetchArtistSong(id, pageNum, SAM, PAGE_SIZE).then((data) => {
-      setFinished(data.album.items.length < PAGE_SIZE)
-      setList((l) => l.concat(data.album.items))
-    })
-  }, [id, pageNum])
+  const navigate = useNavigate()
 
   return (
     <div>
+      <Link to={`/artist/${id}/album?page=2`}>page2</Link>
       <div className="grid gap-1 grid-cols-6">
-        {list.map((item) => (
+        {data.items.map((item) => (
           <Album album={item} key={item.id} />
         ))}
       </div>
-      <Pagination total={100} />
+      <Pagination
+        total={total}
+        defalutPage={page}
+        size={PAGE_SIZE}
+        onChange={(p) => navigate(`/artist/${id}/album?page=${p}`)}
+      />
     </div>
   )
 }

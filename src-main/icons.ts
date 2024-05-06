@@ -1,6 +1,4 @@
 import { nativeImage } from 'electron'
-import { join } from 'node:path'
-import { ROOT } from './constant'
 import play from './assets/FluentPlay48Filled.png'
 import winIconImg from './assets/icon32.png'
 import musicImg from './assets/music.png'
@@ -10,18 +8,20 @@ import previousImg from './assets/FluentPrevious48Filled.png'
 import FluentPause48Filled from './assets/FluentPause48Filled.png'
 import logoutImg from './assets/logout.png'
 import downloadImg from './assets/download.png'
-import iconImg from './assets/icon.png'
+import iconImg from './assets/icon192.png'
 
 /**
  * @see https://cn.vitejs.dev/config/build-options.html#build-assetsinlinelimit
+ * build.lib 全为内联
  * 小于4kB 的导入或引用资源将内联为 base64 编码，使用createFromDataURL
+ * #22c55e
  */
 
 export const winIcon = nativeImage.createFromDataURL(winIconImg)
 
 export const appleIcon = nativeImage.createFromDataURL(appleIconImg) // 16 *16
 
-export const icon = nativeImage.createFromPath(join(ROOT, iconImg))
+export const icon = nativeImage.createFromDataURL(iconImg)
 
 export const appIcon = process.platform === 'darwin' ? appleIcon : winIcon
 
