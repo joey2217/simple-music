@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useLoaderData, type LoaderFunction, Link } from 'react-router-dom'
 import { fetchArtistSong } from '../../api/migu'
 import { AlbumItem, PageData } from '../../types/migu'
-import LoadMore from '../../components/LoadMore'
 import { Card } from '@/components/ui/card'
 import LazyLoadImage from '@/main/components/LazyLoadImage'
 import Pagination from '@/main/components/Pagination'
@@ -42,12 +41,10 @@ const ArtistAlbum: React.FC = () => {
   }, [finished])
 
   useEffect(() => {
-    if (pageNum > 1) {
-      fetchArtistSong(id, pageNum, SAM, PAGE_SIZE).then((data) => {
-        setFinished(data.album.items.length < PAGE_SIZE)
-        setList((l) => l.concat(data.album.items))
-      })
-    }
+    fetchArtistSong(id, pageNum, SAM, PAGE_SIZE).then((data) => {
+      setFinished(data.album.items.length < PAGE_SIZE)
+      setList((l) => l.concat(data.album.items))
+    })
   }, [id, pageNum])
 
   return (

@@ -12,9 +12,12 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
+  AlertDialogPrimitiveCancel,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { useDownloadListStore } from '../store/download'
+import { X } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 interface DialogContentData {
   open: boolean
@@ -40,6 +43,7 @@ export function useApp() {
 
 export const AppProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const updateDownloadItem = useDownloadListStore((s) => s.updateDownloadItem)
+
   const [dialogConfig, setDialogConfig] = useState<DialogContentData>({
     open: false,
     title: '',
@@ -83,7 +87,14 @@ export const AppProvider: React.FC<PropsWithChildren> = ({ children }) => {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{dialogConfig.title}</AlertDialogTitle>
+            <div className="flex items-center justify-between">
+              <AlertDialogTitle>{dialogConfig.title}</AlertDialogTitle>
+              <AlertDialogPrimitiveCancel onClick={dialogConfig.reject}>
+                <Button size="icon" variant="ghost" className="rounded-full">
+                  <X />
+                </Button>
+              </AlertDialogPrimitiveCancel>
+            </div>
             <AlertDialogDescription>
               {dialogConfig.message}
             </AlertDialogDescription>

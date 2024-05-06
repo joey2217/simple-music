@@ -10,3 +10,13 @@ export interface User {
   role: number
   avatar: string
 }
+
+ 
+
+export interface Playlist {
+  id: string
+  title: string
+  cover: string
+  count: number
+  desc?: string
+}

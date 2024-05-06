@@ -20,6 +20,7 @@ export default defineConfig(({ mode }) => {
       sourcemap: mode === 'development' ? 'inline' : false,
       target: `node${NODE_VERSION}`,
       outDir: path.join(ROOT, 'dist'),
+      emptyOutDir: false,
       minify: mode === 'development' ? false : 'esbuild',
       lib: {
         entry: {

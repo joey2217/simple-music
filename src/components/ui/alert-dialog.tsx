@@ -124,6 +124,8 @@ const AlertDialogCancel = React.forwardRef<
 ))
 AlertDialogCancel.displayName = AlertDialogPrimitive.Cancel.displayName
 
+const AlertDialogPrimitiveCancel = AlertDialogPrimitive.Cancel
+
 export {
   AlertDialog,
   AlertDialogPortal,
@@ -136,4 +138,5 @@ export {
   AlertDialogDescription,
   AlertDialogAction,
   AlertDialogCancel,
+  AlertDialogPrimitiveCancel,
 }

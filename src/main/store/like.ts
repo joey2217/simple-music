@@ -17,7 +17,7 @@ export const useLikeStore = create<LikeState>()(
       musicList: [],
       addLikeMusic: (music: Music) =>
         set((state) => ({
-          musicList: [music, ...state.musicList],
+          musicList: [music, ...state.musicList].slice(1, 500),
         })),
       removeLikeMusic: (music: Music) =>
         set((state) => ({
@@ -25,6 +25,21 @@ export const useLikeStore = create<LikeState>()(
             (item) => item.copyrightId !== music.copyrightId
           ),
         })),
+      // toggleLikeMusic: (music: Music) =>
+      //   set((state) => {
+      //     const index = state.musicList.findIndex(
+      //       (m) => m.copyrightId === music.copyrightId
+      //     )
+      //     if (index === -1) {
+      //       return {
+      //         musicList: [music, ...state.musicList],
+      //       }
+      //     } else {
+      //       return {
+      //         musicList: state.musicList.toSpliced(index, 1),
+      //       }
+      //     }
+      //   }),
       // artistList: [],
       // addLikeArtist: (artist: ArtistInfo) =>
       //   set((s) => ({

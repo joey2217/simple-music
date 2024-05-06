@@ -20,7 +20,7 @@ logger.error = (msg, options) =>
 
 async function start() {
   await startRendererServer(join(ROOT, 'vite.config.ts'))
-  await build({
+  const preloadWatcher = await build({
     configFile: join(ROOT, 'vite.preload.config.ts'),
     mode: 'development',
     build: {
@@ -28,18 +28,23 @@ async function start() {
     },
   })
   logger.info('build preload')
-  const watcher = await build({
-    configFile: join(ROOT, 'vite.main.config.ts'),
-    mode: 'development',
-    build: {
-      watch: {},
-    },
-  })
-  logger.info('build main')
-  watcher.on('event', function (e) {
-    logger.info(`build ${e.code}`)
-    if (e.code === 'END') {
-      startElectron()
+  preloadWatcher.on('event', async function (event) {
+    logger.info('preload event = ', JSON.stringify(event, null, 2))
+    if (event.code === 'END') {
+      const watcher = await build({
+        configFile: join(ROOT, 'vite.main.config.ts'),
+        mode: 'development',
+        build: {
+          watch: {},
+        },
+      })
+      logger.info('build main')
+      watcher.on('event', function (e) {
+        logger.info(`main build event: ${e.code}`)
+        if (e.code === 'END') {
+          startElectron()
+        }
+      })
     }
   })
 }

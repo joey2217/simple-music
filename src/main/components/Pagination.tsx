@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, type ReactNode } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
   Pagination as PaginationRoot,
   PaginationContent,
@@ -126,7 +126,7 @@ const Pagination: React.FC<Props> = ({
         {prevNext}
         <PaginationItem>
           <PaginationNext
-            disabled={disablePrevious}
+            disabled={disableNext}
             onClick={() => setPage((p) => p + 1)}
           />
         </PaginationItem>

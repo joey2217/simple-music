@@ -15,8 +15,6 @@ import iconImg from './assets/icon.png'
 /**
  * @see https://cn.vitejs.dev/config/build-options.html#build-assetsinlinelimit
  * 小于4kB 的导入或引用资源将内联为 base64 编码，使用createFromDataURL
- * 16 * 16
- * #22c55e
  */
 
 export const winIcon = nativeImage.createFromDataURL(winIconImg)

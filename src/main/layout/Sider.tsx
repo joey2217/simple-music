@@ -11,13 +11,16 @@ import {
 import { ChevronDownIcon, HeartIcon, PlusIcon } from '@radix-ui/react-icons'
 import { Button } from '@/components/ui/button'
 import useLocalStorage from '../hooks/useLocalStorage'
-import Playlists from './Playlists'
+import { usePlaylists } from '../context/PlaylistContext'
 
 const Sider: React.FC = () => {
   const [expanded, setExpanded] = useLocalStorage(
     'sider_playlist_expanded',
     false
   )
+
+  const { playlistList } = usePlaylists()
+
   return (
     <nav
       id="menu"
@@ -95,7 +98,16 @@ const Sider: React.FC = () => {
               <PlaylistIcon className="mr-4" />
               <span>最近播放</span>
             </NavLink>
-            <Playlists />
+            {playlistList.map((p) => (
+              <NavLink
+                key={p.id}
+                to={`/pl/${p.id}`}
+                className="nav-link w-full "
+              >
+                <PlaylistIcon className="mr-4" />
+                <span>{p.title}</span>
+              </NavLink>
+            ))}
           </div>
         </div>
       </div>

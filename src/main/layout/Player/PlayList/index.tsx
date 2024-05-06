@@ -4,7 +4,6 @@ import { usePlayer } from '../../../context/PlayerContext'
 import {
   FluentDelete,
   FluentArrowDownload,
-  PlayingIcon,
   RoundClose,
 } from '../../../components/Icons'
 import type { Music } from '../../../types/player'
@@ -12,7 +11,9 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import Image from '@/main/components/Image'
 import { Button } from '@/components/ui/button'
 import { useDownload } from '@/main/store/download'
-import { ListMusic, Play } from 'lucide-react'
+import { ListMusic, Play, SquarePlus } from 'lucide-react'
+import { useApp } from '@/main/context/AppContext'
+import { usePlaylists } from '@/main/context/PlaylistContext'
 
 interface Props {
   item: Music
@@ -68,10 +69,34 @@ const PlayListRow: React.FC<Props> = ({ item }) => {
 
 const PlayList: React.FC = () => {
   const { playList, clearPlayList, current } = usePlayer()
+  const { saveToPlaylist } = usePlaylists()
+  const { confirm } = useApp()
   const download = useDownload()
   const [show, setShow] = useState(false)
+
+  const onClear = () => {
+    confirm({
+      title: '清空播放列表',
+      message: '确认要清空播放列表吗?',
+    })
+      .then(() => {
+        clearPlayList()
+      })
+      .catch(() => {
+        /** empty */
+      })
+  }
+
   return (
     <div className="h-full flex items-center justify-center gap-4">
+      <Button
+        size="icon"
+        variant="outline"
+        disabled={current == null}
+        onClick={() => saveToPlaylist(current!)}
+      >
+        <SquarePlus />
+      </Button>
       <Button
         size="icon"
         variant="outline"
@@ -98,7 +123,7 @@ const PlayList: React.FC = () => {
         >
           <div className="flex gap-2">
             <h2 className="text-lg font-semibold mr-auto">播放列表</h2>
-            <Button variant="link" onClick={clearPlayList}>
+            <Button variant="link" onClick={onClear}>
               清空
             </Button>
             <Button

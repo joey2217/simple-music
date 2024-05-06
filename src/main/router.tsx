@@ -18,6 +18,8 @@ import PlaylistPage, { playlistPageLoader } from './pages/playlist'
 import Settings from './pages/settings'
 import Like from './pages/like'
 import Recent from './pages/recent'
+import LikePlaylist from './pages/like-playlist'
+import EditLikePlaylist, { editLikePlaylistLoader } from './pages/like-playlist/edit'
 
 const router = createHashRouter([
   {
@@ -129,6 +131,17 @@ const router = createHashRouter([
       {
         path: 'recently-played',
         element: <Recent />,
+        errorElement: <Error />,
+      },
+      {
+        path: 'pl/:id',
+        element: <LikePlaylist />,
+        errorElement: <Error />,
+      },
+      {
+        path: 'pl/:id/edit',
+        loader: editLikePlaylistLoader,
+        element: <EditLikePlaylist />,
         errorElement: <Error />,
       },
     ],
