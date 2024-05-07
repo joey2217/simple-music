@@ -12,12 +12,12 @@ import useLocalStorage from '../hooks/useLocalStorage'
 import { setVol, vol, mode } from '../utils/player'
 import { shuffle as shuffleFn } from '../utils'
 import { useRecentListStore } from '../store/playlist'
+import emitter from '../utils/emitter'
 
 interface PlayerContextProps {
   current: Music | null
   paused: boolean
   duration: number
-  time: number
   playList: Music[]
   play: (song: Music) => void
   togglePaused: () => void
@@ -34,7 +34,6 @@ const PlayerContext = React.createContext<PlayerContextProps>({
   current: null,
   paused: true,
   duration: 0,
-  time: 0,
   playList: [],
   play: () => {},
   togglePaused: () => {},
@@ -73,8 +72,6 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [playList, setPlayList] = useLocalStorage<Music[]>('play-list', [])
   const [duration, setDuration] = useState(0)
   const [current, setCurrent] = useLocalStorage<Music | null>('current', null)
-
-  const [time, setTime] = useState(0)
 
   const addRecent = useRecentListStore((s) => s.addRecent)
 
@@ -284,13 +281,12 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
         })
         howler.once('load', () => {
           setDuration(Math.ceil(howler.duration()))
-          setTime(0)
           clearInterval(timer.current)
           if (init) {
             init = false
           } else {
             timer.current = setInterval(() => {
-              setTime(Math.ceil(howler.seek()))
+              emitter.emit('time', Math.ceil(howler.seek()))
             }, 1000) as unknown as number
           }
         })
@@ -298,7 +294,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
           setPaused(false)
           if (timer.current === 0) {
             timer.current = setInterval(() => {
-              setTime(Math.ceil(howler.seek()))
+              emitter.emit('time', Math.ceil(howler.seek()))
             }, 1000) as unknown as number
           }
         })
@@ -314,7 +310,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
             clearInterval(timer.current)
             playNext()
           } else {
-            setTime(0)
+            emitter.emit('time', 0)
           }
         })
         howlerRef.current = howler
@@ -322,7 +318,6 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
     } else {
       setPaused(true)
       setDuration(0)
-      setTime(0)
     }
 
     return () => {
@@ -337,7 +332,6 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
         current,
         paused,
         duration,
-        time,
         playList,
         setShuffleIndexList,
         play,

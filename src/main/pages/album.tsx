@@ -17,6 +17,7 @@ import Image from '../components/Image'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Download, ListPlus, ListVideo } from 'lucide-react'
 import { useDownload } from '../store/download'
+import LikeButton from '../components/buttons/LikeButton'
 
 export const albumLoader: LoaderFunction = ({ params }) => {
   if (params.id) {
@@ -109,6 +110,13 @@ const Album: React.FC = () => {
                   >
                     <FluentAdd />
                   </Button>
+                  <LikeButton
+                    className={buttonVariants({
+                      size: 'icon',
+                      variant: 'ghost',
+                    })}
+                    item={songItem2Music(item)}
+                  />
                   <Button
                     size="icon"
                     variant="ghost"

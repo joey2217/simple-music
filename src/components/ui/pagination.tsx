@@ -6,7 +6,8 @@ import {
 } from '@radix-ui/react-icons'
 
 import { cn } from '@/lib/utils'
-import { Button, ButtonProps } from '@/components/ui/button'
+import { Button, ButtonProps, buttonVariants } from '@/components/ui/button'
+import { Link, type LinkProps } from 'react-router-dom'
 
 const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
   <nav
@@ -40,20 +41,44 @@ PaginationItem.displayName = 'PaginationItem'
 
 type PaginationLinkProps = {
   isActive?: boolean
-} & ButtonProps
+  disabled?: boolean
+} & Pick<ButtonProps, 'size'> &
+  LinkProps
 
 const PaginationLink = ({
+  className,
   isActive,
+  disabled = false,
   size = 'icon',
   ...props
-}: PaginationLinkProps) => (
-  <Button
-    aria-current={isActive ? 'page' : undefined}
-    variant={isActive ? 'outline' : 'ghost'}
-    size={size}
-    {...props}
-  />
-)
+}: PaginationLinkProps) => {
+  if (disabled) {
+    return (
+      <Button
+        aria-current={isActive ? 'page' : undefined}
+        variant={isActive ? 'outline' : 'ghost'}
+        size={size}
+        className={className}
+      >
+        {props.children}
+      </Button>
+    )
+  } else {
+    return (
+      <Link
+        aria-current={isActive ? 'page' : undefined}
+        className={cn(
+          buttonVariants({
+            variant: isActive ? 'outline' : 'ghost',
+            size,
+          }),
+          className
+        )}
+        {...props}
+      />
+    )
+  }
+}
 PaginationLink.displayName = 'PaginationLink'
 
 const PaginationPrevious = ({

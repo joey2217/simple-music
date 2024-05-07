@@ -19,7 +19,10 @@ import Settings from './pages/settings'
 import Like from './pages/like'
 import Recent from './pages/recent'
 import LikePlaylist from './pages/like-playlist'
-import EditLikePlaylist, { editLikePlaylistLoader } from './pages/like-playlist/edit'
+import EditLikePlaylist, {
+  editLikePlaylistLoader,
+} from './pages/like-playlist/edit'
+import PlaylistContent, { playlistContentLoader } from './pages/playlist/list'
 
 const router = createHashRouter([
   {
@@ -112,6 +115,13 @@ const router = createHashRouter([
         element: <PlaylistPage />,
         loader: playlistPageLoader,
         errorElement: <Error />,
+        children: [
+          {
+            path: ':page?',
+            loader: playlistContentLoader,
+            element: <PlaylistContent />,
+          },
+        ],
       },
       {
         path: 'download',

@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React from 'react'
 import { useLoaderData, type LoaderFunction } from 'react-router-dom'
 import { fetchArtistSong } from '../../api/migu'
 import type { PageData, SongItem } from '../../types/migu'
 import { usePlayer } from '../../context/PlayerContext'
 import { songItem2Music } from '../../utils/player'
 import { FluentAdd, PlayIcon } from '../../components/Icons'
-import LoadMore from '../../components/LoadMore'
 import {
   Table,
   TableBody,
@@ -14,20 +13,28 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import Image from '@/main/components/Image'
+import Pagination from '@/main/components/Pagination'
+import LikeButton from '@/main/components/buttons/LikeButton'
+import { Download } from 'lucide-react'
+import { useDownload } from '@/main/store/download'
 
 const PAGE_SIZE = 30
 const SAM = '100'
 
-export const artistSongLoader: LoaderFunction = async ({ params }) => {
+export const artistSongLoader: LoaderFunction = async ({ params, request }) => {
   const { id } = params
+  const url = new URL(request.url)
+  const pageStr = url.searchParams.get('page')
   if (id) {
-    return fetchArtistSong(id, 1, SAM, PAGE_SIZE).then((data) => {
+    const page = Number(pageStr) || 1
+    return fetchArtistSong(id, page, SAM, PAGE_SIZE).then((data) => {
       return {
         data: data.song,
         id,
-        end: data.song.items.length < PAGE_SIZE,
+        page,
+        total: data.song.total,
       }
     })
   }
@@ -35,31 +42,14 @@ export const artistSongLoader: LoaderFunction = async ({ params }) => {
 }
 
 const Song: React.FC = () => {
-  const { data, id, end } = useLoaderData() as {
+  const { data, id, page, total } = useLoaderData() as {
     data: PageData<SongItem>
-    end: boolean
+    page: number
+    total: number
     id: string
   }
   const { play, addToPlayList } = usePlayer()
-
-  const [list, setList] = useState(data.items)
-  const [finished, setFinished] = useState(end)
-  const [pageNum, setPageNum] = useState(1)
-
-  const loadMore = useCallback(() => {
-    if (!finished) {
-      setPageNum((p) => p + 1)
-    }
-  }, [finished])
-
-  useEffect(() => {
-    if (pageNum > 1) {
-      fetchArtistSong(id, pageNum, SAM, PAGE_SIZE).then((data) => {
-        setFinished(data.song.items.length < PAGE_SIZE)
-        setList((l) => l.concat(data.song.items))
-      })
-    }
-  }, [id, pageNum])
+  const download = useDownload()
 
   return (
     <>
@@ -73,7 +63,7 @@ const Song: React.FC = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {list.map((song, index) => (
+          {data.items.map((song, index) => (
             <TableRow key={song.copyrightId}>
               <TableCell className="text-center">{index + 1}</TableCell>
               <TableCell>
@@ -111,6 +101,21 @@ const Song: React.FC = () => {
                   >
                     <FluentAdd />
                   </Button>
+                  <LikeButton
+                    className={buttonVariants({
+                      size: 'icon',
+                      variant: 'ghost',
+                    })}
+                    item={songItem2Music(song)}
+                  />
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => download(songItem2Music(song))}
+                    title="下载"
+                  >
+                    <Download size={16} />
+                  </Button>
                 </div>
               </TableCell>
               <TableCell title={song.album?.name} className="max-w-32">
@@ -120,7 +125,12 @@ const Song: React.FC = () => {
           ))}
         </TableBody>
       </Table>
-      <LoadMore loadMore={loadMore} finished={finished} />
+      <Pagination
+        total={total}
+        current={page}
+        size={PAGE_SIZE}
+        urlFormat={(p) => `/artist/${id}?page=${p}`}
+      />
     </>
   )
 }

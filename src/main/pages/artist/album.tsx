@@ -1,10 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import {
-  useLoaderData,
-  type LoaderFunction,
-  Link,
-  useNavigate,
-} from 'react-router-dom'
+import React from 'react'
+import { useLoaderData, type LoaderFunction, Link } from 'react-router-dom'
 import { fetchArtistSong } from '../../api/migu'
 import { AlbumItem, PageData } from '../../types/migu'
 import { Card } from '@/components/ui/card'
@@ -40,11 +35,9 @@ const ArtistAlbum: React.FC = () => {
     page: number
     id: string
   }
-  const navigate = useNavigate()
 
   return (
     <div>
-      <Link to={`/artist/${id}/album?page=2`}>page2</Link>
       <div className="grid gap-1 grid-cols-6">
         {data.items.map((item) => (
           <Album album={item} key={item.id} />
@@ -52,9 +45,9 @@ const ArtistAlbum: React.FC = () => {
       </div>
       <Pagination
         total={total}
-        defalutPage={page}
+        current={page}
         size={PAGE_SIZE}
-        onChange={(p) => navigate(`/artist/${id}/album?page=${p}`)}
+        urlFormat={(p) => `/artist/${id}/album?page=${p}`}
       />
     </div>
   )

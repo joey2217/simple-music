@@ -1,6 +1,8 @@
 import mitt from 'mitt'
 
-type Events = {}
+type Events = {
+  time: number
+}
 
 const emitter = mitt<Events>() // inferred as Emitter<Events>
 

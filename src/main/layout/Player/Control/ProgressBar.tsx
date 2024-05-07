@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { usePlayer } from '../../../context/PlayerContext'
 import { Slider } from '@/components/ui/slider'
+import emitter from '@/main/utils/emitter'
 
 const toMinutes = (s: number) => {
   const minutes = Math.floor(s / 60)
@@ -13,7 +14,13 @@ const toMinutes = (s: number) => {
 }
 
 const ProgressBar: React.FC = () => {
-  const { duration, time, seek } = usePlayer()
+  const { duration, seek } = usePlayer()
+  const [time, setTime] = useState(0)
+
+  useEffect(() => {
+    emitter.on('time', setTime)
+    return () => emitter.off('time', setTime)
+  }, [])
 
   return (
     <div className="flex items-center gap-2 text-sm">

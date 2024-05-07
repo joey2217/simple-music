@@ -13,8 +13,8 @@ import type { AlbumImg, ColumnInfo } from '../../types/migu'
 import { usePlayer } from '../../context/PlayerContext'
 import { columnContent2Music } from '../../utils/player'
 import { PlayIcon, FluentAdd } from '../../components/Icons'
-import { Button } from '@/components/ui/button'
-import { Download, ListPlus, ListVideo } from 'lucide-react'
+import { Button, buttonVariants } from '@/components/ui/button'
+import { Download, ListPlus, ListVideo, SquarePlus } from 'lucide-react'
 import { useDownload } from '@/main/store/download'
 import LazyImage from '@/main/components/LazyLoadImage'
 import {
@@ -22,6 +22,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import LikeButton from '@/main/components/buttons/LikeButton'
+import { usePlaylists } from '@/main/context/PlaylistContext'
 
 export const topListLoader: LoaderFunction = ({ params }) => {
   if (params.id) {
@@ -50,6 +52,7 @@ const TopList: React.FC = () => {
   const data = useLoaderData() as ColumnInfo
   const { play, addToPlayList } = usePlayer()
   const download = useDownload()
+  const { saveToPlaylist } = usePlaylists()
 
   return (
     <div
@@ -109,54 +112,71 @@ const TopList: React.FC = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.contents.map((item, index) => (
-              <TableRow key={item.contentId}>
-                <TableCell className="text-center">{index + 1}</TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2 max-w-96">
-                    <AlbumImage albumImgList={item.objectInfo.albumImgs} />
-                    <div className="truncate flex-1">
-                      <div className="truncate font-semibold text-base">
-                        {item.objectInfo.songName}
+            {data.contents.map((item, index) => {
+              const m = columnContent2Music(item)
+              return (
+                <TableRow key={item.contentId}>
+                  <TableCell className="text-center">{index + 1}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2 max-w-96">
+                      <AlbumImage albumImgList={item.objectInfo.albumImgs} />
+                      <div className="truncate flex-1">
+                        <div className="truncate font-semibold text-base">
+                          {item.objectInfo.songName}
+                        </div>
+                        <div className="truncate">{item.objectInfo.singer}</div>
                       </div>
-                      <div className="truncate">{item.objectInfo.singer}</div>
                     </div>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div className="flex gap-1 text-lg">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => play(columnContent2Music(item))}
-                      title="播放"
-                    >
-                      <PlayIcon />
-                    </Button>
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      onClick={() => addToPlayList(columnContent2Music(item))}
-                      title="添加到播放列表"
-                    >
-                      <FluentAdd />
-                    </Button>
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      onClick={() => download(columnContent2Music(item))}
-                      title="下载"
-                    >
-                      <Download size={16} />
-                    </Button>
-                  </div>
-                </TableCell>
-                <TableCell title={item.objectInfo.album} className="max-w-32">
-                  <div className="truncate">{item.objectInfo.album}</div>
-                </TableCell>
-                <TableCell>{item.objectInfo.length}</TableCell>
-              </TableRow>
-            ))}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex gap-1 text-lg">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => play(m)}
+                        title="播放"
+                      >
+                        <PlayIcon />
+                      </Button>
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        onClick={() => addToPlayList(m)}
+                        title="添加到播放列表"
+                      >
+                        <FluentAdd />
+                      </Button>
+                      <LikeButton
+                        className={buttonVariants({
+                          size: 'icon',
+                          variant: 'ghost',
+                        })}
+                        item={m}
+                      />
+                      <Button
+                        size="icon"
+                        variant="outline"
+                        onClick={() => saveToPlaylist(m)}
+                      >
+                        <SquarePlus />
+                      </Button>
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        onClick={() => download(m)}
+                        title="下载"
+                      >
+                        <Download size={16} />
+                      </Button>
+                    </div>
+                  </TableCell>
+                  <TableCell title={item.objectInfo.album} className="max-w-32">
+                    <div className="truncate">{item.objectInfo.album}</div>
+                  </TableCell>
+                  <TableCell>{item.objectInfo.length}</TableCell>
+                </TableRow>
+              )
+            })}
           </TableBody>
         </Table>
       </div>
