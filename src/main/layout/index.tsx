@@ -1,7 +1,6 @@
 import React from 'react'
 import Header from './Header'
 import { Outlet } from 'react-router-dom'
-import Player from './Player'
 import Sider from './Sider'
 import useIPC from '../utils/ipc'
 
@@ -16,7 +15,6 @@ const Layout: React.FC = () => {
           <Outlet />
         </div>
       </main>
-      <Player />
     </>
   )
 }

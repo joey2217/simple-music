@@ -10,13 +10,14 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Plus } from 'lucide-react'
-import { Playlist } from '../types'
+import type { Playlist } from '../types'
 
 interface PlaylistContextProps {
   playlistList: Playlist[]
   createPlaylist: (m?: Music) => void
   saveToPlaylist: (m: Music) => void
   updatePlaylist: (p: Partial<Playlist>) => void
+  removePlaylist: (id: string) => void
 }
 
 const PlaylistContext = React.createContext<PlaylistContextProps>({
@@ -24,6 +25,7 @@ const PlaylistContext = React.createContext<PlaylistContextProps>({
   createPlaylist: () => {},
   saveToPlaylist: () => {},
   updatePlaylist: () => {},
+  removePlaylist: () => {},
 })
 
 export function usePlaylists() {
@@ -118,6 +120,14 @@ export const PlaylistProvider: React.FC<PropsWithChildren> = ({ children }) => {
     setSaveOpen(false)
   }
 
+  const removePlaylist = useCallback(
+    (id: string) => {
+      setPlaylistList((l) => l.filter((p) => p.id !== id))
+      localStorage.removeItem(`${LOCAL_PREFIX}${id}`)
+    },
+    [setPlaylistList]
+  )
+
   return (
     <PlaylistContext.Provider
       value={{
@@ -125,6 +135,7 @@ export const PlaylistProvider: React.FC<PropsWithChildren> = ({ children }) => {
         createPlaylist,
         saveToPlaylist,
         updatePlaylist,
+        removePlaylist,
       }}
     >
       {children}

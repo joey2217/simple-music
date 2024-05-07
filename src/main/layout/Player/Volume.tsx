@@ -3,7 +3,7 @@ import { vol as localVol } from '@/main/utils/player'
 import { Volume1, Volume2, VolumeX } from 'lucide-react'
 import React, { useCallback, useState } from 'react'
 import { usePlayer } from './PlayerContext'
-import { usePlaylist, usePlaylistStore } from '@/main/store/playlist'
+import { usePlaylistStore } from '@/main/store/playlist'
 
 interface Props {
   value: number

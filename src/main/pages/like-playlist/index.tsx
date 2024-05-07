@@ -3,24 +3,40 @@ import {
   usePlaylists,
 } from '@/main/context/PlaylistContext'
 import React, { useMemo } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import MusicTable from '@/main/components/MusicTable'
 import PlayAllButton from '@/main/components/buttons/PlayAllButton'
 import AddPlayListButton from '@/main/components/buttons/AddPlayListButton'
 import { FilePenLine } from 'lucide-react'
 import LazyImage from '@/main/components/LazyLoadImage'
+import { Button } from '@/components/ui/button'
+import { useApp } from '@/main/context/AppContext'
 
 //  let revalidator = useRevalidator();
 
 const LikePlaylist: React.FC = () => {
   const { id } = useParams()
-  const { playlistList } = usePlaylists()
+  const { playlistList, removePlaylist } = usePlaylists()
+  const { confirm } = useApp()
+  const navigate = useNavigate()
 
   const list = useMemo(() => (id ? getPlaylistMusicsById(id) : []), [id])
   const current = useMemo(
     () => playlistList.find((p) => p.id === id),
     [id, playlistList]
   )
+
+  const remove = () => {
+    confirm({
+      title: '删除歌单',
+      message: '确认删除该歌单?',
+    })
+      .then(() => {
+        removePlaylist(id!)
+        navigate('/', { replace: true })
+      })
+      .catch(() => {})
+  }
 
   return (
     <div className="page">
@@ -40,6 +56,9 @@ const LikePlaylist: React.FC = () => {
           <div className="flex gap-2 mb-3">
             <PlayAllButton items={list} />
             <AddPlayListButton items={list} />
+            <Button variant="destructive" onClick={remove}>
+              删除歌单
+            </Button>
           </div>
         </div>
       </div>

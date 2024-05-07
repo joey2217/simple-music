@@ -19,7 +19,7 @@ const Sider: React.FC = () => {
     false
   )
 
-  const { playlistList } = usePlaylists()
+  const { playlistList, createPlaylist } = usePlaylists()
 
   return (
     <nav
@@ -89,7 +89,11 @@ const Sider: React.FC = () => {
                 className={`${expanded ? 'rotate-180' : ''} text-xl ml-1`}
               />
             </h2>
-            <Button className="h-6 w-6 p-0" variant="outline">
+            <Button
+              className="h-6 w-6 p-0"
+              variant="outline"
+              onClick={() => createPlaylist()}
+            >
               <PlusIcon />
             </Button>
           </div>

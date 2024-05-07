@@ -137,7 +137,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
           initPlayer()
           if (autoplay) {
             timer.current = setInterval(() => {
-              // setTime(Math.ceil(howler.seek()))
+              setTime(Math.ceil(howler.seek()))
             }, 1000) as unknown as number
           }
         })
@@ -145,7 +145,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
           setPaused(false)
           if (timer.current === 0) {
             timer.current = setInterval(() => {
-              // setTime(Math.ceil(howler.seek()))
+              setTime(Math.ceil(howler.seek()))
             }, 1000) as unknown as number
           }
         })
@@ -155,7 +155,6 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
           timer.current = 0
         })
         howler.once('end', () => {
-          // TODO repeat end
           console.log('end', mode)
           if (mode !== 'repeat') {
             clearInterval(timer.current)
