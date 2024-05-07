@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import ReactDOM from 'react-dom'
-import { usePlayer } from '../../../context/PlayerContext'
 import {
   FluentDelete,
   FluentArrowDownload,
@@ -14,6 +13,8 @@ import { useDownload } from '@/main/store/download'
 import { ListMusic, Play, SquarePlus } from 'lucide-react'
 import { useApp } from '@/main/context/AppContext'
 import { usePlaylists } from '@/main/context/PlaylistContext'
+import { usePlaylist, usePlaylistStore } from '@/main/store/playlist'
+import { index, setLocalIndex } from '@/main/utils/player'
 
 interface Props {
   item: Music
@@ -22,9 +23,35 @@ interface Props {
 
 const PlayListRow: React.FC<Props> = ({ item }) => {
   const download = useDownload()
-  const { play, current, removeFromPlayerList } = usePlayer()
 
-  const playing = current?.copyrightId === item.copyrightId
+  const current = usePlaylistStore((s) => s.current)
+  const playList = usePlaylistStore((s) => s.playList)
+  const removePlayList = usePlaylistStore((s) => s.removePlayList)
+  const setCurrent = usePlaylistStore((s) => s.setCurrent)
+  const { play } = usePlaylist()
+
+  const playing = useMemo(
+    () => current?.copyrightId === item.copyrightId,
+    [current, item]
+  )
+
+  const remove = () => {
+    const i = playList.findIndex((i) => i.copyrightId === item.copyrightId)
+    if (i !== -1) {
+      removePlayList(i)
+      if (playing) {
+        const nextIndex = index + 1 > playList.length - 1 ? 0 : index + 1
+        setLocalIndex(nextIndex)
+        setCurrent(playList[nextIndex])
+      } else if (i < index) {
+        const nextIndex = i + 1 > playList.length - 1 ? 0 : i + 1
+        setLocalIndex(nextIndex)
+      } else if (i > index) {
+        const nextIndex = i - 1 < 0 ? 0 : i + 1
+        setLocalIndex(nextIndex)
+      }
+    }
+  }
 
   return (
     <TableRow className="play-list-row" onDoubleClick={() => play(item)}>
@@ -58,7 +85,7 @@ const PlayListRow: React.FC<Props> = ({ item }) => {
           <button onClick={() => download(item)}>
             <FluentArrowDownload />
           </button>
-          <button onClick={() => removeFromPlayerList(item)}>
+          <button onClick={remove}>
             <FluentDelete />
           </button>
         </div>
@@ -68,7 +95,9 @@ const PlayListRow: React.FC<Props> = ({ item }) => {
 }
 
 const PlayList: React.FC = () => {
-  const { playList, clearPlayList, current } = usePlayer()
+  const playList = usePlaylistStore((s) => s.playList)
+  const current = usePlaylistStore((s) => s.current)
+  const setPlayList = usePlaylistStore((s) => s.setPlayList)
   const { saveToPlaylist } = usePlaylists()
   const { confirm } = useApp()
   const download = useDownload()
@@ -80,7 +109,7 @@ const PlayList: React.FC = () => {
       message: '确认要清空播放列表吗?',
     })
       .then(() => {
-        clearPlayList()
+        setPlayList([])
       })
       .catch(() => {
         /** empty */

@@ -5,9 +5,9 @@ import { buttonVariants } from '@/components/ui/button'
 import { Link, useNavigate } from 'react-router-dom'
 import type { AlbumImg, ColumnInfo } from '@/main/types/migu'
 import { Play } from 'lucide-react'
-import { usePlayer } from '@/main/context/PlayerContext'
 import { columnContent2Music } from '@/main/utils/player'
 import LazyImage from '@/main/components/LazyLoadImage'
+import { usePlaylist } from '@/main/store/playlist'
 
 const AlbumImage: React.FC<{ albumImgList: AlbumImg[] }> = ({
   albumImgList,
@@ -28,7 +28,7 @@ const AlbumImage: React.FC<{ albumImgList: AlbumImg[] }> = ({
 const MusicTable: React.FC<{
   id: string
 }> = ({ id }) => {
-  const { addToPlayList } = usePlayer()
+  const { addToPlayList } = usePlaylist()
   const [data, setData] = useState<ColumnInfo>()
   const navigate = useNavigate()
 

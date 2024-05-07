@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label'
 import logo from '../assets/icon.png'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import useLocalStorage from '../hooks/useLocalStorage'
+import { UpdateType } from '../types'
 
 interface SettingsCardProps {
   title: string
@@ -78,7 +79,6 @@ const Download: React.FC = () => {
   )
 }
 
-type UpdateType = 'auto' | 'hint' | 'manual'
 
 const About: React.FC = () => {
   const [update, setUpdate] = useLocalStorage<UpdateType>('auto_update', 'auto')

@@ -2,7 +2,6 @@ import React from 'react'
 import { Link, useLoaderData, type LoaderFunction } from 'react-router-dom'
 import { fetchAlbum } from '../api/migu'
 import type { AlbumInfo } from '../types/migu'
-import { usePlayer } from '../context/PlayerContext'
 import { songItem2Music } from '../utils/player'
 import { FluentAdd, PlayIcon } from '../components/Icons'
 import {
@@ -18,6 +17,7 @@ import { Button, buttonVariants } from '@/components/ui/button'
 import { Download, ListPlus, ListVideo } from 'lucide-react'
 import { useDownload } from '../store/download'
 import LikeButton from '../components/buttons/LikeButton'
+import { usePlaylist } from '../store/playlist'
 
 export const albumLoader: LoaderFunction = ({ params }) => {
   if (params.id) {
@@ -28,7 +28,7 @@ export const albumLoader: LoaderFunction = ({ params }) => {
 
 const Album: React.FC = () => {
   const { detailInfo, songs } = useLoaderData() as AlbumInfo
-  const { play, addToPlayList } = usePlayer()
+  const { play, addToPlayList } = usePlaylist()
   const download = useDownload()
 
   return (

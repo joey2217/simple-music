@@ -1,13 +1,12 @@
 import React from 'react'
-import { useRecentListStore } from '../store/playlist'
-import { usePlayer } from '../context/PlayerContext'
+import { usePlaylist, useRecentListStore } from '../store/playlist'
 import { Button } from '@/components/ui/button'
 import { ListPlus, ListVideo } from 'lucide-react'
 import MusicTable from '../components/MusicTable'
 
 const Recent: React.FC = () => {
   const list = useRecentListStore((s) => s.recent)
-  const { addToPlayList } = usePlayer()
+  const { addToPlayList } = usePlaylist()
   return (
     <div className="page">
       <div>

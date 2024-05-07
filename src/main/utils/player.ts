@@ -1,8 +1,11 @@
 import type { SongItem, ColumnContent, SongDetail } from '../types/migu'
 import type { Music, PlayMode } from '../types/player'
+import { shuffle } from './index'
 
 export function songItem2Music(songItem: SongItem): Music {
-  console.log('songItem2Music', songItem)
+  if (import.meta.env.DEV) {
+    console.log('songItem2Music', songItem)
+  }
   return {
     copyrightId: songItem.copyrightId,
     title: songItem.name,
@@ -16,7 +19,9 @@ export function songItem2Music(songItem: SongItem): Music {
 
 export function columnContent2Music(columnContent: ColumnContent): Music {
   const { albumImgs } = columnContent.objectInfo
-  console.log('columnContent2Music', columnContent)
+  if (import.meta.env.DEV) {
+    console.log('columnContent2Music', columnContent)
+  }
   return {
     copyrightId: columnContent.objectInfo.copyrightId,
     title: columnContent.objectInfo.songName,
@@ -78,4 +83,32 @@ getMode()
 export function setMode(newMode: PlayMode) {
   mode = newMode
   localStorage.setItem(MODE_KEY, newMode)
+}
+
+export let autoplay = false
+export function initPlayer() {
+  autoplay = true
+}
+
+export let shuffleIndexList: number[] = []
+export function setShuffleIndexList(l: number) {
+  if (l > 0) {
+    shuffleIndexList = shuffle(Array.from({ length: l }, (_item, i) => i))
+  } else {
+    shuffleIndexList = []
+  }
+}
+
+export let index = 0
+const LOCAL_INDEX = 'play-index'
+function getLocalIndex() {
+  const localData = localStorage.getItem(LOCAL_INDEX)
+  if (localData) {
+    index = Number(localData) || 0
+  }
+}
+getLocalIndex()
+export function setLocalIndex(i: number) {
+  index = i
+  localStorage.setItem(LOCAL_INDEX, i.toString())
 }

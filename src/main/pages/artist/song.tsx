@@ -2,7 +2,6 @@ import React from 'react'
 import { useLoaderData, type LoaderFunction } from 'react-router-dom'
 import { fetchArtistSong } from '../../api/migu'
 import type { PageData, SongItem } from '../../types/migu'
-import { usePlayer } from '../../context/PlayerContext'
 import { songItem2Music } from '../../utils/player'
 import { FluentAdd, PlayIcon } from '../../components/Icons'
 import {
@@ -19,6 +18,7 @@ import Pagination from '@/main/components/Pagination'
 import LikeButton from '@/main/components/buttons/LikeButton'
 import { Download } from 'lucide-react'
 import { useDownload } from '@/main/store/download'
+import { usePlaylist } from '@/main/store/playlist'
 
 const PAGE_SIZE = 30
 const SAM = '100'
@@ -48,7 +48,7 @@ const Song: React.FC = () => {
     total: number
     id: string
   }
-  const { play, addToPlayList } = usePlayer()
+  const { play, addToPlayList } = usePlaylist()
   const download = useDownload()
 
   return (

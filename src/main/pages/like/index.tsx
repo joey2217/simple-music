@@ -2,13 +2,13 @@ import { useLikeStore } from '@/main/store/like'
 import React from 'react'
 import { Button } from '@/components/ui/button'
 import { ListPlus, ListVideo } from 'lucide-react'
-import { usePlayer } from '@/main/context/PlayerContext'
 import MusicTable from '@/main/components/MusicTable'
+import { usePlaylist } from '@/main/store/playlist'
 
 const Like: React.FC = () => {
   const musicList = useLikeStore((s) => s.musicList)
 
-  const { addToPlayList } = usePlayer()
+  const { addToPlayList } = usePlaylist()
 
   return (
     <div className="page">

@@ -11,19 +11,18 @@ import {
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Download } from 'lucide-react'
 import LazyImage from '@/main/components/LazyLoadImage'
-import { usePlayer } from '@/main/context/PlayerContext'
 import { useDownload } from '@/main/store/download'
 import { FluentAdd, PlayIcon } from '@/main/components/Icons'
 import LikeButton from './buttons/LikeButton'
+import { usePlaylist } from '../store/playlist'
 
 interface Props {
   items: Music[]
 }
 
 const MusicTable: React.FC<Props> = ({ items }) => {
-  const { play, addToPlayList } = usePlayer()
+  const { play, addToPlayList } = usePlaylist()
   const download = useDownload()
-
   return (
     <Table>
       <TableHeader>

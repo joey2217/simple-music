@@ -46,9 +46,9 @@ const PlayerContext = React.createContext<PlayerContextProps>({
   setShuffleIndexList: () => {},
 })
 
-export function usePlayer() {
-  return React.useContext(PlayerContext)
-}
+// export function usePlayer() {
+//   return React.useContext(PlayerContext)
+// }
 
 let init = true
 let shuffleIndexList: number[] = []

@@ -10,7 +10,6 @@ import {
 } from '@/components/ui/table'
 import { fetchRankingList } from '../../api/migu'
 import type { AlbumImg, ColumnInfo } from '../../types/migu'
-import { usePlayer } from '../../context/PlayerContext'
 import { columnContent2Music } from '../../utils/player'
 import { PlayIcon, FluentAdd } from '../../components/Icons'
 import { Button, buttonVariants } from '@/components/ui/button'
@@ -24,6 +23,7 @@ import {
 } from '@/components/ui/popover'
 import LikeButton from '@/main/components/buttons/LikeButton'
 import { usePlaylists } from '@/main/context/PlaylistContext'
+import { usePlaylist } from '@/main/store/playlist'
 
 export const topListLoader: LoaderFunction = ({ params }) => {
   if (params.id) {
@@ -50,7 +50,7 @@ const AlbumImage: React.FC<{ albumImgList: AlbumImg[] }> = ({
 
 const TopList: React.FC = () => {
   const data = useLoaderData() as ColumnInfo
-  const { play, addToPlayList } = usePlayer()
+  const { play, addToPlayList } = usePlaylist()
   const download = useDownload()
   const { saveToPlaylist } = usePlaylists()
 

@@ -20,3 +20,5 @@ export interface Playlist {
   count: number
   desc?: string
 }
+
+export type UpdateType = 'auto' | 'hint' | 'manual'

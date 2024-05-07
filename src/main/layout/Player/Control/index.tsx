@@ -1,15 +1,19 @@
 import React from 'react'
 import ProgressBar from './ProgressBar'
 import { PlayIcon, Pause, Previous, Next } from '../../../components/Icons'
-import { usePlayer } from '../../../context/PlayerContext'
 import { Button } from '@/components/ui/button'
 import PlayModeButton from './PlayModeButton'
 import LikeButton from '@/main/components/buttons/LikeButton'
+import { usePlayer } from '../PlayerContext'
+import { usePlaylist, usePlaylistStore } from '@/main/store/playlist'
 
 const Control: React.FC = () => {
-  const { paused, togglePaused, playNext, current } = usePlayer()
+  const { paused, togglePaused } = usePlayer()
+  const current = usePlaylistStore((s) => s.current)
+  const { playNext } = usePlaylist()
+
   const disabled = current == null
-  
+
   return (
     <div>
       <div className="flex justify-center items-center gap-3 mb-1">

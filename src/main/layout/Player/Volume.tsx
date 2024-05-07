@@ -1,8 +1,9 @@
 import { Slider } from '@/components/ui/slider'
-import { usePlayer } from '@/main/context/PlayerContext'
 import { vol as localVol } from '@/main/utils/player'
 import { Volume1, Volume2, VolumeX } from 'lucide-react'
 import React, { useCallback, useState } from 'react'
+import { usePlayer } from './PlayerContext'
+import { usePlaylist, usePlaylistStore } from '@/main/store/playlist'
 
 interface Props {
   value: number
@@ -35,7 +36,8 @@ const VolumeIcon: React.FC<Props> = ({ value, onMute, onRestore }) => {
 let prevVol = localVol
 
 const Volume: React.FC = () => {
-  const { current, setVolume } = usePlayer()
+  const current = usePlaylistStore((s) => s.current)
+  const { setVolume } = usePlayer()
   const [vol, setVol] = useState(localVol)
 
   const setMusicVolume = useCallback(

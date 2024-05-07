@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { type LoaderFunction, useLoaderData, Link } from 'react-router-dom'
 import { fetchSearchData } from '../api/migu'
 import type { SearchSinger, SongItem } from '../types/migu'
-import { usePlayer } from '../context/PlayerContext'
 import { songItem2Music } from '../utils/player'
 import {
   Table,
@@ -16,6 +15,7 @@ import { Button } from '@/components/ui/button'
 import { FluentAdd, PlayIcon } from '../components/Icons'
 import Image from '../components/Image'
 import LoadMore from '../components/LoadMore'
+import { usePlaylist } from '../store/playlist'
 
 export const searchLoader: LoaderFunction = ({ request }) => {
   const url = new URL(request.url)
@@ -28,7 +28,7 @@ const PAGE_SIZE = 30
 
 const Search: React.FC = () => {
   const keyword = useLoaderData() as string | null
-  const { play, addToPlayList } = usePlayer()
+  const { play, addToPlayList } = usePlaylist()
   const [singer, setSinger] = useState<SearchSinger>()
   const [songList, setSingList] = useState<SongItem[]>([])
   const [page, setPage] = useState(0)

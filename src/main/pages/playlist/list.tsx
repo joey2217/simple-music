@@ -13,13 +13,13 @@ import {
 import { Button, buttonVariants } from '@/components/ui/button'
 import { PlayIcon } from '@radix-ui/react-icons'
 import { FluentAdd } from '../../components/Icons'
-import { usePlayer } from '../../context/PlayerContext'
 import { songItem2Music } from '../../utils/player'
 import LikeButton from '../../components/buttons/LikeButton'
 import { Download, SquarePlus } from 'lucide-react'
 import { useDownload } from '../../store/download'
 import { usePlaylists } from '../../context/PlaylistContext'
 import Pagination from '@/main/components/Pagination'
+import { usePlaylist } from '@/main/store/playlist'
 
 const PAGE_SIZE = 20
 
@@ -44,7 +44,7 @@ const PlaylistContent: React.FC = () => {
     page: number
     playlistId: string
   }
-  const { play, addToPlayList } = usePlayer()
+  const { play, addToPlayList } = usePlaylist()
   const download = useDownload()
   const { saveToPlaylist } = usePlaylists()
 

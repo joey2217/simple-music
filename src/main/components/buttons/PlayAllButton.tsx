@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { usePlayer } from '@/main/context/PlayerContext'
+import { usePlaylist } from '@/main/store/playlist'
 import type { Music } from '@/main/types/player'
 import { ListVideo } from 'lucide-react'
 import React from 'react'
@@ -9,7 +9,7 @@ interface Props {
 }
 
 const PlayAllButton: React.FC<Props> = ({ items }) => {
-  const { addToPlayList } = usePlayer()
+  const { addToPlayList } = usePlaylist()
   return (
     <Button
       variant="default"
