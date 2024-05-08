@@ -35,8 +35,8 @@ const Header: React.FC = () => {
   }, [location])
 
   return (
-    <header id="titleBarContainer">
-      <div id="titleBar" className="pr-2 flex gap-2 items-center">
+    <header className="titleBarContainer">
+      <div className="titleBar pr-2 flex gap-2 items-center">
         <Link
           to="/"
           id="logo"

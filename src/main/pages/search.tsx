@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useMemo } from 'react'
 import { type LoaderFunction, useLoaderData, Link } from 'react-router-dom'
 import { fetchSearchData } from '../api/migu'
 import type { SearchSinger, SongItem } from '../types/migu'
@@ -11,69 +11,53 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Button } from '@/components/ui/button'
-import { FluentAdd, PlayIcon } from '../components/Icons'
 import Image from '../components/Image'
-import LoadMore from '../components/LoadMore'
-import { usePlayerList } from '../store/player'
-
-export const searchLoader: LoaderFunction = ({ request }) => {
-  const url = new URL(request.url)
-  const searchParams = url.searchParams
-  console.log(searchParams.get('keyword'), url.toString())
-  return searchParams.get('keyword')
-}
+import MusicTitleCell from '../components/MusicTitleCell'
+import ActionCell from '../components/ActionCell'
+import Pagination from '../components/Pagination'
 
 const PAGE_SIZE = 30
 
+export const searchLoader: LoaderFunction = async ({ request }) => {
+  const url = new URL(request.url)
+  const searchParams = url.searchParams
+  const keyword = searchParams.get('keyword')
+  if (keyword) {
+    const pageStr = searchParams.get('page')
+    const pageNum = Number(pageStr) || 1
+    return fetchSearchData(keyword, pageNum, PAGE_SIZE).then((data) => {
+      const {
+        bestShow: { bestShowSinger },
+        songsData: { items, total },
+      } = data
+      return {
+        bestShowSinger,
+        items,
+        page: pageNum,
+        keyword,
+        total,
+      }
+    })
+  }
+  throw new Response('Not Found', { status: 404 }) // 404
+}
+
 const Search: React.FC = () => {
-  const keyword = useLoaderData() as string | null
-  const { play, addToPlayList } = usePlayerList()
-  const [singer, setSinger] = useState<SearchSinger>()
-  const [songList, setSingList] = useState<SongItem[]>([])
-  const [page, setPage] = useState(0)
-  const [finished, setFinished] = useState(true)
+  const {
+    keyword,
+    bestShowSinger: singer,
+    items,
+    page,
+    total,
+  } = useLoaderData() as {
+    bestShowSinger?: SearchSinger
+    items: SongItem[]
+    page: number
+    total: number
+    keyword: string
+  }
 
-  useEffect(() => {
-    if (keyword) {
-      setPage(1)
-      fetchSearchData(keyword, 1, PAGE_SIZE)
-        .then((data) => {
-          const {
-            bestShow: { bestShowSinger },
-            songsData: { items },
-          } = data
-          setSinger(bestShowSinger)
-          setSingList(items)
-          setFinished(items.length < PAGE_SIZE)
-        })
-        .catch((err) => {
-          console.error(err)
-          setFinished(true)
-        })
-    }
-  }, [keyword])
-
-  const loadMore = useCallback(() => {
-    if (keyword) {
-      const nextPage = page + 1
-      setPage(page)
-      fetchSearchData(keyword, nextPage, PAGE_SIZE)
-        .then((data) => {
-          const {
-            bestShow: { bestShowSinger },
-            songsData: { items },
-          } = data
-          setSinger(bestShowSinger)
-          setSingList((l) => l.concat(items))
-          setFinished(items.length < PAGE_SIZE)
-        })
-        .catch((err) => {
-          console.error(err)
-          setFinished(true)
-        })
-    }
-  }, [keyword, page])
+  const musicList = useMemo(() => items.map(songItem2Music), [items])
 
   return (
     <div className="page">
@@ -111,45 +95,30 @@ const Search: React.FC = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {songList.map((song, index) => (
+          {musicList.map((song, index) => (
             <TableRow key={song.copyrightId}>
               <TableCell>{index + 1}</TableCell>
               <TableCell>
-                <div className="flex items-center gap-2 max-w-96">
-                  <Image src={song.smallPic} className="w-10 h-10 rounded-md" />
-                  <div className="truncate flex-1">
-                    <div className="truncate font-semibold text-base">
-                      {song.name}
-                    </div>
-                    <div className="truncate">
-                      {song.singers.map((s) => s.name).join('/')}
-                    </div>
-                  </div>
-                </div>
+                <MusicTitleCell music={song} />
               </TableCell>
               <TableCell>
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  onClick={() => play(songItem2Music(song))}
-                >
-                  <PlayIcon />
-                </Button>
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  onClick={() => addToPlayList(songItem2Music(song))}
-                  title="添加到播放列表"
-                >
-                  <FluentAdd />
-                </Button>
+                <ActionCell music={song} />
               </TableCell>
-              <TableCell>{song.album?.name}</TableCell>
+              <TableCell title={song.album} className="max-w-32 truncate">
+                <Link className="truncate link" to={`/album/${song.albumId}`}>
+                  {song.album}
+                </Link>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      <LoadMore loadMore={loadMore} finished={finished} />
+      <Pagination
+        total={total}
+        current={page}
+        size={PAGE_SIZE}
+        urlFormat={(p) => `/search?keyword=${keyword}&page=${p}`}
+      />
     </div>
   )
 }

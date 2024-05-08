@@ -76,7 +76,7 @@ body {
   -webkit-app-region: no-drag;
 }
 
-#titleBarContainer {
+.titleBarContainer {
   position: fixed;
   top: env(titlebar-area-y, 0);
   height: env(titlebar-area-height, var(--fallback-title-bar-height));
@@ -86,7 +86,6 @@ body {
   box-sizing: content-box;
 }
 
-#titleBar,
 .titleBar {
   position: absolute;
   top: 0;
