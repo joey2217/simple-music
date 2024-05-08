@@ -141,8 +141,16 @@ body {
     100vh - env(titlebar-area-height, var(--fallback-title-bar-height)) -
       var(--player-height)
   );
-  overflow: auto;
+  overflow: hidden;
   width: 380px;
+}
+
+#play-list-content {
+  height: calc(
+    100vh - env(titlebar-area-height, var(--fallback-title-bar-height)) -
+      var(--player-height) - 44px
+  );
+  overflow: auto;
 }
 
 .play-list-row {

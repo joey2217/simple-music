@@ -144,7 +144,7 @@ const PlayerList: React.FC = () => {
       {ReactDOM.createPortal(
         <div
           id="play-list"
-          className="scrollbar fixed right-0 z-50 p-2 rounded-md shadow-md bg-background/95  select-none"
+          className="fixed right-0 z-50 p-2 rounded-md shadow-md bg-background/95  select-none"
           style={{
             transform: show ? 'translateX(0)' : 'translateX(100%)',
             transitionDuration: '300ms',
@@ -164,17 +164,19 @@ const PlayerList: React.FC = () => {
               <RoundClose className="text-lg" />
             </Button>
           </div>
-          <Table>
-            <TableBody>
-              {playList.map((item, index) => (
-                <PlayListRow
-                  key={item.copyrightId}
-                  item={item}
-                  index={index + 1}
-                />
-              ))}
-            </TableBody>
-          </Table>
+          <div id="play-list-content" className='scrollbar'>
+            <Table>
+              <TableBody>
+                {playList.map((item, index) => (
+                  <PlayListRow
+                    key={item.copyrightId}
+                    item={item}
+                    index={index + 1}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </div>,
         document.body
       )}
