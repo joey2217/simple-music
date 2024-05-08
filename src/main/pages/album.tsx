@@ -17,7 +17,7 @@ import { Button, buttonVariants } from '@/components/ui/button'
 import { Download, ListPlus, ListVideo } from 'lucide-react'
 import { useDownload } from '../store/download'
 import LikeButton from '../components/buttons/LikeButton'
-import { usePlaylist } from '../store/playlist'
+import { usePlayerList } from '../store/player'
 
 export const albumLoader: LoaderFunction = ({ params }) => {
   if (params.id) {
@@ -28,7 +28,7 @@ export const albumLoader: LoaderFunction = ({ params }) => {
 
 const Album: React.FC = () => {
   const { detailInfo, songs } = useLoaderData() as AlbumInfo
-  const { play, addToPlayList } = usePlaylist()
+  const { play, addToPlayList } = usePlayerList()
   const download = useDownload()
 
   return (

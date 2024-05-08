@@ -18,7 +18,7 @@ const PlayList: React.FC = () => {
     <div>
       <div className="flex items-center gap-2 mb-2">
         <h2 className="font-semibold">推荐歌单</h2>
-        <Link to="/playlists" className={buttonVariants({ variant: 'link' })}>
+        <Link to="/song-lists" className={buttonVariants({ variant: 'link' })}>
           更多歌单&gt;
         </Link>
       </div>

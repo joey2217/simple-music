@@ -7,7 +7,7 @@ import { Button, buttonVariants } from '@/components/ui/button'
 import { songDetail2Music } from '../utils/player'
 import { ListPlus, ListVideo } from 'lucide-react'
 import LazyLoadImage from '../components/LazyLoadImage'
-import { usePlaylist } from '../store/playlist'
+import { usePlayerList } from '../store/player'
 
 export const songLoader: LoaderFunction = ({ params }) => {
   if (params.copyrightId) {
@@ -19,7 +19,7 @@ export const songLoader: LoaderFunction = ({ params }) => {
 const Song: React.FC = () => {
   const data = useLoaderData() as SongDetail // 获取数据
 
-  const { addToPlayList, play } = usePlaylist()
+  const { addToPlayList, play } = usePlayerList()
   return (
     <div className="relative">
       <div className="fixed -z-10  w-full h-full pr-44 pb-20 flex items-center justify-center">

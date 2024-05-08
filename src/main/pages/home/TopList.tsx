@@ -7,7 +7,7 @@ import type { AlbumImg, ColumnInfo } from '@/main/types/migu'
 import { Play } from 'lucide-react'
 import { columnContent2Music } from '@/main/utils/player'
 import LazyImage from '@/main/components/LazyLoadImage'
-import { usePlaylist } from '@/main/store/playlist'
+import { usePlayerList } from '@/main/store/player'
 
 const AlbumImage: React.FC<{ albumImgList: AlbumImg[] }> = ({
   albumImgList,
@@ -28,7 +28,7 @@ const AlbumImage: React.FC<{ albumImgList: AlbumImg[] }> = ({
 const MusicTable: React.FC<{
   id: string
 }> = ({ id }) => {
-  const { addToPlayList } = usePlaylist()
+  const { addToPlayList } = usePlayerList()
   const [data, setData] = useState<ColumnInfo>()
   const navigate = useNavigate()
 
@@ -93,7 +93,7 @@ const TopList: React.FC = () => {
     <div>
       <div className="flex items-center gap-2 mb-2">
         <h2 className="font-semibold">精选排行</h2>
-        <Link to="/playlists" className={buttonVariants({ variant: 'link' })}>
+        <Link to="/top" className={buttonVariants({ variant: 'link' })}>
           排行榜&gt;
         </Link>
       </div>

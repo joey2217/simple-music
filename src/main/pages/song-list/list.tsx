@@ -19,11 +19,11 @@ import { Download, SquarePlus } from 'lucide-react'
 import { useDownload } from '../../store/download'
 import { usePlaylists } from '../../context/PlaylistContext'
 import Pagination from '@/main/components/Pagination'
-import { usePlaylist } from '@/main/store/playlist'
+import { usePlayerList } from '@/main/store/player'
 
 const PAGE_SIZE = 20
 
-export const playlistContentLoader: LoaderFunction = async ({ params }) => {
+export const SongListContentLoader: LoaderFunction = async ({ params }) => {
   const { playlistId, page } = params
   if (playlistId) {
     const pageNum = page ? Number(page) || 1 : 1
@@ -37,14 +37,14 @@ export const playlistContentLoader: LoaderFunction = async ({ params }) => {
   throw new Response('Not Found', { status: 404 }) // 404
 }
 
-const PlaylistContent: React.FC = () => {
+const SongListContent: React.FC = () => {
   const { items, total, page, playlistId } = useLoaderData() as {
     items: SongItem[]
     total: number
     page: number
     playlistId: string
   }
-  const { play, addToPlayList } = usePlaylist()
+  const { play, addToPlayList } = usePlayerList()
   const download = useDownload()
   const { saveToPlaylist } = usePlaylists()
 
@@ -134,10 +134,10 @@ const PlaylistContent: React.FC = () => {
         total={total}
         current={page}
         size={PAGE_SIZE}
-        urlFormat={(p) => `/playlist/${playlistId}/${p}`}
+        urlFormat={(p) => `/song-list/${playlistId}/${p}`}
       />
     </>
   )
 }
 
-export default PlaylistContent
+export default SongListContent

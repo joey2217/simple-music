@@ -8,7 +8,7 @@ import {
 import { fetchPlaylistTags } from '../../api/migu'
 import { PlayListTag } from '../../types/migu'
 
-export const playlistIndexLoader: LoaderFunction = () => {
+export const songListIndexLoader: LoaderFunction = () => {
   return fetchPlaylistTags().then((data) => {
     // if (params.tagId === undefined) {
     //   return redirect(`/playlist/${data[0].tagId}`)
@@ -17,7 +17,7 @@ export const playlistIndexLoader: LoaderFunction = () => {
   })
 }
 
-const PlayListIndex: React.FC = () => {
+const SongListIndex: React.FC = () => {
   const data = useLoaderData() as PlayListTag[]
   return (
     <div className="page">
@@ -36,4 +36,4 @@ const PlayListIndex: React.FC = () => {
   )
 }
 
-export default PlayListIndex
+export default SongListIndex

@@ -3,7 +3,7 @@ import { vol as localVol } from '@/main/utils/player'
 import { Volume1, Volume2, VolumeX } from 'lucide-react'
 import React, { useCallback, useState } from 'react'
 import { usePlayer } from './PlayerContext'
-import { usePlaylistStore } from '@/main/store/playlist'
+import { usePlayerListStore } from '@/main/store/player'
 
 interface Props {
   value: number
@@ -36,7 +36,7 @@ const VolumeIcon: React.FC<Props> = ({ value, onMute, onRestore }) => {
 let prevVol = localVol
 
 const Volume: React.FC = () => {
-  const current = usePlaylistStore((s) => s.current)
+  const current = usePlayerListStore((s) => s.current)
   const { setVolume } = usePlayer()
   const [vol, setVol] = useState(localVol)
 

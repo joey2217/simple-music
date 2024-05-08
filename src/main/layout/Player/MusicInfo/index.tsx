@@ -1,9 +1,9 @@
 import React from 'react'
 import Image from '@/main/components/Image'
-import { usePlaylistStore } from '@/main/store/playlist'
+import { usePlayerListStore } from '@/main/store/player'
 
 const MusicInfo: React.FC = () => {
-  const current = usePlaylistStore((s) => s.current)
+  const current = usePlayerListStore((s) => s.current)
 
   if (current) {
     return (

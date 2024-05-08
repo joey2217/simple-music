@@ -14,14 +14,14 @@ import LazyImage from '@/main/components/LazyLoadImage'
 import { useDownload } from '@/main/store/download'
 import { FluentAdd, PlayIcon } from '@/main/components/Icons'
 import LikeButton from './buttons/LikeButton'
-import { usePlaylist } from '../store/playlist'
+import { usePlayerList } from '../store/player'
 
 interface Props {
   items: Music[]
 }
 
 const MusicTable: React.FC<Props> = ({ items }) => {
-  const { play, addToPlayList } = usePlaylist()
+  const { play, addToPlayList } = usePlayerList()
   const download = useDownload()
   return (
     <Table>

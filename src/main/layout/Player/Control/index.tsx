@@ -5,12 +5,12 @@ import { Button } from '@/components/ui/button'
 import PlayModeButton from './PlayModeButton'
 import LikeButton from '@/main/components/buttons/LikeButton'
 import { usePlayer } from '../PlayerContext'
-import { usePlaylist, usePlaylistStore } from '@/main/store/playlist'
+import { usePlayerList, usePlayerListStore } from '@/main/store/player'
 
 const Control: React.FC = () => {
   const { paused, togglePaused } = usePlayer()
-  const current = usePlaylistStore((s) => s.current)
-  const { playNext } = usePlaylist()
+  const current = usePlayerListStore((s) => s.current)
+  const { playNext } = usePlayerList()
 
   const disabled = current == null
 

@@ -2,7 +2,7 @@ import { PlayMode } from '@/main/types/player'
 import React, { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { ArrowRightToLine, Repeat, Repeat1, Shuffle } from 'lucide-react'
 import { mode, setMode, setShuffleIndexList } from '@/main/utils/player'
-import { usePlaylistStore } from '@/main/store/playlist'
+import { usePlayerListStore } from '@/main/store/player'
 
 interface ModeIcon {
   icon: ReactNode
@@ -33,7 +33,7 @@ const modeIcons: { [p in PlayMode]: ModeIcon } = {
 }
 
 const PlayModeButton: React.FC = () => {
-  const playList = usePlaylistStore((s) => s.playList)
+  const playList = usePlayerListStore((s) => s.playList)
 
   const [m, setM] = useState<PlayMode>(mode)
 

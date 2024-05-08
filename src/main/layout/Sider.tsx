@@ -44,7 +44,7 @@ const Sider: React.FC = () => {
               <ArtistsIcon className="mr-4" />
               <span>歌 手</span>
             </NavLink>
-            <NavLink to="/playlists" className="nav-link w-full ">
+            <NavLink to="/song-lists" className="nav-link w-full ">
               <PlaylistIcon className="mr-4" />
               <span>歌 单</span>
             </NavLink>
@@ -105,7 +105,7 @@ const Sider: React.FC = () => {
             {playlistList.map((p) => (
               <NavLink
                 key={p.id}
-                to={`/pl/${p.id}`}
+                to={`/playlist/${p.id}`}
                 className="nav-link w-full "
               >
                 <PlaylistIcon className="mr-4" />

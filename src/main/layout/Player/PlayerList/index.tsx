@@ -13,7 +13,7 @@ import { useDownload } from '@/main/store/download'
 import { ListMusic, Play, SquarePlus } from 'lucide-react'
 import { useApp } from '@/main/context/AppContext'
 import { usePlaylists } from '@/main/context/PlaylistContext'
-import { usePlaylist, usePlaylistStore } from '@/main/store/playlist'
+import { usePlayerList, usePlayerListStore } from '@/main/store/player'
 import { index, setLocalIndex } from '@/main/utils/player'
 
 interface Props {
@@ -24,11 +24,11 @@ interface Props {
 const PlayListRow: React.FC<Props> = ({ item }) => {
   const download = useDownload()
 
-  const current = usePlaylistStore((s) => s.current)
-  const playList = usePlaylistStore((s) => s.playList)
-  const removePlayList = usePlaylistStore((s) => s.removePlayList)
-  const setCurrent = usePlaylistStore((s) => s.setCurrent)
-  const { play } = usePlaylist()
+  const current = usePlayerListStore((s) => s.current)
+  const playList = usePlayerListStore((s) => s.playList)
+  const removePlayList = usePlayerListStore((s) => s.removePlayList)
+  const setCurrent = usePlayerListStore((s) => s.setCurrent)
+  const { play } = usePlayerList()
 
   const playing = useMemo(
     () => current?.copyrightId === item.copyrightId,
@@ -94,10 +94,10 @@ const PlayListRow: React.FC<Props> = ({ item }) => {
   )
 }
 
-const PlayList: React.FC = () => {
-  const playList = usePlaylistStore((s) => s.playList)
-  const current = usePlaylistStore((s) => s.current)
-  const setPlayList = usePlaylistStore((s) => s.setPlayList)
+const PlayerList: React.FC = () => {
+  const playList = usePlayerListStore((s) => s.playList)
+  const current = usePlayerListStore((s) => s.current)
+  const setPlayList = usePlayerListStore((s) => s.setPlayList)
   const { saveToPlaylist } = usePlaylists()
   const { confirm } = useApp()
   const download = useDownload()
@@ -182,4 +182,4 @@ const PlayList: React.FC = () => {
   )
 }
 
-export default PlayList
+export default PlayerList

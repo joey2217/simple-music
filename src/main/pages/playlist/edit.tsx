@@ -30,7 +30,7 @@ export const editLikePlaylistLoader: LoaderFunction = async ({ params }) => {
   throw new Response('Not Found', { status: 404 })
 }
 
-const EditLikePlaylist: React.FC = () => {
+const EditPlaylist: React.FC = () => {
   const data = useLoaderData() as Playlist
   const { updatePlaylist } = usePlaylists()
   const navigate = useNavigate()
@@ -57,7 +57,7 @@ const EditLikePlaylist: React.FC = () => {
 
   const onSubmit = (values: Playlist) => {
     updatePlaylist(values)
-    navigate(`/pl/${data.id}`, { replace: true })
+    navigate(`/playlist/${data.id}`, { replace: true })
   }
 
   return (
@@ -130,7 +130,7 @@ const EditLikePlaylist: React.FC = () => {
           <div className="flex gap-4">
             <Button type="submit">确 定</Button>
             <Button variant="secondary" asChild>
-              <Link to={`/pl/${data.id}`} replace>
+              <Link to={`/playlist/${data.id}`} replace>
                 取 消
               </Link>
             </Button>
@@ -141,4 +141,4 @@ const EditLikePlaylist: React.FC = () => {
   )
 }
 
-export default EditLikePlaylist
+export default EditPlaylist

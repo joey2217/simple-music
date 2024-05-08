@@ -18,7 +18,7 @@ import Pagination from '@/main/components/Pagination'
 import LikeButton from '@/main/components/buttons/LikeButton'
 import { Download } from 'lucide-react'
 import { useDownload } from '@/main/store/download'
-import { usePlaylist } from '@/main/store/playlist'
+import { usePlayerList } from '@/main/store/player'
 
 const PAGE_SIZE = 30
 const SAM = '100'
@@ -48,7 +48,7 @@ const Song: React.FC = () => {
     total: number
     id: string
   }
-  const { play, addToPlayList } = usePlaylist()
+  const { play, addToPlayList } = usePlayerList()
   const download = useDownload()
 
   return (

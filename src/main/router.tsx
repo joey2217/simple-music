@@ -11,18 +11,18 @@ import ArtistSong, { artistSongLoader } from './pages/artist/song'
 import ArtistAlbum, { artistAlbumLoader } from './pages/artist/album'
 import Album, { albumLoader } from './pages/album'
 import Song, { songLoader } from './pages/song'
-import PlayListIndex, { playlistIndexLoader } from './pages/playlists'
-import Playlist, { playlistLoader } from './pages/playlists/list'
+import SongListIndex, { songListIndexLoader } from './pages/song-lists'
+import SongLists, { SongListsLoader } from './pages/song-lists/list'
 import Download from './pages/download'
-import PlaylistPage, { playlistPageLoader } from './pages/playlist'
+import SongList, { songListPageLoader } from './pages/song-list'
 import Settings from './pages/settings'
 import Like from './pages/like'
 import Recent from './pages/recent'
-import LikePlaylist from './pages/like-playlist'
-import EditLikePlaylist, {
+import Playlist from './pages/playlist'
+import EditPlaylist, {
   editLikePlaylistLoader,
-} from './pages/like-playlist/edit'
-import PlaylistContent, { playlistContentLoader } from './pages/playlist/list'
+} from './pages/playlist/edit'
+import SongListContent, { SongListContentLoader } from './pages/song-list/list'
 
 const router = createHashRouter([
   {
@@ -97,29 +97,29 @@ const router = createHashRouter([
         errorElement: <Error />,
       },
       {
-        path: 'playlists',
-        element: <PlayListIndex />,
-        loader: playlistIndexLoader,
+        path: 'song-lists',
+        element: <SongListIndex />,
+        loader: songListIndexLoader,
         errorElement: <Error />,
         children: [
           {
             path: ':tagId?',
-            element: <Playlist />,
-            loader: playlistLoader,
+            element: <SongLists />,
+            loader: SongListsLoader,
             errorElement: <Error />,
           },
         ],
       },
       {
-        path: 'playlist/:playlistId',
-        element: <PlaylistPage />,
-        loader: playlistPageLoader,
+        path: 'song-list/:playlistId',
+        element: <SongList />,
+        loader: songListPageLoader,
         errorElement: <Error />,
         children: [
           {
             path: ':page?',
-            loader: playlistContentLoader,
-            element: <PlaylistContent />,
+            loader: SongListContentLoader,
+            element: <SongListContent />,
           },
         ],
       },
@@ -144,14 +144,14 @@ const router = createHashRouter([
         errorElement: <Error />,
       },
       {
-        path: 'pl/:id',
-        element: <LikePlaylist />,
+        path: 'playlist/:id',
+        element: <Playlist />,
         errorElement: <Error />,
       },
       {
-        path: 'pl/:id/edit',
+        path: 'playlist/:id/edit',
         loader: editLikePlaylistLoader,
-        element: <EditLikePlaylist />,
+        element: <EditPlaylist />,
         errorElement: <Error />,
       },
     ],

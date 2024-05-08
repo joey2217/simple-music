@@ -15,8 +15,8 @@ import {
   shuffleIndexList,
   setVol,
 } from '../../utils/player'
-import { usePlaylist, useRecentListStore } from '../../store/playlist'
-import { usePlaylistStore } from '@/main/store/playlist'
+import { useRecentListStore } from '../../store/playlist'
+import { usePlayerList, usePlayerListStore } from '@/main/store/player'
 
 interface PlayerContextProps {
   paused: boolean
@@ -47,11 +47,11 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const addRecent = useRecentListStore((s) => s.addRecent)
 
-  const current = usePlaylistStore((s) => s.current)
-  const setCurrent = usePlaylistStore((s) => s.setCurrent)
-  const playList = usePlaylistStore((s) => s.playList)
+  const current = usePlayerListStore((s) => s.current)
+  const setCurrent = usePlayerListStore((s) => s.setCurrent)
+  const playList = usePlayerListStore((s) => s.playList)
 
-  const { playNext } = usePlaylist()
+  const { playNext } = usePlayerList()
 
   const howlerRef = useRef<Howl | null>(null)
   const timer = useRef(0)

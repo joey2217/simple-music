@@ -23,7 +23,7 @@ import {
 } from '@/components/ui/popover'
 import LikeButton from '@/main/components/buttons/LikeButton'
 import { usePlaylists } from '@/main/context/PlaylistContext'
-import { usePlaylist } from '@/main/store/playlist'
+import { usePlayerList } from '@/main/store/player'
 
 export const topListLoader: LoaderFunction = ({ params }) => {
   if (params.id) {
@@ -50,7 +50,7 @@ const AlbumImage: React.FC<{ albumImgList: AlbumImg[] }> = ({
 
 const TopList: React.FC = () => {
   const data = useLoaderData() as ColumnInfo
-  const { play, addToPlayList } = usePlaylist()
+  const { play, addToPlayList } = usePlayerList()
   const download = useDownload()
   const { saveToPlaylist } = usePlaylists()
 

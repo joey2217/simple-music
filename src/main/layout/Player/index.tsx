@@ -1,7 +1,7 @@
 import React from 'react'
 import MusicInfo from './MusicInfo'
 import Control from './Control'
-import PlayList from './PlayList'
+import PlayerList from './PlayerList'
 import Volume from './Volume'
 import { PlayerProvider } from './PlayerContext'
 
@@ -22,7 +22,7 @@ const Player: React.FC = () => {
           <Volume />
         </div>
         <div className="col-span-2">
-          <PlayList />
+          <PlayerList />
         </div>
       </footer>
     </PlayerProvider>

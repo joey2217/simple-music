@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button'
 import { FluentAdd, PlayIcon } from '../components/Icons'
 import Image from '../components/Image'
 import LoadMore from '../components/LoadMore'
-import { usePlaylist } from '../store/playlist'
+import { usePlayerList } from '../store/player'
 
 export const searchLoader: LoaderFunction = ({ request }) => {
   const url = new URL(request.url)
@@ -28,7 +28,7 @@ const PAGE_SIZE = 30
 
 const Search: React.FC = () => {
   const keyword = useLoaderData() as string | null
-  const { play, addToPlayList } = usePlaylist()
+  const { play, addToPlayList } = usePlayerList()
   const [singer, setSinger] = useState<SearchSinger>()
   const [songList, setSingList] = useState<SongItem[]>([])
   const [page, setPage] = useState(0)

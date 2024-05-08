@@ -10,7 +10,7 @@ interface Props {
 
 const PlayListCard: React.FC<Props> = ({ item }) => {
   return (
-    <Link to={`/playlist/${item.playListId}`} title={item.playListName}>
+    <Link to={`/song-list/${item.playListId}`} title={item.playListName}>
       <Card>
         <LazyLoadImage
           src={item.image}

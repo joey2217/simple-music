@@ -1,45 +1,70 @@
-import React from 'react'
-import { Outlet, useLoaderData, type LoaderFunction } from 'react-router-dom'
-import { fetchPlaylistInfo } from '../../api/migu'
-import type { PlaylistInfo } from '../../types/migu'
-import LazyImage from '../../components/LazyLoadImage'
+import {
+  getPlaylistMusicsById,
+  usePlaylists,
+} from '@/main/context/PlaylistContext'
+import React, { useMemo } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import MusicTable from '@/main/components/MusicTable'
+import PlayAllButton from '@/main/components/buttons/PlayAllButton'
+import AddPlayListButton from '@/main/components/buttons/AddPlayListButton'
+import { FilePenLine } from 'lucide-react'
+import LazyImage from '@/main/components/LazyLoadImage'
+import { Button } from '@/components/ui/button'
+import { useApp } from '@/main/context/AppContext'
 
-export const playlistPageLoader: LoaderFunction = ({ params }) => {
-  if (params.playlistId) {
-    return fetchPlaylistInfo(params.playlistId).then((data) => ({
-      data,
-      playlistId: params.playlistId,
-    }))
-  }
-  throw new Response('Not Found', { status: 404 }) // 404
-}
+//  let revalidator = useRevalidator();
 
-const PlaylistPage: React.FC = () => {
-  const { data } = useLoaderData() as {
-    data: PlaylistInfo
-    playlistId: string
+const Playlist: React.FC = () => {
+  const { id } = useParams()
+  const { playlistList, removePlaylist } = usePlaylists()
+  const { confirm } = useApp()
+  const navigate = useNavigate()
+
+  const list = useMemo(() => (id ? getPlaylistMusicsById(id) : []), [id])
+  const current = useMemo(
+    () => playlistList.find((p) => p.id === id),
+    [id, playlistList]
+  )
+
+  const remove = () => {
+    confirm({
+      title: '删除歌单',
+      message: '确认删除该歌单?',
+    })
+      .then(() => {
+        removePlaylist(id!)
+        navigate('/', { replace: true })
+      })
+      .catch(() => {})
   }
 
   return (
-    <div>
-      <div className="flex gap-2">
+    <div className="page">
+      <div className="flex gap-4">
         <LazyImage
-          src={data.image}
-          alt={data.playListName}
-          className="aspect-square h-24 rounded-md"
+          src={current?.cover}
+          className="w-32 aspect-square rounded"
         />
-        <div>
-          <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
-            {data.playListName}
-          </h4>
-          <blockquote className="mt-6 border-l-2 pl-6 italic">
-            {data.summary}
-          </blockquote>
+        <div className="space-y-2">
+          <h1 className="text-xl font-bold mb-4 flex gap-3">
+            <span>{current?.title}</span>
+            <Link to={`/playlist/${id}/edit`} title="编辑">
+              <FilePenLine />
+            </Link>
+          </h1>
+          <p>{current?.desc}</p>
+          <div className="flex gap-2 mb-3">
+            <PlayAllButton items={list} />
+            <AddPlayListButton items={list} />
+            <Button variant="destructive" onClick={remove}>
+              删除歌单
+            </Button>
+          </div>
         </div>
       </div>
-      <Outlet />
+      <MusicTable items={list} />
     </div>
   )
 }
 
-export default PlaylistPage
+export default Playlist

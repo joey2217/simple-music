@@ -7,7 +7,7 @@ import Pagination from '@/main/components/Pagination'
 
 const PAGE_SIZE = 30
 
-export const playlistLoader: LoaderFunction = async ({ params, request }) => {
+export const SongListsLoader: LoaderFunction = async ({ params, request }) => {
   const url = new URL(request.url)
   const pageStr = url.searchParams.get('page')
   const page = Number(pageStr) || 1
@@ -19,7 +19,7 @@ export const playlistLoader: LoaderFunction = async ({ params, request }) => {
   }))
 }
 
-const Playlist: React.FC = () => {
+const SongLists: React.FC = () => {
   const { items, tagId, total, page } = useLoaderData() as {
     items: PlayListItem[]
     tagId: string
@@ -38,10 +38,10 @@ const Playlist: React.FC = () => {
         total={total}
         current={page}
         size={PAGE_SIZE}
-        urlFormat={(p) => `/playlists/${tagId}?page=${p}`}
+        urlFormat={(p) => `/song-lists/${tagId}?page=${p}`}
       />
     </>
   )
 }
 
-export default Playlist
+export default SongLists
