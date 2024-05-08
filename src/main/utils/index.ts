@@ -42,7 +42,7 @@ export function parseLyric(lyricStr: string): LyricRow[] {
       const match = s.match(LYRIC_RE)
       if (match) {
         return {
-          time: (parseInt(match[1]) * 60 + parseInt(match[2])) * 1000,
+          time: parseInt(match[1]) * 60 + parseInt(match[2]),
           words: match[3],
         }
       }

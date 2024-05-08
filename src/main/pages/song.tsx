@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useLoaderData, type LoaderFunction, Link } from 'react-router-dom'
-import { fetchSongDetail, fetchSongLyric } from '../api/migu'
+import { fetchSongDetail } from '../api/migu'
 import type { SongDetail } from '../types/migu'
-import type { LyricRow } from '../types/player'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { songDetail2Music } from '../utils/player'
 import { ListPlus, ListVideo } from 'lucide-react'
 import LazyLoadImage from '../components/LazyLoadImage'
 import { usePlayerList } from '../store/player'
+import SongLyric from '../components/SongLyric'
 
 export const songLoader: LoaderFunction = ({ params }) => {
   if (params.copyrightId) {
@@ -70,40 +70,6 @@ const Song: React.FC = () => {
         </div>
         <SongLyric copyrightId={data.copyrightId11} />
       </div>
-    </div>
-  )
-}
-
-const SongLyric: React.FC<{ copyrightId: string }> = ({ copyrightId }) => {
-  const [status, setStatus] = useState<'loading' | 'error' | 'ok'>('loading')
-
-  const [lyric, setLyric] = useState<LyricRow[]>([])
-
-  useEffect(() => {
-    setStatus('loading')
-    fetchSongLyric(copyrightId)
-      .then((data) => {
-        setLyric(data.lyric)
-        setStatus('ok')
-      })
-      .catch(() => {
-        setStatus('error')
-      })
-  }, [copyrightId])
-
-  if (status === 'loading') {
-    return <div>加载中</div>
-  }
-  if (status === 'error') {
-    return <div>获取歌词错误</div>
-  }
-  return (
-    <div className="py-4">
-      {lyric.map((row, index) => (
-        <p key={index} className="p-1">
-          {row.words || <br />}
-        </p>
-      ))}
     </div>
   )
 }

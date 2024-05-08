@@ -1,6 +1,6 @@
 import React from 'react'
-import Image from '@/main/components/Image'
 import { usePlayerListStore } from '@/main/store/player'
+import Lyric from './Lyric'
 
 const MusicInfo: React.FC = () => {
   const current = usePlayerListStore((s) => s.current)
@@ -8,11 +8,7 @@ const MusicInfo: React.FC = () => {
   if (current) {
     return (
       <div className="flex gap-1">
-        <Image
-          className="h-16 w-16 rounded"
-          src={current.pic}
-          alt={current.title}
-        />
+        <Lyric music={current} />
         <div className="flex-1 truncate">
           <div className="text-lg font-semibold truncate leading-8">
             {current.title}

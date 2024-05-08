@@ -164,7 +164,7 @@ const PlayerList: React.FC = () => {
               <RoundClose className="text-lg" />
             </Button>
           </div>
-          <div id="play-list-content" className='scrollbar'>
+          <div id="play-list-content" className="scrollbar">
             <Table>
               <TableBody>
                 {playList.map((item, index) => (

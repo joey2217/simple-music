@@ -135,6 +135,26 @@ body {
   margin-right: env(titlebar-area-x, 0);
 }
 
+#lyric {
+  bottom: var(--player-height);
+  height: calc(100vh - var(--player-height));
+  overflow: hidden;
+}
+
+#lyric-header {
+  position: relative;
+  top: env(titlebar-area-y, 0);
+  height: env(titlebar-area-height, var(--fallback-title-bar-height));
+  width: 100%;
+  cursor: pointer;
+  box-sizing: content-box;
+}
+
+#lyric-content {
+  height: calc(100vh - var(--player-height) - 80px);
+  overflow: auto;
+}
+
 #play-list {
   bottom: var(--player-height);
   height: calc(
@@ -268,9 +288,9 @@ h4 {
   @apply scroll-m-20 text-xl font-semibold tracking-tight;
 }
 */
-p {
+/* p {
   @apply leading-7 [&:not(:first-child)]:mt-6;
-}
+} */
 
 button:disabled {
   @apply pointer-events-none opacity-50;

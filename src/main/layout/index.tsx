@@ -3,6 +3,7 @@ import Header from './Header'
 import { Outlet } from 'react-router-dom'
 import Sider from './Sider'
 import useIPC from '../utils/ipc'
+import Player from './Player'
 
 const Layout: React.FC = () => {
   useIPC()
@@ -15,6 +16,7 @@ const Layout: React.FC = () => {
           <Outlet />
         </div>
       </main>
+      <Player />
     </>
   )
 }

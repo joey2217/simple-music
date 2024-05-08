@@ -9,7 +9,7 @@ const Player: React.FC = () => {
   return (
     <PlayerProvider>
       <footer
-        className="px-2 grid grid-cols-12 items-center gap-2 bg-base-300"
+        className="px-2 grid grid-cols-12 items-center gap-2 bg-base-300 fixed bottom-0 left-0 w-full z-40"
         id="player"
       >
         <div className="col-span-3">
