@@ -3,7 +3,6 @@ import { Link, useLoaderData, type LoaderFunction } from 'react-router-dom'
 import { fetchAlbum } from '../api/migu'
 import type { AlbumInfo } from '../types/migu'
 import { songItem2Music } from '../utils/player'
-import { FluentAdd, PlayIcon } from '../components/Icons'
 import {
   Table,
   TableBody,
@@ -14,10 +13,10 @@ import {
 } from '@/components/ui/table'
 import Image from '../components/Image'
 import { Button, buttonVariants } from '@/components/ui/button'
-import { Download, ListPlus, ListVideo } from 'lucide-react'
-import { useDownload } from '../store/download'
-import LikeButton from '../components/buttons/LikeButton'
+import { ListPlus, ListVideo } from 'lucide-react'
 import { usePlayerList } from '../store/player'
+import ActionCell from '../components/ActionCell'
+import MusicTitleCell from '../components/MusicTitleCell'
 
 export const albumLoader: LoaderFunction = ({ params }) => {
   if (params.id) {
@@ -28,8 +27,9 @@ export const albumLoader: LoaderFunction = ({ params }) => {
 
 const Album: React.FC = () => {
   const { detailInfo, songs } = useLoaderData() as AlbumInfo
-  const { play, addToPlayList } = usePlayerList()
-  const download = useDownload()
+  const { addToPlayList } = usePlayerList()
+
+  const musicList = songs.items.map((s) => songItem2Music(s))
 
   return (
     <div className="page">
@@ -88,44 +88,14 @@ const Album: React.FC = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {songs.items.map((item, index) => (
+          {musicList.map((item, index) => (
             <TableRow key={item.copyrightId}>
               <TableCell className="text-center">{index + 1}</TableCell>
-              <TableCell className="max-w-96 truncate">{item.name}</TableCell>
+              <TableCell className="max-w-96 truncate">
+                <MusicTitleCell music={item} />
+              </TableCell>
               <TableCell>
-                <div className="flex gap-2 text-lg">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => play(songItem2Music(item))}
-                    title="播放"
-                  >
-                    <PlayIcon />
-                  </Button>
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={() => addToPlayList(songItem2Music(item))}
-                    title="添加到播放列表"
-                  >
-                    <FluentAdd />
-                  </Button>
-                  <LikeButton
-                    className={buttonVariants({
-                      size: 'icon',
-                      variant: 'ghost',
-                    })}
-                    item={songItem2Music(item)}
-                  />
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={() => download(songItem2Music(item))}
-                    title="下载"
-                  >
-                    <Download size={16} />
-                  </Button>
-                </div>
+                <ActionCell music={item} />
               </TableCell>
             </TableRow>
           ))}

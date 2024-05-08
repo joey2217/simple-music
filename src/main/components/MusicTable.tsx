@@ -8,21 +8,17 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Button, buttonVariants } from '@/components/ui/button'
-import { Download } from 'lucide-react'
-import LazyImage from '@/main/components/LazyLoadImage'
-import { useDownload } from '@/main/store/download'
-import { FluentAdd, PlayIcon } from '@/main/components/Icons'
-import LikeButton from './buttons/LikeButton'
 import { usePlayerList } from '../store/player'
+import ActionCell from './ActionCell'
+import { Link } from 'react-router-dom'
+import MusicTitleCell from './MusicTitleCell'
 
 interface Props {
   items: Music[]
 }
 
 const MusicTable: React.FC<Props> = ({ items }) => {
-  const { play, addToPlayList } = usePlayerList()
-  const download = useDownload()
+  const { play } = usePlayerList()
   return (
     <Table>
       <TableHeader>
@@ -38,57 +34,15 @@ const MusicTable: React.FC<Props> = ({ items }) => {
           <TableRow key={item.copyrightId} onDoubleClick={() => play(item)}>
             <TableCell className="text-center">{index + 1}</TableCell>
             <TableCell>
-              <div className="flex items-center gap-2 max-w-96">
-                <LazyImage
-                  src={item.pic}
-                  alt="album"
-                  className="w-10 h-10 rounded-md"
-                />
-                <div className="truncate flex-1">
-                  <div className="truncate font-semibold text-base">
-                    {item.title}
-                  </div>
-                  <div className="truncate">{item.artist}</div>
-                </div>
-              </div>
+              <MusicTitleCell music={item} />
             </TableCell>
             <TableCell>
-              <div className="flex gap-1 text-lg">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => play(item)}
-                  title="播放"
-                >
-                  <PlayIcon />
-                </Button>
-                <LikeButton
-                  item={item}
-                  className={buttonVariants({
-                    size: 'icon',
-                    variant: 'ghost',
-                  })}
-                />
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  onClick={() => addToPlayList(item)}
-                  title="添加到播放列表"
-                >
-                  <FluentAdd />
-                </Button>
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  onClick={() => download(item)}
-                  title="下载"
-                >
-                  <Download size={16} />
-                </Button>
-              </div>
+              <ActionCell music={item} />
             </TableCell>
-            <TableCell title={item.album} className="max-w-32">
-              <div className="truncate">{item.album}</div>
+            <TableCell title={item.album} className="max-w-32 truncate">
+              <Link className="truncate link" to={`/album/${item.albumId}`}>
+                {item.album}
+              </Link>
             </TableCell>
           </TableRow>
         ))}

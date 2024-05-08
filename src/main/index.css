@@ -272,3 +272,8 @@ button:disabled {
 .card {
   @apply rounded-xl border bg-card text-card-foreground shadow;
 }
+
+.artists > a:not(:first-child)::before {
+  content: '/';
+  @apply text-accent-foreground mx-1 hover:no-underline;
+}

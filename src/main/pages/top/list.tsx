@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLoaderData, type LoaderFunction } from 'react-router-dom'
+import { Link, useLoaderData, type LoaderFunction } from 'react-router-dom'
 import {
   Table,
   TableBody,
@@ -9,21 +9,19 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { fetchRankingList } from '../../api/migu'
-import type { AlbumImg, ColumnInfo } from '../../types/migu'
+import type { ColumnInfo } from '../../types/migu'
 import { columnContent2Music } from '../../utils/player'
-import { PlayIcon, FluentAdd } from '../../components/Icons'
-import { Button, buttonVariants } from '@/components/ui/button'
-import { Download, ListPlus, ListVideo, SquarePlus } from 'lucide-react'
-import { useDownload } from '@/main/store/download'
+import { Button } from '@/components/ui/button'
+import { ListPlus, ListVideo } from 'lucide-react'
 import LazyImage from '@/main/components/LazyLoadImage'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import LikeButton from '@/main/components/buttons/LikeButton'
-import { usePlaylists } from '@/main/context/PlaylistContext'
 import { usePlayerList } from '@/main/store/player'
+import MusicTitleCell from '@/main/components/MusicTitleCell'
+import ActionCell from '@/main/components/ActionCell'
 
 export const topListLoader: LoaderFunction = ({ params }) => {
   if (params.id) {
@@ -32,27 +30,14 @@ export const topListLoader: LoaderFunction = ({ params }) => {
   throw new Response('Not Found', { status: 404 }) // 404
 }
 
-const AlbumImage: React.FC<{ albumImgList: AlbumImg[] }> = ({
-  albumImgList,
-}) => {
-  const albumImg = albumImgList[albumImgList.length - 1]
-  if (albumImg) {
-    return (
-      <LazyImage
-        src={albumImg.webpImg}
-        alt="album"
-        className="w-10 h-10 rounded-md"
-      />
-    )
-  }
-  return null
-}
-
 const TopList: React.FC = () => {
   const data = useLoaderData() as ColumnInfo
-  const { play, addToPlayList } = usePlayerList()
-  const download = useDownload()
-  const { saveToPlaylist } = usePlaylists()
+  const { addToPlayList } = usePlayerList()
+
+  const musicList = data.contents.map((m) => ({
+    ...columnContent2Music(m),
+    duration: m.objectInfo.length,
+  }))
 
   return (
     <div
@@ -69,9 +54,7 @@ const TopList: React.FC = () => {
               <Button
                 variant="default"
                 size="sm"
-                onClick={() =>
-                  addToPlayList(data.contents.map(columnContent2Music), true)
-                }
+                onClick={() => addToPlayList(musicList, true)}
               >
                 <ListVideo className="mr-2" />
                 <span>播放全部</span>
@@ -79,9 +62,7 @@ const TopList: React.FC = () => {
               <Button
                 size="sm"
                 variant="secondary"
-                onClick={() =>
-                  addToPlayList(data.contents.map(columnContent2Music))
-                }
+                onClick={() => addToPlayList(musicList)}
               >
                 <ListPlus className="mr-2" />
                 <span>添加到播放列表</span>
@@ -112,68 +93,25 @@ const TopList: React.FC = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.contents.map((item, index) => {
-              const m = columnContent2Music(item)
+            {musicList.map((item, index) => {
               return (
-                <TableRow key={item.contentId}>
+                <TableRow key={item.copyrightId}>
                   <TableCell className="text-center">{index + 1}</TableCell>
                   <TableCell>
-                    <div className="flex items-center gap-2 max-w-96">
-                      <AlbumImage albumImgList={item.objectInfo.albumImgs} />
-                      <div className="truncate flex-1">
-                        <div className="truncate font-semibold text-base">
-                          {item.objectInfo.songName}
-                        </div>
-                        <div className="truncate">{item.objectInfo.singer}</div>
-                      </div>
-                    </div>
+                    <MusicTitleCell music={item} />
                   </TableCell>
                   <TableCell>
-                    <div className="flex gap-1 text-lg">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => play(m)}
-                        title="播放"
-                      >
-                        <PlayIcon />
-                      </Button>
-                      <Button
-                        size="icon"
-                        variant="ghost"
-                        onClick={() => addToPlayList(m)}
-                        title="添加到播放列表"
-                      >
-                        <FluentAdd />
-                      </Button>
-                      <LikeButton
-                        className={buttonVariants({
-                          size: 'icon',
-                          variant: 'ghost',
-                        })}
-                        item={m}
-                      />
-                      <Button
-                        size="icon"
-                        variant="outline"
-                        onClick={() => saveToPlaylist(m)}
-                      >
-                        <SquarePlus />
-                      </Button>
-                      <Button
-                        size="icon"
-                        variant="ghost"
-                        onClick={() => download(m)}
-                        title="下载"
-                      >
-                        <Download size={16} />
-                      </Button>
-                    </div>
+                    <ActionCell music={item} />
                   </TableCell>
-                  <TableCell title={item.objectInfo.album} className="max-w-32">
-                    <div className="truncate">{item.objectInfo.album}</div>
+                  <TableCell title={item.album} className="max-w-32 truncate">
+                    <Link
+                      className="truncate link"
+                      to={`/album/${item.albumId}`}
+                    >
+                      {item.album}
+                    </Link>
                   </TableCell>
-                  <TableCell>{item.objectInfo.length}</TableCell>
+                  <TableCell>{item.duration}</TableCell>
                 </TableRow>
               )
             })}

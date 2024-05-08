@@ -21,7 +21,7 @@ const SongList: React.FC = () => {
   }
 
   return (
-    <div>
+    <div className="page">
       <div className="flex gap-2">
         <LazyImage
           src={data.image}

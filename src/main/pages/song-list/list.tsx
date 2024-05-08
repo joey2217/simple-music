@@ -10,16 +10,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Button, buttonVariants } from '@/components/ui/button'
-import { PlayIcon } from '@radix-ui/react-icons'
-import { FluentAdd } from '../../components/Icons'
 import { songItem2Music } from '../../utils/player'
-import LikeButton from '../../components/buttons/LikeButton'
-import { Download, SquarePlus } from 'lucide-react'
-import { useDownload } from '../../store/download'
-import { usePlaylists } from '../../context/PlaylistContext'
 import Pagination from '@/main/components/Pagination'
 import { usePlayerList } from '@/main/store/player'
+import MusicTitleCell from '@/main/components/MusicTitleCell'
+import ActionCell from '@/main/components/ActionCell'
+import PlayAllButton from '@/main/components/buttons/PlayAllButton'
+import AppendPlayerListButton from '@/main/components/buttons/AppendPlayerListButton'
 
 const PAGE_SIZE = 20
 
@@ -44,12 +41,19 @@ const SongListContent: React.FC = () => {
     page: number
     playlistId: string
   }
-  const { play, addToPlayList } = usePlayerList()
-  const download = useDownload()
-  const { saveToPlaylist } = usePlaylists()
+  const { play } = usePlayerList()
+
+  const musicList = items.map((song) => ({
+    ...songItem2Music(song),
+    duration: song.duration,
+  }))
 
   return (
     <>
+      <div className="flex gap-2 my-3">
+        <PlayAllButton items={musicList} />
+        <AppendPlayerListButton items={musicList} />
+      </div>
       <Table>
         <TableHeader>
           <TableRow>
@@ -60,69 +64,15 @@ const SongListContent: React.FC = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {items.map((song, index) => {
-            const m = songItem2Music(song)
+          {musicList.map((song, index) => {
             return (
-              <TableRow key={song.copyrightId}>
+              <TableRow key={song.copyrightId} onDoubleClick={() => play(song)}>
                 <TableCell className="text-center">{index + 1}</TableCell>
                 <TableCell>
-                  <div className="flex items-center gap-1">
-                    {/* <Image
-                src={song.smallPic}
-                alt="album"
-                className="w-10 h-10 rounded"
-              /> */}
-                    <div className="truncate flex-1">
-                      <div className="truncate font-semibold text-base">
-                        {song.name}
-                      </div>
-                      <div className="truncate">
-                        {song.singers.map((s) => s.name).join('/')}
-                      </div>
-                    </div>
-                  </div>
+                  <MusicTitleCell music={song} />
                 </TableCell>
-                <TableCell className="flex gap-1 items-center">
-                  <div className="flex gap-2 text-lg">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => play(m)}
-                      title="播放"
-                    >
-                      <PlayIcon />
-                    </Button>
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      onClick={() => addToPlayList(m)}
-                      title="添加到播放列表"
-                    >
-                      <FluentAdd />
-                    </Button>
-                    <LikeButton
-                      className={buttonVariants({
-                        size: 'icon',
-                        variant: 'ghost',
-                      })}
-                      item={m}
-                    />
-                    <Button
-                      size="icon"
-                      variant="outline"
-                      onClick={() => saveToPlaylist(m)}
-                    >
-                      <SquarePlus />
-                    </Button>
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      onClick={() => download(m)}
-                      title="下载"
-                    >
-                      <Download size={16} />
-                    </Button>
-                  </div>
+                <TableCell>
+                  <ActionCell music={song} />
                 </TableCell>
                 <TableCell>{song.duration}</TableCell>
               </TableRow>

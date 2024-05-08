@@ -6,7 +6,7 @@ import React, { useMemo } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import MusicTable from '@/main/components/MusicTable'
 import PlayAllButton from '@/main/components/buttons/PlayAllButton'
-import AddPlayListButton from '@/main/components/buttons/AddPlayListButton'
+import AppendPlayerListButton from '@/main/components/buttons/AppendPlayerListButton'
 import { FilePenLine } from 'lucide-react'
 import LazyImage from '@/main/components/LazyLoadImage'
 import { Button } from '@/components/ui/button'
@@ -55,7 +55,7 @@ const Playlist: React.FC = () => {
           <p>{current?.desc}</p>
           <div className="flex gap-2 mb-3">
             <PlayAllButton items={list} />
-            <AddPlayListButton items={list} />
+            <AppendPlayerListButton items={list} />
             <Button variant="destructive" onClick={remove}>
               删除歌单
             </Button>

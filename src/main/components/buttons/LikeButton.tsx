@@ -5,11 +5,12 @@ import { Heart } from 'lucide-react'
 
 interface Props {
   item?: Music | null
+  size?: number
 }
 
 const LikeButton: React.FC<
   Props & React.ButtonHTMLAttributes<HTMLButtonElement>
-> = ({ item, ...props }) => {
+> = ({ item, size = 18, ...props }) => {
   const likeMusicIds = useLikeStore((s) =>
     s.musicList.map((m) => m.copyrightId)
   )
@@ -42,7 +43,7 @@ const LikeButton: React.FC<
     >
       <Heart
         className={`${isLiked ? 'fill-red-500 stroke-red-500' : ''}`}
-        size={18}
+        size={size}
       />
     </button>
   )

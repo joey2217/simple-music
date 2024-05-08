@@ -8,7 +8,7 @@ interface Props {
   items: Music[]
 }
 
-const AddPlayListButton: React.FC<Props> = ({ items }) => {
+const AppendPlayerListButton: React.FC<Props> = ({ items }) => {
   const { addToPlayList } = usePlayerList()
 
   return (
@@ -19,4 +19,4 @@ const AddPlayListButton: React.FC<Props> = ({ items }) => {
   )
 }
 
-export default AddPlayListButton
+export default AppendPlayerListButton

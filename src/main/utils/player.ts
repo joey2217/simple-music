@@ -1,11 +1,21 @@
 import type { SongItem, ColumnContent, SongDetail } from '../types/migu'
 import type { Music, PlayMode } from '../types/player'
 import { shuffle } from './index'
+import icon from '../assets/icon.png'
 
 export function songItem2Music(songItem: SongItem): Music {
   if (import.meta.env.DEV) {
     console.log('songItem2Music', songItem)
   }
+  let pic = songItem.smallPic || songItem.mediumPic
+  if (pic) {
+    if (pic.startsWith('//')) {
+      pic = `http:${pic}`
+    }
+  } else {
+    pic = icon
+  }
+
   return {
     copyrightId: songItem.copyrightId,
     title: songItem.name,
@@ -13,7 +23,7 @@ export function songItem2Music(songItem: SongItem): Music {
     artists: songItem.singers,
     album: songItem.album?.name,
     albumId: songItem.album?.id,
-    pic: songItem.smallPic,
+    pic,
   }
 }
 
