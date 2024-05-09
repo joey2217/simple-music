@@ -22,18 +22,17 @@ function getTheme(): Theme {
 }
 
 function setLocalTheme(theme: Theme) {
-  const root = window.document.documentElement
-
-  root.classList.remove('light', 'dark')
-  let systemTheme = theme
-  if (theme === 'system') {
-    systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? 'dark'
-      : 'light'
-  }
-
-  root.classList.add(systemTheme)
-  window.electronAPI.setTheme(theme)
+  window.electronAPI.setTheme(theme).then(() => {
+    const root = window.document.documentElement
+    root.classList.remove('light', 'dark')
+    let systemTheme = theme
+    if (theme === 'system') {
+      systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light'
+    }
+    root.classList.add(systemTheme)
+  })
 }
 
 export function ThemeToggle() {
@@ -54,13 +53,13 @@ export function ThemeToggle() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme('light')}>
-          Light
+          浅 色
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('dark')}>
-          Dark
+          深 色
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('system')}>
-          System
+          系 统
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

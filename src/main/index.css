@@ -145,7 +145,7 @@ body {
   position: relative;
   top: env(titlebar-area-y, 0);
   height: env(titlebar-area-height, var(--fallback-title-bar-height));
-  width: 100%;
+  width: calc(100vw - env(titlebar-area-x, 0));
   cursor: pointer;
   box-sizing: content-box;
 }

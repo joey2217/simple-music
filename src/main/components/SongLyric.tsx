@@ -63,21 +63,27 @@ const SongLyric: React.FC<Props> = ({ copyrightId, time, scroll = false }) => {
     if (time == null || lyric.length === 0 || lyric[0].time == null) return
     const i = lyric.findIndex((row) => row.time && row.time > time)
     if (i === -1) {
-      setPlayIndex(lyric.length - 1)
-    } else {
-      const indexTime = lyric[i].time
-      const nextIndexTime = lyric[i + 1].time
-      if (indexTime && nextIndexTime) {
-        const diff = Math.abs(indexTime - time)
-        const nextDiff = Math.abs(nextIndexTime - time)
-        if (diff > nextDiff) {
-          setPlayIndex(i + 1)
-        } else {
-          setPlayIndex(i)
-        }
-      } else {
+      const lastTime = lyric[lyric.length - 1].time
+      if (lastTime != null && time > lastTime) {
         setPlayIndex(lyric.length - 1)
+      } else {
+        setPlayIndex(0)
       }
+    } else {
+      setPlayIndex(i - 1 >= 0 ? i - 1 : 0)
+      // const indexTime = lyric[i].time
+      // const prevIndexTime = lyric[i - 1].time
+      // if (indexTime && prevIndexTime) {
+      //   const diff = Math.abs(indexTime - time)
+      //   const nextDiff = Math.abs(prevIndexTime - time)
+      //   if (diff > nextDiff) {
+      //     setPlayIndex(i - 1)
+      //   } else {
+      //     setPlayIndex(i)
+      //   }
+      // } else {
+      //   setPlayIndex(0)
+      // }
     }
   }, [lyric, time])
 

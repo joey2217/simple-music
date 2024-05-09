@@ -17,7 +17,7 @@ export const useLikeStore = create<LikeState>()(
       musicList: [],
       addLikeMusic: (music: Music) =>
         set((state) => ({
-          musicList: [music, ...state.musicList].slice(1, 500),
+          musicList: [music, ...state.musicList].slice(0, 500),
         })),
       removeLikeMusic: (music: Music) =>
         set((state) => ({

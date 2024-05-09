@@ -18,7 +18,7 @@ const LikeButton: React.FC<
   const removeLikeMusic = useLikeStore((s) => s.removeLikeMusic)
 
   const isLiked = useMemo(
-    () => item && likeMusicIds.includes(item?.copyrightId),
+    () => item && likeMusicIds.includes(item.copyrightId),
     [item, likeMusicIds]
   )
 

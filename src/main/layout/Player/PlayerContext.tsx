@@ -61,7 +61,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
     if (howler) {
       const playing = howler.playing()
       if (playing) {
-        howler.fade(howler.volume(), 0, 500)
+        // howler.fade(howler.volume(), 0, 500)
         howler.pause()
       } else {
         howler.play()

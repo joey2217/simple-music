@@ -58,6 +58,7 @@ export function usePlayerList() {
       if (Array.isArray(m)) {
         if (replace) {
           setCurrent(mode === 'shuffle' ? m[shuffleIndexList[0]] : m[0])
+          appendPlayList(m)
         } else {
           appendPlayList(m)
         }

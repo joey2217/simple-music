@@ -37,7 +37,7 @@ const Lyric: React.FC<Props> = ({ music }) => {
           }`}
         >
           <div id="lyric-header">
-            <div className="flex items-center mr-16">
+            <div className="flex items-center mr-16 titleBar-ml">
               <button
                 onClick={() => setOpen(false)}
                 className="w-16"
@@ -54,7 +54,7 @@ const Lyric: React.FC<Props> = ({ music }) => {
             <span>歌手:</span>
             <div className="artists">
               {music.artists.map((artist) => (
-                <Link to={`/artist/${artist.id}`} key={artist.id}>
+                <Link to={`/artist/${artist.id}`} key={artist.id} onClick={() => setOpen(false)}>
                   <span className="underline-offset-4 hover:underline text-accent-foreground/80 hover:text-accent-foreground">
                     {artist.name}
                   </span>
@@ -65,6 +65,7 @@ const Lyric: React.FC<Props> = ({ music }) => {
             <Link
               className="underline-offset-4 hover:underline text-accent-foreground/80 hover:text-accent-foreground"
               to={`/album/${music.albumId}`}
+              onClick={() => setOpen(false)}
             >
               {music.album}
             </Link>
