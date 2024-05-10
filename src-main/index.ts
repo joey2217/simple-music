@@ -73,6 +73,6 @@ if (import.meta.env.PROD) {
         log.error(err)
       })
   }
-  log.transports.file.resolvePathFn = () =>
-    path.join(app.getAppPath(), 'logs/app.log')
+  // log.transports.file.resolvePathFn = () =>
+  //   path.join(app.getAppPath(), 'logs/app.log')
 }

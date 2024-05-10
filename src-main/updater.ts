@@ -24,8 +24,8 @@ autoUpdater.on('update-available', (info) => {
       .showMessageBox({
         type: 'info',
         title: `检测到新版本 ${info.version}`,
-        message: '是否马上开始下载更新!',
-        buttons: ['是', '否'],
+        message: `更新时间:${info.releaseDate}\n更新内容:\n${info.releaseNotes}`,
+        buttons: ['立刻更新', '稍后更新'],
       })
       .then((res) => {
         if (res.response === 0) {
@@ -35,7 +35,7 @@ autoUpdater.on('update-available', (info) => {
   }
 })
 
-autoUpdater.on('update-not-available', (info) => {
+autoUpdater.on('update-not-available', () => {
   if (updateType === 'manual') {
     dialog.showMessageBox({
       type: 'info',
@@ -50,8 +50,8 @@ autoUpdater.on('update-downloaded', (info) => {
     .showMessageBox({
       type: 'info',
       title: `${info.version} 更新下载完成`,
-      message: '是否立刻更新并重启应用?',
-      buttons: ['立刻更新', '下次启动更新'],
+      message: `更新时间:${info.releaseDate}\n更新内容:\n${info.releaseNotes}`,
+      buttons: ['立刻重启更新', '下次启动更新'],
     })
     .then((res) => {
       if (res.response === 0) {
