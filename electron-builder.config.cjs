@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 /*eslint-env node*/
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { version } = require('./package.json')
 const nameEN = 'SimpleMusic'
 
@@ -26,9 +26,13 @@ module.exports = {
   },
   nsis: {
     oneClick: false,
-    language: '2052',
-    perMachine: false,
+    perMachine: true,
     allowToChangeInstallationDirectory: true,
+    installerLanguages: ['zh_CN', 'en_US'],
+    license: 'resources/license.html',
+    // multiLanguageInstaller: true,
+    // language: '2052',
+    // installerSidebar  164 × 314
   },
   mac: {
     icon: 'resources/icon.icns',
