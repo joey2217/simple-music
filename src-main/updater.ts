@@ -24,8 +24,10 @@ autoUpdater.on('update-available', (info) => {
       .showMessageBox({
         type: 'info',
         title: `检测到新版本 ${info.version}`,
-        message: `更新时间:${info.releaseDate}\n更新内容:\n${info.releaseNotes}`,
+        message: `更新时间: ${info.releaseDate}`,
+        detail: `更新内容:\n${info.releaseNotes}`,
         buttons: ['立刻更新', '稍后更新'],
+        cancelId: 1,
       })
       .then((res) => {
         if (res.response === 0) {
@@ -50,8 +52,10 @@ autoUpdater.on('update-downloaded', (info) => {
     .showMessageBox({
       type: 'info',
       title: `${info.version} 更新下载完成`,
-      message: `更新时间:${info.releaseDate}\n更新内容:\n${info.releaseNotes}`,
+      message: `更新时间: ${info.releaseDate}`,
+      detail: `更新内容:\n${info.releaseNotes}`,
       buttons: ['立刻重启更新', '下次启动更新'],
+      cancelId: 1,
     })
     .then((res) => {
       if (res.response === 0) {

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import type { UpdateType } from '../types'
+import { autoUpdate } from './app'
 
 export default function useIPC() {
   const navigate = useNavigate()
@@ -13,9 +13,8 @@ export default function useIPC() {
   }, [navigate])
 
   useEffect(() => {
-    const update = localStorage.getItem('auto_update') as UpdateType
-    if (update && update !== 'manual') {
-      window.electronAPI.checkUpdate(update)
+    if (autoUpdate && autoUpdate !== 'manual') {
+      window.electronAPI.checkUpdate(autoUpdate)
     }
   }, [])
 }

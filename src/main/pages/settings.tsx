@@ -6,6 +6,7 @@ import logo from '../assets/icon.png'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import useLocalStorage from '../hooks/useLocalStorage'
 import { UpdateType } from '../types'
+import { autoUpdate, setLocalAutoUpdate } from '../utils/app'
 
 interface SettingsCardProps {
   title: string
@@ -79,15 +80,13 @@ const Download: React.FC = () => {
   )
 }
 
-
 const About: React.FC = () => {
-  const [update, setUpdate] = useLocalStorage<UpdateType>('auto_update', 'auto')
+  const [update, setUpdate] = useState(autoUpdate)
 
-  useEffect(() => {
-    if (update !== 'manual') {
-      window.electronAPI.checkUpdate(update)
-    }
-  }, [update])
+  const setAutoUpdate = (val: UpdateType) => {
+    setUpdate(val)
+    setLocalAutoUpdate(val)
+  }
 
   return (
     <SettingsCard title="关于">
@@ -100,7 +99,7 @@ const About: React.FC = () => {
         </div>
         <RadioGroup
           defaultValue={update}
-          onValueChange={(val) => setUpdate(val as UpdateType)}
+          onValueChange={setAutoUpdate}
           className="flex mb-3"
         >
           <div className="flex items-center space-x-2">
