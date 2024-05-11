@@ -15,6 +15,8 @@ import Image from '../components/Image'
 import MusicTitleCell from '../components/MusicTitleCell'
 import ActionCell from '../components/ActionCell'
 import Pagination from '../components/Pagination'
+import PlayAllButton from '../components/buttons/PlayAllButton'
+import AppendPlayerListButton from '../components/buttons/AppendPlayerListButton'
 
 const PAGE_SIZE = 30
 
@@ -85,6 +87,10 @@ const Search: React.FC = () => {
           </div>
         </Link>
       )}
+      <div className="my-3 flex items-center gap-2">
+        <PlayAllButton items={musicList} />
+        <AppendPlayerListButton items={musicList} />
+      </div>
       <Table>
         <TableHeader>
           <TableRow>
