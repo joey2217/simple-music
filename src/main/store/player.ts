@@ -94,7 +94,7 @@ export function usePlayerList() {
       if (Array.isArray(m)) {
         if (replace) {
           setCurrent(mode === 'shuffle' ? m[shuffleIndexList[0]] : m[0])
-          appendPlayList(m)
+          setPlayList(m)
           setLocalIndex(0)
         } else {
           appendPlayList(m)
@@ -103,7 +103,7 @@ export function usePlayerList() {
         appendPlayList([m])
       }
     },
-    [appendPlayList, setCurrent]
+    [appendPlayList, setCurrent, setPlayList]
   )
 
   // TODO
