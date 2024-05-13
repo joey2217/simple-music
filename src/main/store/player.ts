@@ -22,42 +22,44 @@ interface PlayerListState {
 
 export const usePlayerListStore = create<PlayerListState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       current: undefined,
       playList: [],
       setCurrent: (m) =>
         set(() => ({
           current: m,
         })),
-      setCurrentNext: (dir: 'next' | 'prev') => {
-        const playList = get().playList
-        if (playList.length > 0) {
-          if (dir === 'next') {
-            if (mode === 'sequence') {
-              const i = index + 1 > playList.length - 1 ? -1 : index + 1
-              setLocalIndex(i)
+      setCurrentNext: (dir: 'next' | 'prev') =>
+        set((state) => {
+          const playList = state.playList
+          if (playList.length > 0) {
+            if (dir === 'next') {
+              if (mode === 'sequence') {
+                const i = index + 1 > playList.length - 1 ? -1 : index + 1
+                setLocalIndex(i)
+              } else {
+                const i = index + 1 > playList.length - 1 ? 0 : index + 1
+                setLocalIndex(i)
+              }
             } else {
-              const i = index + 1 > playList.length - 1 ? 0 : index + 1
-              setLocalIndex(i)
+              if (mode === 'sequence') {
+                const i = index - 1 < 0 ? -1 : index - 1
+                setLocalIndex(i)
+              } else {
+                const i = index - 1 < 0 ? playList.length - 1 : index - 1
+                setLocalIndex(i)
+              }
             }
-          } else {
-            if (mode === 'sequence') {
-              const i = index - 1 < 0 ? -1 : index - 1
-              setLocalIndex(i)
-            } else {
-              const i = index - 1 < 0 ? playList.length - 1 : index - 1
-              setLocalIndex(i)
+            console.log('index', index)
+            return {
+              current:
+                mode === 'shuffle'
+                  ? playList[shuffleIndexList[index]]
+                  : playList[index],
             }
           }
-          return {
-            current:
-              mode === 'shuffle'
-                ? playList[shuffleIndexList[index]]
-                : playList[index],
-          }
-        }
-        return {}
-      },
+          return {}
+        }),
       setPlayList: (playList) => set(() => ({ playList })),
       appendPlayList: (m) =>
         set((state) => ({
