@@ -151,7 +151,9 @@ const PlayerList: React.FC = () => {
           }}
         >
           <div className="flex gap-2">
-            <h2 className="text-lg font-semibold mr-auto">播放列表</h2>
+            <h2 className="text-lg font-semibold mr-auto">
+              播放列表({playList.length})
+            </h2>
             <Button variant="link" onClick={onClear}>
               清空
             </Button>

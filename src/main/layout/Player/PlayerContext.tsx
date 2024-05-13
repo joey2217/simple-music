@@ -174,7 +174,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
       howlerRef.current?.unload()
       clearInterval(timer.current)
     }
-  }, [current, playNext, addRecent, setDuration, setPaused, setTime])
+  }, [addRecent, current, playNext])
 
   useEffect(() => {
     if (current) {

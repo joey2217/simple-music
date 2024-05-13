@@ -13,7 +13,8 @@ import {
 interface PlayerListState {
   current?: Music
   playList: Music[]
-  setCurrent: (m?: Music, force?: boolean) => void
+  setCurrent: (m?: Music) => void
+  setCurrentNext: (dir: 'next' | 'prev') => void
   setPlayList: (playList: Music[]) => void
   appendPlayList: (m: Music[]) => void
   removePlayList: (index: number) => void
@@ -21,10 +22,42 @@ interface PlayerListState {
 
 export const usePlayerListStore = create<PlayerListState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       current: undefined,
       playList: [],
-      setCurrent: (m) => set(() => ({ current: m })),
+      setCurrent: (m) =>
+        set(() => ({
+          current: m,
+        })),
+      setCurrentNext: (dir: 'next' | 'prev') => {
+        const playList = get().playList
+        if (playList.length > 0) {
+          if (dir === 'next') {
+            if (mode === 'sequence') {
+              const i = index + 1 > playList.length - 1 ? -1 : index + 1
+              setLocalIndex(i)
+            } else {
+              const i = index + 1 > playList.length - 1 ? 0 : index + 1
+              setLocalIndex(i)
+            }
+          } else {
+            if (mode === 'sequence') {
+              const i = index - 1 < 0 ? -1 : index - 1
+              setLocalIndex(i)
+            } else {
+              const i = index - 1 < 0 ? playList.length - 1 : index - 1
+              setLocalIndex(i)
+            }
+          }
+          return {
+            current:
+              mode === 'shuffle'
+                ? playList[shuffleIndexList[index]]
+                : playList[index],
+          }
+        }
+        return {}
+      },
       setPlayList: (playList) => set(() => ({ playList })),
       appendPlayList: (m) =>
         set((state) => ({
@@ -49,7 +82,7 @@ export const usePlayerListStore = create<PlayerListState>()(
 
 export function usePlayerList() {
   const setCurrent = usePlayerListStore((s) => s.setCurrent)
-  const playList = usePlayerListStore((s) => s.playList)
+  const setCurrentNext = usePlayerListStore((s) => s.setCurrentNext)
   const appendPlayList = usePlayerListStore((s) => s.appendPlayList)
   const setPlayList = usePlayerListStore((s) => s.setPlayList)
 
@@ -71,31 +104,13 @@ export function usePlayerList() {
     [appendPlayList, setCurrent]
   )
 
+  // TODO
   const playNext = useCallback(
     (dir: 'next' | 'prev' = 'next') => {
       initPlayer()
-      if (dir === 'next') {
-        if (mode === 'sequence') {
-          const i = index + 1 > playList.length - 1 ? -1 : index + 1
-          setLocalIndex(i)
-        } else {
-          const i = index + 1 > playList.length - 1 ? 0 : index + 1
-          setLocalIndex(i)
-        }
-      } else {
-        if (mode === 'sequence') {
-          const i = index - 1 < 0 ? -1 : index - 1
-          setLocalIndex(i)
-        } else {
-          const i = index - 1 < 0 ? playList.length - 1 : index - 1
-          setLocalIndex(i)
-        }
-      }
-      setCurrent(
-        mode === 'shuffle' ? playList[shuffleIndexList[index]] : playList[index]
-      )
+      setCurrentNext(dir)
     },
-    [setCurrent, playList]
+    [setCurrentNext]
   )
 
   const play = useCallback(
