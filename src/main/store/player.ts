@@ -51,6 +51,7 @@ export function usePlayerList() {
   const setCurrent = usePlayerListStore((s) => s.setCurrent)
   const playList = usePlayerListStore((s) => s.playList)
   const appendPlayList = usePlayerListStore((s) => s.appendPlayList)
+  const setPlayList = usePlayerListStore((s) => s.setPlayList)
 
   const addToPlayList = useCallback(
     (m: Music | Music[], replace = false) => {
@@ -59,6 +60,7 @@ export function usePlayerList() {
         if (replace) {
           setCurrent(mode === 'shuffle' ? m[shuffleIndexList[0]] : m[0])
           appendPlayList(m)
+          setLocalIndex(0)
         } else {
           appendPlayList(m)
         }
@@ -105,10 +107,17 @@ export function usePlayerList() {
     [appendPlayList, setCurrent]
   )
 
+  const clearPlayerList = useCallback(() => {
+    setCurrent(undefined)
+    setLocalIndex(-1)
+    setPlayList([])
+  }, [setCurrent, setPlayList])
+
   return {
     play,
     addToPlayList,
     playNext,
+    clearPlayerList,
   } as const
 }
 

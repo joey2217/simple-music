@@ -33,14 +33,12 @@ const Song: React.FC = () => {
         <h1 className="font-semibold text-lg mb-2">{data.musicName}</h1>
         <h2>
           <span>歌手:</span>
-          <span className="divide-x">
+          <span className="artists ml-1 text-sm">
             {data.singers.map((s) => (
-              <Link
-                className={buttonVariants({ variant: 'link' })}
-                key={s.singerId}
-                to={`/artist/${s.singerId}`}
-              >
-                {s.singerName}
+              <Link key={s.singerId} to={`/artist/${s.singerId}`}>
+                <span className="underline-offset-4 hover:underline text-accent-foreground/80 hover:text-accent-foreground">
+                  {s.singerName}
+                </span>
               </Link>
             ))}
           </span>

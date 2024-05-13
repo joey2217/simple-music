@@ -1,7 +1,7 @@
 import mitt from 'mitt'
 
 type Events = {
-  time: number
+  closeLyric: void
 }
 
 const emitter = mitt<Events>() // inferred as Emitter<Events>

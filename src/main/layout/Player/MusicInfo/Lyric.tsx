@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import LazyImage from '@/main/components/LazyLoadImage'
 import type { Music } from '@/main/types/player'
 import { ChevronDown, ChevronUp } from 'lucide-react'
@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom'
 import SongLyric from '@/main/components/SongLyric'
 import { usePlayer } from '../PlayerContext'
 import { Link } from 'react-router-dom'
+import emitter from '@/main/utils/emitter'
 
 interface Props {
   music: Music
@@ -14,6 +15,13 @@ interface Props {
 const Lyric: React.FC<Props> = ({ music }) => {
   const [open, setOpen] = useState(false)
   const { time } = usePlayer()
+
+  useEffect(() => {
+    const close = () => setOpen(false)
+    emitter.on('closeLyric', close)
+    return () => emitter.off('closeLyric', close)
+  }, [])
+
   return (
     <>
       <div className="group relative h-16 w-16 rounded overflow-hidden">
@@ -54,7 +62,11 @@ const Lyric: React.FC<Props> = ({ music }) => {
             <span>歌手:</span>
             <div className="artists">
               {music.artists.map((artist) => (
-                <Link to={`/artist/${artist.id}`} key={artist.id} onClick={() => setOpen(false)}>
+                <Link
+                  to={`/artist/${artist.id}`}
+                  key={artist.id}
+                  onClick={() => setOpen(false)}
+                >
                   <span className="underline-offset-4 hover:underline text-accent-foreground/80 hover:text-accent-foreground">
                     {artist.name}
                   </span>

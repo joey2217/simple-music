@@ -97,8 +97,7 @@ const PlayListRow: React.FC<Props> = ({ item }) => {
 const PlayerList: React.FC = () => {
   const playList = usePlayerListStore((s) => s.playList)
   const current = usePlayerListStore((s) => s.current)
-  const setPlayList = usePlayerListStore((s) => s.setPlayList)
-  const setCurrent = usePlayerListStore((s) => s.setCurrent)
+  const { clearPlayerList } = usePlayerList()
   const { saveToPlaylist } = usePlaylists()
   const { confirm } = useApp()
   const download = useDownload()
@@ -109,10 +108,7 @@ const PlayerList: React.FC = () => {
       title: '清空播放列表',
       message: '确认要清空播放列表吗?',
     })
-      .then(() => {
-        setPlayList([])
-        setCurrent(undefined)
-      })
+      .then(clearPlayerList)
       .catch(() => {
         /** empty */
       })
@@ -124,6 +120,7 @@ const PlayerList: React.FC = () => {
         size="icon"
         variant="outline"
         disabled={current == null}
+        title="收藏"
         onClick={() => saveToPlaylist(current!)}
       >
         <SquarePlus />
@@ -132,12 +129,13 @@ const PlayerList: React.FC = () => {
         size="icon"
         variant="outline"
         disabled={current == null}
+        title="下载"
         onClick={() => download(current!)}
       >
         <FluentArrowDownload />
       </Button>
       <Button
-        variant={show ? 'default' : 'ghost'}
+        variant={show ? 'default' : 'outline'}
         size="icon"
         onClick={() => setShow((s) => !s)}
       >
