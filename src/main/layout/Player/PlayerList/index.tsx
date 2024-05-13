@@ -98,6 +98,7 @@ const PlayerList: React.FC = () => {
   const playList = usePlayerListStore((s) => s.playList)
   const current = usePlayerListStore((s) => s.current)
   const setPlayList = usePlayerListStore((s) => s.setPlayList)
+  const setCurrent = usePlayerListStore((s) => s.setCurrent)
   const { saveToPlaylist } = usePlaylists()
   const { confirm } = useApp()
   const download = useDownload()
@@ -110,6 +111,7 @@ const PlayerList: React.FC = () => {
     })
       .then(() => {
         setPlayList([])
+        setCurrent(undefined)
       })
       .catch(() => {
         /** empty */
