@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import logo from '../assets/icon.png'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import useLocalStorage from '../hooks/useLocalStorage'
 import { UpdateType } from '../types'
 import { autoUpdate, setLocalAutoUpdate } from '../utils/app'
 
