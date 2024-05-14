@@ -25,6 +25,7 @@ interface PlayerContextProps {
   togglePaused: () => void
   seek: (t: number) => void
   setVolume: (v: number) => void
+  setLoop: (loop: boolean) => void
 }
 
 const PlayerContext = React.createContext<PlayerContextProps>({
@@ -34,6 +35,7 @@ const PlayerContext = React.createContext<PlayerContextProps>({
   togglePaused: () => {},
   seek: () => {},
   setVolume: () => {},
+  setLoop: () => {},
 })
 
 export function usePlayer() {
@@ -45,11 +47,11 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [duration, setDuration] = useState(0)
   const [time, setTime] = useState(0)
 
-  const addRecent = useRecentListStore((s) => s.addRecent)
-
   const current = usePlayerListStore((s) => s.current)
-  const setCurrent = usePlayerListStore((s) => s.setCurrent)
   const playList = usePlayerListStore((s) => s.playList)
+
+  const addRecent = useRecentListStore((s) => s.addRecent)
+  const setCurrent = usePlayerListStore((s) => s.setCurrent)
 
   const { playNext } = usePlayerList()
 
@@ -61,10 +63,11 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
     if (howler) {
       const playing = howler.playing()
       if (playing) {
-        // howler.fade(howler.volume(), 0, 500)
-        howler.pause()
+        howler.fade(howler.volume(), 0, 500).once('fade', () => {
+          howler.pause()
+        })
       } else {
-        howler.play()
+        howler.fade(0, vol / 100, 500).play()
       }
     }
   }, [])
@@ -76,6 +79,10 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const setVolume = useCallback((v: number) => {
     howlerRef.current?.volume(v / 100)
     setVol(v)
+  }, [])
+
+  const setLoop = useCallback((loop: boolean) => {
+    howlerRef.current?.loop(loop)
   }, [])
 
   useEffect(() => {
@@ -135,10 +142,13 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
           setDuration(Math.ceil(howler.duration()))
           clearInterval(timer.current)
           initPlayer()
+          setTime(0)
           if (autoplay) {
             timer.current = setInterval(() => {
               setTime(Math.ceil(howler.seek()))
             }, 1000) as unknown as number
+          } else {
+            timer.current = 0
           }
         })
         howler.on('play', () => {
@@ -194,6 +204,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
         time,
         paused,
         duration,
+        setLoop,
         togglePaused,
         seek,
         setVolume,

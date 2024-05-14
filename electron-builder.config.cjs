@@ -63,4 +63,9 @@ module.exports = {
     releaseNotesFile: 'resources/release-notes.md',
     releaseDate: new Date().toLocaleString('zh-CN'),
   },
+  // publish: {
+  // provider: 'github',
+  // provider: 'generic',
+  // url: 'http://localhost:3000',
+  // },
 }

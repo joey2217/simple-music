@@ -29,9 +29,9 @@ export function songItem2Music(songItem: SongItem): Music {
 
 export function columnContent2Music(columnContent: ColumnContent): Music {
   const { albumImgs } = columnContent.objectInfo
-  if (import.meta.env.DEV) {
-    console.log('columnContent2Music', columnContent)
-  }
+  // if (import.meta.env.DEV) {
+  //   console.log('columnContent2Music', columnContent)
+  // }
   return {
     copyrightId: columnContent.objectInfo.copyrightId,
     title: columnContent.objectInfo.songName,
@@ -66,7 +66,7 @@ function getVol() {
   const localData = localStorage.getItem(VOL_KEY)
   if (localData) {
     const num = Number(vol)
-    if (num) {
+    if (!Number.isNaN(num)) {
       vol = num
     }
   }

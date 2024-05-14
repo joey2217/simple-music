@@ -58,7 +58,17 @@ const Lyric: React.FC<Props> = ({ music }) => {
               </div>
             </div>
           </div>
-          <div className="h-10 flex gap-2 items-center text-sm justify-center">
+          <div className="fixed w-1/4 -z-10 top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2">
+            <LazyImage
+              src={music.pic}
+              alt={music.title}
+              className="w-full rounded-full blur-sm animate-spin"
+              style={{
+                animationDuration: '20s',
+              }}
+            />
+          </div>
+          <div className="h-10 z-30 flex gap-2 items-center text-sm justify-center">
             <span>歌手:</span>
             <div className="artists">
               {music.artists.map((artist) => (

@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { ArrowRightToLine, Repeat, Repeat1, Shuffle } from 'lucide-react'
 import { mode, setMode, setShuffleIndexList } from '@/main/utils/player'
 import { usePlayerListStore } from '@/main/store/player'
+import { usePlayer } from '../PlayerContext'
 
 interface ModeIcon {
   icon: ReactNode
@@ -34,6 +35,7 @@ const modeIcons: { [p in PlayMode]: ModeIcon } = {
 
 const PlayModeButton: React.FC = () => {
   const playList = usePlayerListStore((s) => s.playList)
+  const { setLoop } = usePlayer()
 
   const [m, setM] = useState<PlayMode>(mode)
 
@@ -51,7 +53,8 @@ const PlayModeButton: React.FC = () => {
     } else {
       setShuffleIndexList(0)
     }
-  }, [m, playList.length])
+    setLoop(m === 'repeat')
+  }, [m, playList.length, setLoop])
 
   return (
     <button title={modeIcon.title} onClick={onClick}>
