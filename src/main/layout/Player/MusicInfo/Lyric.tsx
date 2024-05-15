@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import LazyImage from '@/main/components/LazyLoadImage'
 import type { Music } from '@/main/types/player'
 import { ChevronDown, ChevronUp } from 'lucide-react'
@@ -14,7 +14,9 @@ interface Props {
 
 const Lyric: React.FC<Props> = ({ music }) => {
   const [open, setOpen] = useState(false)
-  const { time } = usePlayer()
+  const { time, paused } = usePlayer()
+
+  const animate = useMemo(() => !paused && open, [open, paused])
 
   useEffect(() => {
     const close = () => setOpen(false)
@@ -65,6 +67,7 @@ const Lyric: React.FC<Props> = ({ music }) => {
               className="w-full rounded-full blur-sm animate-spin"
               style={{
                 animationDuration: '20s',
+                animationPlayState: animate ? 'running' : 'paused',
               }}
             />
           </div>
