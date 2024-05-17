@@ -60,30 +60,22 @@ const SongLyric: React.FC<Props> = ({ copyrightId, time, scroll = false }) => {
   }, [disabledAutoScroll, playIndex, scroll])
 
   useEffect(() => {
-    if (time == null || lyric.length === 0 || lyric[0].time == null) return
+    const len = lyric.length
+    if (time == null || len === 0 || lyric[0].time == null) return
     const i = lyric.findIndex((row) => row.time && row.time > time)
     if (i === -1) {
-      const lastTime = lyric[lyric.length - 1].time
-      if (lastTime != null && time > lastTime) {
-        setPlayIndex(lyric.length - 1)
+      if (lyric[len - 1].words === '') {
+        const last = lyric[len - 2]
+        if (last.time && time - last.time > 5) {
+          setPlayIndex(len - 1)
+        } else {
+          setPlayIndex(len - 2)
+        }
       } else {
-        setPlayIndex(0)
+        setPlayIndex(len - 1)
       }
     } else {
       setPlayIndex(i - 1 >= 0 ? i - 1 : 0)
-      // const indexTime = lyric[i].time
-      // const prevIndexTime = lyric[i - 1].time
-      // if (indexTime && prevIndexTime) {
-      //   const diff = Math.abs(indexTime - time)
-      //   const nextDiff = Math.abs(prevIndexTime - time)
-      //   if (diff > nextDiff) {
-      //     setPlayIndex(i - 1)
-      //   } else {
-      //     setPlayIndex(i)
-      //   }
-      // } else {
-      //   setPlayIndex(0)
-      // }
     }
   }, [lyric, time])
 

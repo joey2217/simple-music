@@ -73,7 +73,11 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
   }, [])
 
   const seek = useCallback((t: number) => {
-    howlerRef.current?.seek(t)
+    const howler = howlerRef.current
+    if (howler) {
+      howler.seek(t)
+      setTime(t)
+    }
   }, [])
 
   const setVolume = useCallback((v: number) => {
