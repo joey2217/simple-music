@@ -65,7 +65,7 @@ const VOL_KEY = 'vol'
 function getVol() {
   const localData = localStorage.getItem(VOL_KEY)
   if (localData) {
-    const num = Number(vol)
+    const num = Number(localData)
     if (!Number.isNaN(num)) {
       vol = num
     }
