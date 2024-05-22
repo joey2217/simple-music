@@ -14,6 +14,8 @@ import {
 import Pagination from '@/main/components/Pagination'
 import MusicTitleCell from '@/main/components/MusicTitleCell'
 import ActionCell from '@/main/components/ActionCell'
+import PlayAllButton from '@/main/components/buttons/PlayAllButton'
+import AppendPlayerListButton from '@/main/components/buttons/AppendPlayerListButton'
 
 const PAGE_SIZE = 30
 const SAM = '100'
@@ -47,7 +49,11 @@ const Song: React.FC = () => {
   const musicList = data.items.map((song) => songItem2Music(song))
 
   return (
-    <>
+    <section>
+      <div className="flex gap-2 mb-2">
+        <PlayAllButton items={musicList} />
+        <AppendPlayerListButton items={musicList} />
+      </div>
       <Table>
         <TableHeader>
           <TableRow>
@@ -82,7 +88,7 @@ const Song: React.FC = () => {
         size={PAGE_SIZE}
         urlFormat={(p) => `/artist/${id}?page=${p}`}
       />
-    </>
+    </section>
   )
 }
 
