@@ -17,6 +17,7 @@ import {
 } from '../../utils/player'
 import { useRecentListStore } from '../../store/playlist'
 import { usePlayerList, usePlayerListStore } from '@/main/store/player'
+import { useToast } from '@/components/ui/use-toast'
 
 interface PlayerContextProps {
   paused: boolean
@@ -43,6 +44,8 @@ export function usePlayer() {
 }
 
 export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
+  const { toast } = useToast()
+
   const [paused, setPaused] = useState(true)
   const [duration, setDuration] = useState(0)
   const [time, setTime] = useState(0)
@@ -130,55 +133,64 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     if (current?.copyrightId) {
-      fetchSongInfo(current.copyrightId).then((data) => {
-        howlerRef.current?.stop()
-        howlerRef.current?.unload()
-        current.url = data.playUrl
-        addRecent(current)
-        const howler = new Howl({
-          src: data.playUrl,
-          autoplay: autoplay,
-          loop: mode === 'repeat',
-          html5: true,
-          volume: vol / 100,
-        })
-        howler.once('load', () => {
-          setDuration(Math.ceil(howler.duration()))
-          clearInterval(timer.current)
-          initPlayer()
-          setTime(0)
-          if (autoplay) {
-            timer.current = setInterval(() => {
-              setTime(Math.ceil(howler.seek()))
-            }, 1000) as unknown as number
-          } else {
-            timer.current = 0
-          }
-        })
-        howler.on('play', () => {
-          setPaused(false)
-          if (timer.current === 0) {
-            timer.current = setInterval(() => {
-              setTime(Math.ceil(howler.seek()))
-            }, 1000) as unknown as number
-          }
-        })
-        howler.on('pause', () => {
-          setPaused(true)
-          clearInterval(timer.current)
-          timer.current = 0
-        })
-        howler.once('end', () => {
-          console.log('end', mode)
-          if (mode !== 'repeat') {
+      fetchSongInfo(current.copyrightId)
+        .then((data) => {
+          howlerRef.current?.stop()
+          howlerRef.current?.unload()
+          current.url = data.playUrl
+          addRecent(current)
+          const howler = new Howl({
+            src: data.playUrl,
+            autoplay: autoplay,
+            loop: mode === 'repeat',
+            html5: true,
+            volume: vol / 100,
+          })
+          howler.once('load', () => {
+            setDuration(Math.ceil(howler.duration()))
             clearInterval(timer.current)
-            playNext()
-          } else {
+            initPlayer()
             setTime(0)
-          }
+            if (autoplay) {
+              timer.current = setInterval(() => {
+                setTime(Math.ceil(howler.seek()))
+              }, 1000) as unknown as number
+            } else {
+              timer.current = 0
+            }
+          })
+          howler.on('play', () => {
+            setPaused(false)
+            if (timer.current === 0) {
+              timer.current = setInterval(() => {
+                setTime(Math.ceil(howler.seek()))
+              }, 1000) as unknown as number
+            }
+          })
+          howler.on('pause', () => {
+            setPaused(true)
+            clearInterval(timer.current)
+            timer.current = 0
+          })
+          howler.once('end', () => {
+            console.log('end', mode)
+            if (mode !== 'repeat') {
+              clearInterval(timer.current)
+              playNext()
+            } else {
+              setTime(0)
+            }
+          })
+          howlerRef.current = howler
         })
-        howlerRef.current = howler
-      })
+        .catch((error) => {
+          console.error(error, 'fetchSongInfo error')
+          toast({
+            variant: 'destructive',
+            title: '获取歌曲信息错误!',
+          })
+          playNext()
+        })
     } else {
       setPaused(true)
       setDuration(0)
@@ -188,7 +200,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
       howlerRef.current?.unload()
       clearInterval(timer.current)
     }
-  }, [addRecent, current, playNext])
+  }, [addRecent, current, playNext, toast])
 
   useEffect(() => {
     if (current) {
