@@ -92,7 +92,7 @@ const SongLyric: React.FC<Props> = ({ copyrightId, time, scroll = false }) => {
           key={index}
           id={`lyric-row-${index}`}
           className={`p-1 leading-7 ${
-            index === playIndex ? 'text-primary' : ''
+            index === playIndex ? 'text-primary text-lg' : ''
           }`}
           data-t={row.time}
         >
