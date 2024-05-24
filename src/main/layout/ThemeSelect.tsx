@@ -22,6 +22,7 @@ function getTheme(): Theme {
 }
 
 function setLocalTheme(theme: Theme) {
+  localStorage.setItem(LOCAL_THEME, theme)
   window.electronAPI.setTheme(theme).then(() => {
     const root = window.document.documentElement
     root.classList.remove('light', 'dark')
