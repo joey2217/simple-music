@@ -61,7 +61,7 @@ const SongLyric: React.FC<Props> = ({ copyrightId, time, scroll = false }) => {
 
   useEffect(() => {
     const len = lyric.length
-    if (time == null || len === 0 || lyric[0].time == null) return
+    if (time == null || len === 0) return
     const i = lyric.findIndex((row) => row.time && row.time > time)
     if (i === -1) {
       if (lyric[len - 1].words === '') {
