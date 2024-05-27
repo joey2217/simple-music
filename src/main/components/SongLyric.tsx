@@ -19,6 +19,8 @@ const SongLyric: React.FC<Props> = ({ copyrightId, time, scroll = false }) => {
 
   const timer = useRef<number>(0)
 
+  const hasTime = lyric.some(l=>l.time!=null)
+
   const onDisabledAutoScroll = () => {
     if (scroll) {
       setDisabledAutoScroll(true)
@@ -61,7 +63,7 @@ const SongLyric: React.FC<Props> = ({ copyrightId, time, scroll = false }) => {
 
   useEffect(() => {
     const len = lyric.length
-    if (time == null || len === 0) return
+    if (time == null || len === 0 || !hasTime) return
     const i = lyric.findIndex((row) => row.time && row.time > time)
     if (i === -1) {
       if (lyric[len - 1].words === '') {
@@ -77,7 +79,7 @@ const SongLyric: React.FC<Props> = ({ copyrightId, time, scroll = false }) => {
     } else {
       setPlayIndex(i - 1 >= 0 ? i - 1 : 0)
     }
-  }, [lyric, time])
+  }, [hasTime, lyric, time])
 
   if (status === 'loading') {
     return <div>加载中</div>

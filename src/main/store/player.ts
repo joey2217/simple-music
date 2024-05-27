@@ -50,7 +50,6 @@ export const usePlayerListStore = create<PlayerListState>()(
                 setLocalIndex(i)
               }
             }
-            console.log('index', index)
             return {
               current:
                 mode === 'shuffle'
