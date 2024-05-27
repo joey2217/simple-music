@@ -54,16 +54,12 @@ export default function handleIPC() {
   ipcMain.handle('SET_PAUSED', (_e, paused: boolean) => {
     // console.log('SET_PAUSED', paused)
     setMenuPaused(paused)
-    if (process.platform === 'win32') {
-      setThumbarButtonsPaused(paused)
-    }
+    setThumbarButtonsPaused(paused)
   })
 
   ipcMain.handle('SET_APP_TITLE', (_e, title?: string) => {
     // console.log('SET_APP_TITLE', title, Boolean(title))
     setMenuTitle(title)
-    if (process.platform === 'win32' && !title) {
-      setThumbarButtonsEnabled(Boolean(title))
-    }
+    setThumbarButtonsEnabled(Boolean(title))
   })
 }

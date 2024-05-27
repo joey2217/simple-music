@@ -5,6 +5,7 @@ import { ROOT } from '../constant'
 
 let win: BrowserWindow = null!
 let quit = false
+let musicPaused = true
 
 const DARK_BACK_COLOR = '#0c0a09'
 
@@ -72,9 +73,12 @@ export function create() {
 
 export function focus() {
   if (win) {
-    if (win.isMinimized()) win.restore()
+    if (win.isMinimized()) {
+      win.restore()
+    }
     win.show()
     win.focus()
+    setThumbarButtonsPaused(musicPaused)
   }
 }
 
@@ -103,56 +107,61 @@ export function beforeQuit() {
 }
 
 export function setThumbarButtonsEnabled(enabled: boolean) {
-  if (enabled) {
+  if (process.platform === 'win32') {
+    if (enabled) {
+      const thumbarButtons: Electron.ThumbarButton[] = [
+        {
+          icon: prevIcon,
+          click: musicControl('prev'),
+          tooltip: '上一首',
+          flags: enabled ? undefined : ['disabled'],
+        },
+        {
+          icon: pauseIcon,
+          click: musicControl('pause'),
+          tooltip: '暂停',
+          flags: enabled ? undefined : ['disabled'],
+        },
+        {
+          icon: nextIcon,
+          click: musicControl('next'),
+          tooltip: '下一首',
+          flags: enabled ? undefined : ['disabled'],
+        },
+      ]
+      win.setThumbarButtons(thumbarButtons)
+    } else {
+      win.setThumbarButtons([])
+    }
+  }
+}
+
+export function setThumbarButtonsPaused(paused: boolean) {
+  musicPaused = paused
+  if (process.platform === 'win32') {
     const thumbarButtons: Electron.ThumbarButton[] = [
       {
         icon: prevIcon,
         click: musicControl('prev'),
         tooltip: '上一首',
-        flags: enabled ? undefined : ['disabled'],
       },
-      {
-        icon: pauseIcon,
-        click: musicControl('pause'),
-        tooltip: '暂停',
-        flags: enabled ? undefined : ['disabled'],
-      },
+      paused
+        ? {
+            icon: playIcon,
+            click: musicControl('play'),
+            tooltip: '播放',
+          }
+        : {
+            icon: pauseIcon,
+            click: musicControl('pause'),
+            tooltip: '暂停',
+          },
       {
         icon: nextIcon,
         click: musicControl('next'),
         tooltip: '下一首',
-        flags: enabled ? undefined : ['disabled'],
       },
     ]
     win.setThumbarButtons(thumbarButtons)
-  } else {
-    win.setThumbarButtons([])
   }
-}
-
-export function setThumbarButtonsPaused(paused: boolean) {
-  const thumbarButtons: Electron.ThumbarButton[] = [
-    {
-      icon: prevIcon,
-      click: musicControl('prev'),
-      tooltip: '上一首',
-    },
-    paused
-      ? {
-          icon: playIcon,
-          click: musicControl('play'),
-          tooltip: '播放',
-        }
-      : {
-          icon: pauseIcon,
-          click: musicControl('pause'),
-          tooltip: '暂停',
-        },
-    {
-      icon: nextIcon,
-      click: musicControl('next'),
-      tooltip: '下一首',
-    },
-  ]
-  win.setThumbarButtons(thumbarButtons)
 }
