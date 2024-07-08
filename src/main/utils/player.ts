@@ -32,11 +32,19 @@ export function columnContent2Music(columnContent: ColumnContent): Music {
   // if (import.meta.env.DEV) {
   //   console.log('columnContent2Music', columnContent)
   // }
+  let { artists } = columnContent.objectInfo
+  if (artists == null) {
+    artists = []
+    console.warn(
+      'columnContent2Music artists is null',
+      columnContent.objectInfo
+    )
+  }
   return {
     copyrightId: columnContent.objectInfo.copyrightId,
     title: columnContent.objectInfo.songName,
-    artist: columnContent.objectInfo.artists.map((s) => s.name).join('/'),
-    artists: columnContent.objectInfo.artists,
+    artist: artists.map((s) => s.name).join('/'),
+    artists,
     album: columnContent.objectInfo.album,
     albumId: columnContent.objectInfo.albumId,
     pic: albumImgs[albumImgs.length - 1].webpImg,
