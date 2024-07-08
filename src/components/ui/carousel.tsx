@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from 'embla-carousel-react'
@@ -53,7 +53,13 @@ const Carousel = React.forwardRef<
         ...opts,
         axis: orientation === 'horizontal' ? 'x' : 'y',
       },
-      [Autoplay({ playOnInit: true, stopOnMouseEnter: true })]
+      [
+        Autoplay({
+          playOnInit: true,
+          stopOnMouseEnter: true,
+          stopOnInteraction: false,
+        }),
+      ]
     )
     const [canScrollPrev, setCanScrollPrev] = React.useState(false)
     const [canScrollNext, setCanScrollNext] = React.useState(false)
@@ -242,6 +248,49 @@ const CarouselNext = React.forwardRef<
 })
 CarouselNext.displayName = 'CarouselNext'
 
+const CarouselNavigation: React.FC = () => {
+  const { api: emblaApi } = useCarousel()
+
+  const [selectedIndex, setSelectedIndex] = useState(0)
+  const [scrollSnaps, setScrollSnaps] = useState<number[]>([])
+
+  const onDotButtonClick = useCallback(
+    (index: number) => {
+      if (!emblaApi) return
+      emblaApi.scrollTo(index)
+    },
+    [emblaApi]
+  )
+
+  const onInit = useCallback((emblaApi: CarouselApi) => {
+    setScrollSnaps(emblaApi!.scrollSnapList())
+  }, [])
+
+  const onSelect = useCallback((emblaApi: CarouselApi) => {
+    setSelectedIndex(emblaApi!.selectedScrollSnap())
+  }, [])
+
+  useEffect(() => {
+    if (!emblaApi) return
+    onInit(emblaApi)
+    onSelect(emblaApi)
+    emblaApi.on('reInit', onInit).on('reInit', onSelect).on('select', onSelect)
+  }, [emblaApi, onInit, onSelect])
+
+  return (
+    <div className="absolute bottom-2 left-0 w-full flex justify-center items-center gap-2">
+      {scrollSnaps.map((_, index) => (
+        <Button
+          key={index}
+          onClick={() => onDotButtonClick(index)}
+          variant={index === selectedIndex ? 'default' : 'outline'}
+          className="rounded-full w-6 h-6 p-0"
+        ></Button>
+      ))}
+    </div>
+  )
+}
+
 export {
   type CarouselApi,
   Carousel,
@@ -249,4 +298,5 @@ export {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
+  CarouselNavigation,
 }

@@ -3,6 +3,7 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
+  CarouselNavigation,
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel'
@@ -41,6 +42,7 @@ export default function Banner() {
         className="rounded-none h-1/2 w-10 opacity-50"
         variant="outline"
       />
+      <CarouselNavigation />
     </Carousel>
   )
 }
