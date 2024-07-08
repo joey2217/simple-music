@@ -195,10 +195,6 @@ export function setMenuTitle(name?: string) {
         {
           label: '查看',
           submenu: [
-            { role: 'reload', label: '刷新' },
-            { role: 'forceReload', label: '强制刷新' },
-            { role: 'toggleDevTools', label: '切换开发者工具' },
-            { type: 'separator' },
             { role: 'resetZoom', label: '重置缩放' },
             { role: 'zoomIn', label: '缩小' },
             { role: 'zoomOut', label: '放大' },
