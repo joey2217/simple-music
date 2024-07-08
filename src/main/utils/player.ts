@@ -4,9 +4,9 @@ import { shuffle } from './index'
 import icon from '../assets/icon.png'
 
 export function songItem2Music(songItem: SongItem): Music {
-  if (import.meta.env.DEV) {
-    console.log('songItem2Music', songItem)
-  }
+  // if (import.meta.env.DEV) {
+  //   console.log('songItem2Music', songItem)
+  // }
   let pic = songItem.smallPic || songItem.mediumPic
   if (pic) {
     if (pic.startsWith('//')) {
@@ -16,11 +16,17 @@ export function songItem2Music(songItem: SongItem): Music {
     pic = icon
   }
 
+  let { singers } = songItem
+  if (singers == null) {
+    console.warn('singers is null', songItem)
+    singers = []
+  }
+
   return {
     copyrightId: songItem.copyrightId,
     title: songItem.name,
-    artist: songItem.singers.map((s) => s.name).join('/'),
-    artists: songItem.singers,
+    artist: singers.map((s) => s.name).join('/'),
+    artists: singers,
     album: songItem.album?.name,
     albumId: songItem.album?.id,
     pic,

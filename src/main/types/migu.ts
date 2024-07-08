@@ -116,7 +116,7 @@ export interface SongItem {
   id: string
   name: string
   copyrightId: string
-  singers: Artist[]
+  singers?: Artist[]
   album?: Album
   mv?: Mv
   crbt?: Crbt
@@ -345,7 +345,7 @@ export interface SongObjectInfo {
   singerImg: { [p: string]: SingerImg }
   songNamePinyin: string
   albumNamePinyin: string
-  artists: Artist[]
+  artists?: Artist[]
   landscapImg: string
   vipLogo: string
   vipDownload: string
