@@ -60,7 +60,6 @@ module.exports = {
   releaseInfo: {
     releaseName: `v${version}`,
     releaseNotes: '1. 修复已知问题\n2. 优化用户体验\n',
-    releaseNotesFile: 'resources/release-notes.md',
     releaseDate: new Date().toLocaleString('zh-CN'),
   },
   // publish: {
