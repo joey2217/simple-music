@@ -22,14 +22,21 @@ export default defineConfig(({ mode }) => {
       outDir: path.join(ROOT, 'dist'),
       emptyOutDir: true,
       minify: mode === 'development' ? false : 'esbuild',
-      lib: {
-        entry: {
+      // lib: {
+      //   entry: {
+      //     preload: path.join(ROOT, '/src-main/windows/preload.ts'),
+      //   },
+      //   formats: ['cjs'],
+      //   fileName: (_format, entryName) => entryName + '.cjs',
+      // },
+      rollupOptions: {
+        input: {
           preload: path.join(ROOT, '/src-main/windows/preload.ts'),
         },
-        formats: ['cjs'],
-        fileName: (_format, entryName) => entryName + '.cjs',
-      },
-      rollupOptions: {
+        output: {
+          format: 'cjs',
+          entryFileNames: '[name].cjs',
+        },
         external: EXTERNAL,
       },
     },

@@ -22,14 +22,21 @@ export default defineConfig(({ mode }) => {
       outDir: path.join(ROOT, 'dist'),
       emptyOutDir: false,
       minify: mode === 'development' ? false : 'esbuild',
-      lib: {
-        entry: {
+      // lib: {
+      //   entry: {
+      //     main: path.join(ROOT, '/src-main/index.ts'),
+      //   },
+      //   formats: ['es'],
+      //   fileName: (_format, entryName) => entryName + '.mjs',
+      // },
+      rollupOptions: {
+        input: {
           main: path.join(ROOT, '/src-main/index.ts'),
         },
-        formats: ['es'],
-        fileName: (_format, entryName) => entryName + '.mjs',
-      },
-      rollupOptions: {
+        output: {
+          format: 'es',
+          entryFileNames: '[name].mjs',
+        },
         external: EXTERNAL,
       },
     },
