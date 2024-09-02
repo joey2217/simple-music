@@ -20,14 +20,7 @@ function about() {
     icon: icon,
     type: 'info',
     title: '关于' + APP_NAME,
-    message: `
-    ${APP_NAME}\n
-    v${version}\n
-    node: ${process.versions.node}\n
-    chrome: ${process.versions.chrome}\n
-    electron: ${process.versions.electron}\n
-    platform: ${process.platform}\n
-    v8: ${process.versions.v8}\n`,
+    message: `${APP_NAME}\nv${version}\nnode: ${process.versions.node}\nchrome: ${process.versions.chrome}\nelectron: ${process.versions.electron}\nplatform: ${process.platform}\nv8: ${process.versions.v8}\n`,
   })
 }
 
