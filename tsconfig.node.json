@@ -5,6 +5,7 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
+    "target": "ESNext"
   },
   "include": [
     "src-main/**/*",
