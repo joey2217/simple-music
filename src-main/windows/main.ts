@@ -1,7 +1,7 @@
 import { BrowserWindow, nativeTheme } from 'electron'
 import * as path from 'node:path'
 import { nextIcon, pauseIcon, playIcon, prevIcon } from '../icons'
-import { ROOT } from '../constant'
+import { DEV, ROOT } from '../constant'
 
 let win: BrowserWindow = null!
 let quit = false
@@ -17,12 +17,11 @@ export function create() {
     titleBarStyle: 'hidden',
     titleBarOverlay: {
       color: nativeTheme.shouldUseDarkColors ? DARK_BACK_COLOR : '#fff',
-      // symbolColor: nativeTheme.shouldUseDarkColors ? '#7480ff' : '#641AE6',
-      // symbolColor: nativeTheme.shouldUseDarkColors ? '#cccccccc' : '#000000cc',
       symbolColor: '#22c55e',
       height: 40,
     },
     webPreferences: {
+      devTools: DEV,
       preload: path.join(ROOT, 'preload.cjs'),
       webSecurity: import.meta.env.PROD,
     },
@@ -52,7 +51,7 @@ export function create() {
       ]
       win.setThumbarButtons(thumbarButtons)
     }
-    if (import.meta.env.DEV || process.argv.includes('--dev')) {
+    if (DEV) {
       win.webContents.openDevTools({ mode: 'bottom' })
     }
   })
