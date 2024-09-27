@@ -14,13 +14,8 @@ const AlbumImage: React.FC<{ albumImgList: AlbumImg[] }> = ({
 }) => {
   const albumImg = albumImgList[albumImgList.length - 1]
   if (albumImg) {
-    return (
-      <LazyImage
-        src={albumImg.webpImg}
-        alt="album"
-        className="w-10 h-10 rounded-md"
-      />
-    )
+    const pic = albumImg.webpImg || albumImg.img
+    return <LazyImage src={pic} alt="album" className="w-10 h-10 rounded-md" />
   }
   return null
 }
