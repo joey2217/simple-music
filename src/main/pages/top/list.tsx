@@ -95,7 +95,7 @@ const TopList: React.FC = () => {
           <TableBody>
             {musicList.map((item, index) => {
               return (
-                <TableRow key={item.copyrightId}>
+                <TableRow key={item.copyrightId || index}>
                   <TableCell className="text-center">{index + 1}</TableCell>
                   <TableCell>
                     <MusicTitleCell music={item} />

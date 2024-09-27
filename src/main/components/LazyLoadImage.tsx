@@ -37,6 +37,7 @@ export default function LazyImage({
       {...props}
       ref={imgRef}
       src={placeholderSrc}
+      data-src={src}
       onError={(e) => {
         (e.target as HTMLImageElement).onerror = null
         ;(e.target as HTMLImageElement).src = placeholderSrc

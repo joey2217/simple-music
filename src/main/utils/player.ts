@@ -46,6 +46,17 @@ export function columnContent2Music(columnContent: ColumnContent): Music {
       columnContent.objectInfo
     )
   }
+  let pic = ''
+  if (albumImgs.length > 0) {
+    const albumImg = albumImgs[albumImgs.length - 1]
+    if (albumImg.webpImg) {
+      pic = albumImg.webpImg
+    } else if (albumImg.img) {
+      pic = albumImg.img
+    } else {
+      pic = icon
+    }
+  }
   return {
     copyrightId: columnContent.objectInfo.copyrightId,
     title: columnContent.objectInfo.songName,
@@ -53,7 +64,7 @@ export function columnContent2Music(columnContent: ColumnContent): Music {
     artists,
     album: columnContent.objectInfo.album,
     albumId: columnContent.objectInfo.albumId,
-    pic: albumImgs[albumImgs.length - 1].webpImg,
+    pic,
   }
 }
 

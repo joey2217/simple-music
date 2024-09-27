@@ -1,6 +1,7 @@
 import type { Artist } from './migu'
 
 export interface Music {
+  id?: string
   copyrightId: string
   title: string
   artist: string

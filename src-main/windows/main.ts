@@ -15,6 +15,7 @@ export function create() {
     height: 800,
     show: false,
     titleBarStyle: 'hidden',
+    backgroundColor: nativeTheme.shouldUseDarkColors ? DARK_BACK_COLOR : '#fff',
     titleBarOverlay: {
       color: nativeTheme.shouldUseDarkColors ? DARK_BACK_COLOR : '#fff',
       symbolColor: '#22c55e',
