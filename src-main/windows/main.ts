@@ -108,31 +108,27 @@ export function beforeQuit() {
 
 export function setThumbarButtonsEnabled(enabled: boolean) {
   if (process.platform === 'win32') {
-    if (enabled) {
-      const thumbarButtons: Electron.ThumbarButton[] = [
-        {
-          icon: prevIcon,
-          click: musicControl('prev'),
-          tooltip: '上一首',
-          flags: enabled ? undefined : ['disabled'],
-        },
-        {
-          icon: pauseIcon,
-          click: musicControl('pause'),
-          tooltip: '暂停',
-          flags: enabled ? undefined : ['disabled'],
-        },
-        {
-          icon: nextIcon,
-          click: musicControl('next'),
-          tooltip: '下一首',
-          flags: enabled ? undefined : ['disabled'],
-        },
-      ]
-      win.setThumbarButtons(thumbarButtons)
-    } else {
-      win.setThumbarButtons([])
-    }
+    const thumbarButtons: Electron.ThumbarButton[] = [
+      {
+        icon: prevIcon,
+        click: musicControl('prev'),
+        tooltip: '上一首',
+        flags: enabled ? undefined : ['disabled'],
+      },
+      {
+        icon: pauseIcon,
+        click: musicControl('pause'),
+        tooltip: '暂停',
+        flags: enabled ? undefined : ['disabled'],
+      },
+      {
+        icon: nextIcon,
+        click: musicControl('next'),
+        tooltip: '下一首',
+        flags: enabled ? undefined : ['disabled'],
+      },
+    ]
+    win.setThumbarButtons(thumbarButtons)
   }
 }
 
