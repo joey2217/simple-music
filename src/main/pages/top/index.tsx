@@ -14,7 +14,7 @@ const menus = [
   { id: '19190036', name: '欧美榜' },
   { id: '23189813', name: '日韩榜' },
   { id: '15140045', name: 'KTV榜' },
-  { id: '15140034', name: '网络榜' },
+  // { id: '15140034', name: '网络榜' },
 ]
 
 export const topLoader: LoaderFunction = ({ params }) => {

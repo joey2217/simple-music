@@ -31,6 +31,10 @@ if (!gotTheLock) {
     createMainWindow()
     handleIPC()
   })
+
+  app.on('open-url', (_event, url) => {
+    log.info(`You arrived from: ${url}`)
+  })
 }
 
 if (import.meta.env.DEV) {
