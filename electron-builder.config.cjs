@@ -1,6 +1,4 @@
 /*eslint-env node*/
-/* eslint-disable @typescript-eslint/no-var-requires */
-// eslint-disable-next-line @typescript-eslint/no-require-imports
 const { version } = require('./package.json')
 const nameEN = 'SimpleMusic'
 
@@ -20,6 +18,11 @@ module.exports = {
   win: {
     icon: 'resources/icon.ico',
     target: 'nsis',
+    forceCodeSigning: false,
+    signtoolOptions: {
+      sign: null
+    },
+    verifyUpdateCodeSignature: false,
   },
   protocols: {
     name: 'simple-music',
@@ -38,6 +41,7 @@ module.exports = {
   mac: {
     icon: 'resources/icon.icns',
     target: 'default',
+    identity: null,
   },
   dmg: {
     window: {
