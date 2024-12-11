@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import type { HotWordItem, SearchSuggest } from '../types/migu'
 import { fetchSearchHotWord, fetchSearchSuggest } from '../api/migu'
 import { Input } from '@/components/ui/input'

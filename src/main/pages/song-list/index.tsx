@@ -1,5 +1,5 @@
 import React from 'react'
-import { Outlet, useLoaderData, type LoaderFunction } from 'react-router-dom'
+import { Outlet, useLoaderData, type LoaderFunction } from 'react-router'
 import { fetchPlaylistInfo } from '../../api/migu'
 import type { PlaylistInfo } from '../../types/migu'
 import LazyImage from '../../components/LazyLoadImage'

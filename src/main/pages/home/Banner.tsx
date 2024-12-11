@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/carousel'
 import { fetchBanner } from '../../api/migu'
 import { BannerItem } from '@/main/types/migu'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import Image from '@/main/components/Image'
 
 export default function Banner() {

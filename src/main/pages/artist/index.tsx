@@ -4,7 +4,7 @@ import {
   type LoaderFunction,
   Outlet,
   NavLink,
-} from 'react-router-dom'
+} from 'react-router'
 import { fetchArtistDetail } from '../../api/migu'
 import type { ArtistInfo } from '../../types/migu'
 import Image from '@/main/components/Image'

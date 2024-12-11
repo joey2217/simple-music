@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate, Location, Link } from 'react-router-dom'
+import { useLocation, useNavigate, Location, Link } from 'react-router'
 import SearchBar from './SearchBar'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from './ThemeSelect'

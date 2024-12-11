@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { fetchPlaylist } from '../../api/migu'
 import type { PlayListItem } from '../../types/migu'
 import PlayListCard from '../../components/PlayListCard'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { buttonVariants } from '@/components/ui/button'
 
 const PlayList: React.FC = () => {

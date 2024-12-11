@@ -4,7 +4,7 @@ import {
   NavLink,
   Outlet,
   redirect,
-} from 'react-router-dom'
+} from 'react-router'
 
 const menus = [
   { id: '27553319', name: '新歌榜' },

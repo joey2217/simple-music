@@ -8,7 +8,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
 interface Props {
   total: number

@@ -1,4 +1,4 @@
-import { createHashRouter, redirect } from 'react-router-dom'
+import { createHashRouter, redirect } from 'react-router'
 import Layout from './layout'
 import Error from './layout/Error'
 import Home from './pages/home'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useLoaderData, type LoaderFunction } from 'react-router-dom'
+import { Link, useLoaderData, type LoaderFunction } from 'react-router'
 import { fetchArtistSong } from '../../api/migu'
 import type { PageData, SongItem } from '../../types/migu'
 import { songItem2Music } from '../../utils/player'

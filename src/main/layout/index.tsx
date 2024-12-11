@@ -1,6 +1,6 @@
 import React from 'react'
 import Header from './Header'
-import { Outlet } from 'react-router-dom'
+import { Outlet } from 'react-router'
 import Sider from './Sider'
 import useIPC from '../utils/ipc'
 import Player from './Player'

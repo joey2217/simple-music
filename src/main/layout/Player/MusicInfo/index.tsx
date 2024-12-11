@@ -1,7 +1,7 @@
 import React from 'react'
 import { usePlayerListStore } from '@/main/store/player'
 import Lyric from './Lyric'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import emitter from '@/main/utils/emitter'
 
 const MusicInfo: React.FC = () => {

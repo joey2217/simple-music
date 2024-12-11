@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useLoaderData, type LoaderFunction } from 'react-router-dom'
+import { Link, useLoaderData, type LoaderFunction } from 'react-router'
 import {
   Table,
   TableBody,

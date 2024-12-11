@@ -5,7 +5,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react'
 import ReactDOM from 'react-dom'
 import SongLyric from '@/main/components/SongLyric'
 import { usePlayer } from '../PlayerContext'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import emitter from '@/main/utils/emitter'
 
 interface Props {

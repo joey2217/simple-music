@@ -1,6 +1,6 @@
 import React from 'react'
 import type { PlayListItem } from '../types/migu'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { Card } from '@/components/ui/card'
 import LazyLoadImage from './LazyLoadImage'
 

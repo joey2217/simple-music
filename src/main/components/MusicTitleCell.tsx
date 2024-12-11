@@ -3,7 +3,7 @@ import LazyImage from './LazyLoadImage'
 import type { Music } from '../types/player'
 import { usePlayerList, usePlayerListStore } from '../store/player'
 import { Play } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
 interface Props {
   music: Music

@@ -1,7 +1,7 @@
 import { fetchPlaylistSongs } from '@/main/api/migu'
 import { SongItem } from '@/main/types/migu'
 import React from 'react'
-import { useLoaderData, type LoaderFunction } from 'react-router-dom'
+import { useLoaderData, type LoaderFunction } from 'react-router'
 import {
   Table,
   TableBody,

@@ -11,15 +11,13 @@ interface Props {
 const LikeButton: React.FC<
   Props & React.ButtonHTMLAttributes<HTMLButtonElement>
 > = ({ item, size = 18, ...props }) => {
-  const likeMusicIds = useLikeStore((s) =>
-    s.musicList.map((m) => m.copyrightId)
-  )
+  const musicList = useLikeStore((s) => s.musicList)
   const addLikeMusic = useLikeStore((s) => s.addLikeMusic)
   const removeLikeMusic = useLikeStore((s) => s.removeLikeMusic)
 
   const isLiked = useMemo(
-    () => item && likeMusicIds.includes(item.copyrightId),
-    [item, likeMusicIds]
+    () => item && musicList.some((m) => m.id === item.id),
+    [item, musicList]
   )
 
   const toggleLike = useCallback(() => {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { LoaderFunction, useLoaderData } from 'react-router-dom'
+import { LoaderFunction, useLoaderData } from 'react-router'
 import { fetchPlaylist } from '../../api/migu'
 import type { PlayListItem } from '../../types/migu'
 import PlayListCard from '../../components/PlayListCard'

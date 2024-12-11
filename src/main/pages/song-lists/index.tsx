@@ -4,7 +4,7 @@ import {
   NavLink,
   Outlet,
   useLoaderData,
-} from 'react-router-dom'
+} from 'react-router'
 import { fetchPlaylistTags } from '../../api/migu'
 import { PlayListTag } from '../../types/migu'
 

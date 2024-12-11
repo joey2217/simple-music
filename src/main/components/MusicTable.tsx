@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/table'
 import { usePlayerList } from '../store/player'
 import ActionCell from './ActionCell'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import MusicTitleCell from './MusicTitleCell'
 
 interface Props {

@@ -3,7 +3,7 @@ import {
   usePlaylists,
 } from '@/main/context/PlaylistContext'
 import React, { useMemo } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router'
 import MusicTable from '@/main/components/MusicTable'
 import PlayAllButton from '@/main/components/buttons/PlayAllButton'
 import AppendPlayerListButton from '@/main/components/buttons/AppendPlayerListButton'

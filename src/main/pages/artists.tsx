@@ -5,7 +5,7 @@ import {
   Link,
   NavLink,
   redirect,
-} from 'react-router-dom'
+} from 'react-router'
 import { fetchArtistList } from '../api/migu'
 import type { ArtistContent, ArtistType, ArtistArea } from '../types/migu'
 import LazyImage from '../components/LazyLoadImage'

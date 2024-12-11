@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { type LoaderFunction, useLoaderData, Link } from 'react-router-dom'
+import { type LoaderFunction, useLoaderData, Link } from 'react-router'
 import { fetchSearchData } from '../api/migu'
 import type { SearchSinger, SongItem } from '../types/migu'
 import { songItem2Music } from '../utils/player'

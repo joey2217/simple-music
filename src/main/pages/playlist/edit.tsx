@@ -14,7 +14,7 @@ import {
   LoaderFunction,
   useLoaderData,
   useNavigate,
-} from 'react-router-dom'
+} from 'react-router'
 import { getPlaylistById, usePlaylists } from '@/main/context/PlaylistContext'
 import type { Playlist } from '@/main/types'
 import { Input, Textarea } from '@/components/ui/input'
