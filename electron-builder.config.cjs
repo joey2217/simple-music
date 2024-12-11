@@ -18,11 +18,11 @@ module.exports = {
   win: {
     icon: 'resources/icon.ico',
     target: 'nsis',
-    forceCodeSigning: false,
-    signtoolOptions: {
-      sign: null
-    },
-    verifyUpdateCodeSignature: false,
+    // forceCodeSigning: false,
+    // signtoolOptions: {
+    //   sign: null
+    // },
+    // verifyUpdateCodeSignature: false,
   },
   protocols: {
     name: 'simple-music',
@@ -41,7 +41,7 @@ module.exports = {
   mac: {
     icon: 'resources/icon.icns',
     target: 'default',
-    identity: null,
+    // identity: null,
   },
   dmg: {
     window: {
