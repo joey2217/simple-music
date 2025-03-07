@@ -14,13 +14,14 @@ module.exports = {
     output: 'release',
     buildResources: 'resources',
   },
+  executableName: nameEN,
   files: ['dist'],
   win: {
     icon: 'resources/icon.ico',
     target: 'nsis',
     signtoolOptions: {
       certificateFile: 'resources/SimpleMusic.pfx',
-      signingHashAlgorithms: ['sha256'],
+      // signingHashAlgorithms: ['sha256'],
     },
   },
   protocols: {
