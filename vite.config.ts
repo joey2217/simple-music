@@ -2,6 +2,7 @@ import { defineConfig, type PluginOption } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import tailwindcss from '@tailwindcss/vite'
 
 const __filename = fileURLToPath(import.meta.url)
 
@@ -26,7 +27,7 @@ const htmlPlugin: () => PluginOption = () => {
 export default defineConfig({
   root: path.join(ROOT, 'src'),
   base: './',
-  plugins: [react()],
+  plugins: [react(),tailwindcss()],
   resolve: {
     alias: {
       '@': path.join(ROOT, 'src'),

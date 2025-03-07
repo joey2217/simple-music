@@ -18,11 +18,10 @@ module.exports = {
   win: {
     icon: 'resources/icon.ico',
     target: 'nsis',
-    forceCodeSigning: false,
     signtoolOptions: {
-      sign: null
+      certificateFile: 'resources/SimpleMusic.pfx',
+      signingHashAlgorithms: ['sha256'],
     },
-    verifyUpdateCodeSignature: false,
   },
   protocols: {
     name: 'simple-music',
