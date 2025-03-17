@@ -38,6 +38,7 @@ if (!gotTheLock) {
 }
 
 if (import.meta.env.DEV) {
+  Object.assign(console, log.functions)
   loadDevTools()
 }
 
