@@ -28,7 +28,7 @@ export default defineConfig({
     // },
     rollupOptions: {
       input: {
-        preload: path.join(ROOT, "/src-main/windows/preload.ts"),
+        "main.preload": path.join(ROOT, "/src-main/windows/main.preload.ts"),
       },
       output: {
         format: "cjs",
