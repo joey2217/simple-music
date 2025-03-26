@@ -73,7 +73,7 @@ async function startRendererServer(configFile, port = 5174) {
 async function start() {
   await startRendererServer(join(ROOT, "vite.config.ts"));
   const preloadWatcher = await build({
-    configFile: join(ROOT, "vite.preload.config.ts"),
+    configFile: join(ROOT, "vite.config.preload.ts"),
     mode: "development",
     build: {
       sourcemap: true,
@@ -86,7 +86,7 @@ async function start() {
     logger.info("preload event = ", JSON.stringify(event, null, 2));
     if (event.code === "END") {
       const watcher = await build({
-        configFile: join(ROOT, "vite.main.config.ts"),
+        configFile: join(ROOT, "vite.config.main.ts"),
         mode: "development",
         build: {
           sourcemap: true,
