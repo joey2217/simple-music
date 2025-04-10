@@ -21,7 +21,7 @@ export async function loadDevTools() {
         const ext = await session.defaultSession.loadExtension(
           reactDevToolsPath
         )
-        console.log('loadDevTools success', ext)
+        console.log('loadDevTools success', ext.name)
       }
     }
   } catch (error) {

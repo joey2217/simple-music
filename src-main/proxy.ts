@@ -1,25 +1,46 @@
 import { app, session } from 'electron'
 import log from 'electron-log/main'
 
-let headers = {
+const headers = {
   Referer: 'https://m.music.migu.cn/v4/',
   'User-Agent':
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36 HBPC/12.1.2.300',
-  By: '04f81461a98c7af557fea3cf28c4ea15',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+  By: '4f09e01c83d69100c363c33aecfef9f8',
   channel: '014000D',
-  Cookie: 'SESSION=ZTIwODkyMDQtOTE1NS00MDhlLThhMWEtMjQ0N2Y2Mzk2OTAz',
+  Cookie: 'SESSION=MmU0ZDNlZWMtMjgwNS00ODcwLTk0MTMtZmU5YjVmY2UzNmM5',
 }
+const secret = '5pa55qC86Z+z5LmQ54mb6YC8'
 
 // 初始化header
-function fetchHeader() {
-  return fetch('http://api.fonger.top/pc/headers.json')
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.mg) {
-        headers = data.mg
-        log.info('fetchHeader', headers)
+async function fetchHeader() {
+  const res = await fetch('http://fonger.feiyux.top/api/fonger//headers', {
+    headers: {
+      secret,
+    },
+  })
+  if (res.ok) {
+    const data = await res.json()
+    if (data.status === 200) {
+      let mg = data.data.find((item) => item.from === 'MG')
+      if (mg === undefined) {
+        mg = data.data[0]
       }
-    })
+      if (mg) {
+        headers.By = mg.by
+        headers.Referer = mg.referer
+        headers.channel = mg.channel
+        headers.Cookie = mg.cookie
+        headers['User-Agent'] = mg.user_agent
+      }
+    }
+    if (import.meta.env.DEV) {
+      console.log('fetchHeader', data)
+    }
+  }
+  if (import.meta.env.DEV) {
+    console.log('fetchHeader', res.ok, headers)
+  }
+  log.info('fetchHeader', res.ok)
 }
 
 fetchHeader()

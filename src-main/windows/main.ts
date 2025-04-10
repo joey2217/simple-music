@@ -23,7 +23,7 @@ export function create() {
     },
     webPreferences: {
       devTools: DEV,
-      preload: path.join(ROOT, 'preload.cjs'),
+      preload: path.join(ROOT, 'main.preload.cjs'),
       webSecurity: import.meta.env.PROD,
     },
   })
