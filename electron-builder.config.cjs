@@ -15,7 +15,7 @@ module.exports = {
     buildResources: "resources",
   },
   executableName: nameEN,
-  files: ["dist"],
+  files: ["dist", "!**/node_modules/**"],
   electronLanguages: ["zh-CN", "en-US"],
   win: {
     icon: "resources/icon.ico",
@@ -30,9 +30,9 @@ module.exports = {
     schemes: ["simple-music"],
   },
   nsis: {
-    oneClick: false,
+    oneClick: true,
     perMachine: true,
-    allowToChangeInstallationDirectory: true,
+    allowToChangeInstallationDirectory: false,
     installerLanguages: ["zh_CN", "en_US"],
     license: "resources/license.html",
     // multiLanguageInstaller: true,
@@ -40,8 +40,8 @@ module.exports = {
     // installerSidebar  164 × 314
   },
   mac: {
-    icon: 'resources/icon.icns',
-    target: 'default',
+    icon: "resources/icon.icns",
+    target: "default",
     // identity: null,
   },
   dmg: {

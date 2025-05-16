@@ -64,9 +64,7 @@ async function startRendererServer(configFile, port = 5174) {
     },
   });
   await viteDevServer.listen();
-  logger.info(`renderer server start at: http://localhost:${port}`, {
-    prefix: ["renderer"],
-  });
+  viteDevServer.printUrls();
   return viteDevServer;
 }
 
