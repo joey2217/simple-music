@@ -31,8 +31,8 @@ module.exports = {
   },
   nsis: {
     oneClick: true,
-    perMachine: true,
-    allowToChangeInstallationDirectory: false,
+    // perMachine: true,
+    // allowToChangeInstallationDirectory: false,
     installerLanguages: ["zh_CN", "en_US"],
     license: "resources/license.html",
     // multiLanguageInstaller: true,
