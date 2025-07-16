@@ -11,7 +11,7 @@ module.exports = {
   appId: "com.joey.music",
   artifactName: `${nameEN}-\${version}-\${os}-\${arch}.\${ext}`,
   directories: {
-    output: "release",
+    output: `release/${version}`,
     buildResources: "build",
   },
   executableName: nameEN,
@@ -22,7 +22,6 @@ module.exports = {
     target: "nsis",
     signtoolOptions: {
       certificateFile: "build/SimpleMusic.pfx",
-      // signingHashAlgorithms: ['sha256'],
     },
   },
   protocols: {
