@@ -12,16 +12,16 @@ module.exports = {
   artifactName: `${nameEN}-\${version}-\${os}-\${arch}.\${ext}`,
   directories: {
     output: "release",
-    buildResources: "resources",
+    buildResources: "build",
   },
   executableName: nameEN,
-  files: ["dist", "!**/node_modules/**"],
+  files: ["dist"],
   electronLanguages: ["zh-CN", "en-US"],
   win: {
-    icon: "resources/icon.ico",
+    icon: "build/icon.ico",
     target: "nsis",
     signtoolOptions: {
-      certificateFile: "resources/SimpleMusic.pfx",
+      certificateFile: "build/SimpleMusic.pfx",
       // signingHashAlgorithms: ['sha256'],
     },
   },
@@ -34,13 +34,13 @@ module.exports = {
     // perMachine: true,
     // allowToChangeInstallationDirectory: false,
     installerLanguages: ["zh_CN", "en_US"],
-    license: "resources/license.html",
+    license: "build/license.html",
     // multiLanguageInstaller: true,
     // language: '2052',
     // installerSidebar  164 × 314
   },
   mac: {
-    icon: "resources/icon.icns",
+    icon: "build/icon.icns",
     target: "default",
     // identity: null,
   },
@@ -68,9 +68,8 @@ module.exports = {
     releaseNotes: "1. 修复已知问题\n2. 优化用户体验\n",
     releaseDate: new Date().toLocaleString("zh-CN"),
   },
-  // publish: {
-  // provider: 'github',
-  // provider: 'generic',
-  // url: 'http://localhost:3000',
-  // },
+  publish: {
+    provider: "generic",
+    url: "https://api.jjdd.site/app/music/latest",
+  },
 };
