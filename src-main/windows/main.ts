@@ -65,7 +65,7 @@ export function create() {
   })
 
   if (import.meta.env.DEV) {
-    win.loadURL('http://localhost:5174')
+    win.loadURL('http://localhost:7000')
   } else {
     win.loadFile(path.join(ROOT, 'renderer/index.html'))
   }

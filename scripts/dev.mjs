@@ -55,7 +55,7 @@ function startElectron() {
   });
 }
 
-async function startRendererServer(configFile, port = 5174) {
+async function startRendererServer(configFile, port = 7000) {
   const viteDevServer = await createServer({
     configFile,
     mode: "development",

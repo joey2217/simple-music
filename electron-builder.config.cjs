@@ -30,18 +30,12 @@ module.exports = {
   },
   nsis: {
     oneClick: true,
-    // perMachine: true,
-    // allowToChangeInstallationDirectory: false,
     installerLanguages: ["zh_CN", "en_US"],
     license: "build/license.html",
-    // multiLanguageInstaller: true,
-    // language: '2052',
-    // installerSidebar  164 × 314
   },
   mac: {
     icon: "build/icon.icns",
     target: "default",
-    // identity: null,
   },
   dmg: {
     window: {

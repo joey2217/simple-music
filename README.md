@@ -24,4 +24,5 @@
 
 ![搜索](screenshot/screenshot-search.png)
 
- 
+https://github.com/mikezzb/lrc-player
+https://music.migu.cn/v5/#/musicLibrary
