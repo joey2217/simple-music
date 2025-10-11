@@ -1,4 +1,5 @@
 import { app, session } from "electron";
+import https from "https";
 
 const filter = {
   urls: ["https://wapi.kuwo.cn/*"],
@@ -14,6 +15,7 @@ const KUWO_URL = "https://wapi.kuwo.cn/";
 
 // kw_token=2GTRO51Y2VM; path=/; expires=Fri, 17 Feb 2023 07:31:18 GMT
 function setToken(cookies: string[]) {
+  console.log("setToken", cookies);
   if (cookies.length > 0) {
     cookies.forEach((cookieStr) => {
       const arr = cookieStr.split(";");
@@ -46,11 +48,26 @@ function setToken(cookies: string[]) {
 }
 // 初始化cookies
 export async function initCSRF() {
-  const res = await fetch(`${KUWO_URL}/favicon.ico?v=1`);
-  if (res.headers && res.headers["set-cookie"]) {
-    setToken(res.headers["set-cookie"]);
-    return csrf;
-  }
+  return new Promise<string>((resolve) => {
+    https
+      .get(KUWO_URL + "/favicon.ico?v=1", (res) => {
+        if (res.headers && res.headers["set-cookie"]) {
+          setToken(res.headers["set-cookie"]);
+          resolve(csrf);
+        }
+        resolve("");
+      })
+      .on("error", (e) => {
+        console.error(e, "error");
+        resolve("");
+      });
+  });
+  // const res = await fetch(`${KUWO_URL}/favicon.ico?v=1`);
+  // console.log(res.headers);
+  // if (res.headers && res.headers["set-cookie"]) {
+  //   setToken(res.headers["set-cookie"]);
+  //   return csrf;
+  // }
 }
 
 app.whenReady().then(() => {

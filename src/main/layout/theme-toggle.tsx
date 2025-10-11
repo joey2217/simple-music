@@ -34,7 +34,7 @@ function setLocalTheme(theme: Theme) {
   });
 }
 
-export function ThemeToggle() {
+export default function ThemeToggle() {
   const [theme, setTheme] = useState<Theme>(getTheme());
 
   useEffect(() => {
