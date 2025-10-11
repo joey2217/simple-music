@@ -1,14 +1,8 @@
-import React from 'react'
-import { RouterProvider } from 'react-router'
-import router from './router'
-import Providers from './context/Providers'
+import { RouterProvider } from "react-router";
+import router from "./router";
 
-const App: React.FC = () => {
+export default function App() {
   return (
-    <Providers>
-      <RouterProvider router={router} />
-    </Providers>
+    <RouterProvider router={router} />
   )
 }
-
-export default App
