@@ -1,3 +1,4 @@
+import { ListOrdered, Sparkles } from "lucide-react";
 import { NavLink } from "react-router";
 
 export default function Sider() {
@@ -7,16 +8,18 @@ export default function Sider() {
         <div className="px-3 py-1">
           <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">发现</h2>
           <div className="flex flex-col gap-1">
-            <NavLink to="/" className="nav-link w-full ">
+            <NavLink to="/" className="nav-link w-full">
+              <Sparkles />
               <span>精 选</span>
             </NavLink>
-            <NavLink to="/rankings" className="nav-link w-full ">
+            <NavLink to="/rankings" className="nav-link w-full">
+            <ListOrdered />
               <span>排 行</span>
             </NavLink>
-            <NavLink to="/artists" className="nav-link w-full ">
+            <NavLink to="/artists" className="nav-link w-full">
               <span>歌 手</span>
             </NavLink>
-            <NavLink to="/song-lists" className="nav-link w-full ">
+            <NavLink to="/song-lists" className="nav-link w-full">
               <span>歌 单</span>
             </NavLink>
           </div>
@@ -24,7 +27,7 @@ export default function Sider() {
         <div className="px-3 py-1">
           <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">我的</h2>
           <div className="space-y-1">
-            <NavLink to="/download" className="nav-link w-full ">
+            <NavLink to="/download" className="nav-link w-full">
               <span>下 载</span>
             </NavLink>
           </div>
@@ -37,7 +40,7 @@ export default function Sider() {
         <div className="px-3 py-1">
           <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">设置</h2>
           <div className="space-y-1">
-            <NavLink to="/settings" className="nav-link w-full ">
+            <NavLink to="/settings" className="nav-link w-full">
               <span>设 置</span>
             </NavLink>
           </div>

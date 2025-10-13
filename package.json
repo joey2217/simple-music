@@ -35,12 +35,12 @@
     "electron-log": "^5.4.3",
     "electron-updater": "^6.6.2",
     "lucide-react": "^0.545.0",
-    "node-id3": "^0.2.9",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.37.0",
     "@tailwindcss/vite": "^4.1.14",
+    "@types/howler": "^2.2.12",
     "@types/node": "^24.7.1",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.1",

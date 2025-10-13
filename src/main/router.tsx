@@ -3,6 +3,7 @@ import Layout from "./layout";
 import Error from "./layout/error";
 import Rankings from "./pages/rankings/page";
 import RankingsLayout from "./pages/rankings/layout";
+import Home from "./pages/home/page";
 
 const router = createHashRouter([
   {
@@ -11,7 +12,7 @@ const router = createHashRouter([
     children: [
       {
         path: "/",
-        element: <div>Home</div>,
+        Component: Home,
       },
       {
         path: "/rankings",

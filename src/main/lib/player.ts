@@ -1,121 +1,103 @@
-import type { SongItem, ColumnContent, SongDetail } from "../types/migu";
-import type { Music, PlayMode } from "../types/player";
 import { shuffle } from "./index";
-import icon from "../assets/icon.png";
+import { Artist } from "../types/artist";
+import { Howl } from "howler";
 
-export function songItem2Music(songItem: SongItem): Music {
-  // if (import.meta.env.DEV) {
-  //   console.log('songItem2Music', songItem)
-  // }
-  let pic = songItem.smallPic || songItem.mediumPic;
-  if (pic) {
-    if (pic.startsWith("//")) {
-      pic = `http:${pic}`;
-    }
-  } else {
-    pic = icon;
-  }
-
-  let { singers } = songItem;
-  if (singers == null) {
-    console.warn("singers is null", songItem);
-    singers = [];
-  }
-
-  return {
-    copyrightId: songItem.copyrightId,
-    title: songItem.name,
-    artist: singers.map((s) => s.name).join("/"),
-    artists: singers,
-    album: songItem.album?.name,
-    albumId: songItem.album?.id,
-    pic,
-  };
+export interface PlayerMusic {
+  id?: string;
+  copyrightId: string;
+  title: string;
+  artist: string;
+  artists: Artist[];
+  album?: string;
+  albumId?: string;
+  pic: string;
+  url?: string;
 }
 
-export function columnContent2Music(columnContent: ColumnContent): Music {
-  const { albumImgs } = columnContent.objectInfo;
-  // if (import.meta.env.DEV) {
-  //   console.log('columnContent2Music', columnContent)
-  // }
-  let { artists } = columnContent.objectInfo;
-  if (artists == null) {
-    artists = [];
-    console.warn("columnContent2Music artists is null", columnContent.objectInfo);
-  }
-  let pic = "";
-  if (albumImgs.length > 0) {
-    const albumImg = albumImgs[albumImgs.length - 1];
-    if (albumImg.webpImg) {
-      pic = albumImg.webpImg;
-    } else if (albumImg.img) {
-      pic = albumImg.img;
-    } else {
-      pic = icon;
-    }
-  }
-  return {
-    copyrightId: columnContent.objectInfo.copyrightId,
-    title: columnContent.objectInfo.songName,
-    artist: artists.map((s) => s.name).join("/"),
-    artists,
-    album: columnContent.objectInfo.album,
-    albumId: columnContent.objectInfo.albumId,
-    pic,
-  };
+export interface LyricRow {
+  time?: number;
+  words: string;
 }
 
-export function songDetail2Music(songDetail: SongDetail): Music {
-  return {
-    copyrightId: songDetail.copyrightId11,
-    title: songDetail.musicName,
-    artist: songDetail.singers.map((s) => s.singerName).join("/"),
-    artists: songDetail.singers.map((s) => ({
-      id: s.singerId,
-      name: s.singerName,
-      image: "",
-    })),
-    album: songDetail.albumId,
-    albumId: songDetail.albumName,
-    pic: songDetail.picUrl,
-  };
-}
+export type PlayMode = "sequence" | "loop" | "repeat" | "shuffle";
 
-export let vol = 100;
+// export function songItem2Music(songItem: SongItem): Music {
+//   // if (import.meta.env.DEV) {
+//   //   console.log('songItem2Music', songItem)
+//   // }
+//   let pic = songItem.smallPic || songItem.mediumPic;
+//   if (pic) {
+//     if (pic.startsWith("//")) {
+//       pic = `http:${pic}`;
+//     }
+//   } else {
+//     pic = icon;
+//   }
 
-const VOL_KEY = "vol";
-function getVol() {
-  const localData = localStorage.getItem(VOL_KEY);
-  if (localData) {
-    const num = Number(localData);
-    if (!Number.isNaN(num)) {
-      vol = num;
-    }
-  }
-}
-getVol();
+//   let { singers } = songItem;
+//   if (singers == null) {
+//     console.warn("singers is null", songItem);
+//     singers = [];
+//   }
 
-export function setVol(num: number) {
-  vol = num;
-  localStorage.setItem(VOL_KEY, num.toString());
-}
+//   return {
+//     copyrightId: songItem.copyrightId,
+//     title: songItem.name,
+//     artist: singers.map((s) => s.name).join("/"),
+//     artists: singers,
+//     album: songItem.album?.name,
+//     albumId: songItem.album?.id,
+//     pic,
+//   };
+// }
 
-export let mode: PlayMode = "sequence";
+// export function columnContent2Music(columnContent: ColumnContent): Music {
+//   const { albumImgs } = columnContent.objectInfo;
+//   // if (import.meta.env.DEV) {
+//   //   console.log('columnContent2Music', columnContent)
+//   // }
+//   let { artists } = columnContent.objectInfo;
+//   if (artists == null) {
+//     artists = [];
+//     console.warn("columnContent2Music artists is null", columnContent.objectInfo);
+//   }
+//   let pic = "";
+//   if (albumImgs.length > 0) {
+//     const albumImg = albumImgs[albumImgs.length - 1];
+//     if (albumImg.webpImg) {
+//       pic = albumImg.webpImg;
+//     } else if (albumImg.img) {
+//       pic = albumImg.img;
+//     } else {
+//       pic = icon;
+//     }
+//   }
+//   return {
+//     copyrightId: columnContent.objectInfo.copyrightId,
+//     title: columnContent.objectInfo.songName,
+//     artist: artists.map((s) => s.name).join("/"),
+//     artists,
+//     album: columnContent.objectInfo.album,
+//     albumId: columnContent.objectInfo.albumId,
+//     pic,
+//   };
+// }
 
-const MODE_KEY = "play_mode";
-
-function getMode() {
-  const localData = localStorage.getItem(MODE_KEY);
-  if (localData) {
-    mode = localData as PlayMode;
-  }
-}
-getMode();
-
-export function setMode(newMode: PlayMode) {
-  mode = newMode;
-  localStorage.setItem(MODE_KEY, newMode);
-}
+// export function songDetail2Music(songDetail: SongDetail): Music {
+//   return {
+//     copyrightId: songDetail.copyrightId11,
+//     title: songDetail.musicName,
+//     artist: songDetail.singers.map((s) => s.singerName).join("/"),
+//     artists: songDetail.singers.map((s) => ({
+//       id: s.singerId,
+//       name: s.singerName,
+//       image: "",
+//     })),
+//     album: songDetail.albumId,
+//     albumId: songDetail.albumName,
+//     pic: songDetail.picUrl,
+//   };
+// }
 
 export let autoplay = false;
 export function initPlayer() {
@@ -131,16 +113,73 @@ export function setShuffleIndexList(l: number) {
   }
 }
 
-export let index = 0;
+const VOL_KEY = "vol";
+const MODE_KEY = "play_mode";
 const LOCAL_INDEX = "play-index";
-function getLocalIndex() {
-  const localData = localStorage.getItem(LOCAL_INDEX);
-  if (localData) {
-    index = Number(localData) || 0;
+
+class PlayerConfig {
+  private _volume = 100;
+  private _mode: PlayMode = "sequence";
+  private _index = 0;
+
+  constructor() {
+    this.initVol();
+    this.initMode();
+    this.initIndex();
+  }
+
+  private initVol() {
+    const localData = localStorage.getItem(VOL_KEY);
+    if (localData) {
+      const num = Number(localData);
+      if (!Number.isNaN(num)) {
+        this._volume = num;
+      }
+    }
+  }
+
+  private initMode() {
+    const localData = localStorage.getItem(MODE_KEY);
+    if (localData) {
+      this._mode = localData as PlayMode;
+    }
+  }
+
+  private initIndex() {
+    const localData = localStorage.getItem(LOCAL_INDEX);
+    if (localData) {
+      this._index = Number(localData) || 0;
+    }
+  }
+
+  get mode() {
+    return this._mode;
+  }
+  set mode(newMode: PlayMode) {
+    this._mode = newMode;
+    localStorage.setItem(MODE_KEY, newMode);
+  }
+
+  get index() {
+    return this._index;
+  }
+  set index(newIndex: number) {
+    this._index = newIndex;
+    localStorage.setItem(LOCAL_INDEX, newIndex.toString());
+  }
+
+  get volume() {
+    return this._volume;
+  }
+  set volume(newVolume: number) {
+    this._volume = newVolume;
+    localStorage.setItem(VOL_KEY, newVolume.toString());
   }
 }
-getLocalIndex();
-export function setLocalIndex(i: number) {
-  index = i;
-  localStorage.setItem(LOCAL_INDEX, i.toString());
+
+export const playerConfig = new PlayerConfig();
+
+export class Player {
+  private instance: Howl | null = null;
+  constructor() {}
 }

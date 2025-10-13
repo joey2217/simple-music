@@ -165,10 +165,18 @@
   overflow: hidden;
 }
 
-#content {
-  @apply h-full overflow-auto;
-}
-
 #player {
   height: var(--player-height);
+}
+
+
+.label {
+  @apply text-gray-400;
+}
+
+.label::after {
+  content: ':';
+  position: relative;
+  top: -0.5px;
+  margin-inline: 2px 8px;
 }

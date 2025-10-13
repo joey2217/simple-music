@@ -9,7 +9,7 @@ export default function Header() {
   return (
     <header className="titleBarContainer border-b">
       <div className="titleBar pr-2 flex gap-2 items-center">
-        <Link to="/" id="logo" className="border-r h-10 flex items-center gap-2 justify-center">
+        <Link to="/" id="logo" className="w-44 border-r h-10 flex items-center gap-2 justify-center">
           <img src={icon} alt="logo" className="w-8 h-8" />
           <span>轻·音乐</span>
         </Link>
