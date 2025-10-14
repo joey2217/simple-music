@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
+import { Howl } from "howler";
 import Control from "./control";
-import MusicInfo from "./music-Info";
+import MusicInfo from "./music-info";
 import PlayerList from "./player-list";
 import Volume from "./volume";
 import { fetchMusicUrl, playerConfig, usePlayerStore } from "@/main/store/player";
