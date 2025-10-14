@@ -1,15 +1,17 @@
 import useSWR from "swr";
 import { fetcher } from "../../lib/request";
-import { useState } from "react";
-import { useOutletContext, useParams } from "react-router";
+import { useOutletContext, useParams, useSearchParams } from "react-router";
 import { RankingListData, RankingMenuItem } from "@/main/types/ranking";
 import { usePlayerStore } from "@/main/store/player";
-import MusicList from "@/main/components/music-list";
+import MusicPage from "@/main/components/music-page";
 
 export default function Rankings() {
   const { id = "17" } = useParams<"id">();
-  const [page, setPage] = useState(1);
-  const { play } = usePlayerStore();
+  const [searchParams] = useSearchParams();
+  const queryPage = searchParams.get("page") ?? "1";
+  const page = Number(queryPage);
+
+  const { appendToPlayerList } = usePlayerStore();
   const currentRanking = useOutletContext<RankingMenuItem | undefined>();
 
   const { data, isLoading, error } = useSWR<RankingListData>(
@@ -25,7 +27,7 @@ export default function Rankings() {
   }
   if (data) {
     return (
-      <div className="grow h-full overflow-auto">
+      <>
         <div className="flex gap-4 py-1 flex-wrap">
           <div>
             <h2 className="text-2xl font-semibold">
@@ -38,15 +40,22 @@ export default function Rankings() {
           </div>
         </div>
         <div className="flex gap-4 my-4">
-          <button className="primary-btn">
+          <button onClick={() => appendToPlayerList(data.musicList, true)}>
             <span>播放全部</span>
           </button>
-          <button className="default-btn">
+          <button onClick={() => appendToPlayerList(data.musicList)}>
             <span>添加</span>
           </button>
         </div>
-        <MusicList items={data.musicList} />
-      </div>
+        <MusicPage
+          total={Number(data.num)}
+          current={page}
+          size={20}
+          urlRender={(p) => `/rankings/${id}?page=${p}`}
+          items={data.musicList}
+          height="calc(100vh - 317px)"
+        />
+      </>
     );
   }
 }

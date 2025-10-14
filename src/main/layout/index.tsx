@@ -9,7 +9,7 @@ export default function Layout() {
       <Header />
       <main id="main" className="flex">
         <Sider />
-        <div className="grow p-2 h-full overflow-hidden">
+        <div className="grow p-2 h-full overflow-auto">
           <Outlet />
         </div>
       </main>

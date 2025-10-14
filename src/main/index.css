@@ -165,18 +165,42 @@
   overflow: hidden;
 }
 
+#content {
+  height: calc(100% - var(--player-height));
+}
+
 #player {
   height: var(--player-height);
 }
-
 
 .label {
   @apply text-gray-400;
 }
 
 .label::after {
-  content: ':';
+  content: ":";
   position: relative;
   top: -0.5px;
   margin-inline: 2px 8px;
+}
+
+.nav-link {
+  @apply h-9 px-4 py-2 flex gap-2 items-center justify-start whitespace-nowrap rounded-md
+   text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 
+   focus-visible:ring-ring hover:bg-accent hover:text-accent-foreground;
+}
+
+.nav-link.active {
+  @apply bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80;
+}
+
+button {
+  @apply cursor-pointer;
+}
+
+#player-list {
+  bottom: var(--player-height);
+  height: calc(100vh - env(titlebar-area-height, var(--fallback-title-bar-height)) - var(--player-height));
+  overflow: hidden;
+  width: 380px;
 }

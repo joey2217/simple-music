@@ -10,14 +10,14 @@ import {
 } from "@/components/ui/pagination";
 import { Link, LinkProps } from "react-router";
 
-interface Props {
+export interface PaginationProps {
   total: number;
   urlRender: (p: number) => LinkProps["to"];
   size?: number;
   current?: number;
 }
 
-export default function Pagination({ total, size = 10, current = 1, urlRender }: Props) {
+export default function Pagination({ total, size = 10, current = 1, urlRender }: PaginationProps) {
   const totalPage = useMemo(() => Math.ceil(total / size), [size, total]);
 
   const disablePrevious = useMemo(() => current === 1, [current]);
@@ -111,7 +111,7 @@ export default function Pagination({ total, size = 10, current = 1, urlRender }:
   }
 
   return (
-    <PaginationRoot className="select-none py-4">
+    <PaginationRoot className="select-none py-1">
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious

@@ -1,0 +1,150 @@
+import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
+import { usePlayerStore, Player, PlayMode, playerConfig } from "@/main/store/player";
+import { ArrowRightToLine, CirclePause, PlayIcon, Repeat, Repeat1, Shuffle, SkipBack, SkipForward } from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
+
+export default function Control() {
+  const current = usePlayerStore((s) => s.current);
+  const paused = usePlayerStore((s) => s.paused);
+  const playNext = usePlayerStore((s) => s.playNext);
+  const disabled = current == null;
+
+  return (
+    <div>
+      <div className="flex justify-center items-center gap-3 mb-1">
+        {/* <LikeButton item={current} /> */}
+        <Button
+          disabled={disabled}
+          variant="ghost"
+          size="icon"
+          className="rounded-full text-base"
+          title="上一首"
+          onClick={() => playNext("prev")}
+        >
+          <SkipBack />
+        </Button>
+        {paused ? (
+          <Button
+            disabled={disabled}
+            variant="secondary"
+            size="icon"
+            className="rounded-full w-12 h-12 text-2xl"
+            // onClick={() => Player.instance?.play()}
+            title="播放"
+          >
+            <CirclePause />
+          </Button>
+        ) : (
+          <Button
+            disabled={disabled}
+            size="icon"
+            variant="secondary"
+            className="rounded-full w-12 h-12 text-2xl"
+            // onClick={() => Player.instance?.pause()}
+            title="暂停"
+          >
+            <PlayIcon />
+          </Button>
+        )}
+        <Button
+          disabled={disabled}
+          variant="ghost"
+          size="icon"
+          className="rounded-full text-base"
+          title="下一首"
+          onClick={() => playNext("next")}
+        >
+          <SkipForward />
+        </Button>
+        <PlayModeButton />
+      </div>
+      <ProgressBar />
+    </div>
+  );
+}
+
+function ProgressBar() {
+  const duration = usePlayerStore((s) => s.duration);
+  const seek = usePlayerStore((s) => s.seek);
+
+  return (
+    <div className="flex items-center gap-2 text-sm">
+      <div>{toMinutes(seek)}</div>
+      <Slider
+        min={0}
+        max={duration}
+        value={[seek]}
+        // onValueChange={(values) => Player.instance?.seek(values[0])}
+        className="range range-xs range-primary flex-1"
+      />
+      <div>{toMinutes(duration)}</div>
+    </div>
+  );
+}
+
+function toMinutes(s: number) {
+  const minutes = Math.floor(s / 60)
+    .toString()
+    .padStart(2, "0");
+  const seconds = Math.floor(s % 60)
+    .toString()
+    .padStart(2, "0");
+  return `${minutes} : ${seconds}`;
+}
+
+const modes: PlayMode[] = ["sequence", "loop", "repeat", "shuffle"];
+
+const ICON_SIZE = 16;
+
+interface ModeIcon {
+  icon: React.ReactNode;
+  title: string;
+}
+
+const modeIcons: { [p in PlayMode]: ModeIcon } = {
+  sequence: {
+    icon: <ArrowRightToLine size={ICON_SIZE} />,
+    title: "顺序播放",
+  },
+  loop: {
+    icon: <Repeat size={ICON_SIZE} />,
+    title: "列表循环",
+  },
+  repeat: {
+    icon: <Repeat1 size={ICON_SIZE} />,
+    title: "单曲循环",
+  },
+  shuffle: {
+    icon: <Shuffle size={ICON_SIZE} />,
+    title: "随机播放",
+  },
+};
+
+function PlayModeButton() {
+  const playList = usePlayerStore((s) => s.playerList);
+
+  const [m, setM] = useState<PlayMode>(playerConfig.mode);
+
+  const modeIcon = useMemo(() => modeIcons[m], [m]);
+
+  const onClick = () => {
+    const nextMode = modes[(modes.indexOf(m) + 1) % modes.length];
+    setM(nextMode);
+    playerConfig.mode = nextMode;
+  };
+
+  useEffect(() => {
+    if (m === "shuffle") {
+      playerConfig.setShuffleIndexList(playList.length);
+    } else {
+      playerConfig.setShuffleIndexList(0);
+    }
+  }, [m, playList.length]);
+
+  return (
+    <button title={modeIcon.title} onClick={onClick}>
+      {modeIcon.icon}
+    </button>
+  );
+}

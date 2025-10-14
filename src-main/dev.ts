@@ -18,7 +18,7 @@ export async function loadDevTools() {
       const stat = await fsp.stat(reactDevToolsPath)
       if (stat.isDirectory()) {
         await app.whenReady()
-        const ext = await session.defaultSession.loadExtension(
+        const ext = await session.defaultSession.extensions.loadExtension(
           reactDevToolsPath
         )
         console.log('loadDevTools success', ext.name)

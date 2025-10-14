@@ -1,33 +1,75 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Music } from "../types";
-import { Button } from "@/components/ui/button";
 import { usePlayerStore } from "../store/player";
+import { Link } from "react-router";
+import { Play, Plus } from "lucide-react";
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
 
-interface Props {
+export interface MusicListProps {
   items: Music[];
+  height?: React.CSSProperties["height"];
 }
 
-export default function MusicList({ items }: Props) {
-  const { play } = usePlayerStore();
+export default function MusicList({ items, height = "auto" }: MusicListProps) {
+  const { play, appendToPlayerList } = usePlayerStore();
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>name</TableHead>
-          <TableHead>action</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {items.map((item) => (
-          <TableRow key={item.rid}>
-            <TableCell>{item.name}</TableCell>
-            <TableCell>
-              <Button onClick={() => play(item)}>play</Button>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <div style={{ height }}>
+      <ContextMenu>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="text-center">#</TableHead>
+              <TableHead>操作</TableHead>
+              <TableHead></TableHead>
+              <TableHead>歌曲</TableHead>
+              <TableHead>专辑</TableHead>
+              <TableHead>歌手</TableHead>
+              <TableHead>时长</TableHead>
+            </TableRow>
+          </TableHeader>
+          <ContextMenuTrigger asChild>
+            <TableBody>
+              {items.map((m, i) => (
+                <TableRow key={m.rid}>
+                  <TableCell className="text-center">{i + 1}</TableCell>
+                  <TableCell>
+                    <div className="flex gap-2 items-center">
+                      <button onClick={() => play(m)} title="播放">
+                        <Play size={14} />
+                      </button>
+                      <button onClick={() => appendToPlayerList(m)} title="添加到播放列表">
+                        <Plus size={14} />
+                      </button>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <img src={m.pic120} alt={m.name} className="w-12 aspect-square rounded" />
+                  </TableCell>
+                  <TableCell>
+                    <Link to={"/music/" + m.rid}>
+                      <span>{m.name}</span>
+                    </Link>
+                  </TableCell>
+                  <TableCell>
+                    <Link to={"/artist/" + m.artistid}>{m.artist}</Link>
+                  </TableCell>
+                  <TableCell>
+                    <Link to={"/album/" + m.albumid}>{m.album}</Link>
+                  </TableCell>
+                  <TableCell>{m.songTimeMinutes}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </ContextMenuTrigger>
+        </Table>
+        <ContextMenuContent>
+          <ContextMenuItem>Profile</ContextMenuItem>
+          <ContextMenuItem>Billing</ContextMenuItem>
+          <ContextMenuItem>Team</ContextMenuItem>
+          <ContextMenuItem>Subscription</ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenu>
+    </div>
   );
 }

@@ -38,7 +38,9 @@ export default function RankingsLayout() {
             </div>
           ))}
         </div>
-        <Outlet context={current} />
+        <div className="grow h-full overflow-auto">
+          <Outlet context={current} />
+        </div>
       </div>
     );
   }
