@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { usePlayerStore, Player, PlayMode, playerConfig } from "@/main/store/player";
-import { ArrowRightToLine, CirclePause, PlayIcon, Repeat, Repeat1, Shuffle, SkipBack, SkipForward } from "lucide-react";
-import React, { useEffect, useMemo, useState } from "react";
+import { usePlayerStore, PlayMode, playerConfig } from "@/main/store/player";
+import { ArrowRightToLine, PlayIcon, Repeat, Repeat1, Shuffle, SkipBack, SkipForward } from "lucide-react";
+import React, { SVGProps, useEffect, useMemo, useState } from "react";
+import { player } from ".";
 
 export default function Control() {
   const current = usePlayerStore((s) => s.current);
@@ -30,10 +31,10 @@ export default function Control() {
             variant="secondary"
             size="icon"
             className="rounded-full w-12 h-12 text-2xl"
-            // onClick={() => Player.instance?.play()}
             title="播放"
+            onClick={() => player.play()}
           >
-            <CirclePause />
+            <PauseIcon />
           </Button>
         ) : (
           <Button
@@ -41,7 +42,7 @@ export default function Control() {
             size="icon"
             variant="secondary"
             className="rounded-full w-12 h-12 text-2xl"
-            // onClick={() => Player.instance?.pause()}
+            onClick={() => player.pause()}
             title="暂停"
           >
             <PlayIcon />
@@ -146,5 +147,16 @@ function PlayModeButton() {
     <button title={modeIcon.title} onClick={onClick}>
       {modeIcon.icon}
     </button>
+  );
+}
+
+function PauseIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48" {...props}>
+      <path
+        fill="currentColor"
+        d="M11.75 6A3.75 3.75 0 0 0 8 9.75v28.5A3.75 3.75 0 0 0 11.75 42h6.5A3.75 3.75 0 0 0 22 38.25V9.75A3.75 3.75 0 0 0 18.25 6h-6.5Zm18 0A3.75 3.75 0 0 0 26 9.75v28.5A3.75 3.75 0 0 0 29.75 42h6.5A3.75 3.75 0 0 0 40 38.25V9.75A3.75 3.75 0 0 0 36.25 6h-6.5Z"
+      ></path>
+    </svg>
   );
 }

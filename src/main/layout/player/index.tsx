@@ -5,6 +5,7 @@ import MusicInfo from "./music-info";
 import PlayerList from "./player-list";
 import Volume from "./volume";
 import { fetchMusicUrl, playerConfig, usePlayerStore } from "@/main/store/player";
+import emitter from "@/main/lib/emitter";
 
 export default function Player() {
   return (
@@ -105,5 +106,21 @@ function HowlerPlayer() {
     };
   }, [current, playNext]);
 
+  useEffect(() => {
+    const play = () => howlerRef.current?.play();
+    const pause = () => howlerRef.current?.pause();
+    emitter.on("play", play);
+    emitter.on("pause", pause);
+    return () => {
+      emitter.off("play", play);
+      emitter.off("pause", pause);
+    };
+  }, []);
+
   return null;
 }
+
+export const player = {
+  play: () => emitter.emit("play"),
+  pause: () => emitter.emit("pause"),
+};

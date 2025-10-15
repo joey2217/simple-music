@@ -91,34 +91,35 @@ interface MusicResponse {
   from: string;
 }
 
-interface RootObject {
-  code: number;
-  msg: string;
-  reqId: string;
-  data: {
-    url: string;
-  };
-  profileId: string;
-  curTime: number;
-  success: boolean;
-}
-
 export type MusicBr = 128 | 192 | 320 | 740 | 999;
 
 // https://www.kuwo.cn/api/v1/www/music/playUrl?mid=507067633&type=music&httpsStatus=1&reqId=7a4ecb41-a999-11f0-bbfc-59a65a80edeb&plat=web_www&from=
 // br=128kmp3
 export function fetchMusicUrl(id: string | number, br: MusicBr = 128) {
-  return fetcher<{ url: string }>(`/api/v1/www/music/playUrl?mid=${id}&type=music&httpsStatus=1&plat=web_www&from=`)
+  return fetcher<{ url: string }>(`/api/v1/www/music/playUrl?mid=${id}&type=music&httpsStatus=1&plat=web_www&from=`, {
+    cache: "force-cache",
+  })
     .then((data) => data.url)
-    .catch(() => null);
+    .catch(() => fetchMusicPlayUrl(id, br));
 }
 // br=[128/192/320/740/999]
 // https://music-api.gdstudio.xyz/api.php?types=url&source=kuwo&id=507067633&br=320
-async function gd(id: string | number, br: MusicBr = 128) {
-  const res = await fetch(`https://music-api.gdstudio.xyz/api.php?types=url&source=kuwo&id=${id}&br=${br}`);
+
+async function fetchMusicPlayUrl(id: string | number, br: MusicBr = 128) {
+  const res = await fetch(`https://music-api.gdstudio.xyz/api.php?types=url&source=kuwo&id=${id}&br=${br}`, {
+    cache: "force-cache",
+  });
+  if (res.ok) {
+    const data: MusicResponse = await res.json();
+    if (data.url) {
+      return data.url;
+    } else {
+      throw new Error("获取音乐播放地址失败");
+    }
+  } else {
+    throw new Error("获取音乐播放地址失败");
+  }
 }
-// https://api.bugpk.com/api/kuwo?url=https://www.kuwo.cn/play_detail/507067633
-function fetchMusicPlayUrl(id: string | number, br: MusicBr = 128) {}
 
 export function usePlayer() {}
 
