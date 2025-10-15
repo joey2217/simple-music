@@ -1,8 +1,9 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, StorageValue } from "zustand/middleware";
 import { Music } from "../types";
 import { Artist } from "../types/artist";
 import { shuffle } from "../lib";
+import { fetcher } from "../lib/request";
 
 interface PlayerState {
   current: Music | null;
@@ -90,23 +91,34 @@ interface MusicResponse {
   from: string;
 }
 
+interface RootObject {
+  code: number;
+  msg: string;
+  reqId: string;
+  data: {
+    url: string;
+  };
+  profileId: string;
+  curTime: number;
+  success: boolean;
+}
+
 export type MusicBr = 128 | 192 | 320 | 740 | 999;
 
-export async function fetchMusicUrl(id: string | number, br: MusicBr = 128) {
-  const res = await fetch(`https://music-api.gdstudio.xyz/api.php?types=url&source=kuwo&id=${id}&br=${br}`, {
-    cache: "force-cache",
-  });
-  if (res.ok) {
-    const data: MusicResponse = await res.json();
-    if (data.url) {
-      return data.url;
-    } else {
-      throw new Error("Failed to fetch music url");
-    }
-  } else {
-    throw new Error("Failed to fetch music url");
-  }
+// https://www.kuwo.cn/api/v1/www/music/playUrl?mid=507067633&type=music&httpsStatus=1&reqId=7a4ecb41-a999-11f0-bbfc-59a65a80edeb&plat=web_www&from=
+// br=128kmp3
+export function fetchMusicUrl(id: string | number, br: MusicBr = 128) {
+  return fetcher<{ url: string }>(`/api/v1/www/music/playUrl?mid=${id}&type=music&httpsStatus=1&plat=web_www&from=`)
+    .then((data) => data.url)
+    .catch(() => null);
 }
+// br=[128/192/320/740/999]
+// https://music-api.gdstudio.xyz/api.php?types=url&source=kuwo&id=507067633&br=320
+async function gd(id: string | number, br: MusicBr = 128) {
+  const res = await fetch(`https://music-api.gdstudio.xyz/api.php?types=url&source=kuwo&id=${id}&br=${br}`);
+}
+// https://api.bugpk.com/api/kuwo?url=https://www.kuwo.cn/play_detail/507067633
+function fetchMusicPlayUrl(id: string | number, br: MusicBr = 128) {}
 
 export function usePlayer() {}
 
@@ -144,6 +156,7 @@ class PlayerConfig {
     this.initVol();
     this.initMode();
     this.initIndex();
+    this.initAutoPlay();
   }
 
   private initVol() {
@@ -167,6 +180,19 @@ class PlayerConfig {
     const localData = localStorage.getItem(LOCAL_INDEX);
     if (localData) {
       this._index = Number(localData) || 0;
+    }
+  }
+
+  private initAutoPlay() {
+    const localData = localStorage.getItem("player");
+    if (localData) {
+      try {
+        // 本地current不为空，则自动播放
+        const data = JSON.parse(localData) as StorageValue<PlayerState>;
+        this._autoPlay = data.state.current != null;
+      } catch {
+        /* empty */
+      }
     }
   }
 
