@@ -4,8 +4,8 @@ import type { LogFile } from "electron-log";
 import path from "node:path";
 import fsp from "node:fs/promises";
 import { loadDevTools } from "./dev";
-import { beforeQuit, create as createMainWindow, focus as focusMainWindow } from "./windows/main";
-import handleIPC from "./ipc";
+import { mainWindow } from "./windows/main";
+import "./ipc";
 import "./proxy";
 import "./menu";
 import "./protocol";
@@ -19,13 +19,12 @@ if (!gotTheLock) {
 } else {
   app.on("second-instance", () => {
     // 当运行第二个实例时,将会聚焦到Window这个窗口
-    focusMainWindow();
+    mainWindow.focus();
     // windows 命令行是一个字符串数组，其中最后一个元素是深度链接的URL。
     // dialog.showErrorBox('Welcome Back', `You arrived from: ${commandLine.pop()}`
   });
   app.whenReady().then(() => {
-    createMainWindow();
-    handleIPC();
+    mainWindow.create();
   });
 
   app.on("open-url", (_event, url) => {
@@ -44,13 +43,13 @@ app.on("window-all-closed", function () {
 
 app.on("activate", () => {
   if (BrowserWindow.getAllWindows().length === 0) {
-    createMainWindow();
+    mainWindow.create();
   } else {
-    focusMainWindow();
+    mainWindow.focus();
   }
 });
 
-app.on("before-quit", beforeQuit);
+app.on("before-quit", mainWindow.beforeQuit);
 
 // mac 处理协议 在本例中，我们选择显示一个错误提示对话框。
 // app.on('open-url', (event, url) => {

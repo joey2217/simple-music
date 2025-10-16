@@ -17,7 +17,7 @@ export interface PaginationProps {
   current?: number;
 }
 
-export default function Pagination({ total, size = 10, current = 1, urlRender }: PaginationProps) {
+export default function Pagination({ total, size = 20, current = 1, urlRender }: PaginationProps) {
   const totalPage = useMemo(() => Math.ceil(total / size), [size, total]);
 
   const disablePrevious = useMemo(() => current === 1, [current]);

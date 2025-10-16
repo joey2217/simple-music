@@ -5,7 +5,7 @@ import Player from "./player";
 
 export default function Layout() {
   return (
-    <div>
+    <>
       <Header />
       <main id="main" className="flex">
         <Sider />
@@ -14,6 +14,6 @@ export default function Layout() {
         </div>
       </main>
       <Player />
-    </div>
+    </>
   );
 }

@@ -52,7 +52,7 @@ function Lyric({ music }: { music: Music }) {
       </div>
       {ReactDOM.createPortal(
         <div
-          id="lyric"
+          id="lyric-container"
           className={`scrollbar text-center fixed top-0 left-0 w-full z-20 shadow-md bg-background/95 transition-all duration-300 ease-in-out ${
             open ? "translate-y-0 opacity-100" : "translate-y-[100vh] opacity-0"
           }`}

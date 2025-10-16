@@ -33,7 +33,6 @@ interface IElectronAPI {
 type RemoveListener = () => void
 
 interface MessageAPI {
-  onNavigate: (callback: (to: string) => void) => RemoveListener
   onUpdateDownload: (callback: (info: DownloadInfo) => void) => RemoveListener
   onMusicControl: (
     callback: (type: 'prev' | 'play' | 'pause' | 'next') => void

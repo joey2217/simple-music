@@ -4,6 +4,7 @@ import { useOutletContext, useParams, useSearchParams } from "react-router";
 import { RankingListData, RankingMenuItem } from "@/main/types/ranking";
 import { usePlayerStore } from "@/main/store/player";
 import MusicPage from "@/main/components/music-page";
+import { Button } from "@/components/ui/button";
 
 export default function Rankings() {
   const { id = "17" } = useParams<"id">();
@@ -40,20 +41,19 @@ export default function Rankings() {
           </div>
         </div>
         <div className="flex gap-4 my-4">
-          <button onClick={() => appendToPlayerList(data.musicList, true)}>
+          <Button onClick={() => appendToPlayerList(data.musicList, true)}>
             <span>播放全部</span>
-          </button>
-          <button onClick={() => appendToPlayerList(data.musicList)}>
+          </Button>
+          <Button variant="secondary" onClick={() => appendToPlayerList(data.musicList)}>
             <span>添加</span>
-          </button>
+          </Button>
         </div>
         <MusicPage
           total={Number(data.num)}
           current={page}
           size={20}
           urlRender={(p) => `/rankings/${id}?page=${p}`}
-          items={data.musicList}
-          height="calc(100vh - 317px)"
+          data={data.musicList}
         />
       </>
     );

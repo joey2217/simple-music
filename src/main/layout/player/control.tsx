@@ -1,9 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { usePlayerStore, PlayMode, playerConfig } from "@/main/store/player";
+import { usePlayerStore, PlayMode, playerConfig, player } from "@/main/store/player";
 import { ArrowRightToLine, PlayIcon, Repeat, Repeat1, Shuffle, SkipBack, SkipForward } from "lucide-react";
 import React, { SVGProps, useEffect, useMemo, useState } from "react";
-import { player } from ".";
 
 export default function Control() {
   const current = usePlayerStore((s) => s.current);
@@ -34,7 +33,7 @@ export default function Control() {
             title="播放"
             onClick={() => player.play()}
           >
-            <PauseIcon />
+            <PlayIcon />
           </Button>
         ) : (
           <Button
@@ -45,7 +44,7 @@ export default function Control() {
             onClick={() => player.pause()}
             title="暂停"
           >
-            <PlayIcon />
+            <PauseIcon />
           </Button>
         )}
         <Button
@@ -76,7 +75,7 @@ function ProgressBar() {
         min={0}
         max={duration}
         value={[seek]}
-        // onValueChange={(values) => Player.instance?.seek(values[0])}
+        onValueChange={(values) => player.seek(values[0])}
         className="range range-xs range-primary flex-1"
       />
       <div>{toMinutes(duration)}</div>

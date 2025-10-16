@@ -1,5 +1,5 @@
 import { Slider } from "@/components/ui/slider";
-import {   playerConfig, usePlayerStore } from "@/main/store/player";
+import { player, playerConfig, usePlayerStore } from "@/main/store/player";
 import { Volume1, Volume2, VolumeX } from "lucide-react";
 import { useCallback, useState } from "react";
 
@@ -40,7 +40,7 @@ export default function Volume() {
   const setMusicVolume = useCallback((value: number) => {
     setVol(value);
     playerConfig.volume = value;
-    // Player.instance?.volume(value / 100); 
+    player.volume(value);
   }, []);
 
   const onMute = useCallback(() => {

@@ -2,7 +2,7 @@ import { app, session } from "electron";
 import log from "electron-log/main";
 import * as path from "node:path";
 import type { DownloadInfo } from "./types";
-import { send as sendMain } from "./windows/main";
+import { mainWindow } from "./windows/main";
 // import { Promise as NodeID3Promise } from 'node-id3'
 
 // import { downloadIcon } from './icons'
@@ -29,7 +29,7 @@ app.whenReady().then(() => {
   session.defaultSession.on("will-download", (event, item) => {
     downloadFile.downloadPath = path.normalize(downloadFile.downloadPath);
     item.setSavePath(downloadFile.downloadPath);
-    sendMain("UPDATE_DOWNLOAD", {
+    mainWindow.send("on:download:update", {
       ...downloadFile,
       status: "downloading",
     } as DownloadInfo);
@@ -63,7 +63,7 @@ app.whenReady().then(() => {
 
 function onCompleted(success: boolean) {
   if (downloadFile) {
-    sendMain("UPDATE_DOWNLOAD", {
+    mainWindow.send("on:download:update", {
       ...downloadFile,
       status: success ? "completed" : "failed",
     } as DownloadInfo);

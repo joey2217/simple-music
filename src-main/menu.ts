@@ -1,7 +1,7 @@
 import { Menu, app, Tray, dialog } from "electron";
 import { APP_NAME } from "./constant";
 import { appIcon, logoutIcon, prevIcon, playIcon, pauseIcon, nextIcon, musicIcon, icon } from "./icons";
-import { musicControl, focus } from "./windows/main";
+import { mainWindow } from "./windows/main";
 import { version } from "../package.json";
 
 let musicPaused = true;
@@ -62,18 +62,18 @@ if (process.platform === "darwin") {
           id: "play",
           label: "播放",
 
-          click: musicControl("play"),
+          click: mainWindow.musicControl("play"),
           enabled: false,
         },
         {
           label: "上一首",
 
-          click: musicControl("prev"),
+          click: mainWindow.musicControl("prev"),
           enabled: false,
         },
         {
           label: "下一首",
-          click: musicControl("next"),
+          click: mainWindow.musicControl("next"),
           enabled: false,
         },
       ],
@@ -85,19 +85,19 @@ if (process.platform === "darwin") {
       id: "dock-play",
       label: "播放",
       icon: playIcon,
-      click: musicControl("play"),
+      click: mainWindow.musicControl("play"),
       enabled: false,
     },
     {
       label: "上一首",
       icon: prevIcon,
-      click: musicControl("prev"),
+      click: mainWindow.musicControl("prev"),
       enabled: false,
     },
     {
       label: "下一首",
       icon: nextIcon,
-      click: musicControl("next"),
+      click: mainWindow.musicControl("next"),
       enabled: false,
     },
   ]);
@@ -120,12 +120,12 @@ app.whenReady().then(() => {
   tray = new Tray(appIcon);
   tray.setToolTip(APP_NAME);
   const contextMenu = Menu.buildFromTemplate([
-    { id: "music", label: APP_NAME, icon: musicIcon, click: focus },
+    { id: "music", label: APP_NAME, icon: musicIcon, click: mainWindow.focus },
     { type: "separator" },
     { label: "退出", icon: logoutIcon, role: "quit" },
   ]);
   tray.setContextMenu(contextMenu);
-  tray.on("click", focus);
+  tray.on("click", mainWindow.focus);
 });
 
 app.on("before-quit", () => {
@@ -143,23 +143,23 @@ export function setMenuTitle(name?: string) {
       title = title.slice(0, MAX_TITLE_LENGTH) + "...";
     }
     const contextMenu = Menu.buildFromTemplate([
-      { id: "music", label: title, icon: musicIcon, click: focus },
+      { id: "music", label: title, icon: musicIcon, click: mainWindow.focus },
       { type: "separator" },
       musicPaused
         ? {
             id: "play",
             label: "播放",
             icon: playIcon,
-            click: musicControl("play"),
+            click: mainWindow.musicControl("play"),
           }
         : {
             id: "pause",
             label: "暂停",
             icon: pauseIcon,
-            click: musicControl("pause"),
+            click: mainWindow.musicControl("pause"),
           },
-      { label: "上一首", icon: prevIcon, click: musicControl("prev") },
-      { label: "下一首", icon: nextIcon, click: musicControl("next") },
+      { label: "上一首", icon: prevIcon, click: mainWindow.musicControl("prev") },
+      { label: "下一首", icon: nextIcon, click: mainWindow.musicControl("next") },
       { type: "separator" },
       { label: "退出", icon: logoutIcon, role: "quit" },
     ]);
@@ -209,20 +209,20 @@ export function setMenuTitle(name?: string) {
                   id: "play",
                   label: "播放",
 
-                  click: musicControl("play"),
+                  click: mainWindow.musicControl("play"),
                 }
               : {
                   id: "paused",
                   label: "暂停",
-                  click: musicControl("pause"),
+                  click: mainWindow.musicControl("pause"),
                 },
             {
               label: "上一首",
-              click: musicControl("prev"),
+              click: mainWindow.musicControl("prev"),
             },
             {
               label: "下一首",
-              click: musicControl("next"),
+              click: mainWindow.musicControl("next"),
             },
           ],
         },
@@ -233,20 +233,20 @@ export function setMenuTitle(name?: string) {
           ? {
               id: "play",
               label: "播放",
-              click: musicControl("play"),
+              click: mainWindow.musicControl("play"),
             }
           : {
               id: "paused",
               label: "暂停",
-              click: musicControl("pause"),
+              click: mainWindow.musicControl("pause"),
             },
         {
           label: "上一首",
-          click: musicControl("prev"),
+          click: mainWindow.musicControl("prev"),
         },
         {
           label: "下一首",
-          click: musicControl("next"),
+          click: mainWindow.musicControl("next"),
         },
       ]);
       Menu.setApplicationMenu(menu);
@@ -255,7 +255,7 @@ export function setMenuTitle(name?: string) {
   } else {
     tray.setToolTip(APP_NAME);
     const contextMenu = Menu.buildFromTemplate([
-      { id: "music", label: APP_NAME, icon: musicIcon, click: focus },
+      { id: "music", label: APP_NAME, icon: musicIcon, click: mainWindow.focus },
       { type: "separator" },
       { label: "退出", icon: logoutIcon, role: "quit" },
     ]);
@@ -308,20 +308,20 @@ export function setMenuTitle(name?: string) {
               id: "play",
               label: "播放",
               icon: playIcon,
-              click: musicControl("play"),
+              click: mainWindow.musicControl("play"),
               enabled: false,
             },
 
             {
               label: "上一首",
               icon: prevIcon,
-              click: musicControl("prev"),
+              click: mainWindow.musicControl("prev"),
               enabled: false,
             },
             {
               label: "下一首",
               icon: nextIcon,
-              click: musicControl("next"),
+              click: mainWindow.musicControl("next"),
               enabled: false,
             },
           ],
@@ -333,19 +333,19 @@ export function setMenuTitle(name?: string) {
           id: "play",
           label: "播放",
           icon: playIcon,
-          click: musicControl("play"),
+          click: mainWindow.musicControl("play"),
           enabled: false,
         },
         {
           label: "上一首",
           icon: prevIcon,
-          click: musicControl("prev"),
+          click: mainWindow.musicControl("prev"),
           enabled: false,
         },
         {
           label: "下一首",
           icon: nextIcon,
-          click: musicControl("next"),
+          click: mainWindow.musicControl("next"),
           enabled: false,
         },
       ]);
@@ -358,23 +358,23 @@ export function setMenuTitle(name?: string) {
 export function setMenuPaused(paused: boolean) {
   musicPaused = paused;
   const contextMenu = Menu.buildFromTemplate([
-    { id: "music", label: title, icon: musicIcon, click: focus },
+    { id: "music", label: title, icon: musicIcon, click: mainWindow.focus },
     { type: "separator" },
     paused
       ? {
           id: "play",
           label: "播放",
           icon: playIcon,
-          click: musicControl("play"),
+          click: mainWindow.musicControl("play"),
         }
       : {
           id: "pause",
           label: "暂停",
           icon: pauseIcon,
-          click: musicControl("pause"),
+          click: mainWindow.musicControl("pause"),
         },
-    { label: "上一首", icon: prevIcon, click: musicControl("prev") },
-    { label: "下一首", icon: nextIcon, click: musicControl("next") },
+    { label: "上一首", icon: prevIcon, click: mainWindow.musicControl("prev") },
+    { label: "下一首", icon: nextIcon, click: mainWindow.musicControl("next") },
     { type: "separator" },
     { label: "退出", icon: logoutIcon, role: "quit" },
   ]);
@@ -428,23 +428,23 @@ export function setMenuPaused(paused: boolean) {
                 id: "play",
                 label: "播放",
                 icon: playIcon,
-                click: musicControl("play"),
+                click: mainWindow.musicControl("play"),
               }
             : {
                 id: "paused",
                 label: "暂停",
                 icon: pauseIcon,
-                click: musicControl("pause"),
+                click: mainWindow.musicControl("pause"),
               },
           {
             label: "上一首",
             icon: prevIcon,
-            click: musicControl("prev"),
+            click: mainWindow.musicControl("prev"),
           },
           {
             label: "下一首",
             icon: nextIcon,
-            click: musicControl("next"),
+            click: mainWindow.musicControl("next"),
           },
         ],
       },
@@ -456,23 +456,23 @@ export function setMenuPaused(paused: boolean) {
             id: "play",
             label: "播放",
             icon: playIcon,
-            click: musicControl("play"),
+            click: mainWindow.musicControl("play"),
           }
         : {
             id: "paused",
             label: "暂停",
             icon: pauseIcon,
-            click: musicControl("pause"),
+            click: mainWindow.musicControl("pause"),
           },
       {
         label: "上一首",
         icon: prevIcon,
-        click: musicControl("prev"),
+        click: mainWindow.musicControl("prev"),
       },
       {
         label: "下一首",
         icon: nextIcon,
-        click: musicControl("next"),
+        click: mainWindow.musicControl("next"),
       },
     ]);
     Menu.setApplicationMenu(menu);

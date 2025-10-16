@@ -34,7 +34,11 @@ export default function PlayerList() {
               <X />
             </Button>
           </div>
-          <div>
+          <div
+            style={{
+              height: "calc(100% - 40px)",
+            }}
+          >
             <Table>
               <TableBody>
                 {playerList.map((item) => {
@@ -62,8 +66,8 @@ export default function PlayerList() {
                       </TableCell>
                       <TableCell>
                         <div className="flex gap-1.5 text-lg">
-                          <button>FluentArrowDownload</button>
-                          <button>FluentDelete</button>
+                          <button>1</button>
+                          <button>2</button>
                         </div>
                       </TableCell>
                     </TableRow>

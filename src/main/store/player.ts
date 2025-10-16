@@ -4,6 +4,7 @@ import { Music } from "../types";
 import { Artist } from "../types/artist";
 import { shuffle } from "../lib";
 import { fetcher } from "../lib/request";
+import emitter from "../lib/emitter";
 
 interface PlayerState {
   current: Music | null;
@@ -34,23 +35,26 @@ export const usePlayerStore = create<PlayerState>()(
         });
       },
       playNext: (dir: "next" | "prev" = "next") => {
+        const mode = playerConfig.mode;
         const { playerList } = get();
+        if (mode === "loop" || playerList.length === 0) {
+          return;
+        }
         const index = playerConfig.index;
-        let current: Music | null = null;
         if (dir === "next") {
-          const i = index + 1 > playerList.length - 1 ? 0 : index + 1;
-          playerConfig.index = i;
-          current = playerList[i];
-          set({
-            current,
-          });
+          playerConfig.index = index + 1 > playerList.length - 1 ? (mode === "sequence" ? 0 : -1) : index + 1;
         } else {
-          const i = index - 1 < 0 ? playerList.length - 1 : index - 1;
-          playerConfig.index = i;
-          current = playerList[i];
-          set({
-            current,
-          });
+          playerConfig.index = index - 1 < 0 ? (mode === "sequence" ? -1 : playerList.length - 1) : index - 1;
+        }
+        const nextIndex = playerConfig.index;
+        if (mode === "shuffle") {
+          return {
+            current: playerList[playerConfig.shuffleIndexList[nextIndex]],
+          };
+        } else {
+          return {
+            current: playerList[nextIndex],
+          };
         }
       },
       appendToPlayerList(m, replace = false) {
@@ -102,9 +106,9 @@ export function fetchMusicUrl(id: string | number, br: MusicBr = 128) {
     .then((data) => data.url)
     .catch(() => fetchMusicPlayUrl(id, br));
 }
+
 // br=[128/192/320/740/999]
 // https://music-api.gdstudio.xyz/api.php?types=url&source=kuwo&id=507067633&br=320
-
 async function fetchMusicPlayUrl(id: string | number, br: MusicBr = 128) {
   const res = await fetch(`https://music-api.gdstudio.xyz/api.php?types=url&source=kuwo&id=${id}&br=${br}`, {
     cache: "force-cache",
@@ -121,7 +125,7 @@ async function fetchMusicPlayUrl(id: string | number, br: MusicBr = 128) {
   }
 }
 
-export function usePlayer() {}
+// export function usePlayer() {}
 
 export interface PlayerMusic {
   id?: string;
@@ -188,9 +192,9 @@ class PlayerConfig {
     const localData = localStorage.getItem("player");
     if (localData) {
       try {
-        // 本地current不为空，则自动播放
+        // 本地current为空，则自动播放
         const data = JSON.parse(localData) as StorageValue<PlayerState>;
-        this._autoPlay = data.state.current != null;
+        this._autoPlay = data.state.current == null;
       } catch {
         /* empty */
       }
@@ -203,6 +207,11 @@ class PlayerConfig {
   set mode(newMode: PlayMode) {
     this._mode = newMode;
     localStorage.setItem(MODE_KEY, newMode);
+    if (newMode === "loop") {
+      player.loop(true);
+    } else {
+      player.loop(false);
+    }
   }
 
   get index() {
@@ -243,3 +252,11 @@ class PlayerConfig {
 }
 
 export const playerConfig = new PlayerConfig();
+
+export const player = {
+  play: () => emitter.emit("play"),
+  pause: () => emitter.emit("pause"),
+  volume: (v: number) => emitter.emit("volume", v),
+  seek: (v: number) => emitter.emit("seek", v),
+  loop: (loop: boolean) => emitter.emit("loop", loop),
+};

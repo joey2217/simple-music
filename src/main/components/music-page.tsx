@@ -3,10 +3,10 @@ import MusicList, { MusicListProps } from "./music-list";
 
 type MusicPageProps = PaginationProps & MusicListProps;
 
-export default function MusicPage({ items, height, ...props }: MusicPageProps) {
+export default function MusicPage({ data, ...props }: MusicPageProps) {
   return (
     <>
-      <MusicList items={items} height={height} />
+      <MusicList data={data} />
       <Pagination {...props} />
     </>
   );

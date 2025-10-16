@@ -4,7 +4,7 @@ import Control from "./control";
 import MusicInfo from "./music-info";
 import PlayerList from "./player-list";
 import Volume from "./volume";
-import { fetchMusicUrl, playerConfig, usePlayerStore } from "@/main/store/player";
+import { fetchMusicUrl, player, playerConfig, usePlayerStore } from "@/main/store/player";
 import emitter from "@/main/lib/emitter";
 
 export default function Player() {
@@ -37,6 +37,8 @@ function HowlerPlayer() {
   const timer = useRef<NodeJS.Timeout>(undefined);
 
   const current = usePlayerStore((s) => s.current);
+  const paused = usePlayerStore((s) => s.paused);
+
   const playNext = usePlayerStore((s) => s.playNext);
 
   useEffect(() => {
@@ -109,18 +111,54 @@ function HowlerPlayer() {
   useEffect(() => {
     const play = () => howlerRef.current?.play();
     const pause = () => howlerRef.current?.pause();
+    const volume = (v: number) => howlerRef.current?.volume(v / 100);
+    const seek = (v: number) => howlerRef.current?.seek(v);
+    const loop = (loop: boolean) => howlerRef.current?.loop(loop);
+
     emitter.on("play", play);
     emitter.on("pause", pause);
+    emitter.on("volume", volume);
+    emitter.on("seek", seek);
+    emitter.on("loop", loop);
     return () => {
       emitter.off("play", play);
       emitter.off("pause", pause);
+      emitter.off("volume", volume);
+      emitter.off("seek", seek);
+      emitter.off("seek", seek);
     };
   }, []);
 
+  useEffect(() => {
+    return window.messageAPI.onMusicControl((type) => {
+      switch (type) {
+        case "next":
+        case "prev":
+          playNext(type);
+          break;
+        case "pause":
+          player.pause();
+          break;
+        case "play":
+          player.play();
+          break;
+        default:
+          break;
+      }
+    });
+  }, [playNext]);
+
+  useEffect(() => {
+    if (current) {
+      const title = `${current.name}-${current.artist}`;
+      window.electronAPI.setMusicPaused(paused);
+      window.electronAPI.setAppTitle(title);
+      document.title = title;
+    } else {
+      window.electronAPI.setAppTitle();
+      document.title = "轻·音乐";
+    }
+  }, [paused, current]);
+
   return null;
 }
-
-export const player = {
-  play: () => emitter.emit("play"),
-  pause: () => emitter.emit("pause"),
-};

@@ -43,6 +43,13 @@
     sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
 :root {
   --radius: 0.65rem;
   --background: oklch(1 0 0);
@@ -159,6 +166,10 @@
   scrollbar-color: var(--border) transparent;
 }
 
+body {
+  overflow: hidden;
+}
+
 #main {
   height: calc(100vh - env(titlebar-area-height, var(--fallback-title-bar-height)) - var(--player-height) - 1px);
   /* margin-top: env(titlebar-area-height, var(--fallback-title-bar-height)); */
@@ -203,4 +214,12 @@ button {
   height: calc(100vh - env(titlebar-area-height, var(--fallback-title-bar-height)) - var(--player-height));
   overflow: hidden;
   width: 380px;
+}
+
+#lyric-container {
+  height: calc(100vh - var(--player-height));
+}
+
+.card-grid {
+  @apply grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4;
 }

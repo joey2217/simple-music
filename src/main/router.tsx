@@ -4,6 +4,15 @@ import Error from "./layout/error";
 import Rankings from "./pages/rankings/page";
 import RankingsLayout from "./pages/rankings/layout";
 import Home from "./pages/home/page";
+import AlbumPage from "./pages/album/page";
+import ArtistsPage from "./pages/artists/page";
+import ArtistLayout from "./pages/artist/layout";
+import ArtistPage from "./pages/artist/page";
+import ArtistAlbumPage from "./pages/artist/album";
+import ArtistInfoPage from "./pages/artist/info";
+import ArtistMVPage from "./pages/artist/mv";
+import DownloadPage from "./pages/download/page";
+import MusicPage from "./pages/music/page";
 
 const router = createHashRouter([
   {
@@ -27,6 +36,44 @@ const router = createHashRouter([
             element: <Rankings />,
           },
         ],
+      },
+      {
+        path: "album/:id",
+        element: <AlbumPage />,
+      },
+      {
+        path: "artists",
+        element: <ArtistsPage />,
+      },
+      {
+        path: "artist/:id",
+        element: <ArtistLayout />,
+        children: [
+          {
+            index: true,
+            element: <ArtistPage />,
+          },
+          {
+            path: "album",
+            element: <ArtistAlbumPage />,
+          },
+          {
+            path: "info",
+            element: <ArtistInfoPage />,
+          },
+          {
+            path: "mv",
+            element: <ArtistMVPage />,
+          },
+        ],
+      },
+      {
+        path: "download",
+        element: <DownloadPage />,
+      },
+      {
+        path: "music/:id",
+        element: <MusicPage />,
       },
     ],
   },
