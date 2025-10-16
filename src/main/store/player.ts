@@ -58,6 +58,7 @@ export const usePlayerStore = create<PlayerState>()(
         }
       },
       appendToPlayerList(m, replace = false) {
+        console.log("appendToPlayerList", m, replace);
         if (Array.isArray(m)) {
           if (replace) {
             set({
@@ -99,7 +100,7 @@ export type MusicBr = 128 | 192 | 320 | 740 | 999;
 
 // https://www.kuwo.cn/api/v1/www/music/playUrl?mid=507067633&type=music&httpsStatus=1&reqId=7a4ecb41-a999-11f0-bbfc-59a65a80edeb&plat=web_www&from=
 // br=128kmp3
-export function fetchMusicUrl(id: string | number, br: MusicBr = 128) {
+export function fetchMusicUrl(id: string | number, br: MusicBr = 320) {
   return fetcher<{ url: string }>(`/api/v1/www/music/playUrl?mid=${id}&type=music&httpsStatus=1&plat=web_www&from=`, {
     cache: "force-cache",
   })
@@ -109,7 +110,7 @@ export function fetchMusicUrl(id: string | number, br: MusicBr = 128) {
 
 // br=[128/192/320/740/999]
 // https://music-api.gdstudio.xyz/api.php?types=url&source=kuwo&id=507067633&br=320
-async function fetchMusicPlayUrl(id: string | number, br: MusicBr = 128) {
+async function fetchMusicPlayUrl(id: string | number, br: MusicBr = 320) {
   const res = await fetch(`https://music-api.gdstudio.xyz/api.php?types=url&source=kuwo&id=${id}&br=${br}`, {
     cache: "force-cache",
   });

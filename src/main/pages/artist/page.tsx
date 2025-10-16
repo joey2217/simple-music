@@ -8,7 +8,9 @@ export default function ArtistPage() {
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page") ?? "1");
 
-  const { error, data, isLoading } = useSWR<PageData<Music>>(`/api/www/artist/artistMusic?artistid=${id}&pn=${page}`);
+  const { error, data, isLoading } = useSWR<PageData<Music>>(
+    `/api/www/artist/artistMusic?artistid=${id}&pn=${page}&rn=20`,
+  );
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -17,7 +19,13 @@ export default function ArtistPage() {
   }
   if (data) {
     return (
-      <MusicPage current={page} data={data.list} total={data.total} urlRender={(p) => `/artist/${id}?page=${p}`} />
+      <MusicPage
+        current={page}
+        data={data.list}
+        total={data.total}
+        size={20}
+        urlRender={(p) => `/artist/${id}?page=${p}`}
+      />
     );
   }
 

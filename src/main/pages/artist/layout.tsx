@@ -27,6 +27,7 @@ export default function ArtistLayout() {
                 __html: artistInfo.name || "-",
               }}
             ></h3>
+            <div>TODO like</div>
             <div className="flex flex-wrap gap-2">
               <div>
                 <span className="label">单曲</span>
@@ -66,17 +67,6 @@ export default function ArtistLayout() {
                 <span className="label">出生地</span>
                 <span>{artistInfo.birthplace || "-"}</span>
               </div>
-            </div>
-            <div className="flex gap-4 flex-wrap">
-              <button className="primary-btn">
-                <PlayIcon />
-                <span>播放全部</span>
-              </button>
-              <button className="default-btn">
-                <Plus />
-                <span>添加</span>
-              </button>
-              likes
             </div>
           </div>
         </div>

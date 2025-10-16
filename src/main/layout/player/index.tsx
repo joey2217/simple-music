@@ -42,6 +42,7 @@ function HowlerPlayer() {
   const playNext = usePlayerStore((s) => s.playNext);
 
   useEffect(() => {
+    console.log("player", current);
     if (current) {
       fetchMusicUrl(current.rid).then((url) => {
         current.url = url;
@@ -53,6 +54,7 @@ function HowlerPlayer() {
           html5: true,
           volume: playerConfig.volume / 100,
         });
+        playerConfig.autoplay = true;
         howlerRef.current = howler;
         howler.once("load", () => {
           usePlayerStore.setState({
@@ -112,7 +114,18 @@ function HowlerPlayer() {
     const play = () => howlerRef.current?.play();
     const pause = () => howlerRef.current?.pause();
     const volume = (v: number) => howlerRef.current?.volume(v / 100);
-    const seek = (v: number) => howlerRef.current?.seek(v);
+    const seek = (v: number) => {
+      const howler = howlerRef.current;
+      if (howler) {
+        howler.seek(v);
+        usePlayerStore.setState({
+          seek: v,
+        });
+        if (!howler.playing()) {
+          howler.play();
+        }
+      }
+    };
     const loop = (loop: boolean) => howlerRef.current?.loop(loop);
 
     emitter.on("play", play);

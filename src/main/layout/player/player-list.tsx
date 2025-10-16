@@ -38,13 +38,19 @@ export default function PlayerList() {
             style={{
               height: "calc(100% - 40px)",
             }}
+            className="overflow-auto"
           >
             <Table>
               <TableBody>
                 {playerList.map((item) => {
                   const playing = current?.rid === item.rid;
                   return (
-                    <TableRow key={item.rid} className="play-list-row" onDoubleClick={() => play(item)}>
+                    <TableRow
+                      key={item.rid}
+                      className="play-list-row"
+                      onDoubleClick={() => play(item)}
+                      data-rid={item.rid}
+                    >
                       <TableCell className={`group ${playing ? "text-primary" : ""}`}>
                         <div className="flex items-center gap-2">
                           <div className="relative">

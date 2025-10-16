@@ -16,6 +16,7 @@ export async function fetcher<R = unknown>(input: string, init?: RequestInit): P
   const url = input.startsWith("http") ? new URL(input) : new URL(input, BASE_URL);
   url.searchParams.set("reqId", reqId);
   url.searchParams.set("httpsStatus", "1");
+  url.searchParams.set("plat", "web_www");
   const res = await fetch(url, init);
   const json: ResponseData<R> = await res.json();
   if (res.ok) {

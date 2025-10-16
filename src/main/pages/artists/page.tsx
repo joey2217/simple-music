@@ -11,37 +11,12 @@ export default function ArtistsPage() {
   const category = searchParams.get("category") ?? "0";
   const page = Number(searchParams.get("page") ?? "1");
 
-  const { data, isLoading, error } = useSWR<{ artistList: Artist[]; total: string }>(
-    `/api/www/artist/artistList?prefix=${prefix}&category=${category}&pn=${page}&rn=20`,
+  return (
+    <>
+      <ArtistTags prefix={prefix} category={category} setSearchParams={setSearchParams} />
+      <ArtistsList prefix={prefix} category={category} page={page} />
+    </>
   );
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
-
-  if (data) {
-    const total = Number(data.total);
-    return (
-      <>
-        <ArtistTags prefix={prefix} category={category} setSearchParams={setSearchParams} />
-        <div className="my-4 grid grid-cols-4 sm:col-span-4 md:grid-cols-6 lg:col-span-8 xl:col-span-10 gap-2 md:gap-4">
-          {data.artistList.map((a) => (
-            <ArtistCard key={a.id} artist={a} />
-          ))}
-        </div>
-        <Pagination
-          total={total}
-          current={page}
-          size={60}
-          urlRender={(p) => `/artists?prefix=${prefix}&category=${category}&page=${p}`}
-        />
-      </>
-    );
-  }
-
-  return null;
 }
 
 const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -89,7 +64,9 @@ function ArtistTags({
           <li
             key={tag.value}
             className={buttonVariants({
-              variant: tag.value === prefix ? "default" : "secondary",
+              variant: tag.value === prefix ? "default" : "ghost",
+              size: "sm",
+              className: "cursor-pointer",
             })}
             onClick={() =>
               setSearchParams({
@@ -102,12 +79,14 @@ function ArtistTags({
           </li>
         ))}
       </ul>
-      <ul className="flex flex-wrap gap-1">
+      <ul className="flex flex-wrap gap-1 my-2">
         {KIND_TAGS.map((tag) => (
           <li
             key={tag.value}
             className={buttonVariants({
-              variant: tag.value === category ? "default" : "secondary",
+              variant: tag.value === category ? "default" : "ghost",
+              size: "sm",
+              className: "cursor-pointer",
             })}
             onClick={() =>
               setSearchParams({
@@ -122,4 +101,37 @@ function ArtistTags({
       </ul>
     </>
   );
+}
+
+function ArtistsList({ prefix, category, page }: { prefix: string; category: string; page: number }) {
+  const { data, isLoading, error } = useSWR<{ artistList: Artist[]; total: string }>(
+    `/api/www/artist/artistInfo?prefix=${prefix}&category=${category}&pn=${page}&rn=60`,
+  );
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  if (data) {
+    const total = Number(data.total);
+    return (
+      <>
+        <div className="my-4 grid grid-cols-2 sm:col-span-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-1 md:gap-2 lg:gap-3">
+          {data.artistList.map((a) => (
+            <ArtistCard key={a.id} artist={a} />
+          ))}
+        </div>
+        <Pagination
+          total={total}
+          current={page}
+          size={60}
+          urlRender={(p) => `/artists?prefix=${prefix}&category=${category}&page=${p}`}
+        />
+      </>
+    );
+  }
+
+  return null;
 }
