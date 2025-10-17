@@ -12,7 +12,7 @@ interface PlayerState {
   duration: number;
   playerList: Music[];
   paused: boolean;
-  play: (m: Music) => void;
+  play: (m: Music, items: Music[]) => void;
   playNext: (dir?: "next" | "prev") => void;
   appendToPlayerList: (m: Music | Music[], replace?: boolean) => void;
 }
@@ -25,14 +25,22 @@ export const usePlayerStore = create<PlayerState>()(
       duration: 0,
       paused: true,
       playerList: [],
-      play: (m: Music) => {
+      play: (m: Music, items: Music[]) => {
         set((state) => {
-          playerConfig.index = state.playerList.length;
-          return {
-            playerList: [...state.playerList, m],
-            current: m,
-          };
+          const playerList = state.playerList;
+          const i = playerList.findIndex((m) => m.rid === m.rid);
+          if (i === -1) {
+            return {
+              playerList: items,
+              current: m,
+            };
+          } else {
+            return {
+              current: m,
+            };
+          }
         });
+        playerConfig.setCurrentIndex();
       },
       playNext: (dir: "next" | "prev" = "next") => {
         const mode = playerConfig.mode;
@@ -58,14 +66,12 @@ export const usePlayerStore = create<PlayerState>()(
         }
       },
       appendToPlayerList(m, replace = false) {
-        console.log("appendToPlayerList", m, replace);
         if (Array.isArray(m)) {
           if (replace) {
             set({
               playerList: m,
               current: m[0],
             });
-            playerConfig.index = 0;
           } else {
             set((state) => {
               const ids = state.playerList.map((m) => m.rid);
@@ -80,6 +86,7 @@ export const usePlayerStore = create<PlayerState>()(
             playerList: [...state.playerList, m],
           }));
         }
+        playerConfig.setCurrentIndex();
       },
     }),
     { name: "player" },
@@ -125,8 +132,6 @@ async function fetchMusicPlayUrl(id: string | number, br: MusicBr = 320) {
     throw new Error("获取音乐播放地址失败");
   }
 }
-
-// export function usePlayer() {}
 
 export interface PlayerMusic {
   id?: string;
@@ -213,6 +218,7 @@ class PlayerConfig {
     } else {
       player.loop(false);
     }
+    this.setShuffleIndexList();
   }
 
   get index() {
@@ -243,11 +249,31 @@ class PlayerConfig {
     return this._shuffleIndexList;
   }
 
-  setShuffleIndexList(l: number) {
-    if (l > 0) {
-      this._shuffleIndexList = shuffle(Array.from({ length: l }, (_item, i) => i));
+  setShuffleIndexList() {
+    if (this._mode === "shuffle") {
+      const l = usePlayerStore.getState().playerList.length;
+      if (l > 0) {
+        this._shuffleIndexList = shuffle(Array.from({ length: l }, (_item, i) => i));
+      } else {
+        this._shuffleIndexList = [];
+      }
     } else {
       this._shuffleIndexList = [];
+    }
+  }
+
+  setCurrentIndex() {
+    const { playerList, current } = usePlayerStore.getState();
+    if (current) {
+      const i = playerList.findIndex((m) => m.rid === current.rid);
+      if (this._mode === "shuffle") {
+        this.setShuffleIndexList();
+        this._index = this._shuffleIndexList.indexOf(i);
+      } else {
+        this._index = i;
+      }
+    } else {
+      this._index = 0;
     }
   }
 }

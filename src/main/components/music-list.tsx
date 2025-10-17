@@ -12,7 +12,8 @@ export interface MusicListProps {
 }
 
 export default function MusicList({ data }: MusicListProps) {
-  const { play, appendToPlayerList } = usePlayerStore();
+  const play = usePlayerStore((s) => s.play);
+  const appendToPlayerList = usePlayerStore((s) => s.appendToPlayerList);
   const { download } = useDownloadStore();
 
   return (
@@ -36,7 +37,7 @@ export default function MusicList({ data }: MusicListProps) {
                 <TableCell className="text-center">{i + 1}</TableCell>
                 <TableCell>
                   <div className="flex gap-2 items-center">
-                    <button onClick={() => play(m)} title="播放">
+                    <button onClick={() => play(m, data)} title="播放">
                       <Play size={14} />
                     </button>
                     <button onClick={() => appendToPlayerList(m)} title="添加到播放列表">

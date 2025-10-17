@@ -122,8 +122,6 @@ const modeIcons: { [p in PlayMode]: ModeIcon } = {
 };
 
 function PlayModeButton() {
-  const playList = usePlayerStore((s) => s.playerList);
-
   const [m, setM] = useState<PlayMode>(playerConfig.mode);
 
   const modeIcon = useMemo(() => modeIcons[m], [m]);
@@ -133,14 +131,6 @@ function PlayModeButton() {
     setM(nextMode);
     playerConfig.mode = nextMode;
   };
-
-  useEffect(() => {
-    if (m === "shuffle") {
-      playerConfig.setShuffleIndexList(playList.length);
-    } else {
-      playerConfig.setShuffleIndexList(0);
-    }
-  }, [m, playList.length]);
 
   return (
     <button title={modeIcon.title} onClick={onClick}>

@@ -1,15 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { usePlayerStore } from "@/main/store/player";
-import { ListMusic, PlayIcon, X } from "lucide-react";
+import { ArrowDownToLine, ListMusic, PlayIcon, X } from "lucide-react";
 import { useState } from "react";
 import ReactDOM from "react-dom";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+import { useDownloadStore } from "@/main/store/download";
 
 export default function PlayerList() {
   const [show, setShow] = useState(false);
   const playerList = usePlayerStore((s) => s.playerList);
   const play = usePlayerStore((s) => s.play);
   const current = usePlayerStore((s) => s.current);
+  const download = useDownloadStore((s) => s.download);
 
   return (
     <>
@@ -48,7 +50,7 @@ export default function PlayerList() {
                     <TableRow
                       key={item.rid}
                       className="play-list-row"
-                      onDoubleClick={() => play(item)}
+                      onDoubleClick={() => play(item, [])}
                       data-rid={item.rid}
                     >
                       <TableCell className={`group ${playing ? "text-primary" : ""}`}>
@@ -59,7 +61,7 @@ export default function PlayerList() {
                               className={`absolute left-0 top-0 w-full h-full flex justify-center items-center ${
                                 playing ? "opacity-100" : "opacity-0"
                               } group-hover:opacity-100 transition-opacity duration-300 cursor-pointer`}
-                              onClick={() => play(item)}
+                              onClick={() => play(item, [])}
                             >
                               <PlayIcon />
                             </div>
@@ -72,8 +74,9 @@ export default function PlayerList() {
                       </TableCell>
                       <TableCell>
                         <div className="flex gap-1.5 text-lg">
-                          <button>1</button>
-                          <button>2</button>
+                          <Button size="icon-sm" onClick={() => download(item)}>
+                            <ArrowDownToLine />
+                          </Button>
                         </div>
                       </TableCell>
                     </TableRow>
