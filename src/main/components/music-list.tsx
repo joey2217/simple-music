@@ -2,8 +2,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Music } from "../types";
 import { usePlayerStore } from "../store/player";
 import { Link } from "react-router";
-import { Play, Plus } from "lucide-react";
+import { Download, Play, Plus } from "lucide-react";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
+import { useDownloadStore } from "../store/download";
 
 export interface MusicListProps {
   data: Music[];
@@ -12,6 +13,7 @@ export interface MusicListProps {
 
 export default function MusicList({ data }: MusicListProps) {
   const { play, appendToPlayerList } = usePlayerStore();
+  const { download } = useDownloadStore();
 
   return (
     <ContextMenu>
@@ -39,6 +41,9 @@ export default function MusicList({ data }: MusicListProps) {
                     </button>
                     <button onClick={() => appendToPlayerList(m)} title="添加到播放列表">
                       <Plus size={14} />
+                    </button>
+                    <button onClick={() => download(m)} title="下载">
+                      <Download size={14} />
                     </button>
                   </div>
                 </TableCell>

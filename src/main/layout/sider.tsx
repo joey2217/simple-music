@@ -20,7 +20,7 @@ export default function Sider() {
               <MicVocal size={18} />
               <span>歌 手</span>
             </NavLink>
-            <NavLink to="/song-lists" className="nav-link">
+            <NavLink to="/song-list" className="nav-link">
               <ListVideo size={18} /> <span>歌 单</span>
             </NavLink>
           </div>

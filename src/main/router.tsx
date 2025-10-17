@@ -13,6 +13,9 @@ import ArtistInfoPage from "./pages/artist/info";
 import ArtistMVPage from "./pages/artist/mv";
 import DownloadPage from "./pages/download/page";
 import MusicPage from "./pages/music/page";
+import SongListPage from "./pages/song-list/page";
+import LikePage from "./pages/like";
+import SettingsPage from "./pages/settings/page";
 
 const router = createHashRouter([
   {
@@ -74,6 +77,18 @@ const router = createHashRouter([
       {
         path: "music/:id",
         element: <MusicPage />,
+      },
+      {
+        path: "song-list",
+        element: <SongListPage />,
+      },
+      {
+        path: "like",
+        element: <LikePage />,
+      },
+      {
+        path: "settings",
+        element: <SettingsPage />,
       },
     ],
   },

@@ -2,18 +2,18 @@ import Pagination from "@/components/pagination";
 import { buttonVariants } from "@/components/ui/button";
 import ArtistCard from "@/main/components/artist-card";
 import { Artist } from "@/main/types/artist";
-import { type SetURLSearchParams, useSearchParams } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import useSWR from "swr";
 
 export default function ArtistsPage() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const prefix = searchParams.get("prefix") ?? "";
   const category = searchParams.get("category") ?? "0";
   const page = Number(searchParams.get("page") ?? "1");
 
   return (
     <>
-      <ArtistTags prefix={prefix} category={category} setSearchParams={setSearchParams} />
+      <ArtistTags prefix={prefix} category={category} />
       <ArtistsList prefix={prefix} category={category} page={page} />
     </>
   );
@@ -48,57 +48,39 @@ const KIND_TAGS = [
   "其他",
 ].map((s, index) => ({ label: s, value: index.toString() }));
 
-function ArtistTags({
-  prefix,
-  category,
-  setSearchParams,
-}: {
-  prefix: string;
-  category: string;
-  setSearchParams: SetURLSearchParams;
-}) {
+function ArtistTags({ prefix, category }: { prefix: string; category: string }) {
   return (
     <>
-      <ul className="flex flex-wrap gap-1">
+      <div className="flex flex-wrap gap-1">
         {LETTER_TAGS.map((tag) => (
-          <li
+          <Link
+            to={`/artists?prefix=${tag.value}&category=${category}`}
             key={tag.value}
             className={buttonVariants({
               variant: tag.value === prefix ? "default" : "ghost",
               size: "sm",
               className: "cursor-pointer",
             })}
-            onClick={() =>
-              setSearchParams({
-                prefix: tag.value,
-                page: "1",
-              })
-            }
           >
             {tag.label}
-          </li>
+          </Link>
         ))}
-      </ul>
-      <ul className="flex flex-wrap gap-1 my-2">
+      </div>
+      <div className="flex flex-wrap gap-1 my-2">
         {KIND_TAGS.map((tag) => (
-          <li
+          <Link
+            to={`/artists?prefix=${prefix}&category=${tag.value}`}
             key={tag.value}
             className={buttonVariants({
               variant: tag.value === category ? "default" : "ghost",
               size: "sm",
               className: "cursor-pointer",
             })}
-            onClick={() =>
-              setSearchParams({
-                category: tag.value,
-                page: "1",
-              })
-            }
           >
             {tag.label}
-          </li>
+          </Link>
         ))}
-      </ul>
+      </div>
     </>
   );
 }
