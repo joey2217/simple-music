@@ -1,9 +1,10 @@
 import Pagination from "@/components/pagination";
+import { Button } from "@/components/ui/button";
 import SongListItemCard from "@/main/components/song-list-item";
 import { SongListItem, SongListTag } from "@/main/types/song-list";
-import { ChevronDown, Link } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useState } from "react";
-import { useSearchParams } from "react-router";
+import { Link, NavLink, useSearchParams } from "react-router";
 import useSWR from "swr";
 
 type OrderId = "new" | "hot";
@@ -28,22 +29,22 @@ export default function SongListPage() {
   return (
     <div>
       <div className="flex items-center flex-wrap gap-2 py-1">
-        <div className="text-lg text-indigo-600">精选</div>
+        <div className="text-lg primary">精选</div>
         {HOT_TAGS.map((t) => (
           <Link
             to={`/song-list?tag=${t.value}&type=order`}
             key={t.value}
             className={`px-3 py-0.5 text-center cursor-pointer rounded-full ${
-              tag === t.value ? "bg-indigo-600 hover:bg-indigo-600/80" : "hover:bg-gray-500/50"
+              tag === t.value ? "bg-primary hover:primary/80" : "hover:bg-gray-500/50"
             }`}
           >
             {t.label}
           </Link>
         ))}
-        <button className="text-btn" onClick={() => setShow((s) => !s)}>
+        <Button onClick={() => setShow((s) => !s)} size="sm" variant="ghost">
           <span>更多</span>
           <ChevronDown className={`${show ? "rotate-180" : ""}`} />
-        </button>
+        </Button>
       </div>
       <div className={`${show ? "block" : "hidden"}`}>
         <SongListPageTag tag={tag} />
@@ -70,14 +71,15 @@ function SongListPageTag({ tag: queryTag }: { tag: string }) {
             <div key={tag.id} className="flex items-center flex-wrap gap-2 py-1">
               <div className="text-lg text-primary">{tag.name}</div>
               {tag.data.map((t) => (
-                <div
+                <NavLink
                   key={t.id}
                   className={`px-3 py-0.5 text-center cursor-pointer rounded-full ${
                     queryTag === t.id ? "bg-primary hover:bg-primary/80" : "hover:bg-gray-500/50"
                   }`}
+                  to={`/song-list?tag=${t.id}&type=id`}
                 >
                   {t.name}
-                </div>
+                </NavLink>
               ))}
             </div>
           ))}

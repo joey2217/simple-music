@@ -15,7 +15,7 @@ module.exports = {
     buildResources: "build",
   },
   executableName: nameEN,
-  files: ["dist"],
+  files: ["dist", "!node_modules"],
   electronLanguages: ["zh-CN", "en-US"],
   win: {
     icon: "build/icon.ico",
