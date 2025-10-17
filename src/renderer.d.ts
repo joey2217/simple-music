@@ -1,8 +1,10 @@
 import Electron from "electron";
 
-type DownloadStatus = "init" | "downloading" | "completed" | "failed";
+export type UpdateType = 'auto' | 'hint' | 'manual'
 
-interface DownloadInfo {
+export type DownloadStatus = "init" | "downloading" | "completed" | "failed";
+
+export interface DownloadInfo {
   fileName: string;
   downloadPath: string;
   rid: number;
@@ -15,7 +17,7 @@ interface DownloadInfo {
   cover?: string;
 }
 
-interface IElectronAPI {
+export interface ImainAPI {
   download: (files: DownloadInfo[]) => Promise<void>;
   getDownloadsPath: () => Promise<string>;
   checkUpdate: (type?: "auto" | "hint" | "manual") => Promise<string>;
@@ -28,18 +30,18 @@ interface IElectronAPI {
   setAppTitle: (title?: string) => Promise<void>;
 }
 
-type RemoveListener = () => void;
+export type RemoveListener = () => void;
 
-interface MessageAPI {
+export interface mainListener {
   onUpdateDownload: (callback: (info: DownloadInfo) => void) => RemoveListener;
   onMusicControl: (callback: (type: "prev" | "play" | "pause" | "next") => void) => RemoveListener;
 }
 
-interface IDevAPI {
+export interface IDevAPI {
   toggleDevtools: () => Promise<void>;
 }
 
-interface Argv {
+export interface Argv {
   node: string;
   chrome: string;
   electron: string;
@@ -50,8 +52,8 @@ interface Argv {
 
 declare global {
   interface Window {
-    electronAPI: IElectronAPI;
-    messageAPI: MessageAPI;
+    mainAPI: ImainAPI;
+    mainListener: mainListener;
     devAPI: IDevAPI;
     argv: Argv;
   }

@@ -9,7 +9,7 @@ class Setting {
 
   private initDownloadDir() {
     if (this._downloadDir === "") {
-      window.electronAPI.getDownloadsPath().then((dir) => {
+      window.mainAPI.getDownloadsPath().then((dir) => {
         localStorage.setItem(DOWNLOAD_DIR_KEY, dir);
         this._downloadDir = dir;
       });

@@ -143,7 +143,7 @@ function HowlerPlayer() {
   }, []);
 
   useEffect(() => {
-    return window.messageAPI.onMusicControl((type) => {
+    return window.mainListener.onMusicControl((type) => {
       switch (type) {
         case "next":
         case "prev":
@@ -164,11 +164,11 @@ function HowlerPlayer() {
   useEffect(() => {
     if (current) {
       const title = `${current.name}-${current.artist}`;
-      window.electronAPI.setMusicPaused(paused);
-      window.electronAPI.setAppTitle(title);
+      window.mainAPI.setMusicPaused(paused);
+      window.mainAPI.setAppTitle(title);
       document.title = title;
     } else {
-      window.electronAPI.setAppTitle();
+      window.mainAPI.setAppTitle();
       document.title = "轻·音乐";
     }
   }, [paused, current]);

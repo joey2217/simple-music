@@ -95,7 +95,7 @@ function setTitleBarOverlay() {
 }
 
 function musicControl(type: "prev" | "play" | "pause" | "next") {
-  return () => win.webContents.send("on:music_control", type);
+  return () => win.webContents.send("on:music:control", type);
 }
 
 function beforeQuit() {

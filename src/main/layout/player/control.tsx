@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { usePlayerStore, PlayMode, playerConfig, player } from "@/main/store/player";
 import { ArrowRightToLine, PlayIcon, Repeat, Repeat1, Shuffle, SkipBack, SkipForward } from "lucide-react";
-import React, { SVGProps, useEffect, useMemo, useState } from "react";
+import React, { SVGProps, useMemo, useState } from "react";
 
 export default function Control() {
   const current = usePlayerStore((s) => s.current);

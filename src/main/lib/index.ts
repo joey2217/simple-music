@@ -1,53 +1,40 @@
-import { LyricRow } from '../types/player'
-
-export function JSONParse(str: string) {
-  try {
-    return JSON.parse(str)
-  } catch (error) {
-    console.error('JSONParse error:', str, error)
-    return str
-  }
-}
+// import { LyricRow } from '../types/player'
 
 /**
  * 洗牌算法
  */
 export function shuffle<T = unknown>(list: T[]) {
-  const arr = list.slice()
-  let n = arr.length
-  let random
+  const arr = list.slice();
+  let n = arr.length;
+  let random;
   while (0 !== n) {
-    random = (Math.random() * n--) >>> 0 // 无符号右移位运算符向下取整
+    random = (Math.random() * n--) >>> 0; // 无符号右移位运算符向下取整
     //或者改写成 random = Math.floor(Math.random() * n--)
-    ;[arr[n], arr[random]] = [arr[random], arr[n]] // ES6的解构赋值实现变量互换
+    [arr[n], arr[random]] = [arr[random], arr[n]]; // ES6的解构赋值实现变量互换
   }
-  return arr
+  return arr;
 }
 
-export function formatURL(url: string) {
-  return url.startsWith('//') ? `http:${url}` : url
-}
+// const LYRIC_SPLITTER = '\r\n'
+// const LYRIC_RE = /\[(\d{2}):(\d{2}).\d{2,3}\](.*)/
 
-const LYRIC_SPLITTER = '\r\n'
-const LYRIC_RE = /\[(\d{2}):(\d{2}).\d{2,3}\](.*)/
-
-export function parseLyric(lyricStr: string): LyricRow[] {
-  if (!lyricStr) {
-    return []
-  }
-  return lyricStr
-    .replace('@migu music@', '')
-    .split(LYRIC_SPLITTER)
-    .map((s) => {
-      const match = s.match(LYRIC_RE)
-      if (match) {
-        return {
-          time: parseInt(match[1]) * 60 + parseInt(match[2]),
-          words: match[3],
-        }
-      }
-      return {
-        words: s,
-      }
-    })
-}
+// export function parseLyric(lyricStr: string): LyricRow[] {
+//   if (!lyricStr) {
+//     return []
+//   }
+//   return lyricStr
+//     .replace('@migu music@', '')
+//     .split(LYRIC_SPLITTER)
+//     .map((s) => {
+//       const match = s.match(LYRIC_RE)
+//       if (match) {
+//         return {
+//           time: parseInt(match[1]) * 60 + parseInt(match[2]),
+//           words: match[3],
+//         }
+//       }
+//       return {
+//         words: s,
+//       }
+//     })
+// }

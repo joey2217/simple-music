@@ -37,7 +37,7 @@ export const useDownloadStore = create<DownloadState>()((set) => ({
       cover: m.pic,
       status: "init",
     };
-    await window.electronAPI.download([item]);
+    await window.mainAPI.download([item]);
     set((state) => ({
       list: [item, ...state.list],
     }));

@@ -11,7 +11,7 @@ contextBridge.exposeInMainWorld("devAPI", {
 });
 
 // renderer -> main
-contextBridge.exposeInMainWorld("electronAPI", {
+contextBridge.exposeInMainWorld("mainAPI", {
   download: (files: DownloadInfo[]) => ipcRenderer.invoke("download:files", files),
   getDownloadsPath: () => ipcRenderer.invoke("download:get_path"),
   checkUpdate: (status?: "auto" | "hint" | "manual") => ipcRenderer.invoke("app:check_for_update", status),
@@ -31,10 +31,10 @@ function addListener(channel: string, callback: (...args: unknown[]) => void) {
 }
 
 // main -> renderer
-contextBridge.exposeInMainWorld("messageAPI", {
+contextBridge.exposeInMainWorld("mainListener", {
   onUpdateDownload: (callback: (info: DownloadInfo) => void) => addListener("on:download:update", callback),
   onMusicControl: (callback: (type: "prev" | "play" | "pause" | "next") => void) =>
-    addListener("on:music_control", callback),
+    addListener("on:music:control", callback),
 });
 
 contextBridge.exposeInMainWorld("argv", {

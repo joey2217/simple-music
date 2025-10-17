@@ -18,7 +18,7 @@ export default function Download() {
     return (
       <div className="h-[50vh] flex flex-col gap-4 items-center justify-center">
         <h2 className="text-xl font-semibold">暂无下载数据</h2>
-        <Button onClick={() => window.electronAPI.openPath(setting.downloadDir)}>打开目录</Button>
+        <Button onClick={() => window.mainAPI.openPath(setting.downloadDir)}>打开目录</Button>
       </div>
     );
   }
@@ -57,7 +57,7 @@ export default function Download() {
                 </span>
               </TableCell>
               <TableCell>
-                <Button size="sm" onClick={() => window.electronAPI.showItemInFolder(d.downloadPath)}>
+                <Button size="sm" onClick={() => window.mainAPI.showItemInFolder(d.downloadPath)}>
                   查看
                 </Button>
               </TableCell>

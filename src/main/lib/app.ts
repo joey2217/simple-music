@@ -1,21 +1,21 @@
-import type { UpdateType } from '../types'
+import type { UpdateType } from "@/renderer";
 
-const LOCAL_AUTO_UPDATE = 'auto_update'
+const LOCAL_AUTO_UPDATE = "auto_update";
 
-export let autoUpdate: UpdateType = 'auto'
+export let autoUpdate: UpdateType = "auto";
 
 function getLocalAutoUpdate() {
-  const localAutoUpdate = localStorage.getItem(LOCAL_AUTO_UPDATE)
+  const localAutoUpdate = localStorage.getItem(LOCAL_AUTO_UPDATE);
   if (localAutoUpdate) {
-    autoUpdate = localAutoUpdate as UpdateType
+    autoUpdate = localAutoUpdate as UpdateType;
   }
 }
-getLocalAutoUpdate()
+getLocalAutoUpdate();
 
 export function setLocalAutoUpdate(value: UpdateType) {
   // 设置本地存储
-  localStorage.setItem(LOCAL_AUTO_UPDATE, value)
+  localStorage.setItem(LOCAL_AUTO_UPDATE, value);
   // 设置全局变量
-  autoUpdate = value
-  window.electronAPI.checkUpdate(value)
+  autoUpdate = value;
+  window.mainAPI.checkUpdate(value);
 }

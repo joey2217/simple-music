@@ -34,7 +34,7 @@ export default function Error() {
           </Button>
           <Button
             variant="outline"
-            onClick={() => window.electronAPI.openExternal("https://github.com/joey2217/simple-music/issues")}
+            onClick={() => window.mainAPI.openExternal("https://github.com/joey2217/simple-music/issues")}
           >
             反馈BUG
           </Button>

@@ -1,6 +1,5 @@
 import PageHeader from "@/main/components/page-header";
 import { type ArtistInfo } from "@/main/types/artist";
-import { PlayIcon, Plus } from "lucide-react";
 import { NavLink, Outlet, useParams } from "react-router";
 import useSWR from "swr";
 
