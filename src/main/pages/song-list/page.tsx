@@ -107,7 +107,7 @@ function SongListPageData({ type, tag, page }: { type: "order" | "id"; tag: stri
   if (data) {
     return (
       <>
-        <div className="my-2 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div className="my-2 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 2xl:grid-cols-6 gap-4">
           {data.data.map((item) => (
             <SongListItemCard key={item.id} item={item} />
           ))}

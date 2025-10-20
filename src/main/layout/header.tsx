@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import icon from "../assets/icon.png";
 import ThemeToggle from "./theme-toggle";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import SearchInput from "../components/search-input";
 
 export default function Header() {
   return (
@@ -14,6 +15,7 @@ export default function Header() {
           <span>轻·音乐</span>
         </Link>
         <HistoryNavigation />
+        <SearchInput />
         <div className="flex-1 h-full draggable"></div>
         {import.meta.env.DEV && <button onClick={() => window.devAPI.toggleDevtools()}>devtools</button>}
         <ThemeToggle />

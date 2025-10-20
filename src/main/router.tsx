@@ -16,6 +16,8 @@ import MusicPage from "./pages/music/page";
 import SongListPage from "./pages/song-list/page";
 import LikePage from "./pages/like";
 import SettingsPage from "./pages/settings/page";
+import SearchPage from "./pages/search/page";
+import SearchLayout from "./pages/search/layout";
 
 const router = createHashRouter([
   {
@@ -89,6 +91,20 @@ const router = createHashRouter([
       {
         path: "settings",
         element: <SettingsPage />,
+      },
+      {
+        path: "search",
+        element: <SearchLayout />,
+        children: [
+          {
+            index: true,
+            element: <SearchPage />,
+          },
+          {
+            path: ":type",
+            element: <SearchPage />,
+          },
+        ],
       },
     ],
   },

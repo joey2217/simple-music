@@ -65,7 +65,6 @@ autoUpdater.on("update-downloaded", (info) => {
 
 export function checkForUpdates(type: UpdateType) {
   updateType = type;
-  log.info("FeedURL:" + autoUpdater.getFeedURL(), type);
   return autoUpdater.checkForUpdates().then((res) => {
     return res;
   });
