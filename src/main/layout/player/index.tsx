@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { Howl } from "howler";
 import Control from "./control";
 import MusicInfo from "./music-info";
@@ -34,15 +34,27 @@ export default function Player() {
 
 function HowlerPlayer() {
   const howlerRef = useRef<Howl | null>(null);
-  const timer = useRef<NodeJS.Timeout>(undefined);
 
   const current = usePlayerStore((s) => s.current);
   const paused = usePlayerStore((s) => s.paused);
 
   const playNext = usePlayerStore((s) => s.playNext);
 
+  // https://github.com/goldfire/howler.js/blob/master/examples/player/player.js
+  const step = useCallback(function s() {
+    const howler = howlerRef.current;
+    if (howler) {
+      usePlayerStore.setState({
+        seek: Math.ceil(howler.seek()),
+      });
+      if (howler.playing()) {
+        requestAnimationFrame(s);
+      }
+    }
+  }, []);
+
   useEffect(() => {
-    console.log("player", current);
+    // console.log("player", current);
     if (current) {
       fetchMusicUrl(current.rid).then((url) => {
         current.url = url;
@@ -62,8 +74,6 @@ function HowlerPlayer() {
             seek: 0,
             paused: true,
           });
-          clearInterval(timer.current);
-          timer.current = undefined;
         });
         howler.on("seek", () => {
           console.log("on seek");
@@ -72,43 +82,29 @@ function HowlerPlayer() {
           usePlayerStore.setState({
             paused: false,
           });
-          if (!timer.current) {
-            timer.current = setInterval(() => {
-              usePlayerStore.setState({
-                seek: Math.ceil(howler.seek()),
-              });
-            }, 1000);
-          }
+          requestAnimationFrame(step);
         });
 
         howler.on("pause", () => {
           usePlayerStore.setState({
             paused: true,
           });
-          clearInterval(timer.current);
-          timer.current = undefined;
         });
 
         howler.once("end", () => {
           console.log("end", playerConfig.mode);
           if (playerConfig.mode !== "repeat") {
-            clearInterval(timer.current);
             playNext();
           }
         });
       });
-    } else {
-      clearInterval(timer.current);
-      timer.current = undefined;
     }
 
     return () => {
-      clearInterval(timer.current);
-      timer.current = undefined;
       howlerRef.current?.unload();
       howlerRef.current = null;
     };
-  }, [current, playNext]);
+  }, [current, playNext, step]);
 
   useEffect(() => {
     const play = () => howlerRef.current?.play();
@@ -138,7 +134,7 @@ function HowlerPlayer() {
       emitter.off("pause", pause);
       emitter.off("volume", volume);
       emitter.off("seek", seek);
-      emitter.off("seek", seek);
+      emitter.off("loop", loop);
     };
   }, []);
 
