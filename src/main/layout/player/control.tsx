@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import { LikeButton } from "@/main/components/music-list";
 import { usePlayerStore, PlayMode, playerConfig, player } from "@/main/store/player";
 import { ArrowRightToLine, PlayIcon, Repeat, Repeat1, Shuffle, SkipBack, SkipForward } from "lucide-react";
 import React, { SVGProps, useMemo, useState } from "react";
@@ -13,7 +14,7 @@ export default function Control() {
   return (
     <div>
       <div className="flex justify-center items-center gap-3 mb-1">
-        {/* <LikeButton item={current} /> */}
+        {current && <LikeButton music={current} />}
         <Button
           disabled={disabled}
           variant="ghost"

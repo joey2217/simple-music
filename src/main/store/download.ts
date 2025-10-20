@@ -30,7 +30,7 @@ export const useDownloadStore = create<DownloadState>()((set) => ({
       rid: m.rid,
       url: playUrl,
       fileName: m.name,
-      downloadPath: `${setting.downloadDir}/${m.name}.${ext}`,
+      downloadPath: `${setting.downloadDir}/${m.artist}-${m.name}.${ext}`,
       title: m.name,
       artist: m.artist,
       album: m.album || "",

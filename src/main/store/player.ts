@@ -15,6 +15,8 @@ interface PlayerState {
   play: (m: Music, items: Music[]) => void;
   playNext: (dir?: "next" | "prev") => void;
   appendToPlayerList: (m: Music | Music[], replace?: boolean) => void;
+  delete: (m: Music) => void;
+  clear: () => void;
 }
 
 export const usePlayerStore = create<PlayerState>()(
@@ -87,6 +89,16 @@ export const usePlayerStore = create<PlayerState>()(
           }));
         }
         playerConfig.setCurrentIndex();
+      },
+      delete(m) {
+        set((state) => ({
+          playerList: state.playerList.filter((item) => item.rid !== m.rid),
+        }));
+      },
+      clear() { 
+        set({
+          playerList: [],
+        });
       },
     }),
     { name: "player" },

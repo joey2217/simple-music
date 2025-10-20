@@ -14,10 +14,12 @@ import ArtistMVPage from "./pages/artist/mv";
 import DownloadPage from "./pages/download/page";
 import MusicPage from "./pages/music/page";
 import SongListPage from "./pages/song-list/page";
-import LikePage from "./pages/like";
+import LikePage from "./pages/like/page";
 import SettingsPage from "./pages/settings/page";
 import SearchPage from "./pages/search/page";
 import SearchLayout from "./pages/search/layout";
+import LikeLayout from "./pages/like/layout";
+import LikeArtist from "./pages/like/artist";
 
 const router = createHashRouter([
   {
@@ -86,7 +88,17 @@ const router = createHashRouter([
       },
       {
         path: "like",
-        element: <LikePage />,
+        element: <LikeLayout />,
+        children: [
+          {
+            index: true,
+            element: <LikePage />,
+          },
+          {
+            path: "artist",
+            element: <LikeArtist />,
+          },
+        ],
       },
       {
         path: "settings",

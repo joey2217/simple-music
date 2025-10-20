@@ -1,10 +1,11 @@
 import ArtistCard, { ArtistCardSkeleton } from "@/main/components/artist-card";
 import SongListItemCard from "@/main/components/song-list-item";
 import { fetcher } from "@/main/lib/request";
+import { usePlayerStore } from "@/main/store/player";
 import { Music, Ranking, Tag } from "@/main/types";
 import { ArtistsResponse } from "@/main/types/artist";
 import { SongListItem } from "@/main/types/song-list";
-import { ChevronRight, Play } from "lucide-react";
+import { ChevronRight, Play, Plus } from "lucide-react";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { Link } from "react-router";
 import useSWR from "swr";
@@ -41,7 +42,9 @@ function Card({ title, url, children }: PropsWithChildren<{ title: string; url: 
 /**
  * 排行榜
  */
-function MusicItem({ item, num }: { item: Music; num: number }) {
+function MusicItem({ item, num, list }: { item: Music; num: number; list: Music[] }) {
+  const play = usePlayerStore((s) => s.play);
+  const appendToPlayerList = usePlayerStore((s) => s.appendToPlayerList);
   return (
     <div className="flex items-center py-2 gap-1">
       <div className="w-6 shrink-0 text-center">{num}</div>
@@ -61,11 +64,11 @@ function MusicItem({ item, num }: { item: Music; num: number }) {
           {item.artist}
         </Link>
       </div>
-      <button title="播放" className="text-xl p-2 rounded-full">
-        1
+      <button onClick={() => play(item, list)} title="播放">
+        <Play size={14} />
       </button>
-      <button title="添加到播放列表" className="text-xl p-2 rounded-full">
-        2
+      <button onClick={() => appendToPlayerList(item)} title="添加到播放列表">
+        <Plus size={14} />
       </button>
     </div>
   );
@@ -91,7 +94,7 @@ function RankingItem({ item }: { item: Ranking }) {
       </div>
       <div className="p-2">
         {item.musicList.map((m, index) => (
-          <MusicItem key={m.rid} item={m} num={index + 1} />
+          <MusicItem key={m.rid} item={m} num={index + 1} list={item.musicList} />
         ))}
       </div>
     </div>
