@@ -48,7 +48,7 @@ function HowlerPlayer() {
         seek: Math.ceil(howler.seek()),
       });
       if (howler.playing()) {
-        requestAnimationFrame(s);
+        requestIdleCallback(s);
       }
     }
   }, []);
@@ -82,7 +82,7 @@ function HowlerPlayer() {
           usePlayerStore.setState({
             paused: false,
           });
-          requestAnimationFrame(step);
+          requestIdleCallback(step);
         });
 
         howler.on("pause", () => {
