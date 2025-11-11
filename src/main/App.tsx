@@ -3,6 +3,7 @@ import router from "./router";
 import { SWRConfig } from "swr";
 import { fetcher } from "./lib/request";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export default function App() {
   return (
@@ -14,8 +15,10 @@ export default function App() {
         revalidateOnReconnect: false,
       }}
     >
-      <RouterProvider router={router} />
-      <Toaster richColors />
+      <ThemeProvider defaultTheme="system" storageKey="theme">
+        <RouterProvider router={router} />
+        <Toaster richColors />
+      </ThemeProvider>
     </SWRConfig>
   );
 }

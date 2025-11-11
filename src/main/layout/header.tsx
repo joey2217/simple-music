@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useNavigate, Link } from "react-router";
 import { Button } from "@/components/ui/button";
 import icon from "../assets/icon.png";
-import ThemeToggle from "./theme-toggle";
+import { ModeToggle } from "@/components/mode-toggle";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import SearchInput from "../components/search-input";
 
@@ -18,7 +18,7 @@ export default function Header() {
         <SearchInput />
         <div className="flex-1 h-full draggable"></div>
         {import.meta.env.DEV && <button onClick={() => window.devAPI.toggleDevtools()}>devtools</button>}
-        <ThemeToggle />
+        <ModeToggle />
       </div>
     </header>
   );
