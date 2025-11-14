@@ -145,7 +145,7 @@
   position: sticky;
   top: env(titlebar-area-y, 0);
   height: env(titlebar-area-height, var(--fallback-title-bar-height));
-  width: env(titlebar-area-width, 100%);
+  width: 100%;
   cursor: pointer;
   z-index: 9;
   box-sizing: content-box;
@@ -228,5 +228,5 @@ button {
   @apply underline-offset-4 hover:text-primary/80;
 }
 .link.active {
-  @apply text-primary underline ;
+  @apply text-primary underline;
 }
