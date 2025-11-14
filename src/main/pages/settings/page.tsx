@@ -33,10 +33,6 @@ function SettingsItem({
 function Download() {
   const [dir, setDir] = useState(setting.downloadDir);
 
-  useEffect(() => {
-    setting.downloadDir = dir;
-  }, [dir]);
-
   const changeDir = () => {
     window.mainAPI
       .showOpenDialog({
@@ -47,6 +43,7 @@ function Download() {
         const [filePath] = filePaths;
         if (filePath) {
           setDir(filePath);
+          setting.downloadDir = dir;
         }
       });
   };

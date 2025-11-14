@@ -1,5 +1,5 @@
 /*eslint-env node*/
-const { version } = require("./package.json");
+const { version, author } = require("./package.json");
 const nameEN = "SimpleMusic";
 
 /**
@@ -22,6 +22,8 @@ module.exports = {
     target: "nsis",
     signtoolOptions: {
       certificateFile: "build/SimpleMusic.pfx",
+      // https://github.com/electron-userland/electron-builder/issues/1187#issuecomment-278972073
+      publisherName: "SimpleMusic",
     },
   },
   protocols: {
@@ -63,6 +65,7 @@ module.exports = {
   },
   publish: {
     provider: "generic",
-    url: "https://api.jjdd.site/app/music/latest",
+    url: "http://localhost:3000",
+    // url: "https://api.jjdd.site/app/music/latest",
   },
 };

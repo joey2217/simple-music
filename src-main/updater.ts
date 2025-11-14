@@ -2,10 +2,17 @@ import { autoUpdater } from "electron-updater";
 import log from "electron-log/main";
 import { dialog } from "electron";
 import { UpdateType } from "./types";
-// import { send as sendMain } from './windows/main'
+import path from "node:path";
+import { ROOT } from "./constant";
 
 autoUpdater.autoDownload = false;
 autoUpdater.logger = log;
+autoUpdater.disableWebInstaller = true;
+
+if (import.meta.env.DEV) {
+  autoUpdater.forceDevUpdateConfig = true;
+  autoUpdater.updateConfigPath = path.resolve(ROOT, "../build/dev-app-update.yml");
+}
 
 let updateType: UpdateType = "auto";
 

@@ -1,7 +1,7 @@
 import type { UpdateType } from "@/renderer";
 
 const DOWNLOAD_DIR_KEY = "download_dir";
-const UPDATE_TYPE_KEY = "download_dir";
+const UPDATE_TYPE_KEY = "update_type";
 
 class Setting {
   private _downloadDir = localStorage.getItem(DOWNLOAD_DIR_KEY) ?? "";
