@@ -65,7 +65,6 @@ module.exports = {
   },
   publish: {
     provider: "generic",
-    url: "http://localhost:3000",
-    // url: "https://api.jjdd.site/app/music/latest",
+    url: "https://api.jjdd.site/app/music/latest",
   },
 };
