@@ -112,7 +112,7 @@ if (process.platform === "darwin") {
 /**
  * Tray
  */
-let tray: Tray;
+let tray: Tray | null;
 
 const MAX_TITLE_LENGTH = 10;
 
@@ -126,11 +126,6 @@ app.whenReady().then(() => {
   ]);
   tray.setContextMenu(contextMenu);
   tray.on("click", mainWindow.focus);
-});
-
-app.on("before-quit", () => {
-  tray.destroy();
-  tray = null;
 });
 
 let title = APP_NAME;
