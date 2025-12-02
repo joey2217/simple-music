@@ -13,7 +13,7 @@ export default function AlbumPage() {
   const queryPage = searchParams.get("page") ?? "1";
   const page = Number(queryPage);
 
-  const { appendToPlayerList } = usePlayerStore();
+  const appendToPlayerList = usePlayerStore((s) => s.appendToPlayerList);
 
   const { data: album, isLoading, error } = useSWR<Album>(`/api/www/album/albumInfo?albumId=${id}&pn=${page}&rn=20`);
   if (isLoading) {

@@ -161,6 +161,10 @@
   text-align: center;
 }
 
+.titleBar-ml {
+  margin-left: env(titlebar-area-x, 0);
+}
+
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
@@ -217,7 +221,7 @@ button {
 }
 
 #lyric-container {
-  height: calc(100vh - var(--player-height));
+  padding-bottom: var(--player-height);
 }
 
 .card-grid {

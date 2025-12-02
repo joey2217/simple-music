@@ -12,7 +12,7 @@ export default function Rankings() {
   const queryPage = searchParams.get("page") ?? "1";
   const page = Number(queryPage);
 
-  const { appendToPlayerList } = usePlayerStore();
+  const appendToPlayerList = usePlayerStore((s) => s.appendToPlayerList);
   const currentRanking = useOutletContext<RankingMenuItem | undefined>();
 
   const { data, isLoading, error } = useSWR<RankingListData>(

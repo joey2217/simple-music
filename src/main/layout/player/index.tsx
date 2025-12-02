@@ -6,6 +6,7 @@ import PlayerList from "./player-list";
 import Volume from "./volume";
 import { fetchMusicUrl, player, playerConfig, usePlayerStore } from "@/main/store/player";
 import emitter from "@/main/lib/emitter";
+import { toast } from "sonner";
 
 export default function Player() {
   return (
@@ -56,48 +57,53 @@ function HowlerPlayer() {
   useEffect(() => {
     // console.log("player", current);
     if (current) {
-      fetchMusicUrl(current.rid).then((url) => {
-        current.url = url;
-        howlerRef.current?.unload();
-        const howler = new Howl({
-          src: url,
-          autoplay: playerConfig.autoplay,
-          loop: playerConfig.mode === "repeat",
-          html5: true,
-          volume: playerConfig.volume / 100,
-        });
-        playerConfig.autoplay = true;
-        howlerRef.current = howler;
-        howler.once("load", () => {
-          usePlayerStore.setState({
-            duration: Math.ceil(howler.duration()),
-            seek: 0,
-            paused: true,
+      fetchMusicUrl(current.rid)
+        .then((url) => {
+          current.url = url;
+          howlerRef.current?.unload();
+          const howler = new Howl({
+            src: url,
+            autoplay: playerConfig.autoplay,
+            loop: playerConfig.mode === "repeat",
+            html5: true,
+            volume: playerConfig.volume / 100,
           });
-        });
-        howler.on("seek", () => {
-          console.log("on seek");
-        });
-        howler.on("play", () => {
-          usePlayerStore.setState({
-            paused: false,
+          playerConfig.autoplay = true;
+          howlerRef.current = howler;
+          howler.once("load", () => {
+            usePlayerStore.setState({
+              duration: Math.ceil(howler.duration()),
+              seek: 0,
+              paused: true,
+            });
           });
-          requestIdleCallback(step);
-        });
+          howler.on("seek", () => {
+            console.log("on seek");
+          });
+          howler.on("play", () => {
+            usePlayerStore.setState({
+              paused: false,
+            });
+            requestIdleCallback(step);
+          });
 
-        howler.on("pause", () => {
-          usePlayerStore.setState({
-            paused: true,
+          howler.on("pause", () => {
+            usePlayerStore.setState({
+              paused: true,
+            });
           });
-        });
 
-        howler.once("end", () => {
-          console.log("end", playerConfig.mode);
-          if (playerConfig.mode !== "repeat") {
-            playNext();
-          }
+          howler.once("end", () => {
+            console.log("end", playerConfig.mode);
+            if (playerConfig.mode !== "repeat") {
+              playNext();
+            }
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          toast.error("播放失败");
         });
-      });
     }
 
     return () => {
