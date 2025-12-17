@@ -4,7 +4,7 @@ const nameEN = "SimpleMusic";
 
 /**
  * @type {import('electron-builder').Configuration}
- * @see https://www.electron.build/configuration/configuration
+ * @see https://www.electron.build/configuration
  */
 module.exports = {
   productName: "轻音乐",
@@ -63,8 +63,8 @@ module.exports = {
     releaseNotes: "1. 修复已知问题\n2. 优化用户体验\n",
     releaseDate: new Date().toLocaleString("zh-CN"),
   },
-  publish: {
-    provider: "generic",
-    url: "https://api.jjdd.site/app/music/latest",
-  },
+  // publish: {
+  //   provider: "generic",
+  //   url: "https://api.jjdd.site/app/music/latest",
+  // },
 };
