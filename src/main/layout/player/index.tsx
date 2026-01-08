@@ -55,7 +55,7 @@ function HowlerPlayer() {
   }, []);
 
   useEffect(() => {
-    // console.log("player", current);
+    // console.log("player", playerConfig, current);
     if (current) {
       fetchMusicUrl(current.rid)
         .then((url) => {
@@ -76,6 +76,9 @@ function HowlerPlayer() {
               seek: 0,
               paused: true,
             });
+            if (playerConfig.autoplay && !howler.playing()) {
+              howler.play();
+            }
           });
           howler.on("seek", () => {
             console.log("on seek");

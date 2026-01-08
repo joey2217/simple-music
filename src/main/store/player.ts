@@ -21,7 +21,7 @@ interface PlayerState {
 
 export const usePlayerStore = create<PlayerState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       current: null,
       seek: 0,
       duration: 0,
@@ -29,6 +29,7 @@ export const usePlayerStore = create<PlayerState>()(
       playerList: [],
       play: (m: Music, items: Music[]) => {
         set((state) => {
+          playerConfig.autoplay = true;
           const playerList = state.playerList;
           const i = playerList.findIndex((m) => m.rid === m.rid);
           if (i === -1) {
@@ -45,27 +46,29 @@ export const usePlayerStore = create<PlayerState>()(
         playerConfig.setCurrentIndex();
       },
       playNext: (dir: "next" | "prev" = "next") => {
-        const mode = playerConfig.mode;
-        const { playerList } = get();
-        if (mode === "loop" || playerList.length === 0) {
-          return;
-        }
-        const index = playerConfig.index;
-        if (dir === "next") {
-          playerConfig.index = index + 1 > playerList.length - 1 ? (mode === "sequence" ? 0 : -1) : index + 1;
-        } else {
-          playerConfig.index = index - 1 < 0 ? (mode === "sequence" ? -1 : playerList.length - 1) : index - 1;
-        }
-        const nextIndex = playerConfig.index;
-        if (mode === "shuffle") {
-          return {
-            current: playerList[playerConfig.shuffleIndexList[nextIndex]],
-          };
-        } else {
-          return {
-            current: playerList[nextIndex],
-          };
-        }
+        set((state) => {
+          const mode = playerConfig.mode;
+          const { playerList } = state;
+          if (mode === "loop" || playerList.length === 0) {
+            return {};
+          }
+          const index = playerConfig.index;
+          if (dir === "next") {
+            playerConfig.index = index + 1 > playerList.length - 1 ? (mode === "sequence" ? 0 : -1) : index + 1;
+          } else {
+            playerConfig.index = index - 1 < 0 ? (mode === "sequence" ? -1 : playerList.length - 1) : index - 1;
+          }
+          const nextIndex = playerConfig.index;
+          if (mode === "shuffle") {
+            return {
+              current: playerList[playerConfig.shuffleIndexList[nextIndex]],
+            };
+          } else {
+            return {
+              current: playerList[nextIndex],
+            };
+          }
+        });
       },
       appendToPlayerList(m, replace = false) {
         if (Array.isArray(m)) {
@@ -95,7 +98,7 @@ export const usePlayerStore = create<PlayerState>()(
           playerList: state.playerList.filter((item) => item.rid !== m.rid),
         }));
       },
-      clear() { 
+      clear() {
         set({
           playerList: [],
         });

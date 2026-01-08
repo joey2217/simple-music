@@ -22,7 +22,7 @@ export default function MusicList({ data }: MusicListProps) {
         <TableRow>
           <TableHead className="text-center">#</TableHead>
           <TableHead>操作</TableHead>
-          <TableHead></TableHead>
+          <TableHead className="min-w-12"></TableHead>
           <TableHead>歌曲</TableHead>
           <TableHead>专辑</TableHead>
           <TableHead>歌手</TableHead>
@@ -47,8 +47,8 @@ export default function MusicList({ data }: MusicListProps) {
                 <LikeButton music={m} />
               </div>
             </TableCell>
-            <TableCell>
-              <img src={m.pic120} alt={m.name} className="w-12 aspect-square rounded" />
+            <TableCell className="min-w-12">
+              <img src={m.pic120} width={48} alt={m.name} className="w-12 aspect-square rounded" />
             </TableCell>
             <TableCell>
               <Link to={"/music/" + m.rid}>
